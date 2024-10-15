@@ -7,7 +7,8 @@ static class Menu
     static public void Start()
     {
         Console.WriteLine("Enter 1 to login");
-        Console.WriteLine("Enter 2 to do something else in the future");
+        Console.WriteLine("Enter 2 to create a new account");
+        Console.WriteLine("Enter 2 to create a new account");
 
         string input = Console.ReadLine();
         if (input == "1")
@@ -16,7 +17,7 @@ static class Menu
         }
         else if (input == "2")
         {
-            Console.WriteLine("This feature is not yet implemented");
+            UserNewAccountLogic.Start();
         }
         else
         {
