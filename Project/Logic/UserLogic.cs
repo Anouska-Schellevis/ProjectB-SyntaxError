@@ -5,32 +5,38 @@ using System.Text.Json;
 
 
 //This class is not static so later on we can use inheritance and interfaces
-public class AccountsLogic
+public class UserLogic
 {
 
     //Static properties are shared across all instances of the class
     //This can be used to get the current logged in account from anywhere in the program
     //private set, so this can only be set by the class itself
-    public static AccountModel? CurrentAccount { get; private set; }
+    public static UserModel? CurrentAccount { get; private set; }
 
-    public AccountsLogic()
+    public UserLogic()
     {
         // Could do something here
 
     }
 
-    public AccountModel GetById(int id)
+    public UserModel GetById(int id)
     {
-        return AccountsAccess.GetById(id);
+        return UserAccess.GetById(id);
     }
 
-    public AccountModel CheckLogin(string email, string password)
+    public void CreateAccount(UserModel user)
+    {
+        UserAccess.Write(user);
+    }
+
+    public UserModel CheckLogin(string email, string password)
     {
 
-        AccountModel acc = AccountsAccess.GetByEmail(email);
+        UserModel acc = UserAccess.GetByEmail(email);
         if (acc != null && acc.Password == password)
         {
             CurrentAccount = acc;
+            Console.WriteLine("Account login succesful");
             return acc;
         }
         return null;
