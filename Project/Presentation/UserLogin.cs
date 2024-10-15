@@ -1,6 +1,6 @@
 static class UserLogin
 {
-    static private AccountsLogic accountsLogic = new AccountsLogic();
+    static private UserLogic userlogin = new UserLogic();
 
 
     public static void Start()
@@ -10,14 +10,15 @@ static class UserLogin
         string email = Console.ReadLine();
         Console.WriteLine("Please enter your password");
         string password = Console.ReadLine();
-        AccountModel acc = accountsLogic.CheckLogin(email, password);
+        UserModel acc = userlogin.CheckLogin(email, password);
         if (acc != null)
         {
-            Console.WriteLine("Welcome back " + acc.FullName);
-            Console.WriteLine("Your email number is " + acc.EmailAddress);
+            Console.WriteLine("Welcome back " + acc.FirstName + " " + acc.LastName);
+            Console.WriteLine(acc.Email);
+            Console.WriteLine(acc.Phone_Number);
+            Console.WriteLine("Your email number is " + acc.Email);
 
-            //Write some code to go back to the menu
-            //Menu.Start();
+            Menu.Start();
         }
         else
         {
