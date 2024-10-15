@@ -24,6 +24,11 @@ public class UserLogic
         return UserAccess.GetById(id);
     }
 
+    public UserModel GetByType(string email)
+    {
+        return UserAccess.GetByType(email);
+    }
+
     public void CreateAccount(UserModel user)
     {
         UserAccess.Write(user);

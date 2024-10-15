@@ -54,10 +54,7 @@ public class UserNewAccountLogic
             }
         } while (true); //keeps running until if conition is met
 
-        Console.WriteLine("Please enter your user type (e.g., 0 for regular user, 1 for admin):");
-        int userType = int.Parse(Console.ReadLine());
-
-        UserModel newUser = new UserModel(0, email, password, firstName, lastName, phoneNumber, userType);
+        UserModel newUser = new UserModel(0, email, password, firstName, lastName, phoneNumber, 0);
 
         userLogic.CreateAccount(newUser);
         Console.WriteLine("Account created successfully! You can now log in.");

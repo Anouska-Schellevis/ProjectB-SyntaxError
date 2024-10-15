@@ -13,12 +13,24 @@ static class UserLogin
         UserModel acc = userlogin.CheckLogin(email, password);
         if (acc != null)
         {
-            Console.WriteLine("Welcome back " + acc.FirstName + " " + acc.LastName);
-            Console.WriteLine(acc.Email);
-            Console.WriteLine(acc.Phone_Number);
-            Console.WriteLine("Your email number is " + acc.Email);
+            UserModel admin = userlogin.GetByType(email);
+            if (admin != null)
+            {
+                Console.Clear();
+                Console.WriteLine("Admin page\n");
+                Console.WriteLine("Welcome back " + admin.FirstName + " " + admin.LastName);
+                Console.WriteLine(admin.Email);
+                Console.WriteLine(admin.Phone_Number);
+            }
+            else
+            {
+                Console.Clear();
+                Console.WriteLine("User page\n");
+                Console.WriteLine("Welcome back " + acc.FirstName + " " + acc.LastName);
+                Console.WriteLine(acc.Email);
+                Console.WriteLine(acc.Phone_Number);
+            }
 
-            Menu.Start();
         }
         else
         {

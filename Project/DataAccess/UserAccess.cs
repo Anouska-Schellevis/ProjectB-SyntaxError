@@ -29,6 +29,12 @@ public static class UserAccess
         return _connection.QueryFirstOrDefault<UserModel>(sql, new { Email = email });
     }
 
+    public static UserModel GetByType(string email)
+    {
+        string sql = $"SELECT * FROM {Table} WHERE email = @Email AND type = 1";
+        return _connection.QueryFirstOrDefault<UserModel>(sql, new { Email = email });
+    }
+
     public static void Update(UserModel account)
     {
         string sql = $"UPDATE {Table} SET email = @EmailAddress, password = @Password, firstname = @FirstName, lastname = @LastName, phone_number = @PhoneNumber, type = @Type WHERE id = @Id";
