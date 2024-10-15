@@ -13,7 +13,31 @@ class Movie
         Console.WriteLine("[3] Edit Movie");
         Console.WriteLine("[4] Delete Movie");
         Console.WriteLine("[5] Search Movie by title");
-        Console.WriteLine("[6] Search Movie by id");
         Console.WriteLine("What would you like to do?");
+    }
+
+    public void MovieEdit()
+    {
+
+    }
+
+    public void MovieDelete()
+    {
+
+    }
+
+    public void MovieAdd()
+    {
+
+    }
+
+    public void MoviePrint()
+    {
+
+    }
+
+    public void MovieSearch()
+    {
+
     }
 }
