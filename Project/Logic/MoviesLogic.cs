@@ -1,29 +1,17 @@
-using System.Collections.Concurrent;
-
-public class MoviesLogic
+static public class MoviesLogic
 {
-    public MoviesLogic()
-    {
-        // Could do something here
 
-    }
-
-    public MoviesModel GetById(int id)
-    {
-        return MoviesAccess.GetById(id);
-    }
-
-    public MoviesModel GetByTitle(string title)
+    static public MoviesModel GetByTitle(string title)
     {
         return MoviesAccess.GetByTitle(title);
     }
 
-    public MoviesModel GetAllMovies()
+    static public MoviesModel GetAllMovies()
     {
         return MoviesAccess.GetAllMovies();
     }
 
-    public void UpdateMovie(MoviesModel movie)
+    static public void UpdateMovie(MoviesModel movie)
     {
         movie.TimeInMinutes = Convert.ToInt32(movie.TimeInMinutes);
         movie.Genre = movie.Genre.Trim().ToUpper();
@@ -33,6 +21,17 @@ public class MoviesLogic
         movie.ReleaseDate = movie.ReleaseDate.Trim().ToUpper();
 
         MoviesAccess.Update(movie);
+    }
+
+    static public void DeleteMovie(int id)
+
+    {
+        MoviesAccess.Delete(id);
+    }
+
+    static public void WriteMovie(MoviesModel movie)
+    {
+        MoviesAccess.Write(movie);
     }
 }
 
