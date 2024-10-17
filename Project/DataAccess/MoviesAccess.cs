@@ -15,13 +15,6 @@ public static class MoviesAccess
         _connection.Execute(sql, movie);
     }
 
-
-    public static MoviesModel GetById(int id)
-    {
-        string sql = $"SELECT * FROM {Table} WHERE id = @Id";
-        return _connection.QueryFirstOrDefault<MoviesModel>(sql, new { Id = id });
-    }
-
     public static MoviesModel GetByTitle(string title)
     {
         string sql = $"SELECT * FROM {Table} WHERE title = @Title";
