@@ -5,6 +5,10 @@ static public class MoviesLogic
     {
         return MoviesAccess.GetByTitle(title);
     }
+    static public MoviesModel GetById(int Id)
+    {
+        return MoviesAccess.GetById(Id);
+    }
 
     static public List<MoviesModel> GetAllMovies()
     {
