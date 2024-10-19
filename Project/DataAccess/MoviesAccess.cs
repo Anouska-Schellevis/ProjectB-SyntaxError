@@ -33,6 +33,11 @@ public static class MoviesAccess
         _connection.Execute(sql, new { Id = id });
     }
 
+    public static MoviesModel GetById(int id)
+    {
+        string sql = $"SELECT * FROM {Table} WHERE id = @Id";
+        return _connection.QueryFirstOrDefault<MoviesModel>(sql, new { Id = id });
+    }
     public static List<MoviesModel> GetAllMovies()
     {
         string sql = $"SELECT * FROM {Table}";
