@@ -15,11 +15,11 @@ public static class ShowAccess
         _connection.Execute(sql, show);
     }
 
-    // public static ShowModel GetByTitle(string title)
-    // {
-    //     string sql = $"SELECT * FROM {Table} WHERE title = @Title";
-    //     return _connection.QueryFirstOrDefault<MoviesModel>(sql, new { Title = title });
-    // }
+    public static ShowModel GetByID(int id)
+    {
+        string sql = $"SELECT * FROM {Table} WHERE id = @Id";
+        return _connection.QueryFirstOrDefault<ShowModel>(sql, new { Id = id });
+    }
 
     // wanna make this into a get by day but I need to change the table for that
     public static void Update(ShowModel show)
@@ -38,5 +38,11 @@ public static class ShowAccess
     {
         string sql = $"SELECT * FROM {Table}";
         return _connection.Query<ShowModel>(sql).ToList();
+    }
+
+    public static List<ShowModel> GetByMovieID(int movieId)
+    {
+        string sql = $"SELECT * FROM {Table} WHERE movie_id = @MovieId";
+        return _connection.Query<ShowModel>(sql, new { MovieId = movieId }).ToList();
     }
 }
