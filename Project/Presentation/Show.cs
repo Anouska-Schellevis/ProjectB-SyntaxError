@@ -3,15 +3,14 @@ class Show
 
     static public void Main()
     {
-        Start();
+        AdminStart();
     }
-    static public void Start()
+    static public void AdminStart()
     {
         Console.WriteLine("[1] Overview of all show");
         Console.WriteLine("[2] Add Show");
         Console.WriteLine("[3] Edit Show");
         Console.WriteLine("[4] Delete Show");
-        // Console.WriteLine("[5] Search Show by title");
         Console.WriteLine("What would you like to do?");
         int choice = Convert.ToInt32(Console.ReadLine());
         
@@ -26,19 +25,19 @@ class Show
                 Console.WriteLine("Show is added");
                 break;
             case 3:
-                // Console.WriteLine("Enter the title to edit");
-                // string Title_to_edit = Console.ReadLine();
-                // MoviesModel movie = MoviesLogic.GetByTitle(Title_to_edit);
-                // if (movie != null)
-                // {
-                //     movie = MovieEdit(movie);
-                //     MoviesLogic.UpdateMovie(movie);
-                //     Console.WriteLine("Movie is saved!");
-                // }
-                // else
-                // {
-                //     Console.WriteLine("Such a movie does not exist");
-                // }
+                Console.WriteLine("Enter the id to edit");
+                int Title_to_edit = Convert.ToInt32(Console.ReadLine());
+                ShowModel show = ShowLogic.GetByID(Title_to_edit);
+                if (show != null)
+                {
+                    show = ShowEdit(show);
+                    ShowLogic.UpdateShow(show);
+                    Console.WriteLine("Show is saved!");
+                }
+                else
+                {
+                    Console.WriteLine("Such a show does not exist");
+                }
                 break;
             case 4:
                 Console.WriteLine("Enter the id of the show you want to delete");
@@ -46,16 +45,48 @@ class Show
                 ShowDelete(idToDelete);
                 Console.WriteLine("Show is deleted");
                 break;
-            // case 5:
-            //     Console.WriteLine("Enter the title of the movie you want to search for");
-            //     string Title_to_search = Console.ReadLine();
-            //     MovieSearch(Title_to_search);
-            //     break;
             default:
                 Console.WriteLine("No valid option selected. Please try again.");
-                Start();
+                AdminStart();
                 break;
         }
+    }
+
+    static public void UserStart()
+    {
+        PrintOverviewMovie_Time();
+        Console.WriteLine("What movie would you like to watch?");
+        string Movie_to_watch = Console.ReadLine();
+        MoviesModel movie = MoviesLogic.GetByTitle(Movie_to_watch);
+        if (movie != null)
+            {
+                Console.WriteLine("And at what time? Enter in '%Y-%m-%d %H:%M' format");
+                string Date_time = Console.ReadLine();
+                int Movie_Id = Convert.ToInt32(movie.Id);
+                List<ShowModel> shows = new List<ShowModel>(ShowAccess.GetByMovieID(Movie_Id));
+                if (shows != null)
+                {
+                    foreach (ShowModel show in shows)
+                    {
+                        if (show.Date == Date_time)
+                        {
+                            //Call reservering hier
+                        }
+                    }
+                    Console.WriteLine("There is no movie on this date and time.");
+                    UserStart();
+                }
+                else
+                {
+                    Console.WriteLine("Such a time does not exist");
+                    UserStart();
+                }
+            }
+            else
+            {
+                Console.WriteLine("Such a movie does not exist");
+                UserStart();
+            }
     }
 
     static public ShowModel ShowEdit(ShowModel show)
@@ -64,15 +95,12 @@ class Show
         int newTheaterId = Convert.ToInt32(Console.ReadLine());
         Console.WriteLine("Enter movie ID for this movie.");
         int newMovieId = Convert.ToInt32(Console.ReadLine());
-        Console.WriteLine("Enter reseservation ID for this movie.");
-        int newReservationId = Convert.ToInt32(Console.ReadLine());
-        Console.WriteLine("Enter new start time for this movie.");
-        string newStartTime = Console.ReadLine();
+        Console.WriteLine("Enter date for this movie in '%Y-%m-%d %H:%M' format.");
+        string newDate = Console.ReadLine();
 
         show.TheaterId = newTheaterId;
         show.MovieId = newMovieId;
-        show.ReservationId = newReservationId;
-        show.StartTime = newStartTime;
+        show.Date = newDate;
         return show;
     }
 
@@ -88,10 +116,8 @@ class Show
         Console.WriteLine("Enter movie ID for this movie.");
         int newMovieId = Convert.ToInt32(Console.ReadLine());
         Console.WriteLine("Enter reseservation ID for this movie.");
-        int newReservationId = Convert.ToInt32(Console.ReadLine());
-        Console.WriteLine("Enter new start time for this movie.");
-        string newStartTime = Console.ReadLine();
-        ShowModel new_show = new ShowModel(1, newTheaterId, newMovieId, newReservationId, newStartTime);
+        string newDate = Console.ReadLine();
+        ShowModel new_show = new ShowModel(1, newTheaterId, newMovieId, newDate);
         ShowLogic.WriteShow(new_show);
 
     }
@@ -104,22 +130,26 @@ class Show
             Console.WriteLine($"ID: {show.Id}");
             Console.WriteLine($"TheaterID: {show.TheaterId}");
             Console.WriteLine($"MovieID: {show.MovieId}");
-            Console.WriteLine($"ReservationID: {show.ReservationId}");
-            Console.WriteLine($"Start Time: {show.StartTime}");
+            Console.WriteLine($"Date: {show.Date}");
             Console.WriteLine("-----------------------------------------------");
         }
     }
 
-    // static public void ShowSearch(string Title)
-    // {
-    //     var movie = ShowLogic.GetByTitle(Title);
-    //     Console.WriteLine($"ID: {movie.Id}");
-    //     Console.WriteLine($"Title: {movie.Title}");
-    //     Console.WriteLine($"Genre: {movie.Genre}");
-    //     Console.WriteLine($"Director: {movie.Director}");
-    //     Console.WriteLine($"Release Date: {movie.ReleaseDate}");
-    //     Console.WriteLine($"Time in minutes: {movie.TimeInMinutes} minutes");
-    //     Console.WriteLine($"Description: {movie.Description}");
-    //     Console.WriteLine("-----------------------------------------------");
-    // }
+    public static void PrintOverviewMovie_Time()
+    {
+        Dictionary<int, string> movies = Movie.MakeMovieDict();
+        List<ShowModel> shows = ShowLogic.GetAllShows();
+        foreach (var movie in movies)
+        {
+            Console.WriteLine(movie);
+            foreach (var show in shows)
+            {
+                if (movie.Key == show.MovieId)
+                {
+                    Console.WriteLine(show.Date);
+                }
+            }
+        }
+
+    }
 }
