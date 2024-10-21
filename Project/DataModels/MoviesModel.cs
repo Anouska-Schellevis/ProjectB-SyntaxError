@@ -7,6 +7,7 @@ public class MoviesModel
     public string Title { get; set; }
     public string Director { get; set; }
     public string ReleaseDate { get; set; }
+    public MoviesModel() {}
 
     public MoviesModel(Int64 id, int timeInMinutes, string genre, string description, string title, string director, string releaseDate)
     {

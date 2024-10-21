@@ -108,11 +108,37 @@ class Movie
 
     static public void MoviePrint()
     {
-        Console.WriteLine(MoviesLogic.GetAllMovies());
+        // List<MoviesModel> movies = MoviesLogic.GetAllMovies();
+        // foreach (MoviesModel movie in movies)
+        // {
+        //     Console.WriteLine($"ID: {movie.Id}");
+        //     Console.WriteLine($"Title: {movie.Title}");
+        //     Console.WriteLine($"Genre: {movie.Genre}");
+        //     Console.WriteLine($"Director: {movie.Director}");
+        //     Console.WriteLine($"Release Date: {movie.ReleaseDate}");
+        //     Console.WriteLine($"Time in minutes: {movie.TimeInMinutes} minutes");
+        //     Console.WriteLine($"Description: {movie.Description}");
+        //     Console.WriteLine("-----------------------------------------------");
+        // }
+        int Count = 1;
+        MoviesModel movie = MoviesLogic.GetById(Count);
+        while (movie != null)
+        {
+            Count += 1;
+            movie = MoviesLogic.GetById(Count);
+        }
     }
 
     static public void MovieSearch(string Title)
     {
-        Console.WriteLine(MoviesLogic.GetByTitle(Title));
+        var movie = MoviesLogic.GetByTitle(Title);
+        Console.WriteLine($"ID: {movie.Id}");
+        Console.WriteLine($"Title: {movie.Title}");
+        Console.WriteLine($"Genre: {movie.Genre}");
+        Console.WriteLine($"Director: {movie.Director}");
+        Console.WriteLine($"Release Date: {movie.ReleaseDate}");
+        Console.WriteLine($"Time in minutes: {movie.TimeInMinutes} minutes");
+        Console.WriteLine($"Description: {movie.Description}");
+        Console.WriteLine("-----------------------------------------------");
     }
 }
