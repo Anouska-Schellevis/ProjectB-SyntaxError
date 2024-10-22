@@ -6,18 +6,18 @@ static public class SeatsLogic
         return SeatsAccess.GetById(Id);
     }
 
-    static public void UpdateMovie(SeatsModel seat)
+    static public void UpdateSeat(SeatsModel seat)
     {
         SeatsAccess.Update(seat);
     }
 
-    static public void DeleteMovie(int id)
+    static public void DeleteSeat(int id)
 
     {
         SeatsAccess.Delete(id);
     }
 
-    static public void WriteMovie(SeatsModel seat)
+    static public void WriteSeat(SeatsModel seat)
     {
         SeatsAccess.Write(seat);
     }

@@ -6,18 +6,18 @@ static public class ReservationLogic
         return ReservationAccess.GetById(Id);
     }
 
-    static public void UpdateMovie(ReservationModel reservation)
+    static public void UpdateReservation(ReservationModel reservation)
     {
         ReservationAccess.Update(reservation);
     }
 
-    static public void DeleteMovie(int id)
+    static public void DeleteReservation(int id)
 
     {
         ReservationAccess.Delete(id);
     }
 
-    static public void WriteMovie(ReservationModel reservation)
+    static public void WriteReservation(ReservationModel reservation)
     {
         ReservationAccess.Write(reservation);
     }
