@@ -11,7 +11,7 @@ public static class ShowAccess
 
     public static void Write(ShowModel show)
     {
-        string sql = $"INSERT INTO {Table} (theatre_id, movie_id, reservation_id, start_time) VALUES (@TheatreId, @MovieId, @ReservationId, @StartTime)";
+        string sql = $"INSERT INTO {Table} (theatre_id, movie_id, date) VALUES (@TheatreId, @MovieId, @Date)";
         _connection.Execute(sql, show);
     }
 
@@ -24,7 +24,7 @@ public static class ShowAccess
     // wanna make this into a get by day but I need to change the table for that
     public static void Update(ShowModel show)
     {
-        string sql = $"UPDATE {Table} SET theater_id = @TheaterId, movie_id = @MovieId, start_time = @StartTime WHERE id = @Id";
+        string sql = $"UPDATE {Table} SET theater_id = @TheaterId, movie_id = @MovieId, date = @Date WHERE id = @Id";
         _connection.Execute(sql, show);
     }
 

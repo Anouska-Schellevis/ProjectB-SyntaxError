@@ -20,7 +20,6 @@ class Show
                 ShowPrint();
                 break;
             case 2:
-
                 ShowAdd();
                 Console.WriteLine("Show is added");
                 break;
@@ -92,13 +91,13 @@ class Show
     static public ShowModel ShowEdit(ShowModel show)
     {
         Console.WriteLine("Enter new theater ID for this movie.");
-        int newTheaterId = Convert.ToInt32(Console.ReadLine());
+        int newTheatreId = Convert.ToInt32(Console.ReadLine());
         Console.WriteLine("Enter movie ID for this movie.");
         int newMovieId = Convert.ToInt32(Console.ReadLine());
         Console.WriteLine("Enter date for this movie in '%Y-%m-%d %H:%M' format.");
         string newDate = Console.ReadLine();
 
-        show.TheaterId = newTheaterId;
+        show.TheatreId = newTheatreId;
         show.MovieId = newMovieId;
         show.Date = newDate;
         return show;
@@ -115,7 +114,7 @@ class Show
         int newTheaterId = Convert.ToInt32(Console.ReadLine());
         Console.WriteLine("Enter movie ID for this movie.");
         int newMovieId = Convert.ToInt32(Console.ReadLine());
-        Console.WriteLine("Enter reseservation ID for this movie.");
+        Console.WriteLine("Enter the date and time for this movie in '%Y-%m-%d %H:%M' format.");
         string newDate = Console.ReadLine();
         ShowModel new_show = new ShowModel(1, newTheaterId, newMovieId, newDate);
         ShowLogic.WriteShow(new_show);
@@ -128,7 +127,7 @@ class Show
         foreach (ShowModel show in shows)
         {
             Console.WriteLine($"ID: {show.Id}");
-            Console.WriteLine($"TheaterID: {show.TheaterId}");
+            Console.WriteLine($"TheaterID: {show.TheatreId}");
             Console.WriteLine($"MovieID: {show.MovieId}");
             Console.WriteLine($"Date: {show.Date}");
             Console.WriteLine("-----------------------------------------------");
