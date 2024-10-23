@@ -12,6 +12,7 @@ public static class ShowAccess
     public static void Write(ShowModel show)
     {
         string sql = $"INSERT INTO {Table} (theatre_id, movie_id, date) VALUES (@TheatreId, @MovieId, @Date)";
+
         _connection.Execute(sql, show);
     }
 

@@ -13,14 +13,13 @@ class Show
         Console.WriteLine("[4] Delete Show");
         Console.WriteLine("What would you like to do?");
         int choice = Convert.ToInt32(Console.ReadLine());
-        
+
         switch (choice)
         {
             case 1:
                 ShowPrint();
                 break;
             case 2:
-
                 ShowAdd();
                 Console.WriteLine("Show is added");
                 break;
@@ -59,47 +58,47 @@ class Show
         string Movie_to_watch = Console.ReadLine();
         MoviesModel movie = MoviesLogic.GetByTitle(Movie_to_watch);
         if (movie != null)
+        {
+
+            Console.WriteLine("And at what time? Enter in '%Y-%m-%d %H:%M' format");
+            string Date_time = Console.ReadLine();
+            int Movie_Id = Convert.ToInt32(movie.Id);
+
+            List<ShowModel> shows = new List<ShowModel>(ShowAccess.GetByMovieID(Movie_Id));
+
+
+
+
+            if (shows != null)
             {
-                
-                Console.WriteLine("And at what time? Enter in '%Y-%m-%d %H:%M' format");
-                string Date_time = Console.ReadLine();
-                int Movie_Id = Convert.ToInt32(movie.Id);
-                
-                List<ShowModel> shows = new List<ShowModel>(ShowAccess.GetByMovieID(Movie_Id));
-                
-
-
-
-                if (shows != null)
+                foreach (ShowModel show in shows)
                 {
-                    foreach (ShowModel show in shows)
+                    if (show.TheatreId == 1)
                     {
-                        if (show.TheatreId == 1)
-                        {
-                            Theater150 theater = new Theater150();
-                            theater.SelectSeats();
-                        }
+                        Theater150 theater = new Theater150();
+                        theater.SelectSeats();
                     }
-                    Console.WriteLine("There is no movie on this date and time.");
-                    UserStart();
                 }
-                else
-                {
-                    Console.WriteLine("Such a time does not exist");
-                    UserStart();
-                }
+                Console.WriteLine("There is no movie on this date and time.");
+                UserStart();
             }
             else
             {
-                Console.WriteLine("Such a movie does not exist");
+                Console.WriteLine("Such a time does not exist");
                 UserStart();
             }
+        }
+        else
+        {
+            Console.WriteLine("Such a movie does not exist");
+            UserStart();
+        }
     }
 
     static public ShowModel ShowEdit(ShowModel show)
     {
         Console.WriteLine("Enter new theater ID for this movie.");
-        int newTheaterId = Convert.ToInt32(Console.ReadLine());
+        int newTheatreId = Convert.ToInt32(Console.ReadLine());
         Console.WriteLine("Enter movie ID for this movie.");
         int newMovieId = Convert.ToInt32(Console.ReadLine());
         Console.WriteLine("Enter date for this movie in '%Y-%m-%d %H:%M' format.");
@@ -124,7 +123,7 @@ class Show
         int newMovieId = Convert.ToInt32(Console.ReadLine());
         Console.WriteLine("Enter release date for this movie.");
         string newDate = Console.ReadLine();
-        ShowModel new_show = new ShowModel(1 ,newTheaterId, newMovieId, newDate);
+        ShowModel new_show = new ShowModel(1, newTheaterId, newMovieId, newDate);
         ShowLogic.WriteShow(new_show);
 
     }
@@ -135,6 +134,7 @@ class Show
         foreach (ShowModel show in shows)
         {
             Console.WriteLine($"ID: {show.Id}");
+            Console.WriteLine($"TheaterID: {show.TheatreId}");
             Console.WriteLine($"TheaterID: {show.TheatreId}");
             Console.WriteLine($"MovieID: {show.MovieId}");
             Console.WriteLine($"Date: {show.Date}");
