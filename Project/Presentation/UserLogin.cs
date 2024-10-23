@@ -13,6 +13,7 @@ static class UserLogin
         UserModel acc = userlogin.CheckLogin(email, password);
         if (acc != null)
         {
+            UserSession.Instance.CurrentUser = acc;
             UserModel admin = userlogin.GetByType(email);
             if (admin != null)
             {
@@ -27,8 +28,14 @@ static class UserLogin
                 Console.Clear();
                 Console.WriteLine("User page\n");
                 Console.WriteLine("Welcome back " + acc.FirstName + " " + acc.LastName);
-                Console.WriteLine(acc.Email);
-                Console.WriteLine(acc.Phone_Number);
+                Console.WriteLine("Would you like to see the overview of available movies Y/N");
+                string answer = Console.ReadLine();
+
+                if (answer == "Y")
+                {
+                    Show.UserStart();
+                }
+                
             }
 
         }

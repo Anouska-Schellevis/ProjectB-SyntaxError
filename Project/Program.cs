@@ -1,3 +1,4 @@
-﻿Console.WriteLine("Welcome to this amazing program");
-//Menu.Start();
-Movie.Main();
+﻿//Console.WriteLine("Welcome to this amazing program");
+Menu.Start();
+//Show.AdminStart();
+

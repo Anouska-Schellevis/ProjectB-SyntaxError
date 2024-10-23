@@ -5,7 +5,9 @@ using Dapper;
 
 public static class UserAccess
 {
-    private static SqliteConnection _connection = new SqliteConnection($"Data Source=DataSources/project.db");
+    //private static SqliteConnection _connection = new SqliteConnection($"Data Source=DataSources/project.db");
+    private static SqliteConnection _connection = new SqliteConnection(@"Data Source=C:\Users\anouk\Desktop\projectb\ProjectB-SyntaxError\Project\DataSources\project.db");
+
 
     private static string Table = "user";
 
@@ -23,10 +25,28 @@ public static class UserAccess
         return _connection.QueryFirstOrDefault<UserModel>(sql, new { Id = id });
     }
 
+    //public static UserModel GetByEmail(string email)
+    //{
+    //  string sql = $"SELECT * FROM {Table} WHERE email = @Email";
+    // return _connection.QueryFirstOrDefault<UserModel>(sql, new { Email = email });
+    // }
     public static UserModel GetByEmail(string email)
     {
-        string sql = $"SELECT * FROM {Table} WHERE email = @Email";
-        return _connection.QueryFirstOrDefault<UserModel>(sql, new { Email = email });
+        try
+        {
+            _connection.Open(); // Try to open the connection
+            string sql = $"SELECT * FROM {Table} WHERE email = @Email";
+            return _connection.QueryFirstOrDefault<UserModel>(sql, new { Email = email });
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error opening database: {ex.Message}");
+            return null; // Return null in case of an error
+        }
+        finally
+        {
+            _connection.Close(); // Ensure the connection is closed after the operation
+        }
     }
 
     public static UserModel GetByType(string email)
