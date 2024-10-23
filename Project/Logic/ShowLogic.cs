@@ -27,7 +27,3 @@ static public class ShowLogic
         ShowAccess.Write(show);
     }
 }
-
-
-
-

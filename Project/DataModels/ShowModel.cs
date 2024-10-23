@@ -1,21 +1,16 @@
 public class ShowModel
 {
     public Int64 Id { get; set; }
-    public int TheaterId { get; set; }
-    public int MovieId { get; set; }
+    public Int64 TheatreId { get; set; }
+    public Int64 MovieId { get; set; }
     public string Date { get; set; }
-    public ShowModel() {}
-
-    public ShowModel(Int64 id, int theaterId, int movieId, string date)
+    public ShowModel(Int64 id, Int64 theatre_id, Int64 movie_id, string date)
     {
         Id = id;
-        TheaterId = theaterId;
-        MovieId = movieId;
+        TheatreId = theatre_id;
+        MovieId = movie_id;
         Date = date;
     }
 
 
 }
-
-
-
