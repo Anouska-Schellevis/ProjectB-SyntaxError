@@ -50,4 +50,42 @@ public class ReservationTest
     {
         
     }
+    [TestMethod]
+    public void GetAllBar_Reservation_FromDatabase()
+    {
+
+        List<ReservationModel> testReservations = new() { new(1, true, 3, 3, 4),
+                                                          new(2, false, 4, 4, 5),
+                                                          new(3, true, 5, 5, 6) 
+                                                        };
+
+        foreach(ReservationModel testReservation in testReservations)
+        {
+            ReservationLogic.WriteReservation(testReservation);
+        }
+
+        var barReservations = ReservationLogic.GetBarReservations();
+        
+        Assert.Equals(2, barReservations.Count);
+    }
+}
+
+[TestClass]
+public class AdminTest
+{
+    [TestMethod]
+    public void unnamed()
+    {
+
+    }
+    [TestMethod]
+    public void unnamed2()
+    {
+        
+    }
+    [TestMethod]
+    public void unnamed3()
+    {
+        
+    }
 }
