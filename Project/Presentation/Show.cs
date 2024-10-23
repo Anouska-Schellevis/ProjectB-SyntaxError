@@ -72,13 +72,17 @@ class Show
                 {
                     foreach (ShowModel show in shows)
                     {
+                        Console.WriteLine(show.TheatreId);
                         if (show.Date == Date_time)
                         {
-                            //Call reservering hier
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("There is no movie on this date and time.");
+                            UserStart();
                         }
                     }
-                    Console.WriteLine("There is no movie on this date and time.");
-                    UserStart();
                 }
                 else
                 {
