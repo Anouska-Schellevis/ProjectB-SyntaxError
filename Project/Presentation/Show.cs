@@ -3,7 +3,11 @@ class Show
 
     static public void Main()
     {
-        AdminStart();
+        bool admin = false;
+        if (admin)
+        {AdminStart();}
+        else
+        {UserStart();}
     }
     static public void AdminStart()
     {
@@ -68,13 +72,17 @@ class Show
                 {
                     foreach (ShowModel show in shows)
                     {
+                        Console.WriteLine(show.TheatreId);
                         if (show.Date == Date_time)
                         {
-                            //Call reservering hier
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("There is no movie on this date and time.");
+                            UserStart();
                         }
                     }
-                    Console.WriteLine("There is no movie on this date and time.");
-                    UserStart();
                 }
                 else
                 {
@@ -141,7 +149,7 @@ class Show
         List<ShowModel> shows = ShowLogic.GetAllShows();
         foreach (var movie in movies)
         {
-            Console.WriteLine(movie);
+            Console.WriteLine(movie.Value);
             foreach (var show in shows)
             {
                 if (movie.Key == show.MovieId)
