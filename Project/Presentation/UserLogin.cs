@@ -20,8 +20,24 @@ static class UserLogin
                 Console.Clear();
                 Console.WriteLine("Admin page\n");
                 Console.WriteLine("Welcome back " + admin.FirstName + " " + admin.LastName);
-                Console.WriteLine(admin.Email);
-                Console.WriteLine(admin.Phone_Number);
+                Console.WriteLine("would you like to look at the menu for movies or the menu for shows");
+                string input = Console.ReadLine().ToLower();
+
+                while (input != null)
+                {
+                    if (input == "movies")
+                    {
+                        Movie.Start();
+                        Console.Clear();
+                    }
+                    if (input == "shows")
+                    {
+                        Show.AdminStart();
+                        Console.Clear();
+                    }
+                }
+               
+               
             }
             else
             {
@@ -29,11 +45,16 @@ static class UserLogin
                 Console.WriteLine("User page\n");
                 Console.WriteLine("Welcome back " + acc.FirstName + " " + acc.LastName);
                 Console.WriteLine("Would you like to see the overview of available movies Y/N");
-                string answer = Console.ReadLine();
+                string answer = Console.ReadLine().ToLower();
 
-                if (answer == "Y")
+                if (answer == "y")
                 {
                     Show.UserStart();
+                }
+                else
+                {
+                    Console.WriteLine("back to the menu...");
+                    Menu.Start();
                 }
                 
             }

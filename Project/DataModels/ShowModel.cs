@@ -6,7 +6,7 @@ public class ShowModel
     public Int64 MovieId { get; set; }
     public string Date { get; set; }
 
-    public ShowModel() { }
+    //public ShowModel() { }
     public ShowModel(Int64 id, Int64 theatre_id, Int64 movie_id, string date)
     {
         Id = id;

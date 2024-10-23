@@ -5,8 +5,8 @@ using Dapper;
 
 public static class ShowAccess
 {
-    //private static SqliteConnection _connection = new SqliteConnection($"Data Source=DataSources/project.db");
-    private static SqliteConnection _connection = new SqliteConnection(@"Data Source=C:\Users\anouk\Desktop\projectb\ProjectB-SyntaxError\Project\DataSources\project.db");
+    private static SqliteConnection _connection = new SqliteConnection($"Data Source=DataSources/project.db");
+    //private static SqliteConnection _connection = new SqliteConnection(@"Data Source=C:\Users\anouk\Desktop\projectb\ProjectB-SyntaxError\Project\DataSources\project.db");
     private static string Table = "show";
 
     public static void Write(ShowModel show)
