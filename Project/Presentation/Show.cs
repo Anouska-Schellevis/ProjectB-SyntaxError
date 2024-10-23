@@ -104,7 +104,7 @@ class Show
         Console.WriteLine("Enter date for this movie in '%Y-%m-%d %H:%M' format.");
         string newDate = Console.ReadLine();
 
-        show.TheatreId = newTheaterId;
+        show.TheatreId = newTheatreId;
         show.MovieId = newMovieId;
         show.Date = newDate;
         return show;
