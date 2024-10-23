@@ -3,7 +3,11 @@ class Show
 
     static public void Main()
     {
-        AdminStart();
+        bool admin = false;
+        if (admin)
+        {AdminStart();}
+        else
+        {UserStart();}
     }
     static public void AdminStart()
     {
@@ -141,7 +145,7 @@ class Show
         List<ShowModel> shows = ShowLogic.GetAllShows();
         foreach (var movie in movies)
         {
-            Console.WriteLine(movie);
+            Console.WriteLine(movie.Value);
             foreach (var show in shows)
             {
                 if (movie.Key == show.MovieId)
