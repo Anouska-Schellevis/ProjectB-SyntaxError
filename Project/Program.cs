@@ -1,6 +1,6 @@
 ﻿
 //Console.WriteLine("Welcome to this amazing program");
-Menu.Start();
-//Show.AdminStart();
+// Menu.Start();
+Show.AdminStart();
 
 
