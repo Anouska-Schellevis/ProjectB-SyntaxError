@@ -1,3 +1,5 @@
+using Microsoft.VisualBasic;
+
 static public class ShowLogic
 {
 
@@ -25,6 +27,18 @@ static public class ShowLogic
     static public void WriteShow(ShowModel show)
     {
         ShowAccess.Write(show);
+    }
+
+    static public bool DoesNotContain(string to_contain, string what_to_contain)
+    {
+        if (to_contain.Contains(what_to_contain))
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
     }
 }
 
