@@ -19,6 +19,7 @@ class Show
             case 1:
                 ShowPrint();
                 break;
+            //Add different print
             case 2:
                 ShowAdd();
                 Console.WriteLine("Show is added");
@@ -62,6 +63,10 @@ class Show
 
             Console.WriteLine("And at what time? Enter in '%Y-%m-%d %H:%M' format");
             string Date_time = Console.ReadLine();
+            if (Date_time.Contains("-") && Date_time.Contains(":"))
+            {
+
+            }
             int Movie_Id = Convert.ToInt32(movie.Id);
 
             List<ShowModel> shows = new List<ShowModel>(ShowAccess.GetByMovieID(Movie_Id));
