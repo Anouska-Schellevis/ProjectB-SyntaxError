@@ -44,4 +44,5 @@ public static class ShowAccess
         string sql = $"SELECT * FROM {Table} WHERE movie_id = @MovieId";
         return _connection.Query<ShowModel>(sql, new { MovieId = movieId }).ToList();
     }
+
 }

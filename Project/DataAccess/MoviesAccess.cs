@@ -42,4 +42,5 @@ public static class MoviesAccess
         string sql = $"SELECT * FROM {Table}";
         return _connection.Query<MoviesModel>(sql).ToList();
     }
+
 }

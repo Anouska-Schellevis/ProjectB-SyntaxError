@@ -65,6 +65,4 @@ public static class UserAccess
         _connection.Execute(sql, new { Id = id });
     }
 
-
-
 }
