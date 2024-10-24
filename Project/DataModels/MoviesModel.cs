@@ -7,6 +7,10 @@ public class MoviesModel
     public string Title { get; set; }
     public string Director { get; set; }
     public string ReleaseDate { get; set; }
+<<<<<<< HEAD
+=======
+    public MoviesModel() { }
+>>>>>>> test
 
     public MoviesModel(Int64 id, Int64 time_in_minutes, string genre, string description, string title, string director, string release_date)
     {
@@ -19,5 +23,8 @@ public class MoviesModel
         ReleaseDate = release_date;
     }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> test
 }
