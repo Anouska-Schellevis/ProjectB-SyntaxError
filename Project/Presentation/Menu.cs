@@ -8,7 +8,6 @@ static class Menu
     {
         Console.WriteLine("Enter 1 to login");
         Console.WriteLine("Enter 2 to create a new account");
-        Console.WriteLine("Enter 2 to create a new account");
 
         string input = Console.ReadLine();
         if (input == "1")
