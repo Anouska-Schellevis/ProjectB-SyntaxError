@@ -43,8 +43,17 @@ class Show
                 }
                 break;
             case 4:
-                Console.WriteLine("Enter the id of the show you want to delete");
-                int idToDelete = Convert.ToInt32(Console.ReadLine());
+                int idToDelete;
+                do
+                {
+                    Console.WriteLine("Enter the id of the show you want to delete");
+                    idToDelete = Convert.ToInt32(Console.ReadLine());
+                    if (MoviesAccess.GetById(idToDelete) == null)
+                    {
+                        Console.WriteLine("This ID does not exist. Try again");
+                    }
+                } while (MoviesAccess.GetById(idToDelete) == null);
+
                 ShowDelete(idToDelete);
                 Console.WriteLine("Show is deleted");
                 break;
@@ -64,8 +73,16 @@ class Show
         MoviesModel movie = MoviesLogic.GetByTitle(Movie_to_watch);
         if (movie != null)
         {
-            Console.WriteLine("And at what time? Enter in 'Year, month, day - hour, minute format");
-            string Date_time = Console.ReadLine();
+
+            string Date_time;
+            do
+            {
+                Console.WriteLine("And at what time? Enter in 'Year:month:day hour:minute format");
+                Date_time = Console.ReadLine();
+                if (Date_time.Contains("-") != true && Date_time.Contains(":") != true)
+                {
+                    Console.WriteLine("Not a valid date time format. Try again.");
+            
             int Movie_Id = Convert.ToInt32(movie.Id);
 
             List<ShowModel> shows = new List<ShowModel>(ShowAccess.GetByMovieID(Movie_Id));
@@ -77,7 +94,7 @@ class Show
         
                     if (show.Date == Date_time)
                     {
-<<<<<<< HEAD
+
                         Console.WriteLine(show.TheatreId);
                         if (show.Date == Date_time)
                         {
@@ -87,12 +104,10 @@ class Show
                         {
                             Console.WriteLine("There is no movie on this date and time.");
                             UserStart();
-=======
                         if (show.TheatreId == 1)
                         {
                             Theater150 theater = new Theater150();
                             theater.SelectSeats();
->>>>>>> test
                         }
                         if (show.TheatreId == 2)
                         {
@@ -111,20 +126,34 @@ class Show
                         Console.WriteLine("There is no movie on this date and time.");
                         UserStart();
                     }
-<<<<<<< HEAD
+
                 }
-                else
+            } while (Date_time.Contains("-") != true && Date_time.Contains(":") != true);
+
+            int Movie_Id = Convert.ToInt32(movie.Id);
+            List<ShowModel> shows = new List<ShowModel>(ShowAccess.GetByMovieID(Movie_Id));
+
+            if (shows != null)
+            {
+                foreach (ShowModel show in shows)
                 {
+
+                    if (show.Date == Date_time)
+                    {
+                        //Call reservering hier
+                        break;
+                    }
+
                     Console.WriteLine("Such a time does not exist");
                     UserStart();
-=======
->>>>>>> test
                 }
 
             }
             else
             {
-                Console.WriteLine("Such a time does not exist");
+
+                Console.WriteLine("A show of that movie doesn't exist yet.");
+
                 UserStart();
             }
         }
@@ -137,20 +166,43 @@ class Show
 
     static public ShowModel ShowEdit(ShowModel show)
     {
-        Console.WriteLine("Enter new theater ID for this movie.");
-        int newTheatreId = Convert.ToInt32(Console.ReadLine());
-        Console.WriteLine("Enter movie ID for this movie.");
-        int newMovieId = Convert.ToInt32(Console.ReadLine());
-        Console.WriteLine("Enter date for this movie in '%Y-%m-%d %H:%M' format.");
-        string newDate = Console.ReadLine();
 
-<<<<<<< HEAD
-        show.TheatreId = newTheaterId;
-=======
+        int newTheaterId;
+        int newMovieId;
+        string newDate_time;
+        do
+        {
+            Console.WriteLine("Enter new theater ID for this movie.");
+            newTheaterId = Convert.ToInt32(Console.ReadLine());
+            if (newTheaterId != 1 || newTheaterId != 2 || newTheaterId != 3)
+            {
+                Console.WriteLine("Theater ID does not exist. Try again.");
+            }
+        } while (newTheaterId != 1 || newTheaterId != 2 || newTheaterId != 3);
+        do
+        {
+            Console.WriteLine("Enter movie ID for this movie.");
+            newMovieId = Convert.ToInt32(Console.ReadLine());
+            if (MoviesAccess.GetById(newMovieId) == null)
+            {
+                Console.WriteLine("Movie ID does not exist. Try again.");
+            }
+        } while (MoviesAccess.GetById(newMovieId) == null);
+        do
+        {
+            Console.WriteLine("And at what time? Enter in '%Y-%m-%d %H:%M' format");
+            newDate_time = Console.ReadLine();
+            if (newDate_time.Contains("-") != true && newDate_time.Contains(":") != true)
+            {
+                Console.WriteLine("Not a valid date time format. Try again.");
+            }
+        } while (newDate_time.Contains("-") != true && newDate_time.Contains(":") != true);
+
+
+
         show.TheatreId = newTheatreId;
->>>>>>> test
         show.MovieId = newMovieId;
-        show.Date = newDate;
+        show.Date = newDate_time;
         return show;
     }
 
@@ -161,17 +213,40 @@ class Show
 
     static public void ShowAdd()
     {
-        Console.WriteLine("Enter new theater ID for this movie.");
-        int newTheatreId = Convert.ToInt32(Console.ReadLine());
-        Console.WriteLine("Enter movie ID for this movie.");
-        int newMovieId = Convert.ToInt32(Console.ReadLine());
-<<<<<<< HEAD
-        Console.WriteLine("Enter date for this movie in '%Y-%m-%d %H:%M' format.");
-=======
-        Console.WriteLine("Enter release date for this movie.");
->>>>>>> test
-        string newDate = Console.ReadLine();
-        ShowModel new_show = new ShowModel(1, newTheatreId, newMovieId, newDate);
+
+        int newTheaterId;
+        int newMovieId;
+        string newDate_time;
+        do
+        {
+            Console.WriteLine("Enter new theater ID for this movie.");
+            newTheaterId = Convert.ToInt32(Console.ReadLine());
+            if (newTheaterId != 1 || newTheaterId != 2 || newTheaterId != 3)
+            {
+                Console.WriteLine("Theater ID does not exist. Try again.");
+            }
+        } while (newTheaterId != 1 || newTheaterId != 2 || newTheaterId != 3);
+        do
+        {
+            Console.WriteLine("Enter movie ID for this movie.");
+            newMovieId = Convert.ToInt32(Console.ReadLine());
+            if (MoviesAccess.GetById(newMovieId) == null)
+            {
+                Console.WriteLine("Movie ID does not exist. Try again.");
+            }
+        } while (MoviesAccess.GetById(newMovieId) == null);
+        do
+        {
+            Console.WriteLine("Enter date for this show in '%Y-%m-%d %H:%M' format.");
+            newDate_time = Console.ReadLine();
+            if (newDate_time.Contains("-") != true && newDate_time.Contains(":") != true)
+            {
+                Console.WriteLine("Not a valid date time format. Try again.");
+            }
+        } while (newDate_time.Contains("-") != true && newDate_time.Contains(":") != true);
+
+        ShowModel new_show = new ShowModel(1, newTheaterId, newMovieId, newDate_time);
+        
         ShowLogic.WriteShow(new_show);
 
     }
@@ -183,10 +258,6 @@ class Show
         {
             Console.WriteLine($"ID: {show.Id}");
             Console.WriteLine($"TheaterID: {show.TheatreId}");
-<<<<<<< HEAD
-=======
-            Console.WriteLine($"TheaterID: {show.TheatreId}");
->>>>>>> test
             Console.WriteLine($"MovieID: {show.MovieId}");
             Console.WriteLine($"Date: {show.Date}");
             Console.WriteLine("-----------------------------------------------");
@@ -199,12 +270,8 @@ class Show
         List<ShowModel> shows = ShowLogic.GetAllShows();
         foreach (var movie in movies)
         {
-<<<<<<< HEAD
-            Console.WriteLine(movie.Value);
-=======
             Console.WriteLine("movie title: " + movie.Value);
             Console.WriteLine("available show times:");
->>>>>>> test
             foreach (var show in shows)
             {
                 //Console.WriteLine(show.MovieId)
