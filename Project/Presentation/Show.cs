@@ -54,14 +54,14 @@ class Show
 
     static public void UserStart()
     {
+        //ShowPrint();
         PrintOverviewMovie_Time();
         Console.WriteLine("What movie would you like to watch?");
         string Movie_to_watch = Console.ReadLine();
         MoviesModel movie = MoviesLogic.GetByTitle(Movie_to_watch);
         if (movie != null)
         {
-
-            Console.WriteLine("And at what time? Enter in '%Y-%m-%d %H:%M' format");
+            Console.WriteLine("And at what time? Enter in 'Year, month, day - hour, minute format");
             string Date_time = Console.ReadLine();
             if (Date_time.Contains("-") && Date_time.Contains(":"))
             {
@@ -71,21 +71,37 @@ class Show
 
             List<ShowModel> shows = new List<ShowModel>(ShowAccess.GetByMovieID(Movie_Id));
 
-
-
-
             if (shows != null)
             {
                 foreach (ShowModel show in shows)
                 {
-                    if (show.TheatreId == 1)
+        
+                    if (show.Date == Date_time)
                     {
-                        Theater150 theater = new Theater150();
-                        theater.SelectSeats();
+                        if (show.TheatreId == 1)
+                        {
+                            Theater150 theater = new Theater150();
+                            theater.SelectSeats();
+                        }
+                        if (show.TheatreId == 2)
+                        {
+                            Theater300 theater2 = new Theater300();
+                            theater2.SelectSeats();
+                        }
+                        if (show.TheatreId == 3)
+                        {
+                            Theater500 theater3 = new Theater500();
+                            theater3.SelectSeats();
+                        }
+
+                    }
+                    else
+                    {
+                        Console.WriteLine("There is no movie on this date and time.");
+                        UserStart();
                     }
                 }
-                Console.WriteLine("There is no movie on this date and time.");
-                UserStart();
+
             }
             else
             {
@@ -153,15 +169,20 @@ class Show
         List<ShowModel> shows = ShowLogic.GetAllShows();
         foreach (var movie in movies)
         {
-            Console.WriteLine(movie.Value);
+            Console.WriteLine("movie title: " + movie.Value);
+            Console.WriteLine("available show times:");
             foreach (var show in shows)
             {
                 //Console.WriteLine(show.MovieId)
+
+                //Console.WriteLine("available show times:");
                 if (movie.Key == show.MovieId)
                 {
                     Console.WriteLine(show.Date);
+                    //Console.WriteLine("-----------------------------------");
                 }
             }
+            Console.WriteLine("-----------------------------------");
         }
 
     }
