@@ -5,17 +5,8 @@ using Dapper;
 
 public static class ReservationAccess
 {
-<<<<<<< HEAD
     private static SqliteConnection _connection = new SqliteConnection($"Data Source=../../../../Project/DataSources/project.db");
-=======
-    private static SqliteConnection _connection = new SqliteConnection($"Data Source=DataSources/project.db");
-<<<<<<< HEAD
-    // private static SqliteConnection _connection = new SqliteConnection(@"Data Source=C:\Users\anouk\Desktop\projectb\ProjectB-SyntaxError\Project\DataSources\project.db");
-=======
-    //private static SqliteConnection _connection = new SqliteConnection(@"Data Source=C:\Users\anouk\Desktop\projectb\ProjectB-SyntaxError\Project\DataSources\project.db");
->>>>>>> 1a2c47d5e9d8eb777f4ca348b1db91d3b9379bf2
->>>>>>> origin/main
-
+    
     private static string Table = "reservation";
 
     public static void Write(ReservationModel reservation)

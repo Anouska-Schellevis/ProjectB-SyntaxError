@@ -77,67 +77,56 @@ class Show
         
                     if (show.Date == Date_time)
                     {
-<<<<<<< HEAD
                         Console.WriteLine(show.TheatreId);
                         if (show.Date == Date_time)
                         {
-<<<<<<< HEAD
                             //Call reservering hier
-                            
-=======
                             break;
->>>>>>> origin/main
                         }
                         else
                         {
                             Console.WriteLine("There is no movie on this date and time.");
                             UserStart();
-=======
+
                         if (show.TheatreId == 1)
                         {
                             Theater150 theater = new Theater150();
                             theater.SelectSeats();
->>>>>>> test
                         }
-                        if (show.TheatreId == 2)
+                        else if (show.TheatreId == 2)
                         {
                             Theater300 theater2 = new Theater300();
                             theater2.SelectSeats();
                         }
-                        if (show.TheatreId == 3)
+                        else if (show.TheatreId == 3)
                         {
                             Theater500 theater3 = new Theater500();
                             theater3.SelectSeats();
                         }
 
-                    }
                     else
                     {
                         Console.WriteLine("There is no movie on this date and time.");
                         UserStart();
                     }
-<<<<<<< HEAD
+                    }
+                    }
                 }
-                else
-                {
-                    Console.WriteLine("Such a time does not exist");
-                    UserStart();
-=======
->>>>>>> test
-                }
-
             }
+
             else
             {
                 Console.WriteLine("Such a time does not exist");
                 UserStart();
             }
+        
         }
         else
         {
-            Console.WriteLine("Such a movie does not exist");
+            Console.WriteLine("Such a time does not exist");
             UserStart();
-        }
+        }   
+            
     }
 
     static public ShowModel ShowEdit(ShowModel show)
@@ -149,11 +138,7 @@ class Show
         Console.WriteLine("Enter date for this movie in '%Y-%m-%d %H:%M' format.");
         string newDate = Console.ReadLine();
 
-<<<<<<< HEAD
-        show.TheatreId = newTheaterId;
-=======
         show.TheatreId = newTheatreId;
->>>>>>> test
         show.MovieId = newMovieId;
         show.Date = newDate;
         return show;
@@ -170,11 +155,7 @@ class Show
         int newTheatreId = Convert.ToInt32(Console.ReadLine());
         Console.WriteLine("Enter movie ID for this movie.");
         int newMovieId = Convert.ToInt32(Console.ReadLine());
-<<<<<<< HEAD
-        Console.WriteLine("Enter date for this movie in '%Y-%m-%d %H:%M' format.");
-=======
         Console.WriteLine("Enter release date for this movie.");
->>>>>>> test
         string newDate = Console.ReadLine();
         ShowModel new_show = new ShowModel(1, newTheatreId, newMovieId, newDate);
         ShowLogic.WriteShow(new_show);
@@ -188,10 +169,7 @@ class Show
         {
             Console.WriteLine($"ID: {show.Id}");
             Console.WriteLine($"TheaterID: {show.TheatreId}");
-<<<<<<< HEAD
-=======
             Console.WriteLine($"TheaterID: {show.TheatreId}");
->>>>>>> test
             Console.WriteLine($"MovieID: {show.MovieId}");
             Console.WriteLine($"Date: {show.Date}");
             Console.WriteLine("-----------------------------------------------");
@@ -204,12 +182,8 @@ class Show
         List<ShowModel> shows = ShowLogic.GetAllShows();
         foreach (var movie in movies)
         {
-<<<<<<< HEAD
-            Console.WriteLine(movie.Value);
-=======
             Console.WriteLine("movie title: " + movie.Value);
             Console.WriteLine("available show times:");
->>>>>>> test
             foreach (var show in shows)
             {
                 //Console.WriteLine(show.MovieId)

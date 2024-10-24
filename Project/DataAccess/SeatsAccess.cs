@@ -5,12 +5,7 @@ using Dapper;
 
 public static class SeatsAccess
 {
-<<<<<<< HEAD
     private static SqliteConnection _connection = new SqliteConnection($"Data Source=../../../../Project/DataSources/project.db");
-=======
-    private static SqliteConnection _connection = new SqliteConnection($"Data Source=DataSources/project.db");
-    //private static SqliteConnection _connection = new SqliteConnection(@"Data Source=C:\Users\anouk\Desktop\projectb\ProjectB-SyntaxError\Project\DataSources\project.db");
->>>>>>> origin/main
 
     private static string Table = "seats";
 
