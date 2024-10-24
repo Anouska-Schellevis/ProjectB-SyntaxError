@@ -5,8 +5,13 @@ using Dapper;
 
 public static class ShowAccess
 {
-    private static SqliteConnection _connection = new SqliteConnection($"Data Source=DataSources/project.db");
+<<<<<<< HEAD
+    private static SqliteConnection _connection = new SqliteConnection(@"Data Source=C:\\Users\\genil\\OneDrive\\Bureaublad\\OODP\\ProjectB\\ProjectB-SyntaxError\\Project\\DataSources\\project.db");
 
+=======
+    private static SqliteConnection _connection = new SqliteConnection($"Data Source=DataSources/project.db");
+    //private static SqliteConnection _connection = new SqliteConnection(@"Data Source=C:\Users\anouk\Desktop\projectb\ProjectB-SyntaxError\Project\DataSources\project.db");
+>>>>>>> 1a2c47d5e9d8eb777f4ca348b1db91d3b9379bf2
     private static string Table = "show";
 
     public static void Write(ShowModel show)
@@ -21,10 +26,9 @@ public static class ShowAccess
         return _connection.QueryFirstOrDefault<ShowModel>(sql, new { Id = id });
     }
 
-    // wanna make this into a get by day but I need to change the table for that
     public static void Update(ShowModel show)
     {
-        string sql = $"UPDATE {Table} SET theater_id = @TheaterId, movie_id = @MovieId, date = @Date WHERE id = @Id";
+        string sql = $"UPDATE {Table} SET theatre_id = @TheatreId, movie_id = @MovieId, date = @Date WHERE id = @Id";
         _connection.Execute(sql, show);
     }
 
@@ -44,11 +48,5 @@ public static class ShowAccess
     {
         string sql = $"SELECT * FROM {Table} WHERE movie_id = @MovieId";
         return _connection.Query<ShowModel>(sql, new { MovieId = movieId }).ToList();
-    }
-
-    public static List<ShowModel> GetByShowID(int theatreId)
-    {
-        string sql = $"SELECT * FROM {Table} WHERE theatre_id = @TheaterId";
-        return _connection.Query<ShowModel>(sql, new { TheaterId = theatreId }).ToList();
     }
 }
