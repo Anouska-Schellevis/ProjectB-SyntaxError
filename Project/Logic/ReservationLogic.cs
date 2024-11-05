@@ -26,6 +26,11 @@ static public class ReservationLogic
     {
         ReservationAccess.Write(reservation);
     }
+
+    static internal void ClearReservations()
+    {
+        ReservationAccess.Clear();
+    }
 }
 
 

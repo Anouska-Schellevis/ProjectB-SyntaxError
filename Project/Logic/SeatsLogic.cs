@@ -21,6 +21,11 @@ static public class SeatsLogic
     {
         SeatsAccess.Write(seat);
     }
+    
+    static internal void ClearSeats()
+    {
+        SeatsAccess.Clear();
+    }
 }
 
 

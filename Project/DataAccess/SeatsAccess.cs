@@ -33,4 +33,10 @@ public static class SeatsAccess
         _connection.Execute(sql, new { Id = id });
     }
 
+    public static void Clear()
+    {
+        string sql = $"DELETE FROM {Table}";
+        _connection.Execute(sql);
+    }
+
 }

@@ -23,8 +23,8 @@ public static class ReservationAccess
 
     public static List<ReservationModel> GetBarReservations()
     {
-        string sql = $"SELECT * FROM {Table} WHERE bar = ?";
-        return _connection.Query<ReservationModel>(sql, true).ToList();
+        string sql = $"SELECT * FROM {Table} WHERE bar = 1"; // 1 means the bar reservation is true
+        return _connection.Query<ReservationModel>(sql).ToList();
     }
 
     public static void Update(ReservationModel reservation)
@@ -37,6 +37,12 @@ public static class ReservationAccess
     {
         string sql = $"DELETE FROM {Table} WHERE id = @Id";
         _connection.Execute(sql, new { Id = id });
+    }
+
+    public static void Clear()
+    {
+        string sql = $"DELETE FROM {Table}";
+        _connection.Execute(sql);
     }
 
 }
