@@ -41,8 +41,16 @@ class Movie
                 }
                 break;
             case 4:
-                Console.WriteLine("Enter the id of the movie you want to delete");
-                int idToDelete = Convert.ToInt32(Console.ReadLine());
+                int idToDelete;
+                do
+                {
+                    Console.WriteLine("Enter the id of the movie you want to delete");
+                    idToDelete = Convert.ToInt32(Console.ReadLine());
+                    if (MoviesAccess.GetById(idToDelete) == null)
+                    {
+                        Console.WriteLine("This ID does not exist. Try again");
+                    }
+                } while (MoviesAccess.GetById(idToDelete) == null);
                 MovieDelete(idToDelete);
                 Console.WriteLine("Movie is deleted");
                 break;
@@ -108,37 +116,48 @@ class Movie
 
     static public void MoviePrint()
     {
-        // List<MoviesModel> movies = MoviesLogic.GetAllMovies();
-        // foreach (MoviesModel movie in movies)
-        // {
-        //     Console.WriteLine($"ID: {movie.Id}");
-        //     Console.WriteLine($"Title: {movie.Title}");
-        //     Console.WriteLine($"Genre: {movie.Genre}");
-        //     Console.WriteLine($"Director: {movie.Director}");
-        //     Console.WriteLine($"Release Date: {movie.ReleaseDate}");
-        //     Console.WriteLine($"Time in minutes: {movie.TimeInMinutes} minutes");
-        //     Console.WriteLine($"Description: {movie.Description}");
-        //     Console.WriteLine("-----------------------------------------------");
-        // }
-        int Count = 1;
-        MoviesModel movie = MoviesLogic.GetById(Count);
-        while (movie != null)
+        List<MoviesModel> movies = MoviesLogic.GetAllMovies();
+        foreach (MoviesModel movie in movies)
         {
-            Count += 1;
-            movie = MoviesLogic.GetById(Count);
+            Console.WriteLine($"ID: {movie.Id}");
+            Console.WriteLine($"Title: {movie.Title}");
+            Console.WriteLine($"Genre: {movie.Genre}");
+            Console.WriteLine($"Director: {movie.Director}");
+            Console.WriteLine($"Release Date: {movie.ReleaseDate}");
+            Console.WriteLine($"Time in minutes: {movie.TimeInMinutes} minutes");
+            Console.WriteLine($"Description: {movie.Description}");
+            Console.WriteLine("-----------------------------------------------");
         }
     }
 
     static public void MovieSearch(string Title)
     {
         var movie = MoviesLogic.GetByTitle(Title);
-        Console.WriteLine($"ID: {movie.Id}");
-        Console.WriteLine($"Title: {movie.Title}");
-        Console.WriteLine($"Genre: {movie.Genre}");
-        Console.WriteLine($"Director: {movie.Director}");
-        Console.WriteLine($"Release Date: {movie.ReleaseDate}");
-        Console.WriteLine($"Time in minutes: {movie.TimeInMinutes} minutes");
-        Console.WriteLine($"Description: {movie.Description}");
-        Console.WriteLine("-----------------------------------------------");
+        if (movie != null)
+        {
+            Console.WriteLine($"ID: {movie.Id}");
+            Console.WriteLine($"Title: {movie.Title}");
+            Console.WriteLine($"Genre: {movie.Genre}");
+            Console.WriteLine($"Director: {movie.Director}");
+            Console.WriteLine($"Release Date: {movie.ReleaseDate}");
+            Console.WriteLine($"Time in minutes: {movie.TimeInMinutes} minutes");
+            Console.WriteLine($"Description: {movie.Description}");
+            Console.WriteLine("-----------------------------------------------");
+        }
+        else
+        {
+            Console.WriteLine("Movie does not exist.");
+        }
+    }
+
+    public static Dictionary<int, string> MakeMovieDict()
+    {
+        List<MoviesModel> movies = MoviesLogic.GetAllMovies();
+        Dictionary<int, string> movieDictionary = new Dictionary<int, string>();
+        foreach (MoviesModel movie in movies)
+        {
+            movieDictionary.Add(Convert.ToInt32(movie.Id), movie.Title);
+        }
+        return movieDictionary;
     }
 }

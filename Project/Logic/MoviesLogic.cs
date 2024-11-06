@@ -36,7 +36,3 @@ static public class MoviesLogic
         MoviesAccess.Write(movie);
     }
 }
-
-
-
-
