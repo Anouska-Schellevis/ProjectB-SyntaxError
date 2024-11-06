@@ -1,10 +1,10 @@
 static public class ShowLogic
 {
 
-    // static public ShowModel GetByTitle(string title)
-    // {
-    //     return ShowAccess.GetByTitle(title);
-    // }
+    static public ShowModel GetByID(int id)
+    {
+        return ShowAccess.GetByID(id);
+    }
 
     static public List<ShowModel> GetAllShows()
     {
@@ -13,8 +13,6 @@ static public class ShowLogic
 
     static public void UpdateShow(ShowModel show)
     {
-        show.StartTime = show.StartTime.Trim();
-
         ShowAccess.Update(show);
     }
 
@@ -29,7 +27,3 @@ static public class ShowLogic
         ShowAccess.Write(show);
     }
 }
-
-
-
-
