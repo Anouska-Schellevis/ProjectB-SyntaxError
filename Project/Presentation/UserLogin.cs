@@ -39,7 +39,7 @@ static class UserLogin
                     if (input == "bar")
                     {
                         Bar.Start();
-                        Console.Clear();
+                        // Console.Clear();
                     }
                 }
                
@@ -47,7 +47,7 @@ static class UserLogin
             }
             else
             {
-                // Console.Clear();
+                Console.Clear();
                 Console.WriteLine("User page\n");
                 Console.WriteLine("Welcome back " + acc.FirstName + " " + acc.LastName);
                 Console.WriteLine("Would you like to see the overview of available movies Y/N");
