@@ -17,7 +17,7 @@ public static class SeatsAccess
 
     public static SeatsModel GetById(int id)
     {
-        string sql = $"SELECT * FROM {Table} WHERE id = @Id";
+        string sql = $"SELECT id, row_number AS RowNumber, column_number AS ColumnNumber, price AS Price FROM {Table} WHERE id = @Id";
         return _connection.QueryFirstOrDefault<SeatsModel>(sql, new { Id = id });
     }
 
