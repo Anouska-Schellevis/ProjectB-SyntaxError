@@ -20,7 +20,8 @@ static class UserLogin
                 Console.Clear();
                 Console.WriteLine("Admin page\n");
                 Console.WriteLine("Welcome back " + admin.FirstName + " " + admin.LastName);
-                Console.WriteLine("would you like to look at the menu for movies or the menu for shows");
+                // Console.WriteLine("would you like to look at the menu for movies or the menu for shows");
+                Console.WriteLine("Which menu would you like to look at?: movies, shows or bar");
                 string input = Console.ReadLine().ToLower();
 
                 while (input != null)
@@ -33,6 +34,11 @@ static class UserLogin
                     if (input == "shows")
                     {
                         Show.AdminStart();
+                        Console.Clear();
+                    }
+                    if (input == "bar")
+                    {
+                        Bar.Start();
                         Console.Clear();
                     }
                 }
