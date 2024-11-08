@@ -5,13 +5,6 @@ namespace Unittest;
 [TestClass]
 public class SeatsTest
 {
-       
-   [TestCleanup]
-    public void TestCleanup()
-    {
-        SeatsLogic.ClearSeats();
-    }
-
     // Id, RowNumber, ColumnNumber, Price
     [DataRow(1, 5, 8, 150)]
     [DataRow(2, 7, 3, 200)]
@@ -25,45 +18,11 @@ public class SeatsTest
 
         Assert.IsNotNull(actual);
     }
-    [TestMethod]
-    public void Update_Seats()
-    {
-        
-    }
-    [TestMethod]
-    public void Delete_Seats()
-    {
-        
-    }
-
-
 }
 
 [TestClass]
 public class ReservationTest
 {
-   
-   [TestCleanup]
-    public void TestCleanup()
-    {
-        ReservationLogic.ClearReservations();
-    }
-
-    [TestMethod]
-    public void Write_Reservation()
-    {
-
-    }
-    [TestMethod]
-    public void Update_Reservation()
-    {
-        
-    }
-    [TestMethod]
-    public void Delete_Reservation()
-    {
-        
-    }
     [TestMethod]
     public void GetAllBar_Reservation_FromDatabase()
     {
@@ -81,25 +40,5 @@ public class ReservationTest
         var barReservations = ReservationLogic.GetBarReservations();
         
         Assert.AreEqual(2, barReservations.Count);
-    }
-}
-
-[TestClass]
-public class AdminTest
-{
-    [TestMethod]
-    public void unnamed()
-    {
-
-    }
-    [TestMethod]
-    public void unnamed2()
-    {
-        
-    }
-    [TestMethod]
-    public void unnamed3()
-    {
-        
     }
 }

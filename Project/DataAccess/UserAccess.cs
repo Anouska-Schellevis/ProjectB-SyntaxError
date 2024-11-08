@@ -5,7 +5,7 @@ using Dapper;
 
 public static class UserAccess
 {
-    private static SqliteConnection _connection = new SqliteConnection($"Data Source=../../../../Project/DataSources/project.db");
+    private static SqliteConnection _connection = new SqliteConnection($"Data Source=DataSources/project.db");
 
     private static string Table = "user";
 

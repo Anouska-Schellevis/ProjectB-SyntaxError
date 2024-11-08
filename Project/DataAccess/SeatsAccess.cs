@@ -5,7 +5,7 @@ using Dapper;
 
 public static class SeatsAccess
 {
-    private static SqliteConnection _connection = new SqliteConnection($"Data Source=../../../../Project/DataSources/project.db");
+    private static SqliteConnection _connection = new SqliteConnection($"Data Source=DataSources/project.db");
 
     private static string Table = "seats";
 
@@ -31,12 +31,6 @@ public static class SeatsAccess
     {
         string sql = $"DELETE FROM {Table} WHERE id = @Id";
         _connection.Execute(sql, new { Id = id });
-    }
-
-    public static void Clear()
-    {
-        string sql = $"DELETE FROM {Table}";
-        _connection.Execute(sql);
     }
 
 }
