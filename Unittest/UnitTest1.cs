@@ -27,10 +27,11 @@ public class ReservationTest
     public void GetAllBar_Reservation_FromDatabase()
     {
 
-        List<ReservationModel> testReservations = new() { new(1, true, 3, 3, 4),
-                                                          new(2, false, 4, 4, 5),
-                                                          new(3, true, 5, 5, 6) 
-                                                        };
+        List<ReservationModel> testReservations = new() { 
+            new(1, true, 3, 3, 4),
+            new(2, false, 4, 4, 5),
+            new(3, true, 5, 5, 6) 
+        };
 
         foreach(ReservationModel testReservation in testReservations)
         {

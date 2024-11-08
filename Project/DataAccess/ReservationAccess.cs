@@ -17,13 +17,13 @@ public static class ReservationAccess
 
     public static ReservationModel GetById(int id)
     {
-        string sql = $"SELECT * FROM {Table} WHERE id = @Id";
+        string sql = $"SELECT id, bar AS Bar, seats_id AS SeatsID, user_id AS UserId, movie_id AS MovieId FROM {Table} WHERE id = @Id";
         return _connection.QueryFirstOrDefault<ReservationModel>(sql, new { Id = id });
     }
 
     public static List<ReservationModel> GetBarReservations()
     {
-        string sql = $"SELECT * FROM {Table} WHERE bar = 1"; // 1 means the bar reservation is true
+        string sql = $"SELECT id, bar, seats_id AS SeatsID, user_id AS UserId, movie_id AS MovieId FROM {Table} WHERE bar = 1"; // 1 means the bar reservation is true
         return _connection.Query<ReservationModel>(sql).ToList();
     }
 
