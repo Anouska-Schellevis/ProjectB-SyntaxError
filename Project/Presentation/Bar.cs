@@ -52,15 +52,18 @@ class Bar
 
         foreach (ReservationModel reservation in reservations)
         {
-            DateTime movieEndTime = DateTime.Parse(ShowLogic.GetByID(reservation.MovieId).Date);
-            DateTime barReservationTime = movieEndTime.AddHours(2); // Reservation time is 2 hours after movie end
+            ShowModel show = ShowLogic.GetByID(reservation.MovieId);
+            MoviesModel movie = MoviesLogic.GetById((int)show.MovieId);
 
-            if (!reservationsByTime.ContainsKey(barReservationTime))
+            DateTime movieBeginTime = DateTime.Parse(show.Date);
+            DateTime barBeginReservationTime = movieBeginTime.AddMinutes(movie.TimeInMinutes);
+
+            if (!reservationsByTime.ContainsKey(barBeginReservationTime))
             {
-                reservationsByTime[barReservationTime] = new List<ReservationModel>();
+                reservationsByTime[barBeginReservationTime] = new List<ReservationModel>();
             }
 
-            reservationsByTime[barReservationTime].Add(reservation);
+            reservationsByTime[barBeginReservationTime].Add(reservation);
         }
 
         // Sort the keys (time slots) in ascending order for a time-based overview
@@ -79,23 +82,46 @@ class Bar
             }
         }
     }
-
     static public void StatusPrint()
     {
         List<ReservationModel> reservations = ReservationLogic.GetBarReservations();
+        
+        // Get current time
+        DateTime currentTime = DateTime.Now;
 
-        int numOfBarPeople = reservations.Count;
-        string crowdLevel = numOfBarPeople switch
+        // Calculate the current number of people using the bar based on reservations
+        int currentNumOfBarPeople = 0;
+
+        foreach (ReservationModel reservation in reservations)
+        {
+            // Calculate the bar reservation time based on the movie end time
+            ShowModel show = ShowLogic.GetByID(reservation.MovieId);
+            MoviesModel movie = MoviesLogic.GetById((int)show.MovieId);
+
+            DateTime movieBeginTime = DateTime.Parse(show.Date);
+            DateTime barReservationTimeStart = movieBeginTime.AddMinutes(movie.TimeInMinutes);
+            DateTime barReservationTimeEnd = barReservationTimeStart.AddHours(2); // Each bar reservation lasts for 2 hours after the movie
+
+            // Check if the current time is within the reservation window
+            if (currentTime >= barReservationTimeStart && currentTime <= barReservationTimeEnd)
+            {
+                currentNumOfBarPeople++;
+            }
+        }
+
+        // Determine crowd level based on the number of people currently in the bar
+        string crowdLevel = currentNumOfBarPeople switch
         {
             < 15 => "quiet",
-            < 25 => "moderately busy", 
+            < 25 => "moderately busy",
             < 35 => "busy",
             _ => "crowded"
         };
 
+        // Print the status of the bar
         Console.WriteLine("At the bar:");
         Console.WriteLine($"It is currently {crowdLevel}");
-        Console.WriteLine($"{numOfBarPeople} out of a maximum of 40 people are present");
+        Console.WriteLine($"{currentNumOfBarPeople} out of a maximum of 40 people are present");
     }
 
     static public void AllUsersPrint()
@@ -118,16 +144,19 @@ class Bar
 
         foreach (ReservationModel reservation in reservations)
         {
-            DateTime movieEndTime = DateTime.Parse(ShowLogic.GetByID(reservation.MovieId).Date);
-            DateTime barReservationTime = movieEndTime.AddHours(2); // Reservation time is 2 hours after movie end
+            ShowModel show = ShowLogic.GetByID(reservation.MovieId);
+            MoviesModel movie = MoviesLogic.GetById((int)show.MovieId);
 
-            if (!usersByTime.ContainsKey(barReservationTime))
+            DateTime movieBeginTime = DateTime.Parse(show.Date);
+            DateTime barReservationTimeStart = movieBeginTime.AddMinutes(movie.TimeInMinutes);
+
+            if (!usersByTime.ContainsKey(barReservationTimeStart))
             {
-                usersByTime[barReservationTime] = new List<UserModel>();
+                usersByTime[barReservationTimeStart] = new List<UserModel>();
             }
 
             UserModel user = getUsers.GetById(reservation.UserId);
-            usersByTime[barReservationTime].Add(user);
+            usersByTime[barReservationTimeStart].Add(user);
         }
 
         // Sort the time slots in ascending order and print user info by each time slot
