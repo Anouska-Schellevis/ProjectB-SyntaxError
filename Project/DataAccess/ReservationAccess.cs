@@ -6,7 +6,6 @@ using Dapper;
 public static class ReservationAccess
 {
     private static SqliteConnection _connection = new SqliteConnection($"Data Source=DataSources/project.db");
-    //private static SqliteConnection _connection = new SqliteConnection(@"Data Source=C:\Users\anouk\Desktop\projectb\ProjectB-SyntaxError\Project\DataSources\project.db");
 
     private static string Table = "reservation";
 
@@ -32,6 +31,13 @@ public static class ReservationAccess
     {
         string sql = $"DELETE FROM {Table} WHERE id = @Id";
         _connection.Execute(sql, new { Id = id });
+    }
+
+    public static List<long> GetReservedSeatsByMovieId(long movieId)
+    {
+        string sql = $"SELECT seats_id FROM {Table} WHERE movie_id = {movieId}";
+
+        return _connection.Query<long>(sql).AsList();
     }
 
 }
