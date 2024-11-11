@@ -6,6 +6,8 @@ using Dapper;
 public static class UserAccess
 {
     private static SqliteConnection _connection = new SqliteConnection($"Data Source=DataSources/project.db");
+    //private static SqliteConnection _connection = new SqliteConnection(@"Data Source=C:\Users\anouk\Desktop\projectb\ProjectB-SyntaxError\Project\DataSources\project.db");
+
 
     private static string Table = "user";
 
@@ -64,5 +66,7 @@ public static class UserAccess
         string sql = $"DELETE FROM {Table} WHERE id = @Id";
         _connection.Execute(sql, new { Id = id });
     }
+
+
 
 }
