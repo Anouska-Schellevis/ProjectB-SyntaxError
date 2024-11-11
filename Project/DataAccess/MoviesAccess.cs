@@ -6,6 +6,7 @@ using Dapper;
 public static class MoviesAccess
 {
     private static SqliteConnection _connection = new SqliteConnection($"Data Source=DataSources/project.db");
+    
     private static string Table = "movie";
 
     public static void Write(MoviesModel movie)
@@ -16,7 +17,7 @@ public static class MoviesAccess
 
     public static MoviesModel GetByTitle(string title)
     {
-        string sql = $"SELECT * FROM {Table} WHERE title = @Title";
+        string sql = $"SELECT id, time_in_minutes AS TimeInMinutes, genre AS Genre, description AS Description, title, director AS Director, release_date AS ReleaseDate FROM {Table} WHERE title = @Title";
         return _connection.QueryFirstOrDefault<MoviesModel>(sql, new { Title = title });
     }
 
@@ -34,12 +35,13 @@ public static class MoviesAccess
 
     public static MoviesModel GetById(int id)
     {
-        string sql = $"SELECT * FROM {Table} WHERE id = @Id";
+        string sql = $"SELECT id, time_in_minutes AS TimeInMinutes, genre AS Genre, description AS Description, title AS Title, director AS Director, release_date AS ReleaseDate FROM {Table} WHERE id = @Id";
         return _connection.QueryFirstOrDefault<MoviesModel>(sql, new { Id = id });
     }
     public static List<MoviesModel> GetAllMovies()
     {
-        string sql = $"SELECT * FROM {Table}";
+        string sql = $"SELECT id, time_in_minutes AS TimeInMinutes, genre AS Genre, description AS Description, title AS Title, director AS Director, release_date AS ReleaseDate FROM {Table}";
         return _connection.Query<MoviesModel>(sql).ToList();
     }
+
 }

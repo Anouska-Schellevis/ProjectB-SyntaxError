@@ -6,8 +6,7 @@ using Dapper;
 public static class ReservationAccess
 {
     private static SqliteConnection _connection = new SqliteConnection($"Data Source=DataSources/project.db");
-    //private static SqliteConnection _connection = new SqliteConnection(@"Data Source=C:\Users\anouk\Desktop\projectb\ProjectB-SyntaxError\Project\DataSources\project.db");
-
+    
     private static string Table = "reservation";
 
     public static void Write(ReservationModel reservation)
@@ -18,8 +17,14 @@ public static class ReservationAccess
 
     public static ReservationModel GetById(int id)
     {
-        string sql = $"SELECT * FROM {Table} WHERE id = @Id";
+        string sql = $"SELECT id, bar AS Bar, seats_id AS SeatsID, user_id AS UserId, movie_id AS MovieId FROM {Table} WHERE id = @Id";
         return _connection.QueryFirstOrDefault<ReservationModel>(sql, new { Id = id });
+    }
+
+    public static List<ReservationModel> GetBarReservations()
+    {
+        string sql = $"SELECT id, bar, seats_id AS SeatsID, user_id AS UserId, movie_id AS MovieId FROM {Table} WHERE bar = 1"; // 1 means the bar reservation is true
+        return _connection.Query<ReservationModel>(sql).ToList();
     }
 
     public static void Update(ReservationModel reservation)

@@ -38,7 +38,7 @@ public class UserNewAccountLogic
         int phoneNumber;
 
         do
-        {   //for now it takes 10 digets aka 0612345678
+        {   //for now it takes 10 digits aka 0612345678
             Console.WriteLine("Please enter your phone number (10 digits):");
             phoneInput = Console.ReadLine();
 
