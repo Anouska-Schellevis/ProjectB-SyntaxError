@@ -21,6 +21,12 @@ public static class ReservationAccess
         return _connection.QueryFirstOrDefault<ReservationModel>(sql, new { Id = id });
     }
 
+    public static List<ReservationModel> GetBarReservations()
+    {
+        string sql = $"SELECT * FROM {Table} WHERE bar = 1"; // 1 means the bar reservation is true
+        return _connection.Query<ReservationModel>(sql).ToList();
+    }
+
     public static void Update(ReservationModel reservation)
     {
         string sql = $"UPDATE {Table} SET bar = @Bar, seats_id = @SeatsId, user_id = @UserId, movie_id = @MovieId WHERE id = @Id";

@@ -113,7 +113,7 @@ class Show
             while (true);
             ShowModel ChosenShow = showtime[chosentime];
             Console.WriteLine(ChosenShow.Date);
-            if (show.TheatreId == 1)
+            if (ChosenShow.TheatreId == 1)
             {
                 ConcreteTheater theater150 = (ConcreteTheater)Theater.GetTheater(150);
                 if (theater150 != null)
@@ -125,7 +125,7 @@ class Show
                     Console.WriteLine("Error: Unable to retrieve Theater 150.");
                 }
             }
-            if (show.TheatreId == 2)
+            if (ChosenShow.TheatreId == 2)
             {
                 ConcreteTheater theater300 = (ConcreteTheater)Theater.GetTheater(300);
                 if (theater300 != null)
@@ -137,12 +137,12 @@ class Show
                     Console.WriteLine("Error: Unable to retrieve Theater 300.");
                 }
             }
-            if (show.TheatreId == 3)
+            if (ChosenShow.TheatreId == 3)
             {
                 ConcreteTheater theater500 = (ConcreteTheater)Theater.GetTheater(500);
                 if (theater500 != null)
                 {
-                    theater500.SelectSeats();/
+                    theater500.SelectSeats();
                 }
                 else
                 {

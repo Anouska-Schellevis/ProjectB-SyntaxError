@@ -129,6 +129,14 @@ public abstract class TheaterBase
         Console.WriteLine("Do you want bar service? (yes/no):");
         bool barService = Console.ReadLine().ToLower() == "yes";
 
+        int barReservationsCount = ReservationLogic.GetBarReservations().Count;
+
+        if (barReservationsCount >= 40)
+        {
+            Console.WriteLine("The bar seats are full. You can't make a reservation.");
+            barService = false;
+        }
+
         foreach (var seat in selectedSeats)
         {
             var reservation = new ReservationModel
