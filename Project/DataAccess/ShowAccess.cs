@@ -5,6 +5,7 @@ using Dapper;
 
 public static class ShowAccess
 {
+
     private static SqliteConnection _connection = new SqliteConnection($"Data Source=DataSources/project.db");
 
     private static string Table = "show";
@@ -44,5 +45,4 @@ public static class ShowAccess
         string sql = $"SELECT id, theatre_id AS TheatreId, show_id, date AS Date FROM {Table} WHERE show_id = @MovieId";
         return _connection.Query<ShowModel>(sql, new { MovieId = movieId }).ToList();
     }
-
 }
