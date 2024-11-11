@@ -93,7 +93,7 @@ public class UserNewAccountLogic
         }
         else
         {
-            Console.WriteLine("Invalid email. Please enter a valid email address (e.g., email@gmail.com).");
+            Console.WriteLine("Invalid email. Please enter a valid email address (example: email@email.com)");
             return false;
         }
     }
