@@ -41,8 +41,16 @@ class Movie
                 }
                 break;
             case 4:
-                Console.WriteLine("Enter the id of the movie you want to delete");
-                int idToDelete = Convert.ToInt32(Console.ReadLine());
+                int idToDelete;
+                do
+                {
+                    Console.WriteLine("Enter the id of the movie you want to delete");
+                    idToDelete = Convert.ToInt32(Console.ReadLine());
+                    if (MoviesAccess.GetById(idToDelete) == null)
+                    {
+                        Console.WriteLine("This ID does not exist. Try again");
+                    }
+                } while (MoviesAccess.GetById(idToDelete) == null);
                 MovieDelete(idToDelete);
                 Console.WriteLine("Movie is deleted");
                 break;
@@ -125,14 +133,21 @@ class Movie
     static public void MovieSearch(string Title)
     {
         var movie = MoviesLogic.GetByTitle(Title);
-        Console.WriteLine($"ID: {movie.Id}");
-        Console.WriteLine($"Title: {movie.Title}");
-        Console.WriteLine($"Genre: {movie.Genre}");
-        Console.WriteLine($"Director: {movie.Director}");
-        Console.WriteLine($"Release Date: {movie.ReleaseDate}");
-        Console.WriteLine($"Time in minutes: {movie.TimeInMinutes} minutes");
-        Console.WriteLine($"Description: {movie.Description}");
-        Console.WriteLine("-----------------------------------------------");
+        if (movie != null)
+        {
+            Console.WriteLine($"ID: {movie.Id}");
+            Console.WriteLine($"Title: {movie.Title}");
+            Console.WriteLine($"Genre: {movie.Genre}");
+            Console.WriteLine($"Director: {movie.Director}");
+            Console.WriteLine($"Release Date: {movie.ReleaseDate}");
+            Console.WriteLine($"Time in minutes: {movie.TimeInMinutes} minutes");
+            Console.WriteLine($"Description: {movie.Description}");
+            Console.WriteLine("-----------------------------------------------");
+        }
+        else
+        {
+            Console.WriteLine("Movie does not exist.");
+        }
     }
 
     public static Dictionary<int, string> MakeMovieDict()

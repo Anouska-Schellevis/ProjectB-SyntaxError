@@ -1,2 +1,7 @@
 ﻿Console.WriteLine("Welcome to this amazing program");
-Menu.Start();
+// Menu.Start();
+// Movie.Main();
+Show.UserStart();
+//Show.Main();
+// Show.AdminStart();
+

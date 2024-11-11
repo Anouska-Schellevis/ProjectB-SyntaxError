@@ -1,6 +1,5 @@
 class Show
 {
-
     static public void Main()
     {
         bool admin = false;
@@ -43,8 +42,16 @@ class Show
                 }
                 break;
             case 4:
-                Console.WriteLine("Enter the id of the show you want to delete");
-                int idToDelete = Convert.ToInt32(Console.ReadLine());
+                int idToDelete;
+                do
+                {
+                    Console.WriteLine("Enter the id of the show you want to delete");
+                    idToDelete = Convert.ToInt32(Console.ReadLine());
+                    if (MoviesAccess.GetById(idToDelete) == null)
+                    {
+                        Console.WriteLine("This ID does not exist. Try again");
+                    }
+                } while (MoviesAccess.GetById(idToDelete) == null);
                 ShowDelete(idToDelete);
                 Console.WriteLine("Show is deleted");
                 break;
@@ -58,94 +65,131 @@ class Show
     static public void UserStart()
     {
         //ShowPrint();
-        PrintOverviewMovie_Time();
+        Dictionary<int, string> movies = PrintOverviewMovie_Time();
+
         Console.WriteLine("What movie would you like to watch?");
-        string Movie_to_watch = Console.ReadLine();
-        MoviesModel movie = MoviesLogic.GetByTitle(Movie_to_watch);
-        if (movie != null)
-        {
-            Console.WriteLine("And at what time? Enter in 'Year, month, day - hour, minute format");
-            string Date_time = Console.ReadLine();
-            int Movie_Id = Convert.ToInt32(movie.Id);
-
-            List<ShowModel> shows = new List<ShowModel>(ShowAccess.GetByMovieID(Movie_Id));
-
-            if (shows != null)
+        foreach (var movie_count in movies)
             {
-                foreach (ShowModel show in shows)
+                string movie_name = movie_count.Value;
+                Console.WriteLine($"{movie_count.Key}. {movie_name}");
+            }
+            int chosenmovie;
+            do
+            {
+                chosenmovie = Convert.ToInt32(Console.ReadLine());
+                if (movies.ContainsKey(chosenmovie))
                 {
-        
-                    if (show.Date == Date_time)
-                    {
-                        if (show.TheatreId == 1)
-                        {
-                            ConcreteTheater theater150 = (ConcreteTheater)Theater.GetTheater(150);
-                            if (theater150 != null)
-                            {
-                                theater150.SelectSeats();
-                            }
-                            else
-                            {
-                                Console.WriteLine("Error: Unable to retrieve Theater 150.");
-                            }
-                        }
-                        if (show.TheatreId == 2)
-                        {
-                            ConcreteTheater theater300 = (ConcreteTheater)Theater.GetTheater(300);
-                            if (theater300 != null)
-                            {
-                                theater300.SelectSeats();
-                            }
-                            else
-                            {
-                                Console.WriteLine("Error: Unable to retrieve Theater 300.");
-                            }
-                        }
-                        if (show.TheatreId == 3)
-                        {
-                            ConcreteTheater theater500 = (ConcreteTheater)Theater.GetTheater(500);
-                            if (theater500 != null)
-                            {
-                                theater500.SelectSeats();
-                            }
-                            else
-                            {
-                                Console.WriteLine("Error: Unable to retrieve Theater 500.");
-                            }
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("There is no movie on this date and time.");
-                        UserStart();
-                    }
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Not a valid choice. Try again.");
                 }
             }
-            else
-            {
-                Console.WriteLine("Such a time does not exist");
-                UserStart();
-            }
-        }
-        else
+            while (true);
+        MoviesModel movie = MoviesLogic.GetByTitle(movies[chosenmovie]);
+        if (movie != null)
         {
-            Console.WriteLine("Such a movie does not exist");
-            UserStart();
+            Dictionary<int, ShowModel> showtime = TimeOptions(movies[chosenmovie]);
+            Console.WriteLine("And at what time?");
+            foreach (var datetime in showtime)
+            {
+                string time = datetime.Value.Date.Split(' ')[1];
+                Console.WriteLine($"{datetime.Key}. {time}");
+            }
+            int chosentime;
+            do
+            {
+                chosentime = Convert.ToInt32(Console.ReadLine());
+                if (showtime.ContainsKey(chosentime))
+                {
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Not a valid choice. Try again.");
+                }
+            }
+            while (true);
+            ShowModel ChosenShow = showtime[chosentime];
+            Console.WriteLine(ChosenShow.Date);
+            if (show.TheatreId == 1)
+            {
+                ConcreteTheater theater150 = (ConcreteTheater)Theater.GetTheater(150);
+                if (theater150 != null)
+                {
+                    theater150.SelectSeats();
+                }
+                else
+                {
+                    Console.WriteLine("Error: Unable to retrieve Theater 150.");
+                }
+            }
+            if (show.TheatreId == 2)
+            {
+                ConcreteTheater theater300 = (ConcreteTheater)Theater.GetTheater(300);
+                if (theater300 != null)
+                {
+                    theater300.SelectSeats();
+                }
+                else
+                {
+                    Console.WriteLine("Error: Unable to retrieve Theater 300.");
+                }
+            }
+            if (show.TheatreId == 3)
+            {
+                ConcreteTheater theater500 = (ConcreteTheater)Theater.GetTheater(500);
+                if (theater500 != null)
+                {
+                    theater500.SelectSeats();/
+                }
+                else
+                {
+                    Console.WriteLine("Error: Unable to retrieve Theater 500.");
+                }
+            }
         }
     }
 
     static public ShowModel ShowEdit(ShowModel show)
     {
-        Console.WriteLine("Enter new theater ID for this movie.");
-        int newTheatreId = Convert.ToInt32(Console.ReadLine());
-        Console.WriteLine("Enter movie ID for this movie.");
-        int newMovieId = Convert.ToInt32(Console.ReadLine());
-        Console.WriteLine("Enter date for this movie in '%Y-%m-%d %H:%M' format.");
-        string newDate = Console.ReadLine();
+
+        int newTheatreId;
+        int newMovieId;
+        string newDate_time;
+        do
+        {
+            Console.WriteLine("Enter new theater ID for this movie.");
+            newTheatreId = Convert.ToInt32(Console.ReadLine());
+            if (newTheatreId != 1 || newTheatreId != 2 || newTheatreId != 3)
+            {
+                Console.WriteLine("Theater ID does not exist. Try again.");
+            }
+        } while (newTheatreId != 1 || newTheatreId != 2 || newTheatreId != 3);
+        do
+        {
+            Console.WriteLine("Enter movie ID for this movie.");
+            newMovieId = Convert.ToInt32(Console.ReadLine());
+            if (MoviesAccess.GetById(newMovieId) == null)
+            {
+                Console.WriteLine("Movie ID does not exist. Try again.");
+            }
+        } while (MoviesAccess.GetById(newMovieId) == null);
+        do
+        {
+            Console.WriteLine("And at what time? Enter in '%Y-%m-%d %H:%M' format");
+            newDate_time = Console.ReadLine();
+            if (newDate_time.Contains("-") != true && newDate_time.Contains(":") != true)
+            {
+                Console.WriteLine("Not a valid date time format. Try again.");
+            }
+        } while (newDate_time.Contains("-") != true && newDate_time.Contains(":") != true);
+        
 
         show.TheatreId = newTheatreId;
         show.MovieId = newMovieId;
-        show.Date = newDate;
+        show.Date = newDate_time;
         return show;
     }
 
@@ -156,56 +200,132 @@ class Show
 
     static public void ShowAdd()
     {
-        Console.WriteLine("Enter new theater ID for this movie.");
-        int newTheatreId = Convert.ToInt32(Console.ReadLine());
-        Console.WriteLine("Enter movie ID for this movie.");
-        int newMovieId = Convert.ToInt32(Console.ReadLine());
 
-        Console.WriteLine("Enter release date for this movie.");
+        int newTheaterId;
+        int newMovieId;
+        string newDate_time;
+        do
+        {
+            Console.WriteLine("Enter new theater ID for this movie.");
+            newTheaterId = Convert.ToInt32(Console.ReadLine());
+            if (newTheaterId != 1 || newTheaterId != 2 || newTheaterId != 3)
+            {
+                Console.WriteLine("Theater ID does not exist. Try again.");
+            }
+        } while (newTheaterId != 1 || newTheaterId != 2 || newTheaterId != 3);
+        do
+        {
+            Console.WriteLine("Enter movie ID for this movie.");
+            newMovieId = Convert.ToInt32(Console.ReadLine());
+            if (MoviesAccess.GetById(newMovieId) == null)
+            {
+                Console.WriteLine("Movie ID does not exist. Try again.");
+            }
+        } while (MoviesAccess.GetById(newMovieId) == null);
+        do
+        {
+            Console.WriteLine("Enter date for this show in '%Y-%m-%d %H:%M' format.");
+            newDate_time = Console.ReadLine();
+            if (newDate_time.Contains("-") != true && newDate_time.Contains(":") != true)
+            {
+                Console.WriteLine("Not a valid date time format. Try again.");
+            }
+        } while (newDate_time.Contains("-") != true && newDate_time.Contains(":") != true);
 
-        string newDate = Console.ReadLine();
-        ShowModel new_show = new ShowModel(1, newTheatreId, newMovieId, newDate);
+        ShowModel new_show = new ShowModel(1, newTheaterId, newMovieId, newDate_time);
+        
         ShowLogic.WriteShow(new_show);
 
     }
 
-    static public void ShowPrint()
+    static void ShowPrint()
     {
         List<ShowModel> shows = ShowLogic.GetAllShows();
         foreach (ShowModel show in shows)
         {
             Console.WriteLine($"ID: {show.Id}");
             Console.WriteLine($"TheaterID: {show.TheatreId}");
-
-            Console.WriteLine($"TheaterID: {show.TheatreId}");
             Console.WriteLine($"MovieID: {show.MovieId}");
             Console.WriteLine($"Date: {show.Date}");
             Console.WriteLine("-----------------------------------------------");
         }
     }
-
-    public static void PrintOverviewMovie_Time()
+    public static Dictionary<int, string> PrintOverviewMovie_Time()
     {
+        Console.WriteLine("On what day would you like to watch a movie?");
+        string Day = Console.ReadLine();
+        Day = char.ToUpper(Day[0]) + Day.Substring(1);
         Dictionary<int, string> movies = Movie.MakeMovieDict();
         List<ShowModel> shows = ShowLogic.GetAllShows();
-        foreach (var movie in movies)
+        List<ShowModel> ShowsOnDay = new List<ShowModel>();
+        int moviecount = 1;
+        Dictionary<int, string> MovieCanWatch = new Dictionary<int, string>();
+        foreach (var show in shows)
         {
-
-            Console.WriteLine("movie title: " + movie.Value);
-            Console.WriteLine("available show times:");
-            foreach (var show in shows)
+            string object_day = show.Date;
+            DayOfWeek showDate = DateTime.Parse(object_day).DayOfWeek;
+            string dayofweek = Convert.ToString(showDate);
+            if (dayofweek == Day)
             {
-                //Console.WriteLine(show.MovieId)
+                ShowsOnDay.Add(show);
+            }
+        }
+        Console.WriteLine(Day);
+        foreach (var movie in movies)
+        {   
+            // Console.WriteLine("movie title: " + movie.Value);
+            // Console.WriteLine("available show times:");
+            // foreach (var show in ShowsOnDay)
+            // {
+            //     //Console.WriteLine(show.MovieId)
 
-                //Console.WriteLine("available show times:");
+            //     //Console.WriteLine("available show times:");
+            //     if (movie.Key == show.MovieId)
+            //     {
+            //         Console.WriteLine(show.Date);
+            //     }
+            // }
+            bool moviePrinted = false;
+            foreach (var show in ShowsOnDay)
+            {
                 if (movie.Key == show.MovieId)
                 {
+                    if (moviePrinted == false)
+                    {
+                        Console.WriteLine("movie title: " + movie.Value);
+                        Console.WriteLine("available show times:");
+                        moviePrinted = true;
+                        MovieCanWatch.Add(moviecount, movie.Value);
+                        moviecount++;
+                    }
                     Console.WriteLine(show.Date);
-                    //Console.WriteLine("-----------------------------------");
                 }
             }
             Console.WriteLine("-----------------------------------");
         }
+        return MovieCanWatch;
+    }
 
+    public static Dictionary<int, ShowModel> TimeOptions(string movie_name)
+    {
+        Dictionary<int, string> movies = Movie.MakeMovieDict();
+        Dictionary<int, ShowModel> ShowTime = new Dictionary<int, ShowModel>();
+        int movie_id = 0;
+        foreach (var movie in movies)
+        {
+            if (movie.Value == movie_name)
+            {
+                movie_id = movie.Key;
+            }
+        }
+        List<ShowModel> shows = new List<ShowModel>(ShowAccess.GetByMovieID(movie_id));
+        int count = 1;
+        foreach (var show in shows)
+        {
+            // string time = show.Date.Split(' ')[1];
+            ShowTime.Add(count, show);
+            count++;
+        }
+        return ShowTime;
     }
 }
