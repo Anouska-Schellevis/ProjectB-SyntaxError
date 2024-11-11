@@ -79,20 +79,40 @@ class Show
                     {
                         if (show.TheatreId == 1)
                         {
-                            Theater150 theater = new Theater150();
-                            theater.SelectSeats();
+                            ConcreteTheater theater150 = (ConcreteTheater)Theater.GetTheater(150);
+                            if (theater150 != null)
+                            {
+                                theater150.SelectSeats();
+                            }
+                            else
+                            {
+                                Console.WriteLine("Error: Unable to retrieve Theater 150.");
+                            }
                         }
                         if (show.TheatreId == 2)
                         {
-                            Theater300 theater2 = new Theater300();
-                            theater2.SelectSeats();
+                            ConcreteTheater theater300 = (ConcreteTheater)Theater.GetTheater(300);
+                            if (theater300 != null)
+                            {
+                                theater300.SelectSeats();
+                            }
+                            else
+                            {
+                                Console.WriteLine("Error: Unable to retrieve Theater 300.");
+                            }
                         }
                         if (show.TheatreId == 3)
                         {
-                            Theater500 theater3 = new Theater500();
-                            theater3.SelectSeats();
+                            ConcreteTheater theater500 = (ConcreteTheater)Theater.GetTheater(500);
+                            if (theater500 != null)
+                            {
+                                theater500.SelectSeats();
+                            }
+                            else
+                            {
+                                Console.WriteLine("Error: Unable to retrieve Theater 500.");
+                            }
                         }
-
                     }
                     else
                     {
@@ -100,7 +120,6 @@ class Show
                         UserStart();
                     }
                 }
-
             }
             else
             {

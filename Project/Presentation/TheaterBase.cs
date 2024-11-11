@@ -1,20 +1,16 @@
 using System;
-using System.Collections.Generic;
 
 public abstract class TheaterBase
 {
     protected char[,] seats; // 2D array for seat statuses (A = Available, C = Chosen)
     protected int[,] pricingCategories; // 2D array for pricing categories
 
-    // Constructor to initialize seats
-    public TheaterBase()
+    // Constructor to initialize seats with dynamic layout and pricing categories
+    public TheaterBase(int rows, int columns, int[,] pricingCategories)
     {
-        InitializeLayout();
+        this.pricingCategories = pricingCategories;
         InitializeSeats();
     }
-
-    // Abstract method to initialize pricing layout (to be implemented in derived classes)
-    protected abstract void InitializeLayout();
 
     // Initializes seats based on the pricing layout
     protected void InitializeSeats()
@@ -146,6 +142,90 @@ public abstract class TheaterBase
 
             ReservationLogic.WriteReservation(reservation);
             Console.WriteLine($"Reserved seat ({seat.RowNumber}, {seat.ColumnNumber}) for User ID {currentUser.FirstName} {currentUser.LastName}.");
+        }
+    }
+}
+
+
+public class ConcreteTheater : TheaterBase
+{
+    public ConcreteTheater(int[,] pricingCategories) : base(pricingCategories.GetLength(0), pricingCategories.GetLength(1), pricingCategories) { }
+}
+
+
+public class Theater
+{
+    public static TheaterBase GetTheater(int theaterType)
+    {
+        int[,] pricingCategories = null;
+
+        switch (theaterType)
+        {
+            case 150:
+                pricingCategories = new int[10, 15]
+                {
+                    { 3, 3, 3, 3, 2, 2, 1, 1, 1, 2, 2, 3, 3, 3, 3 },
+                    { 3, 3, 3, 2, 2, 2, 1, 1, 1, 2, 2, 2, 3, 3, 3 },
+                    { 3, 3, 3, 2, 2, 2, 1, 1, 1, 2, 2, 2, 3, 3, 3 },
+                    { 3, 3, 2, 2, 2, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3 },
+                    { 3, 2, 2, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3 },
+                    { 3, 2, 2, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3 },
+                    { 3, 3, 2, 2, 1, 1, 1, 1, 1, 1, 2, 2, 2, 3, 3 },
+                    { 3, 3, 3, 2, 2, 1, 1, 1, 1, 2, 2, 3, 3, 3, 3 },
+                    { 3, 3, 3, 3, 2, 2, 1, 1, 2, 2, 3, 3, 3, 3, 3 },
+                    { 3, 3, 3, 3, 3, 3, 2, 2, 3, 3, 3, 3, 3, 3, 3 }
+                };
+                return new ConcreteTheater(pricingCategories);
+
+            case 300:
+                pricingCategories = new int[15, 20]
+                {
+                    { 3, 3, 3, 3, 2, 2, 1, 1, 1, 1, 1, 1, 2, 2, 3, 3, 3, 3, 3, 3 },
+                    { 3, 3, 3, 2, 2, 2, 1, 1, 1, 1, 1, 1, 2, 2, 2, 3, 3, 3, 3, 3 },
+                    { 3, 3, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3 },
+                    { 3, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3 },
+                    { 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3 },
+                    { 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3 },
+                    { 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3 },
+                    { 3, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 3, 3, 3 },
+                    { 3, 3, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 3, 3, 3, 3 },
+                    { 3, 3, 3, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 3, 3, 3, 3, 3, 3 },
+                    { 3, 3, 3, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 3, 3, 3, 3, 3, 3 },
+                    { 3, 3, 3, 3, 2, 2, 1, 1, 1, 1, 1, 1, 2, 2, 3, 3, 3, 3, 3, 3 },
+                    { 3, 3, 3, 3, 3, 2, 2, 2, 1, 1, 1, 2, 2, 2, 3, 3, 3, 3, 3, 3 },
+                    { 3, 3, 3, 3, 3, 3, 2, 2, 2, 1, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3 },
+                    { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 }
+                };
+                return new ConcreteTheater(pricingCategories);
+            
+            case 500:
+                pricingCategories = new int[20,30]
+                {
+                    { 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0 },
+                    { 0, 0, 0, 3, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 0, 0, 0 },
+                    { 0, 0, 0, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 0, 0, 0 },
+                    { 0, 0, 0, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 0, 0, 0 },
+                    { 0, 0, 0, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 0, 0, 0 },
+                    { 0, 0, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 0, 0 },
+                    { 0, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 0 },
+                    { 3, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3 },
+                    { 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3 },
+                    { 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3 },
+                    { 3, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3 },
+                    { 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3 },
+                    { 0, 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 0 },
+                    { 0, 0, 3, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 0, 0 },
+                    { 0, 0, 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 0, 0 },
+                    { 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0 },
+                    { 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0 },
+                    { 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0 },
+                    { 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0 },
+                    { 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0 }
+                };
+                return new ConcreteTheater(pricingCategories);
+
+            default:
+                return null;
         }
     }
 }
