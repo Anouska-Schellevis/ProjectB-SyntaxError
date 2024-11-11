@@ -4,9 +4,9 @@ class Show
     {
         bool admin = false;
         if (admin)
-        {AdminStart();}
+        { AdminStart(); }
         else
-        {UserStart();}
+        { UserStart(); }
     }
     static public void AdminStart()
     {
@@ -88,14 +88,14 @@ class Show
             {
                 foreach (ShowModel show in shows)
                 {
-        
+
                     if (show.Date == Date_time)
                     {
 
                         if (show.TheatreId == 1)
                         {
                             Theater150 theater = new Theater150();
-                            theater.SelectSeats();
+                            theater.SelectSeats(show.MovieId);
                         }
                         if (show.TheatreId == 2)
                         {
@@ -160,7 +160,7 @@ class Show
                 Console.WriteLine("Not a valid date time format. Try again.");
             }
         } while (newDate_time.Contains("-") != true && newDate_time.Contains(":") != true);
-        
+
         show.TheatreId = newTheatreId;
         show.MovieId = newMovieId;
         show.Date = newDate_time;
@@ -207,7 +207,7 @@ class Show
         } while (newDate_time.Contains("-") != true && newDate_time.Contains(":") != true);
 
         ShowModel new_show = new ShowModel(1, newTheaterId, newMovieId, newDate_time);
-        
+
         ShowLogic.WriteShow(new_show);
 
     }
