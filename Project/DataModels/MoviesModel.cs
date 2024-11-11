@@ -19,5 +19,4 @@ public class MoviesModel
         Director = director;
         ReleaseDate = release_date;
     }
-
 }
