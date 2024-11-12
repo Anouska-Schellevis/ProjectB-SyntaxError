@@ -111,8 +111,8 @@ class Show
                 }
             }
             while (true);
-            ShowModel show = showtime[chosentime];
-            Console.WriteLine(show.Date);
+            ShowModel ChosenShow = showtime[chosentime];
+            Console.WriteLine(ChosenShow.Date);
             if (show.TheatreId == 1)
             {
                 ConcreteTheater theater150 = (ConcreteTheater)Theater.GetTheater(150);
@@ -142,7 +142,7 @@ class Show
                 ConcreteTheater theater500 = (ConcreteTheater)Theater.GetTheater(500);
                 if (theater500 != null)
                 {
-                    theater500.SelectSeats();
+                    theater500.SelectSeats();/
                 }
                 else
                 {
@@ -162,11 +162,11 @@ class Show
         {
             Console.WriteLine("Enter new theater ID for this movie.");
             newTheatreId = Convert.ToInt32(Console.ReadLine());
-            if (newTheatreId != 1 && newTheatreId != 2 && newTheatreId != 3)
+            if (newTheatreId != 1 || newTheatreId != 2 || newTheatreId != 3)
             {
                 Console.WriteLine("Theater ID does not exist. Try again.");
             }
-        } while (newTheatreId != 1 && newTheatreId != 2 && newTheatreId != 3);
+        } while (newTheatreId != 1 || newTheatreId != 2 || newTheatreId != 3);
         do
         {
             Console.WriteLine("Enter movie ID for this movie.");
