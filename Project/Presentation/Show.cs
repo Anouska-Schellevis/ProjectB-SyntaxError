@@ -111,8 +111,13 @@ class Show
                 }
             }
             while (true);
+<<<<<<< HEAD
             ShowModel ChosenShow = showtime[chosentime];
             Console.WriteLine(ChosenShow.Date);
+=======
+            ShowModel show = showtime[chosentime];
+            Console.WriteLine(show.Date);
+>>>>>>> parent of 4fc4115 (Merge branch 'reservation' into main)
             if (show.TheatreId == 1)
             {
                 ConcreteTheater theater150 = (ConcreteTheater)Theater.GetTheater(150);
