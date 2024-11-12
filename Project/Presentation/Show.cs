@@ -65,8 +65,9 @@ class Show
     static public void UserStart()
     {
         //ShowPrint();
+        overviewMovies();
         Dictionary<int, string> movies = PrintOverviewMovie_Time();
-
+        Console.WriteLine(movies);
         Console.WriteLine("What movie would you like to watch?");
         foreach (var movie_count in movies)
             {
@@ -272,19 +273,7 @@ class Show
         }
         Console.WriteLine(Day);
         foreach (var movie in movies)
-        {   
-            // Console.WriteLine("movie title: " + movie.Value);
-            // Console.WriteLine("available show times:");
-            // foreach (var show in ShowsOnDay)
-            // {
-            //     //Console.WriteLine(show.MovieId)
-
-            //     //Console.WriteLine("available show times:");
-            //     if (movie.Key == show.MovieId)
-            //     {
-            //         Console.WriteLine(show.Date);
-            //     }
-            // }
+        {
             bool moviePrinted = false;
             foreach (var show in ShowsOnDay)
             {
@@ -298,7 +287,6 @@ class Show
                         MovieCanWatch.Add(moviecount, movie.Value);
                         moviecount++;
                     }
-                    Console.WriteLine(show.Date);
                 }
             }
             Console.WriteLine("-----------------------------------");
@@ -327,5 +315,43 @@ class Show
             count++;
         }
         return ShowTime;
+    }
+
+    public static void overviewMovies()
+    {
+        Dictionary<int, string> movies = Movie.MakeMovieDict();
+        Console.WriteLine("herrrrrre");
+        List<ShowModel> shows = ShowLogic.GetAllShows();
+        Console.WriteLine("heeeere");
+        foreach (var movie in movies)
+        {
+            Console.WriteLine("here");
+            MoviesModel MovieInfo = MoviesLogic.GetById(movie.Key);
+            bool moviePrinted = false;
+            string days = "";
+            Console.WriteLine("no here");
+            foreach (var show in shows)
+            {
+                Console.WriteLine("Nooo here");
+                if (movie.Key == show.MovieId)
+                {
+                    Console.WriteLine("hereeeeee");
+                    if (moviePrinted == false)
+                    {
+                        Console.WriteLine($"Movie: {movie.Value}");
+                        Console.WriteLine($"Genre: {MovieInfo.Genre}");
+                        Console.WriteLine($"Time in minutes: {MovieInfo.TimeInMinutes}");
+                        Console.WriteLine($"Release Date: {MovieInfo.ReleaseDate}");
+                        Console.WriteLine($"Director: {MovieInfo.Director}");
+                        Console.WriteLine($"Descrition: {MovieInfo.Description}");
+                        moviePrinted = true;
+                    }
+                    DayOfWeek showDate = DateTime.Parse(show.Date).DayOfWeek;
+                    string StringshowDate = Convert.ToString(showDate);
+                    days = days + " " + StringshowDate;
+                }
+            }
+            Console.WriteLine($"Plays on:{days}");
+        }
     }
 }
