@@ -6,6 +6,11 @@ static public class ReservationLogic
         return ReservationAccess.GetById(Id);
     }
 
+    static public List<ReservationModel> GetBarReservations()
+    {
+        return ReservationAccess.GetBarReservations();
+    }
+
     static public void UpdateReservation(ReservationModel reservation)
     {
         ReservationAccess.Update(reservation);
