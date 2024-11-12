@@ -12,19 +12,19 @@ public static class ShowAccess
 
     public static void Write(ShowModel show)
     {
-        string sql = $"INSERT INTO {Table} (theatre_id, show_id, date) VALUES (@TheatreId, @MovieId, @Date)";
+        string sql = $"INSERT INTO {Table} (theatre_id, movie_id, date) VALUES (@TheatreId, @MovieId, @Date)";
         _connection.Execute(sql, show);
     }
 
     public static ShowModel GetByID(int id)
     {
-        string sql = $"SELECT id, theatre_id AS TheatreId, show_id AS MovieId, date AS Date FROM {Table} WHERE id = @Id";
+        string sql = $"SELECT * FROM {Table} WHERE id = @Id";
         return _connection.QueryFirstOrDefault<ShowModel>(sql, new { Id = id });
     }
 
     public static void Update(ShowModel show)
     {
-        string sql = $"UPDATE {Table} SET theatre_id = @TheatreId, show_id = @MovieId, date = @Date WHERE id = @Id";
+        string sql = $"UPDATE {Table} SET theatre_id = @TheatreId, movie_id = @MovieId, date = @Date WHERE id = @Id";
         _connection.Execute(sql, show);
     }
 
@@ -36,13 +36,13 @@ public static class ShowAccess
 
     public static List<ShowModel> GetAllShows()
     {
-        string sql = $"SELECT id, theatre_id AS TheatreId, show_id AS MovieId, date AS Date FROM {Table}";
+        string sql = $"SELECT * FROM {Table}";
         return _connection.Query<ShowModel>(sql).ToList();
     }
 
     public static List<ShowModel> GetByMovieID(int movieId)
     {
-        string sql = $"SELECT id, theatre_id AS TheatreId, show_id, date AS Date FROM {Table} WHERE show_id = @MovieId";
+        string sql = $"SELECT * FROM {Table} WHERE movie_id = @MovieId";
         return _connection.Query<ShowModel>(sql, new { MovieId = movieId }).ToList();
     }
 }
