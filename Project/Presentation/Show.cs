@@ -208,11 +208,11 @@ class Show
         {
             Console.WriteLine("Enter new theater ID for this movie.");
             newTheaterId = Convert.ToInt32(Console.ReadLine());
-            if (newTheaterId != 1 && newTheaterId != 2 && newTheaterId != 3)
+            if (newTheaterId != 1 || newTheaterId != 2 || newTheaterId != 3)
             {
                 Console.WriteLine("Theater ID does not exist. Try again.");
             }
-        } while (newTheaterId != 1 && newTheaterId != 2 && newTheaterId != 3);
+        } while (newTheaterId != 1 || newTheaterId != 2 || newTheaterId != 3);
         do
         {
             Console.WriteLine("Enter movie ID for this movie.");
