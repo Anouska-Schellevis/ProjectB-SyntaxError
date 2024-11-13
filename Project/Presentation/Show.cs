@@ -118,17 +118,17 @@ class Show
             if (ChosenShow.TheatreId == 1)
             {
                 Theater150 theater = new Theater150();
-                theater.SelectSeats(ChosenShow.MovieId);
+                theater.SelectSeats(ChosenShow.Id);
             }
             if (ChosenShow.TheatreId == 2)
             {
                 Theater300 theater2 = new Theater300();
-                theater2.SelectSeats(ChosenShow.MovieId);
+                theater2.SelectSeats(ChosenShow.Id);
             }
             if (ChosenShow.TheatreId == 3)
             {
                 Theater500 theater3 = new Theater500();
-                theater3.SelectSeats(ChosenShow.MovieId);
+                theater3.SelectSeats(ChosenShow.Id);
             }
             // {
             //     ConcreteTheater theater150 = (ConcreteTheater)Theater.GetTheater(150);
@@ -304,9 +304,10 @@ class Show
                         moviecount++;
                     }
                     Console.WriteLine(show.Date);
+                    Console.WriteLine("-----------------------------------");
                 }
             }
-            Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("-----------------------------------");
         }
         return MovieCanWatch;
     }
