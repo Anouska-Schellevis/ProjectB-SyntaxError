@@ -52,7 +52,7 @@ class Bar
 
         foreach (ReservationModel reservation in reservations)
         {
-            ShowModel show = ShowLogic.GetByID(reservation.MovieId);
+            ShowModel show = ShowLogic.GetByID(reservation.ShowId);
             MoviesModel movie = MoviesLogic.GetById((int)show.MovieId);
 
             DateTime movieBeginTime = DateTime.Parse(show.Date);
@@ -77,7 +77,7 @@ class Bar
                 Console.WriteLine($"ID: {reservation.Id}");
                 Console.WriteLine($"SeatsID: {reservation.SeatsId}");
                 Console.WriteLine($"UserID: {reservation.UserId}");
-                Console.WriteLine($"MovieID: {reservation.MovieId}");
+                Console.WriteLine($"MovieID: {reservation.ShowId}");
                 Console.WriteLine("-----------------------------------------------");
             }
         }
@@ -95,7 +95,7 @@ class Bar
         foreach (ReservationModel reservation in reservations)
         {
             // Calculate the bar reservation time based on the movie end time
-            ShowModel show = ShowLogic.GetByID(reservation.MovieId);
+            ShowModel show = ShowLogic.GetByID(reservation.ShowId);
             MoviesModel movie = MoviesLogic.GetById((int)show.MovieId);
 
             DateTime movieBeginTime = DateTime.Parse(show.Date);
@@ -144,7 +144,7 @@ class Bar
 
         foreach (ReservationModel reservation in reservations)
         {
-            ShowModel show = ShowLogic.GetByID(reservation.MovieId);
+            ShowModel show = ShowLogic.GetByID(reservation.ShowId);
             MoviesModel movie = MoviesLogic.GetById((int)show.MovieId);
 
             DateTime movieBeginTime = DateTime.Parse(show.Date);
