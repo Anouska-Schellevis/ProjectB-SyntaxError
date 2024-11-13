@@ -22,6 +22,12 @@ public static class SeatsAccess
         return _connection.QueryFirstOrDefault<SeatsModel>(sql, new { Id = id });
     }
 
+    public static List<SeatsModel> GetAllSeats()
+    {
+        string sql = $"SELECT * FROM {Table}";
+        return _connection.Query<SeatsModel>(sql).ToList();
+    }
+
     public static void Update(SeatsModel seat)
     {
         string sql = $"UPDATE {Table} SET row_number = @RowNumber, column_number = @ColumnNumber, price = @Price WHERE id = @Id";

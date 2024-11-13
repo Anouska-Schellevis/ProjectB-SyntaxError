@@ -181,11 +181,11 @@ public class Theater150
             // Create a reservation for each selected seat
             var reservation = new ReservationModel
             {
-                Id = 0, 
-                Bar = barService, 
+                Id = 0,
+                Bar = barService,
                 SeatsId = (int)seat.Id,
                 UserId = Convert.ToInt32(userId),
-                MovieId = 1 
+                MovieId = 1
             };
 
             // Write reservation to the database
