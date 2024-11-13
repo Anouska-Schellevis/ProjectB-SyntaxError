@@ -33,11 +33,10 @@ public static class ReservationAccess
         _connection.Execute(sql, new { Id = id });
     }
 
-    public static List<long> GetReservedSeatsByMovieId(long movieId)
+    public static List<long> GetReservedSeatsByMovieId(long showId)
     {
-        string sql = $"SELECT seats_id FROM {Table} WHERE movie_id = {movieId}";
-
+        string sql = $"SELECT seats_id FROM {Table} WHERE show_id = {showId}";
+        // Console.WriteLine("Executing query: " + sql);
         return _connection.Query<long>(sql).AsList();
     }
-
 }
