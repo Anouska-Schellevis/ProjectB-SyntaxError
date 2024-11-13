@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 
 public abstract class TheaterBase
 {
@@ -26,17 +27,18 @@ public abstract class TheaterBase
     }
 
     // Method to display seat layout
-    public virtual void DisplaySeats()
+    public void DisplaySeats(long movieId)
     {
+        List<long> reservedSeats = ReservationAccess.GetReservedSeatsByMovieId(movieId);
         int rows = seats.GetLength(0);
         int columns = seats.GetLength(1);
 
         Console.Write("   ");
-        for (int j = 1; j <= columns; j++)
-        {
-            Console.Write($"{j,2}  ");
-        }
-        Console.WriteLine();
+        // for (int j = 1; j <= columns; j++)
+        // {
+        //     Console.Write($"{j,2}  ");
+        // }
+        // Console.WriteLine();
 
         for (int i = 0; i < rows; i++)
         {
@@ -51,14 +53,21 @@ public abstract class TheaterBase
                 }
                 else
                 {
-                    switch (pricingCategories[i, j])
+                    int seatId = (i + 1) * columns + (j + 1);//i * columns + j + 1;
+                    if (reservedSeats.Contains(seatId))  //mark as chosen if the seatId is in the reserved list
                     {
-                        case 1: Console.ForegroundColor = ConsoleColor.Red; break;
-                        case 2: Console.ForegroundColor = ConsoleColor.Yellow; break;
-                        case 3: Console.ForegroundColor = ConsoleColor.Blue; break;
-                        default: Console.ForegroundColor = ConsoleColor.Gray; break;
+                        Console.ForegroundColor = ConsoleColor.Magenta;  //purple for already taken seat
                     }
-
+                    else
+                    {
+                        switch (pricingCategories[i, j])
+                        {
+                            case 1: Console.ForegroundColor = ConsoleColor.Red; break;
+                            case 2: Console.ForegroundColor = ConsoleColor.Yellow; break;
+                            case 3: Console.ForegroundColor = ConsoleColor.Blue; break;
+                            default: Console.ForegroundColor = ConsoleColor.Gray; break;
+                        }
+                    }
                     Console.Write(seats[i, j] == 'A' ? "■   " : "■   ");
                 }
             }
@@ -68,14 +77,15 @@ public abstract class TheaterBase
     }
 
     // Method to select seats
-    public void SelectSeats()
+    public void SelectSeats(long movieId)
     {
-        DisplaySeats();
+        List<long> reserved_seats = ReservationAccess.GetReservedSeatsByMovieId(movieId);
+        DisplaySeats(movieId);
         Console.WriteLine("How many seats do you want to book?");
-        int howManyPeople = Convert.ToInt32(Console.ReadLine());
-        List<SeatsModel> selectedSeats = new List<SeatsModel>();
+        int how_many_people = Convert.ToInt32(Console.ReadLine());
+        List<SeatsModel> selected_seats = new List<SeatsModel>();
 
-        for (int i = 0; i < howManyPeople; i++)
+        for (int i = 0; i < how_many_people; i++)
         {
             Console.WriteLine($"Booking seat {i + 1}");
             Console.WriteLine("Enter the row and column of the seat (e.g., 5 6):");
@@ -85,7 +95,7 @@ public abstract class TheaterBase
             if (parts.Length != 2 || !int.TryParse(parts[0], out int row) || !int.TryParse(parts[1], out int col))
             {
                 Console.WriteLine("Invalid input format.");
-                i--; continue;
+                return;
             }
 
             row = seats.GetLength(0) - row; col -= 1;
@@ -93,37 +103,42 @@ public abstract class TheaterBase
             if (row < 0 || row >= seats.GetLength(0) || col < 0 || col >= seats.GetLength(1))
             {
                 Console.WriteLine("Invalid seat selection.");
-                i--; continue;
+                return;
             }
 
             if (seats[row, col] == 'A')
             {
                 seats[row, col] = 'C';
                 Console.WriteLine($"You have selected seat ({seats.GetLength(0) - row}, {col + 1}).");
-                selectedSeats.Add(new SeatsModel
+                var seatId = (row * seats.GetLength(1)) + col;
+                selected_seats.Add(new SeatsModel
                 {
+                    Id = seatId,
                     RowNumber = seats.GetLength(0) - row,
                     ColumnNumber = col + 1,
                     Price = pricingCategories[row, col]
                 });
-                DisplaySeats();
+                DisplaySeats(movieId);
+            }
+            else if (seats[row, col] == 'C')
+            {
+                Console.WriteLine("Sorry, that seat is already taken.");
             }
             else
             {
-                Console.WriteLine("Sorry, that seat is already taken.");
-                i--;
+                Console.WriteLine("Sorry, that seat is not available.");
             }
         }
 
         UserModel currentUser = UserSession.Instance.CurrentUser;
         if (currentUser != null)
         {
-            MakeReservation(selectedSeats, currentUser);
+            MakeReservation(selected_seats, currentUser, movieId);
         }
     }
 
     // Method to make reservation
-    private void MakeReservation(List<SeatsModel> selectedSeats, UserModel currentUser)
+    private void MakeReservation(List<SeatsModel> selectedSeats, UserModel currentUser, long movieId)
     {
         Int64 userId = currentUser.Id;
         Console.WriteLine("Do you want bar service? (yes/no):");
@@ -131,17 +146,18 @@ public abstract class TheaterBase
 
         foreach (var seat in selectedSeats)
         {
+            SeatsLogic.WriteSeat(seat);
             var reservation = new ReservationModel
             {
                 Id = 0,
                 Bar = barService,
-                SeatsId = (seat.RowNumber - 1) * seats.GetLength(1) + (seat.ColumnNumber - 1),
+                SeatsId = (int)seat.Id,
                 UserId = Convert.ToInt32(userId),
-                MovieId = 1
+                MovieId = (int)movieId,
             };
 
             ReservationLogic.WriteReservation(reservation);
-            Console.WriteLine($"Reserved seat ({seat.RowNumber}, {seat.ColumnNumber}) for User ID {currentUser.FirstName} {currentUser.LastName}.");
+            Console.WriteLine("You reserved a seat/your seats.");
         }
     }
 }
@@ -149,7 +165,8 @@ public abstract class TheaterBase
 
 public class ConcreteTheater : TheaterBase
 {
-    public ConcreteTheater(int[,] pricingCategories) : base(pricingCategories.GetLength(0), pricingCategories.GetLength(1), pricingCategories) { }
+    public ConcreteTheater(int[,] pricingCategories) 
+        : base(pricingCategories.GetLength(0), pricingCategories.GetLength(1), pricingCategories) { }
 }
 
 
@@ -162,39 +179,47 @@ public class Theater
         switch (theaterType)
         {
             case 150:
-                pricingCategories = new int[10, 15]
+                pricingCategories = new int[14, 12]
                 {
-                    { 3, 3, 3, 3, 2, 2, 1, 1, 1, 2, 2, 3, 3, 3, 3 },
-                    { 3, 3, 3, 2, 2, 2, 1, 1, 1, 2, 2, 2, 3, 3, 3 },
-                    { 3, 3, 3, 2, 2, 2, 1, 1, 1, 2, 2, 2, 3, 3, 3 },
-                    { 3, 3, 2, 2, 2, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3 },
-                    { 3, 2, 2, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3 },
-                    { 3, 2, 2, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3 },
-                    { 3, 3, 2, 2, 1, 1, 1, 1, 1, 1, 2, 2, 2, 3, 3 },
-                    { 3, 3, 3, 2, 2, 1, 1, 1, 1, 2, 2, 3, 3, 3, 3 },
-                    { 3, 3, 3, 3, 2, 2, 1, 1, 2, 2, 3, 3, 3, 3, 3 },
-                    { 3, 3, 3, 3, 3, 3, 2, 2, 3, 3, 3, 3, 3, 3, 3 }
+                    { 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0 },
+                    { 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0 },
+                    { 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0 },
+                    { 3, 3, 3, 3, 3, 2, 2, 3, 3, 3, 3, 3 },
+                    { 3, 3, 3, 3, 2, 2, 2, 2, 3, 3, 3, 3 },
+                    { 3, 3, 3, 2, 2, 1, 1, 2, 2, 3, 3, 3 },
+                    { 3, 3, 3, 2, 2, 1, 1, 2, 2, 3, 3, 3 },
+                    { 3, 3, 3, 2, 2, 1, 1, 2, 2, 3, 3, 3 },
+                    { 3, 3, 3, 2, 2, 1, 1, 2, 2, 3, 3, 3 },
+                    { 3, 3, 3, 3, 2, 2, 2, 2, 3, 3, 3, 3 },
+                    { 3, 3, 3, 3, 3, 2, 2, 3, 3, 3, 3, 3 },
+                    { 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0 },
+                    { 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0 },
+                    { 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0 }
                 };
                 return new ConcreteTheater(pricingCategories);
 
             case 300:
-                pricingCategories = new int[15, 20]
+                pricingCategories = new int[19, 18]
                 {
-                    { 3, 3, 3, 3, 2, 2, 1, 1, 1, 1, 1, 1, 2, 2, 3, 3, 3, 3, 3, 3 },
-                    { 3, 3, 3, 2, 2, 2, 1, 1, 1, 1, 1, 1, 2, 2, 2, 3, 3, 3, 3, 3 },
-                    { 3, 3, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3 },
-                    { 3, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3 },
-                    { 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3 },
-                    { 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3 },
-                    { 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3 },
-                    { 3, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 3, 3, 3 },
-                    { 3, 3, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 3, 3, 3, 3 },
-                    { 3, 3, 3, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 3, 3, 3, 3, 3, 3 },
-                    { 3, 3, 3, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2, 3, 3, 3, 3, 3, 3 },
-                    { 3, 3, 3, 3, 2, 2, 1, 1, 1, 1, 1, 1, 2, 2, 3, 3, 3, 3, 3, 3 },
-                    { 3, 3, 3, 3, 3, 2, 2, 2, 1, 1, 1, 2, 2, 2, 3, 3, 3, 3, 3, 3 },
-                    { 3, 3, 3, 3, 3, 3, 2, 2, 2, 1, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3 },
-                    { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 }
+                    { 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0 },
+                    { 0, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 0 },
+                    { 0, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 0 },
+                    { 0, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 0 },
+                    { 0, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 0 },
+                    { 0, 3, 3, 3, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 3, 3, 3, 0 },
+                    { 3, 3, 3, 2, 2, 2, 2, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3 },
+                    { 3, 3, 3, 2, 2, 2, 1, 1, 1, 1, 1, 1, 2, 2, 2, 3, 3, 3 },
+                    { 3, 3, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3 },
+                    { 3, 3, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3 },
+                    { 3, 3, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3 },
+                    { 0, 3, 3, 2, 2, 2, 2, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 0 },
+                    { 0, 3, 3, 3, 2, 2, 2, 2, 1, 1, 2, 2, 2, 2, 3, 3, 3, 0 },
+                    { 0, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 0 },
+                    { 0, 0, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 0, 0 },
+                    { 0, 0, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 0, 0 },
+                    { 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0 },
+                    { 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0 },
+                    { 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0 }
                 };
                 return new ConcreteTheater(pricingCategories);
             

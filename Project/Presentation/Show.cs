@@ -111,14 +111,18 @@ class Show
                     Console.WriteLine("Not a valid choice. Try again.");
                 }
             }
+
+
             while (true);
-            ShowModel ChosenShow = showtime[chosentime];
+                        ShowModel ChosenShow = showtime[chosentime];
+            long movieId = Convert.ToInt64(ChosenShow.MovieId);
             if (ChosenShow.TheatreId == 1)
             {
                 ConcreteTheater theater150 = (ConcreteTheater)Theater.GetTheater(150);
                 if (theater150 != null)
                 {
-                    theater150.SelectSeats();
+                    
+                    theater150.SelectSeats(movieId);
                 }
                 else
                 {
@@ -130,7 +134,7 @@ class Show
                 ConcreteTheater theater300 = (ConcreteTheater)Theater.GetTheater(300);
                 if (theater300 != null)
                 {
-                    theater300.SelectSeats();
+                    theater300.SelectSeats(movieId);
                 }
                 else
                 {
@@ -142,7 +146,7 @@ class Show
                 ConcreteTheater theater500 = (ConcreteTheater)Theater.GetTheater(500);
                 if (theater500 != null)
                 {
-                    theater500.SelectSeats();
+                    theater500.SelectSeats(movieId);
                 }
                 else
                 {
