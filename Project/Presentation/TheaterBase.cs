@@ -145,7 +145,7 @@ public abstract class TheaterBase
                 Bar = barService,
                 SeatsId = (seat.RowNumber - 1) * seats.GetLength(1) + (seat.ColumnNumber - 1),
                 UserId = Convert.ToInt32(userId),
-                MovieId = 1
+                ShowId = 1
             };
 
             ReservationLogic.WriteReservation(reservation);
