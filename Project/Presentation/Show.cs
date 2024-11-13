@@ -111,44 +111,61 @@ class Show
                     Console.WriteLine("Not a valid choice. Try again.");
                 }
             }
+
+
             while (true);
             ShowModel ChosenShow = showtime[chosentime];
             if (ChosenShow.TheatreId == 1)
             {
-                ConcreteTheater theater150 = (ConcreteTheater)Theater.GetTheater(150);
-                if (theater150 != null)
-                {
-                    theater150.SelectSeats();
-                }
-                else
-                {
-                    Console.WriteLine("Error: Unable to retrieve Theater 150.");
-                }
+                Theater150 theater = new Theater150();
+                theater.SelectSeats(ChosenShow.Id);
             }
             if (ChosenShow.TheatreId == 2)
             {
-                ConcreteTheater theater300 = (ConcreteTheater)Theater.GetTheater(300);
-                if (theater300 != null)
-                {
-                    theater300.SelectSeats();
-                }
-                else
-                {
-                    Console.WriteLine("Error: Unable to retrieve Theater 300.");
-                }
+                Theater300 theater2 = new Theater300();
+                theater2.SelectSeats(ChosenShow.Id);
             }
             if (ChosenShow.TheatreId == 3)
             {
-                ConcreteTheater theater500 = (ConcreteTheater)Theater.GetTheater(500);
-                if (theater500 != null)
-                {
-                    theater500.SelectSeats();
-                }
-                else
-                {
-                    Console.WriteLine("Error: Unable to retrieve Theater 500.");
-                }
+                Theater500 theater3 = new Theater500();
+                theater3.SelectSeats(ChosenShow.Id);
             }
+            // {
+            //     ConcreteTheater theater150 = (ConcreteTheater)Theater.GetTheater(150);
+            //     if (theater150 != null)
+            //     {
+                    
+            //         theater150.SelectSeats(ChosenShow.MovieId);
+            //     }
+            //     else
+            //     {
+            //         Console.WriteLine("Error: Unable to retrieve Theater 150.");
+            //     }
+            // }
+            // if (ChosenShow.TheatreId == 2)
+            // {
+            //     ConcreteTheater theater300 = (ConcreteTheater)Theater.GetTheater(300);
+            //     if (theater300 != null)
+            //     {
+            //         theater300.SelectSeats(ChosenShow.MovieId);
+            //     }
+            //     else
+            //     {
+            //         Console.WriteLine("Error: Unable to retrieve Theater 300.");
+            //     }
+            // }
+            // if (ChosenShow.TheatreId == 3)
+            // {
+            //     ConcreteTheater theater500 = (ConcreteTheater)Theater.GetTheater(500);
+            //     if (theater500 != null)
+            //     {
+            //         theater500.SelectSeats(ChosenShow.MovieId);
+            //     }
+            //     else
+            //     {
+            //         Console.WriteLine("Error: Unable to retrieve Theater 500.");
+            //     }
+            // }
         }
     }
 
@@ -287,9 +304,10 @@ class Show
                         moviecount++;
                     }
                     Console.WriteLine(show.Date);
+                    Console.WriteLine("-----------------------------------");
                 }
             }
-            Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("-----------------------------------");
         }
         return MovieCanWatch;
     }

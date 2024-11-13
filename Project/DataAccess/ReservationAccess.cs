@@ -11,7 +11,7 @@ public static class ReservationAccess
 
     public static void Write(ReservationModel reservation)
     {
-        string sql = $"INSERT INTO {Table} (bar, seats_id, user_id, movie_id) VALUES (@Bar, @SeatsId, @UserId, @MovieId)";
+        string sql = $"INSERT INTO {Table} (bar, seats_id, user_id, show_id) VALUES (@Bar, @SeatsId, @UserId, @ShowId)";
         _connection.Execute(sql, reservation);
     }
 
@@ -23,7 +23,7 @@ public static class ReservationAccess
 
     public static void Update(ReservationModel reservation)
     {
-        string sql = $"UPDATE {Table} SET bar = @Bar, seats_id = @SeatsId, user_id = @UserId, movie_id = @MovieId WHERE id = @Id";
+        string sql = $"UPDATE {Table} SET bar = @Bar, seats_id = @SeatsId, user_id = @UserId, show_id = @ShowId WHERE id = @Id";
         _connection.Execute(sql, reservation);
     }
 
@@ -33,11 +33,10 @@ public static class ReservationAccess
         _connection.Execute(sql, new { Id = id });
     }
 
-    public static List<long> GetReservedSeatsByMovieId(long movieId)
+    public static List<long> GetReservedSeatsByShowId(long showId)
     {
-        string sql = $"SELECT seats_id FROM {Table} WHERE movie_id = {movieId}";
-
+        string sql = $"SELECT seats_id FROM {Table} WHERE show_id = {showId}";
+        // Console.WriteLine("Executing query: " + sql);
         return _connection.Query<long>(sql).AsList();
     }
-
 }
