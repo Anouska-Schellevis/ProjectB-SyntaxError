@@ -35,63 +35,60 @@ class Bar
 
     static public void AllReservationsPrint()
     {
-        List<ReservationModel> reservations = ReservationLogic.GetBarReservations();
+        var reservationsByTime = MakeReservationBarDict();
 
-        if (reservations.Count > 0)
+        if (reservationsByTime.Count > 0)
         {
-            Console.WriteLine("Bar Reservations Overview by Time Slot:");
             Console.WriteLine("-----------------------------------------------");
         }
         else
         {
-            Console.WriteLine("No bar reservations found.");
+            Console.WriteLine("No users are currently at the bar.");
             return;
         }
 
-        var reservationsByTime = new Dictionary<DateTime, List<ReservationModel>>();
-
-        foreach (ReservationModel reservation in reservations)
-        {
-            ShowModel show = ShowLogic.GetByID(reservation.ShowId);
-            MoviesModel movie = MoviesLogic.GetById((int)show.MovieId);
-
-            DateTime movieBeginTime = DateTime.Parse(show.Date);
-            DateTime barBeginReservationTime = movieBeginTime.AddMinutes(movie.TimeInMinutes);
-
-            if (!reservationsByTime.ContainsKey(barBeginReservationTime))
-            {
-                reservationsByTime[barBeginReservationTime] = new List<ReservationModel>();
-            }
-
-            reservationsByTime[barBeginReservationTime].Add(reservation);
-        }
-
         // Sort the keys (time slots) in ascending order for a time-based overview
+
         foreach (var timeSlot in reservationsByTime.Keys.OrderBy(time => time))
         {
             Console.WriteLine($"Time Slot: {timeSlot}");
             Console.WriteLine("-----------------------------------------------");
 
-            foreach (var reservation in reservationsByTime[timeSlot])
+            // Groepeer reserveringen per tijdslot op `UserId`
+            var groupedReservations = reservationsByTime[timeSlot]
+                .GroupBy(reservation => reservation.UserId)
+                .ToList();
+
+            foreach (var group in groupedReservations)
             {
-                Console.WriteLine($"ID: {reservation.Id}");
-                Console.WriteLine($"SeatsID: {reservation.SeatsId}");
-                Console.WriteLine($"UserID: {reservation.UserId}");
-                Console.WriteLine($"MovieID: {reservation.ShowId}");
+                var exampleReservation = group.First();
+
+                Console.WriteLine($"UserID: {exampleReservation.UserId}");
+                Console.WriteLine($"MovieID: {exampleReservation.ShowId}");
+                Console.WriteLine("Reservations:");
+                
+                // Print alle reserveringen en bijbehorende SeatsID voor deze UserID
+                foreach (var reservation in group)
+                {
+                    Console.WriteLine($"- Reservation ID: {reservation.Id,3}, Seats ID: {reservation.SeatsId,3}");
+                }
+
                 Console.WriteLine("-----------------------------------------------");
             }
         }
     }
+
     static public void StatusPrint()
     {
         List<ReservationModel> reservations = ReservationLogic.GetBarReservations();
-        
+
         // Get current time
         DateTime currentTime = DateTime.Now;
 
         // Calculate the current number of people using the bar based on reservations
+        const int numberOfSeats = 40;
         int currentNumOfBarPeople = 0;
-
+        
         foreach (ReservationModel reservation in reservations)
         {
             // Calculate the bar reservation time based on the movie end time
@@ -121,23 +118,24 @@ class Bar
         // Print the status of the bar
         Console.WriteLine("At the bar:");
         Console.WriteLine($"It is currently {crowdLevel}");
-        Console.WriteLine($"{currentNumOfBarPeople} out of a maximum of 40 people are present");
+        Console.WriteLine($"{numberOfSeats - currentNumOfBarPeople} out of {numberOfSeats} seats are currently available");
     }
 
     static public void AllUsersPrint()
     {
 
-        if (reservations.Count > 0)
+        var usersByTime = MakeUserBarDict();
+        
+        if (usersByTime.Count > 0)
         {
+            Console.WriteLine("Bar Reservations Overview by Time Slot:");
             Console.WriteLine("-----------------------------------------------");
         }
         else
         {
-            Console.WriteLine("No users are currently at the bar.");
+            Console.WriteLine("No bar reservations found.");
             return;
         }
-
-        var usersByTime = MakeBarDict();
 
         // Sort the time slots in ascending order and print user info by each time slot
         foreach (var timeSlot in usersByTime.Keys.OrderBy(time => time))
@@ -145,27 +143,48 @@ class Bar
             Console.WriteLine($"Time Slot: {timeSlot}");
             Console.WriteLine("-----------------------------------------------");
 
-            foreach (var user in usersByTime[timeSlot])
+            var groupedUsers = usersByTime[timeSlot]
+                        .GroupBy(user => new
+                        {
+                            user.Email,
+                            user.FirstName,
+                            user.LastName,
+                            user.Phone_Number
+                        })
+                        .ToList();
+
+            foreach (var group in groupedUsers)
             {
+                var user = group.First();
                 Console.WriteLine($"ID: {user.Id}");
                 Console.WriteLine($"E-mail: {user.Email}");
                 Console.WriteLine($"First name: {user.FirstName}");
                 Console.WriteLine($"Last name: {user.LastName}");
                 Console.WriteLine($"Phone number: {user.Phone_Number}");
+                Console.WriteLine($"Group size: {group.Count()}");
                 Console.WriteLine("-----------------------------------------------");
             }
         }
     }
 
-    private static Dictionary<DateTime, List<UserModel>> MakeBarDict()
+    private static Dictionary<DateTime, List<ReservationModel>> MakeReservationBarDict()
     {
-        UserLogic getUsers = new UserLogic();
+        return MakeBarDict(reservation => reservation);
+    }
 
-        List<ReservationModel> barReservations = ReservationLogic.GetBarReservations();
-        // Dictionary to group users by the bar reservation time slot
-        var usersByTime = new Dictionary<DateTime, List<UserModel>>();
+    private static Dictionary<DateTime, List<UserModel>> MakeUserBarDict()
+    {
+        UserLogic userLogic = new UserLogic();
+        return MakeBarDict(reservation => userLogic.GetById(reservation.UserId));
+    }
+    
+    private static Dictionary<DateTime, List<T>> MakeBarDict<T>(Func<ReservationModel, T> selector)
+    {
+        List<ReservationModel> reservations = ReservationLogic.GetBarReservations();
 
-        foreach (ReservationModel reservation in barReservations)
+        var dataByTime = new Dictionary<DateTime, List<T>>();
+
+        foreach (ReservationModel reservation in reservations)
         {
             ShowModel show = ShowLogic.GetByID(reservation.ShowId);
             MoviesModel movie = MoviesLogic.GetById((int)show.MovieId);
@@ -173,15 +192,15 @@ class Bar
             DateTime movieBeginTime = DateTime.Parse(show.Date);
             DateTime barReservationTimeStart = movieBeginTime.AddMinutes(movie.TimeInMinutes);
 
-            if (!usersByTime.ContainsKey(barReservationTimeStart))
+            if (!dataByTime.ContainsKey(barReservationTimeStart))
             {
-                usersByTime[barReservationTimeStart] = new List<UserModel>();
+                dataByTime[barReservationTimeStart] = new List<T>();
             }
 
-            UserModel user = getUsers.GetById(reservation.UserId);
-            usersByTime[barReservationTimeStart].Add(user);
+            dataByTime[barReservationTimeStart].Add(selector(reservation));
         }
 
-        return usersByTime;
+        return dataByTime;
     }
+
 }
