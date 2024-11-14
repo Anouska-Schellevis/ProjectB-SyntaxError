@@ -6,6 +6,11 @@ static public class SeatsLogic
         return SeatsAccess.GetById(Id);
     }
 
+    static public List<SeatsModel> GetAllSeats()
+    {
+        return SeatsAccess.GetAllSeats();
+    }
+
     static public void UpdateSeat(SeatsModel seat)
     {
         SeatsAccess.Update(seat);
