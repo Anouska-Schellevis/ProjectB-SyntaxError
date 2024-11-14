@@ -157,7 +157,7 @@ public abstract class TheaterBase
     {
         Int64 userId = currentUser.Id;
         Console.WriteLine("Do you want bar service? (yes/no):");
-        bool barService = Console.ReadLine().ToLower() == "yes";
+        bool barService = Console.ReadLine().ToLower() == "yes" && IsBarAvailable(selectedSeats.Count, showId);
 
         foreach (var seat in selectedSeats)
         {
@@ -176,8 +176,45 @@ public abstract class TheaterBase
         }
         Console.WriteLine($"Successfully reserved seats for {currentUser.FirstName} {currentUser.LastName}.");
     }
-}
 
+    static public bool IsBarAvailable(int sizeOfGroup, long showId)
+    {
+        int countBarReservations = 0;
+
+        ShowModel userShow = ShowLogic.GetByID((int)showId);
+        MoviesModel userMovie = MoviesLogic.GetById((int)userShow.MovieId);
+
+        DateTime userMovieBeginTime = DateTime.Parse(userShow.Date);
+        DateTime userBarReservationTimeStart = userMovieBeginTime.AddMinutes(userMovie.TimeInMinutes);
+
+        List<ReservationModel> reservations = ReservationLogic.GetBarReservations();
+
+        foreach (ReservationModel reservation in reservations)
+        {
+            ShowModel show = ShowLogic.GetByID(reservation.ShowId);
+            MoviesModel movie = MoviesLogic.GetById((int)show.MovieId);
+
+            DateTime movieBeginTime = DateTime.Parse(show.Date);
+            DateTime barReservationTimeStart = movieBeginTime.AddMinutes(movie.TimeInMinutes);
+        
+            if (userBarReservationTimeStart == barReservationTimeStart)
+            {
+                countBarReservations++;
+            }
+        }
+
+        if (countBarReservations + sizeOfGroup <= 40)
+        {
+            Console.WriteLine($"Your bar reservation has been accepted. We still have seats available!");
+            return true;
+        }
+        else
+        {
+            Console.WriteLine("We’re unable to take any more bar reservations. It is fully booked");
+            return false;
+        }
+    }
+}
 
 public class ConcreteTheater : TheaterBase
 {
