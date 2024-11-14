@@ -119,11 +119,11 @@ public class Theater150
 
             string[] parts = input.Split(' ');
 
-// //             if (parts.Length != 2 || !int.TryParse(parts[0], out int row) || !int.TryParse(parts[1], out int col))
-// //             {
-// //                 Console.WriteLine("Invalid input format. Please enter in the format: row column.");
-// //                 return;
-// //             }
+            if (parts.Length != 2 || !int.TryParse(parts[0], out int row) || !int.TryParse(parts[1], out int col))
+            {
+                Console.WriteLine("Invalid input format. Please enter in the format: row column.");
+                return;
+            }
 
             if (row < 1 || row > 14 || col < 1 || col > 12)
             {
@@ -170,8 +170,8 @@ public class Theater150
     {
         Int64 userId = currentUser.Id;
 
-// //         Console.WriteLine("Do you want bar service? (yes/no):");
-// //         bool barService = Console.ReadLine().ToLower() == "yes";
+        Console.WriteLine("Do you want bar service? (yes/no):");
+        bool barService = Console.ReadLine().ToLower() == "yes";
 
         foreach (var seat in selectedSeats)
         {

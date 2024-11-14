@@ -193,8 +193,8 @@ class Theater500
     {
         Int64 userId = currentUser.Id;
 
-// //         Console.WriteLine("Do you want bar service? (yes/no):");
-// //         bool barService = Console.ReadLine().ToLower() == "yes";
+        Console.WriteLine("Do you want bar service? (yes/no):");
+        bool barService = Console.ReadLine().ToLower() == "yes";
 
         foreach (var seat in selectedSeats)
         {
