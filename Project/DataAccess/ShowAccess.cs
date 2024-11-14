@@ -12,7 +12,7 @@ public static class ShowAccess
 
     public static void Write(ShowModel show)
     {
-        string sql = $"INSERT INTO {Table} (theatre_id, show_id, date) VALUES (@TheatreId, @MovieId, @Date)";
+        string sql = $"INSERT INTO {Table} (theatre_id, movie_id, date) VALUES (@TheatreId, @MovieId, @Date)";
         _connection.Execute(sql, show);
     }
 
@@ -24,7 +24,7 @@ public static class ShowAccess
 
     public static void Update(ShowModel show)
     {
-        string sql = $"UPDATE {Table} SET theatre_id = @TheatreId, show_id = @MovieId, date = @Date WHERE id = @Id";
+        string sql = $"UPDATE {Table} SET theatre_id = @TheatreId, movie_id = @MovieId, date = @Date WHERE id = @Id";
         _connection.Execute(sql, show);
     }
 
