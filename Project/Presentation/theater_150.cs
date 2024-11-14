@@ -173,6 +173,7 @@
 //         Console.WriteLine("Do you want bar service? (yes/no):");
 //         bool barService = Console.ReadLine().ToLower() == "yes";
 
+<<<<<<< HEAD
 //         foreach (var seat in selectedSeats)
 //         {
 //             SeatsLogic.WriteSeat(seat);
@@ -184,6 +185,19 @@
 //                 UserId = Convert.ToInt32(userId),
 //                 ShowId = (int)showId
 //             };
+=======
+        foreach (var seat in selectedSeats)
+        {
+            // Create a reservation for each selected seat
+            var reservation = new ReservationModel
+            {
+                Id = 0,
+                Bar = barService,
+                SeatsId = (int)seat.Id,
+                UserId = Convert.ToInt32(userId),
+                MovieId = 1
+            };
+>>>>>>> ca7cddb (Split user and admin to seperate files)
 
 //             ReservationLogic.WriteReservation(reservation);
 //             //Console.WriteLine($"Successfully reserved seats for {currentUser.FirstName} {currentUser.LastName}.");
