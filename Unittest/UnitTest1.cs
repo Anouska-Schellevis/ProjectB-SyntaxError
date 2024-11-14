@@ -42,10 +42,4 @@ public class ReservationTest
         
         Assert.AreEqual(2, barReservations.Count);
     }
-
-    [TestMethod]
-    public void BarCapacity_Reservation_FromMakeReservation()
-    {
-        
-    }
 }
