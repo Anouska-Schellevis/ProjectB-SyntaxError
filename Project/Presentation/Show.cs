@@ -65,6 +65,7 @@ class Show
     static public void UserStart()
     {
         //ShowPrint();
+        overviewMovies();
         Dictionary<int, string> movies = PrintOverviewMovie_Time();
 
         Console.WriteLine("What movie would you like to watch?");
@@ -110,45 +111,61 @@ class Show
                     Console.WriteLine("Not a valid choice. Try again.");
                 }
             }
+
+
             while (true);
             ShowModel ChosenShow = showtime[chosentime];
-            Console.WriteLine(ChosenShow.Date);
             if (ChosenShow.TheatreId == 1)
             {
-                ConcreteTheater theater150 = (ConcreteTheater)Theater.GetTheater(150);
-                if (theater150 != null)
-                {
-                    theater150.SelectSeats();
-                }
-                else
-                {
-                    Console.WriteLine("Error: Unable to retrieve Theater 150.");
-                }
+                Theater150 theater = new Theater150();
+                theater.SelectSeats(ChosenShow.Id);
             }
             if (ChosenShow.TheatreId == 2)
             {
-                ConcreteTheater theater300 = (ConcreteTheater)Theater.GetTheater(300);
-                if (theater300 != null)
-                {
-                    theater300.SelectSeats();
-                }
-                else
-                {
-                    Console.WriteLine("Error: Unable to retrieve Theater 300.");
-                }
+                Theater300 theater2 = new Theater300();
+                theater2.SelectSeats(ChosenShow.Id);
             }
             if (ChosenShow.TheatreId == 3)
             {
-                ConcreteTheater theater500 = (ConcreteTheater)Theater.GetTheater(500);
-                if (theater500 != null)
-                {
-                    theater500.SelectSeats();
-                }
-                else
-                {
-                    Console.WriteLine("Error: Unable to retrieve Theater 500.");
-                }
+                Theater500 theater3 = new Theater500();
+                theater3.SelectSeats(ChosenShow.Id);
             }
+            // {
+            //     ConcreteTheater theater150 = (ConcreteTheater)Theater.GetTheater(150);
+            //     if (theater150 != null)
+            //     {
+                    
+            //         theater150.SelectSeats(ChosenShow.MovieId);
+            //     }
+            //     else
+            //     {
+            //         Console.WriteLine("Error: Unable to retrieve Theater 150.");
+            //     }
+            // }
+            // if (ChosenShow.TheatreId == 2)
+            // {
+            //     ConcreteTheater theater300 = (ConcreteTheater)Theater.GetTheater(300);
+            //     if (theater300 != null)
+            //     {
+            //         theater300.SelectSeats(ChosenShow.MovieId);
+            //     }
+            //     else
+            //     {
+            //         Console.WriteLine("Error: Unable to retrieve Theater 300.");
+            //     }
+            // }
+            // if (ChosenShow.TheatreId == 3)
+            // {
+            //     ConcreteTheater theater500 = (ConcreteTheater)Theater.GetTheater(500);
+            //     if (theater500 != null)
+            //     {
+            //         theater500.SelectSeats(ChosenShow.MovieId);
+            //     }
+            //     else
+            //     {
+            //         Console.WriteLine("Error: Unable to retrieve Theater 500.");
+            //     }
+            // }
         }
     }
 
@@ -273,18 +290,6 @@ class Show
         Console.WriteLine(Day);
         foreach (var movie in movies)
         {   
-            // Console.WriteLine("movie title: " + movie.Value);
-            // Console.WriteLine("available show times:");
-            // foreach (var show in ShowsOnDay)
-            // {
-            //     //Console.WriteLine(show.MovieId)
-
-            //     //Console.WriteLine("available show times:");
-            //     if (movie.Key == show.MovieId)
-            //     {
-            //         Console.WriteLine(show.Date);
-            //     }
-            // }
             bool moviePrinted = false;
             foreach (var show in ShowsOnDay)
             {
@@ -299,9 +304,10 @@ class Show
                         moviecount++;
                     }
                     Console.WriteLine(show.Date);
+                    Console.WriteLine("-----------------------------------");
                 }
             }
-            Console.WriteLine("-----------------------------------");
+            //Console.WriteLine("-----------------------------------");
         }
         return MovieCanWatch;
     }
@@ -327,5 +333,37 @@ class Show
             count++;
         }
         return ShowTime;
+    }
+
+    public static void overviewMovies()
+    {
+        Dictionary<int, string> movies = Movie.MakeMovieDict();
+        List<ShowModel> shows = ShowLogic.GetAllShows();
+        foreach (var movie in movies)
+        {
+            MoviesModel MovieInfo = MoviesLogic.GetById(movie.Key);
+            bool moviePrinted = false;
+            string days = "";
+            foreach (var show in shows)
+            {
+                if (movie.Key == show.MovieId)
+                {
+                    if (moviePrinted == false)
+                    {
+                        Console.WriteLine($"Movie: {movie.Value}");
+                        Console.WriteLine($"Genre: {MovieInfo.Genre}");
+                        Console.WriteLine($"Time in minutes: {MovieInfo.TimeInMinutes}");
+                        Console.WriteLine($"Release Date: {MovieInfo.ReleaseDate}");
+                        Console.WriteLine($"Director: {MovieInfo.Director}");
+                        Console.WriteLine($"Descrition: {MovieInfo.Description}");
+                        moviePrinted = true;
+                    }
+                    DayOfWeek showDate = DateTime.Parse(show.Date).DayOfWeek;
+                    string StringshowDate = Convert.ToString(showDate);
+                    days = days + " " + StringshowDate;
+                }
+            }
+            Console.WriteLine($"Plays on:{days}");
+        }
     }
 }

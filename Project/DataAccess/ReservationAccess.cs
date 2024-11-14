@@ -42,8 +42,7 @@ public static class ReservationAccess
     public static List<long> GetReservedSeatsByShowId(long showId)
     {
         string sql = $"SELECT seats_id FROM {Table} WHERE show_id = {showId}";
-
+        // Console.WriteLine("Executing query: " + sql);
         return _connection.Query<long>(sql).AsList();
     }
-
 }
