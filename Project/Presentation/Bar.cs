@@ -126,7 +126,6 @@ class Bar
 
     static public void AllUsersPrint()
     {
-        List<ReservationModel> reservations = ReservationLogic.GetBarReservations();
 
         if (reservations.Count > 0)
         {
@@ -138,26 +137,7 @@ class Bar
             return;
         }
 
-        UserLogic getUsers = new UserLogic();
-        // Dictionary to group users by the bar reservation time slot
-        var usersByTime = new Dictionary<DateTime, List<UserModel>>();
-
-        foreach (ReservationModel reservation in reservations)
-        {
-            ShowModel show = ShowLogic.GetByID(reservation.ShowId);
-            MoviesModel movie = MoviesLogic.GetById((int)show.MovieId);
-
-            DateTime movieBeginTime = DateTime.Parse(show.Date);
-            DateTime barReservationTimeStart = movieBeginTime.AddMinutes(movie.TimeInMinutes);
-
-            if (!usersByTime.ContainsKey(barReservationTimeStart))
-            {
-                usersByTime[barReservationTimeStart] = new List<UserModel>();
-            }
-
-            UserModel user = getUsers.GetById(reservation.UserId);
-            usersByTime[barReservationTimeStart].Add(user);
-        }
+        var usersByTime = MakeBarDict();
 
         // Sort the time slots in ascending order and print user info by each time slot
         foreach (var timeSlot in usersByTime.Keys.OrderBy(time => time))
@@ -175,5 +155,33 @@ class Bar
                 Console.WriteLine("-----------------------------------------------");
             }
         }
+    }
+
+    private static Dictionary<DateTime, List<UserModel>> MakeBarDict()
+    {
+        UserLogic getUsers = new UserLogic();
+
+        List<ReservationModel> barReservations = ReservationLogic.GetBarReservations();
+        // Dictionary to group users by the bar reservation time slot
+        var usersByTime = new Dictionary<DateTime, List<UserModel>>();
+
+        foreach (ReservationModel reservation in barReservations)
+        {
+            ShowModel show = ShowLogic.GetByID(reservation.ShowId);
+            MoviesModel movie = MoviesLogic.GetById((int)show.MovieId);
+
+            DateTime movieBeginTime = DateTime.Parse(show.Date);
+            DateTime barReservationTimeStart = movieBeginTime.AddMinutes(movie.TimeInMinutes);
+
+            if (!usersByTime.ContainsKey(barReservationTimeStart))
+            {
+                usersByTime[barReservationTimeStart] = new List<UserModel>();
+            }
+
+            UserModel user = getUsers.GetById(reservation.UserId);
+            usersByTime[barReservationTimeStart].Add(user);
+        }
+
+        return usersByTime;
     }
 }
