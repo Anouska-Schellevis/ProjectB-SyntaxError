@@ -26,6 +26,11 @@ static public class ReservationLogic
     {
         ReservationAccess.Write(reservation);
     }
+
+    static public List<ReservationModel> GetReservationsByUserId(long userId)
+    {
+        return ReservationAccess.GetReservationsByUserId(userId);
+    }
 }
 
 

@@ -5,6 +5,13 @@ class User
         Console.Clear();
         Console.WriteLine("User page\n");
         Console.WriteLine($"Welcome back {currentUser.FirstName} {currentUser.LastName}");
+
+        List<ReservationModel> reservationsByUser = ReservationLogic.GetReservationsByUserId(currentUser.Id);
+        
+        
+
+
+
         Console.WriteLine("Would you like to see the overview of available movies Y/N");
         string answer = Console.ReadLine().ToLower();
 
