@@ -45,4 +45,10 @@ public static class ReservationAccess
         // Console.WriteLine("Executing query: " + sql);
         return _connection.Query<long>(sql).AsList();
     }
+
+    public static List<ReservationModel> GetReservationsByUserId(long userId)
+    {
+        string sql = $"SELECT id, bar, seats_id AS SeatsID, user_id, show_id AS ShowId FROM {Table} WHERE user_id = {userId}";
+        return _connection.Query<ReservationModel>(sql).AsList();
+    }
 }
