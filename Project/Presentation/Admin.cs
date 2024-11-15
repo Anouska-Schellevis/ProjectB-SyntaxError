@@ -33,13 +33,14 @@ class Admin
 
     static void PrintSeats()
     {
+        int totalMoney = 0;
+
         List<SeatsModel> seats = SeatsLogic.GetAllSeats();
         foreach (SeatsModel seat in seats)
         {
-            Console.WriteLine($"Row number: {seat.RowNumber}");
-            Console.WriteLine($"Column number: {seat.ColumnNumber}");
-            Console.WriteLine($"Price: {seat.Price}");
-            Console.WriteLine("---------------------------------");
+            totalMoney += seat.Price;
         }
+
+        Console.WriteLine($"The total: {totalMoney}");
     }
 }
