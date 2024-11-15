@@ -33,9 +33,6 @@ class User
             DateTime barReservationTimeStart = movieBeginTime.AddMinutes(movie.TimeInMinutes);
             DateTime barReservationTimeEnd = barReservationTimeStart.AddHours(2);
 
-            System.Console.WriteLine(barReservationTimeEnd);
-            System.Console.WriteLine(currentDateTime);
-
             if (barReservationTimeEnd < currentDateTime && currentDateTime < barReservationTimeEnd.AddMinutes(15)) // warning until 15 minutes after the end of the bar reservation
             {
                 Console.WriteLine("Your bar reservation time is up. We kindly ask you to leave the bar");
