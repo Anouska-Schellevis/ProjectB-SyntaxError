@@ -54,6 +54,7 @@ public abstract class TheaterBase
                     if (reservedSeats.Contains(seatId))
                     {
                         Console.ForegroundColor = ConsoleColor.Magenta;
+                        seats[i, j] = 'C';
                     }
                     else
                     {
@@ -89,7 +90,6 @@ public abstract class TheaterBase
         Console.ResetColor();
     }
 
-    // Method to select seats
     public void SelectSeats(long showId)
     {
         List<long> reserved_seats = ReservationAccess.GetReservedSeatsByShowId(showId);
@@ -103,49 +103,58 @@ public abstract class TheaterBase
         for (int i = 0; i < how_many_people; i++)
         {
             Console.WriteLine($"Booking seat {i + 1}");
-            Console.WriteLine("Enter the row and column of the seat (e.g., 5 6):");
-            string input = Console.ReadLine();
-            
-            string[] parts = input.Split(' ');
+            bool valid_seat_selected = false;
 
-            if (parts.Length != 2 || !int.TryParse(parts[0], out int row) || !int.TryParse(parts[1], out int col))
+            while(!valid_seat_selected)
             {
-                Console.WriteLine("Invalid input format.");
-                return;
-            }
+                Console.WriteLine("Enter the row and column of the seat (e.g., 5 6):");
+                string input = Console.ReadLine();
+                
+                string[] parts = input.Split(' ');
 
-            row = seats.GetLength(0) - row; col -= 1;
-
-            if (row < 0 || row >= seats.GetLength(0) || col < 0 || col >= seats.GetLength(1))
-            {
-                Console.WriteLine("Invalid seat selection.");
-                return;
-            }
-
-            if (seats[row, col] == 'A')
-            {
-                seats[row, col] = 'C';
-                Console.WriteLine($"You have selected seat ({seats.GetLength(0) - row}, {col + 1}).");
-                var seatId = (row * seats.GetLength(1)) + col;
-                selected_seats.Add(new SeatsModel
+                if (parts.Length != 2 || !int.TryParse(parts[0], out int row) || !int.TryParse(parts[1], out int col))
                 {
-                    Id = seatId,
-                    RowNumber = seats.GetLength(0) - row,
-                    ColumnNumber = col + 1,
-                    Price = pricingCategories[row, col]
-                });
-                DisplaySeats(showId);
-            }
-            else if (seats[row, col] == 'C')
-            {
-                Console.WriteLine("Sorry, that seat is already taken.");
-            }
-            else
-            {
-                Console.WriteLine("Sorry, that seat is not available.");
-            }
-        }
+                    Console.WriteLine("Invalid input format.");
+                    return;
+                }
 
+                row = seats.GetLength(0) - row; 
+                col -= 1;
+
+                if (row < 0 || row >= seats.GetLength(0) || col < 0 || col >= seats.GetLength(1))
+                {
+                    Console.WriteLine("Invalid seat selection.");
+                    continue;
+                }
+
+                if (seats[row, col] == 'A')
+                {
+                    seats[row, col] = 'C';
+
+                    var seatId = (row * seats.GetLength(1)) + col;
+                    selected_seats.Add(new SeatsModel
+                    {
+                        Id = seatId,
+                        RowNumber = seats.GetLength(0) - row,
+                        ColumnNumber = col + 1,
+                        Price = pricingCategories[row, col]
+                    });
+                    
+                    valid_seat_selected = true;
+                    
+                }
+                else if (seats[row, col] == 'C')
+                {
+                    Console.WriteLine("Sorry, that seat is already taken.");
+
+                }
+                else
+                {
+                    Console.WriteLine("Sorry, that seat is not available.");
+                }
+            }
+            DisplaySeats(showId);
+        }
         UserModel currentUser = UserSession.Instance.CurrentUser;
         if (currentUser != null)
         {
@@ -167,7 +176,6 @@ public abstract class TheaterBase
                 Id = 0,
                 Bar = barService,
                 SeatsId = (int)seat.Id,
-                // SeatsId = (seat.RowNumber - 1) * seats.GetLength(1) + (seat.ColumnNumber - 1),
                 UserId = Convert.ToInt32(userId),
                 ShowId = (int)showId,
             };
