@@ -24,9 +24,9 @@ public class SeatsTest
 public class ReservationTest
 {
     [TestMethod]
-    public void GetAllBar_Reservation_FromDatabase()
+    public void GetBarReservations_ReturnsOnlyBarReservations()
     {
-
+        // Arrange
         List<ReservationModel> testReservations = new() { 
             new(1, true, 3, 3, 4),
             new(2, false, 4, 4, 5),
@@ -38,8 +38,11 @@ public class ReservationTest
             ReservationLogic.WriteReservation(testReservation);
         }
 
+        // Act
         var barReservations = ReservationLogic.GetBarReservations();
         
-        Assert.AreEqual(2, barReservations.Count);
+        // Assert
+        Assert.AreEqual(2, barReservations.Count, "The count of bar reservations should match the expected value.");
+        Assert.IsTrue(barReservations.All(r => r.Bar), "All returned reservations should be bar reservations.");
     }
 }
