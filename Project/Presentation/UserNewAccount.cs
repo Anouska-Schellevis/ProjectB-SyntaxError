@@ -54,7 +54,7 @@ public class UserNewAccountLogic
             }
         } while (true); //keeps running until if conition is met
 
-        UserModel newUser = new UserModel(0, email, password, firstName, lastName, phoneNumber, 0);
+        UserModel newUser = new UserModel(0, email, password, firstName, lastName, phoneNumber, 0, 0);
 
         userLogic.CreateAccount(newUser);
         Console.WriteLine("Account created successfully! You can now log in.");
