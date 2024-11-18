@@ -2,11 +2,11 @@ class Show
 {
     static public void Main()
     {
-        bool admin = false;
-        if (admin)
-        {AdminStart();}
-        else
-        {UserStart();}
+        // bool admin = false;
+        // if (admin)
+        // {AdminStart();}
+        // else
+        // {UserStart(currentUser);}
     }
     static public void AdminStart()
     {
@@ -62,32 +62,33 @@ class Show
         }
     }
 
-    static public void UserStart()
+    static public void UserStart(UserModel acc)
     {
         //ShowPrint();
+        Console.WriteLine($"user start show{acc.FirstName}");
         overviewMovies();
         Dictionary<int, string> movies = PrintOverviewMovie_Time();
 
         Console.WriteLine("What movie would you like to watch?");
         foreach (var movie_count in movies)
+        {
+            string movie_name = movie_count.Value;
+            Console.WriteLine($"{movie_count.Key}. {movie_name}");
+        }
+        int chosenmovie;
+        do
+        {
+            chosenmovie = Convert.ToInt32(Console.ReadLine());
+            if (movies.ContainsKey(chosenmovie))
             {
-                string movie_name = movie_count.Value;
-                Console.WriteLine($"{movie_count.Key}. {movie_name}");
+                break;
             }
-            int chosenmovie;
-            do
+            else
             {
-                chosenmovie = Convert.ToInt32(Console.ReadLine());
-                if (movies.ContainsKey(chosenmovie))
-                {
-                    break;
-                }
-                else
-                {
-                    Console.WriteLine("Not a valid choice. Try again.");
-                }
+                Console.WriteLine("Not a valid choice. Try again.");
             }
-            while (true);
+        }
+        while (true);
         MoviesModel movie = MoviesLogic.GetByTitle(movies[chosenmovie]);
         if (movie != null)
         {
@@ -134,8 +135,8 @@ class Show
                 ConcreteTheater theater150 = (ConcreteTheater)Theater.GetTheater(150);
                 if (theater150 != null)
                 {
-                    
-                    theater150.SelectSeats(ChosenShow.MovieId);
+                    //Console.WriteLine($"net voor dat hij naar select seats gaat {acc.FirstName}");
+                    theater150.SelectSeats(ChosenShow.MovieId, acc);
                 }
                 else
                 {
@@ -147,7 +148,7 @@ class Show
                 ConcreteTheater theater300 = (ConcreteTheater)Theater.GetTheater(300);
                 if (theater300 != null)
                 {
-                    theater300.SelectSeats(ChosenShow.MovieId);
+                    theater300.SelectSeats(ChosenShow.MovieId, acc);
                 }
                 else
                 {
@@ -159,7 +160,7 @@ class Show
                 ConcreteTheater theater500 = (ConcreteTheater)Theater.GetTheater(500);
                 if (theater500 != null)
                 {
-                    theater500.SelectSeats(ChosenShow.MovieId);
+                    theater500.SelectSeats(ChosenShow.MovieId, acc);
                 }
                 else
                 {
@@ -202,7 +203,7 @@ class Show
                 Console.WriteLine("Not a valid date time format. Try again.");
             }
         } while (newDate_time.Contains("-") != true && newDate_time.Contains(":") != true);
-        
+
 
         show.TheatreId = newTheatreId;
         show.MovieId = newMovieId;
@@ -250,7 +251,7 @@ class Show
         } while (newDate_time.Contains("-") != true && newDate_time.Contains(":") != true);
 
         ShowModel new_show = new ShowModel(1, newTheaterId, newMovieId, newDate_time);
-        
+
         ShowLogic.WriteShow(new_show);
 
     }
@@ -289,7 +290,7 @@ class Show
         }
         Console.WriteLine(Day);
         foreach (var movie in movies)
-        {   
+        {
             bool moviePrinted = false;
             foreach (var show in ShowsOnDay)
             {

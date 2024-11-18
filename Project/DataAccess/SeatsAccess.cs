@@ -6,7 +6,7 @@ using Dapper;
 public static class SeatsAccess
 {
     private static SqliteConnection _connection = new SqliteConnection($"Data Source=DataSources/project.db");
-    
+
     private static string Table = "seats";
 
     public static void Write(SeatsModel seat)
@@ -15,16 +15,10 @@ public static class SeatsAccess
         _connection.Execute(sql, seat);
     }
 
-    public static SeatsModel GetById(int id)
+    public static SeatsModel GetById(long id)
     {
         string sql = $"SELECT * FROM {Table} WHERE id = @Id";
         return _connection.QueryFirstOrDefault<SeatsModel>(sql, new { Id = id });
-    }
-
-    public static List<SeatsModel> GetAllSeats()
-    {
-        string sql = $"SELECT * FROM {Table}";
-        return _connection.Query<SeatsModel>(sql).ToList();
     }
 
     public static void Update(SeatsModel seat)
@@ -37,6 +31,19 @@ public static class SeatsAccess
     {
         string sql = $"DELETE FROM {Table} WHERE id = @Id";
         _connection.Execute(sql, new { Id = id });
+    }
+
+    public static void ClearAllSeats()
+    {
+        string sql = $"DELETE FROM {Table};";
+        _connection.Execute(sql);
+        Console.WriteLine("All seats have been deleted.");
+    }
+
+    public static List<SeatsModel> GetAllSeats()
+    {
+        string sql = $"SELECT * FROM {Table}";
+        return _connection.Query<SeatsModel>(sql).ToList();
     }
 
 }

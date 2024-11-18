@@ -1,13 +1,14 @@
 class User
 {
-    public static void Start(UserModel currentUser)
+    public static void Start(UserModel acc)
     {
         Console.Clear();
         Console.WriteLine("User page\n");
-        Console.WriteLine($"Welcome back {currentUser.FirstName} {currentUser.LastName}");
 
-        List<ReservationModel> reservationsByUser = ReservationLogic.GetReservationsByUserId(currentUser.Id);
-        
+        Console.WriteLine($"Welcome back {acc.FirstName} {acc.LastName}");
+
+        List<ReservationModel> reservationsByUser = ReservationLogic.GetReservationsByUserId(acc.Id);
+
         // Merging reservations by ShowId to ensure that each show counts only once for a user,
         // regardless of how many friends joined. This prevents duplicate warnings messages.
         List<ReservationModel> mergedReservationsByUser = reservationsByUser
@@ -16,15 +17,15 @@ class User
         {
             ShowId = group.Key,
             Id = group.First().Id,
-            Bar = group.First().Bar,  
+            Bar = group.First().Bar,
             UserId = group.First().UserId,
             SeatsId = group.First().SeatsId
         })
         .ToList();
 
         DateTime currentDateTime = DateTime.Now;
-        
-        foreach(ReservationModel reservation in mergedReservationsByUser)
+
+        foreach (ReservationModel reservation in mergedReservationsByUser)
         {
             ShowModel show = ShowLogic.GetByID(reservation.ShowId);
             MoviesModel movie = MoviesLogic.GetById((int)show.MovieId);
@@ -46,7 +47,8 @@ class User
 
         if (answer == "y")
         {
-            Show.UserStart();
+            //Console.WriteLine($"voordat hij naar show user start gaat {acc.FirstName}");
+            Show.UserStart(acc);
         }
         else
         {

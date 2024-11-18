@@ -45,4 +45,10 @@ public static class ShowAccess
         string sql = $"SELECT * FROM {Table} WHERE movie_id = @MovieId";
         return _connection.Query<ShowModel>(sql, new { MovieId = movieId }).ToList();
     }
+
+    public static void ClearAllShows()
+    {
+        string sql = $"DELETE FROM {Table}";
+        _connection.Execute(sql);
+    }
 }
