@@ -6,8 +6,7 @@ using Dapper;
 public static class SeatsAccess
 {
     private static SqliteConnection _connection = new SqliteConnection($"Data Source=DataSources/project.db");
-    //private static SqliteConnection _connection = new SqliteConnection(@"Data Source=C:\Users\anouk\Desktop\projectb\ProjectB-SyntaxError\Project\DataSources\project.db");
-
+    
     private static string Table = "seats";
 
     public static void Write(SeatsModel seat)
@@ -20,6 +19,12 @@ public static class SeatsAccess
     {
         string sql = $"SELECT * FROM {Table} WHERE id = @Id";
         return _connection.QueryFirstOrDefault<SeatsModel>(sql, new { Id = id });
+    }
+
+    public static List<SeatsModel> GetAllSeats()
+    {
+        string sql = $"SELECT * FROM {Table}";
+        return _connection.Query<SeatsModel>(sql).ToList();
     }
 
     public static void Update(SeatsModel seat)

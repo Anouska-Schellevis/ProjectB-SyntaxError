@@ -18,36 +18,31 @@ public class SeatsTest
 
         Assert.IsNotNull(actual);
     }
-    [TestMethod]
-    public void Update_Seats()
-    {
-        
-    }
-    [TestMethod]
-    public void Delete_Seats()
-    {
-        
-    }
-
-
 }
 
 [TestClass]
 public class ReservationTest
 {
     [TestMethod]
-    public void Write_Reservation()
+    public void GetBarReservations_ReturnsOnlyBarReservations()
     {
+        // Arrange
+        List<ReservationModel> testReservations = new() { 
+            new(1, true, 3, 3, 4),
+            new(2, false, 4, 4, 5),
+            new(3, true, 5, 5, 6) 
+        };
 
-    }
-    [TestMethod]
-    public void Update_Reservation()
-    {
+        foreach(ReservationModel testReservation in testReservations)
+        {
+            ReservationLogic.WriteReservation(testReservation);
+        }
+
+        // Act
+        var barReservations = ReservationLogic.GetBarReservations();
         
-    }
-    [TestMethod]
-    public void Delete_Reservation()
-    {
-        
+        // Assert
+        Assert.AreEqual(2, barReservations.Count, "The count of bar reservations should match the expected value.");
+        Assert.IsTrue(barReservations.All(r => r.Bar), "All returned reservations should be bar reservations.");
     }
 }

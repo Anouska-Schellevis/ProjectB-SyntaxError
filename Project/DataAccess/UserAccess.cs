@@ -55,12 +55,6 @@ public static class UserAccess
         return _connection.QueryFirstOrDefault<UserModel>(sql, new { Email = email });
     }
 
-    public static void Update(UserModel account)
-    {
-        string sql = $"UPDATE {Table} SET email = @EmailAddress, password = @Password, firstname = @FirstName, lastname = @LastName, phone_number = @PhoneNumber, type = @Type WHERE id = @Id";
-        _connection.Execute(sql, account);
-    }
-
     public static void Delete(int id)
     {
         string sql = $"DELETE FROM {Table} WHERE id = @Id";
