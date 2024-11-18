@@ -172,6 +172,7 @@
 
 //         Console.WriteLine("Do you want bar service? (yes/no):");
 //         bool barService = Console.ReadLine().ToLower() == "yes";
+
 //         foreach (var seat in selectedSeats)
 //         {
 //             SeatsLogic.WriteSeat(seat);
@@ -183,6 +184,7 @@
 //                 UserId = Convert.ToInt32(userId),
 //                 ShowId = (int)showId
 //             };
+
 //             ReservationLogic.WriteReservation(reservation);
 //             //Console.WriteLine($"Successfully reserved seats for {currentUser.FirstName} {currentUser.LastName}.");
 //         }
