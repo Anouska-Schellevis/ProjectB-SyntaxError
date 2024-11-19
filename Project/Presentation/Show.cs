@@ -117,6 +117,20 @@ class Show
             while (true);
             ShowModel ChosenShow = showtime[chosentime];
             if (ChosenShow.TheatreId == 1)
+            // {
+            //     Theater150 theater = new Theater150();
+            //     theater.SelectSeats(ChosenShow.Id);
+            // }
+            // if (ChosenShow.TheatreId == 2)
+            // {
+            //     Theater300 theater2 = new Theater300();
+            //     theater2.SelectSeats(ChosenShow.Id);
+            // }
+            // if (ChosenShow.TheatreId == 3)
+            // {
+            //     Theater500 theater3 = new Theater500();
+            //     theater3.SelectSeats(ChosenShow.Id);
+            // }
             {
                 ConcreteTheater theater150 = (ConcreteTheater)Theater.GetTheater(150);
                 if (theater150 != null)
