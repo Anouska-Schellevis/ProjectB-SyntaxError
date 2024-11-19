@@ -42,4 +42,9 @@ public static class MoviesAccess
         string sql = $"SELECT * FROM {Table}";
         return _connection.Query<MoviesModel>(sql).ToList();
     }
+    public static MoviesModel GetByLongId(long id)
+    {
+        string sql = $"SELECT * FROM {Table} WHERE id = @Id";
+        return _connection.QueryFirstOrDefault<MoviesModel>(sql, new { Id = id });
+    }
 }
