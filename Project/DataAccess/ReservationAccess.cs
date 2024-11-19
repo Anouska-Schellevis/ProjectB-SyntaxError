@@ -65,4 +65,13 @@ public static class ReservationAccess
         _connection.Execute(sql);
         Console.WriteLine("All reservations have been deleted.");
     }
+
+    public static void AddReservation(int bar, int showId, int seatsId, int userId)
+    {
+
+        string sql = "INSERT INTO reservation (bar, show_id, seats_id, user_id) VALUES (@Bar, @ShowId, @SeatsId, @UserId);";
+        _connection.Execute(sql, new { Bar = bar, ShowId = showId, SeatsId = seatsId, UserId = userId });
+
+    }
+
 }

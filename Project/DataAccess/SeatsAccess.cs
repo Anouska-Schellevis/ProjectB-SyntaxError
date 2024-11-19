@@ -46,4 +46,25 @@ public static class SeatsAccess
         return _connection.Query<SeatsModel>(sql).ToList();
     }
 
+    public static void AddSeat(int rowNumber, int columnNumber, int price)
+    {
+        string sql = "INSERT INTO seats (row_number, column_number, price) VALUES (@RowNumber, @ColumnNumber, @Price);";
+        _connection.Execute(sql, new { RowNumber = rowNumber, ColumnNumber = columnNumber, Price = price });
+
+    }
+
+    public static long InsertSeatAndGetId(SeatsModel seat)
+    {
+        string sql = $"INSERT INTO {Table} (row_number, column_number, price) VALUES (@RowNumber, @ColumnNumber, @Price);";
+
+        _connection.Execute(sql, seat);
+
+        sql = "SELECT last_insert_rowid();";
+        long seatId = _connection.QueryFirst<long>(sql);
+
+        return seatId;
+    }
+
+
+
 }

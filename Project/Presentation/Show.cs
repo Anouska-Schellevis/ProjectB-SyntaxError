@@ -136,7 +136,7 @@ class Show
                 if (theater150 != null)
                 {
                     //Console.WriteLine($"net voor dat hij naar select seats gaat {acc.FirstName}");
-                    theater150.SelectSeats(ChosenShow.MovieId, acc);
+                    theater150.SelectSeats(ChosenShow.Id, acc);
                 }
                 else
                 {
@@ -148,7 +148,7 @@ class Show
                 ConcreteTheater theater300 = (ConcreteTheater)Theater.GetTheater(300);
                 if (theater300 != null)
                 {
-                    theater300.SelectSeats(ChosenShow.MovieId, acc);
+                    theater300.SelectSeats(ChosenShow.Id, acc);
                 }
                 else
                 {
@@ -160,7 +160,7 @@ class Show
                 ConcreteTheater theater500 = (ConcreteTheater)Theater.GetTheater(500);
                 if (theater500 != null)
                 {
-                    theater500.SelectSeats(ChosenShow.MovieId, acc);
+                    theater500.SelectSeats(ChosenShow.Id, acc);
                 }
                 else
                 {

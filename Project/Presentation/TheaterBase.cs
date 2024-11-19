@@ -130,16 +130,33 @@ public abstract class TheaterBase
             {
                 seats[row, col] = 'C';
                 Console.WriteLine($"You have selected seat ({seats.GetLength(0) - row}, {col + 1}).");
-                Console.WriteLine("print0");
-                var seatId = (row * seats.GetLength(1)) + col;
-                selected_seats.Add(new SeatsModel
+                var selectedSeat = new SeatsModel
                 {
-                    Id = seatId,
                     RowNumber = seats.GetLength(0) - row,
                     ColumnNumber = col + 1,
                     Price = pricingCategories[row, col]
+                };
+
+
+                long seatId = SeatsAccess.InsertSeatAndGetId(selectedSeat);
+
+                selected_seats.Add(new SeatsModel
+                {
+                    Id = seatId,
+                    RowNumber = selectedSeat.RowNumber,
+                    ColumnNumber = selectedSeat.ColumnNumber,
+                    Price = selectedSeat.Price
                 });
-                DisplaySeats(showId);
+                // Console.WriteLine("print0");
+                // var seatId = (row * seats.GetLength(1)) + col;
+                // selected_seats.Add(new SeatsModel
+                // {
+                //     Id = seatId,
+                //     RowNumber = seats.GetLength(0) - row,
+                //     ColumnNumber = col + 1,
+                //     Price = pricingCategories[row, col]
+                // });
+                // DisplaySeats(showId);
 
             }
             else if (seats[row, col] == 'C')
