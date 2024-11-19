@@ -47,14 +47,11 @@ class Bar
             return;
         }
 
-        // Sort the keys (time slots) in ascending order for a time-based overview
-
         foreach (var timeSlot in reservationsByTime.Keys.OrderBy(time => time))
         {
             Console.WriteLine($"Time Slot: {timeSlot}");
             Console.WriteLine("-----------------------------------------------");
 
-            // Groepeer reserveringen per tijdslot op `UserId`
             var groupedReservations = reservationsByTime[timeSlot]
                 .GroupBy(reservation => reservation.UserId)
                 .ToList();
@@ -64,10 +61,9 @@ class Bar
                 var exampleReservation = group.First();
 
                 Console.WriteLine($"UserID: {exampleReservation.UserId}");
-                Console.WriteLine($"MovieID: {exampleReservation.ShowId}");
+                Console.WriteLine($"ShowID: {exampleReservation.ShowId}");
                 Console.WriteLine("Reservations:");
-                
-                // Print alle reserveringen en bijbehorende SeatsID voor deze UserID
+
                 foreach (var reservation in group)
                 {
                     Console.WriteLine($"- Reservation ID: {reservation.Id,3}, Seats ID: {reservation.SeatsId,3}");
@@ -82,31 +78,26 @@ class Bar
     {
         List<ReservationModel> reservations = ReservationLogic.GetBarReservations();
 
-        // Get current time
         DateTime currentTime = DateTime.Now;
 
-        // Calculate the current number of people using the bar based on reservations
         const int numberOfSeats = 40;
         int currentNumOfBarPeople = 0;
         
         foreach (ReservationModel reservation in reservations)
         {
-            // Calculate the bar reservation time based on the movie end time
             ShowModel show = ShowLogic.GetByID(reservation.ShowId);
             MoviesModel movie = MoviesLogic.GetById((int)show.MovieId);
 
             DateTime movieBeginTime = DateTime.Parse(show.Date);
             DateTime barReservationTimeStart = movieBeginTime.AddMinutes(movie.TimeInMinutes);
-            DateTime barReservationTimeEnd = barReservationTimeStart.AddHours(2); // Each bar reservation lasts for 2 hours after the movie
+            DateTime barReservationTimeEnd = barReservationTimeStart.AddHours(2);
 
-            // Check if the current time is within the reservation window
             if (currentTime >= barReservationTimeStart && currentTime <= barReservationTimeEnd)
             {
                 currentNumOfBarPeople++;
             }
         }
 
-        // Determine crowd level based on the number of people currently in the bar
         string crowdLevel = currentNumOfBarPeople switch
         {
             < 15 => "quiet",
@@ -115,7 +106,6 @@ class Bar
             _ => "crowded"
         };
 
-        // Print the status of the bar
         Console.WriteLine("At the bar:");
         Console.WriteLine($"It is currently {crowdLevel}");
         Console.WriteLine($"{numberOfSeats - currentNumOfBarPeople} out of {numberOfSeats} seats are currently available");
@@ -128,7 +118,6 @@ class Bar
         
         if (usersByTime.Count > 0)
         {
-            Console.WriteLine("Bar Reservations Overview by Time Slot:");
             Console.WriteLine("-----------------------------------------------");
         }
         else
@@ -137,7 +126,6 @@ class Bar
             return;
         }
 
-        // Sort the time slots in ascending order and print user info by each time slot
         foreach (var timeSlot in usersByTime.Keys.OrderBy(time => time))
         {
             Console.WriteLine($"Time Slot: {timeSlot}");
