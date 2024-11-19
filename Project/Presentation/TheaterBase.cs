@@ -6,7 +6,7 @@ public abstract class TheaterBase
     protected char[,] seats;
     protected int[,] pricingCategories;
 
-        public TheaterBase(int rows, int columns, int[,] pricingCategories)
+    public TheaterBase(int rows, int columns, int[,] pricingCategories)
     {
         this.pricingCategories = pricingCategories;
         InitializeSeats();
@@ -60,16 +60,16 @@ public abstract class TheaterBase
                     {
                         switch (pricingCategories[i, j])
                         {
-                            case 1: 
+                            case 1:
                                 Console.ForegroundColor = ConsoleColor.Red;
                                 break;
-                            case 2:    
+                            case 2:
                                 Console.ForegroundColor = ConsoleColor.Yellow;
                                 break;
-                            case 3: 
+                            case 3:
                                 Console.ForegroundColor = ConsoleColor.Blue;
                                 break;
-                            default: 
+                            default:
                                 Console.ForegroundColor = ConsoleColor.Gray;
                                 break;
                         }
@@ -90,10 +90,16 @@ public abstract class TheaterBase
         Console.ResetColor();
     }
 
-    public void SelectSeats(long showId)
+    // Method to select seats
+    public void SelectSeats(long showId, UserModel acc)
+
     {
+
+
         List<long> reserved_seats = ReservationAccess.GetReservedSeatsByShowId(showId);
         DisplaySeats(showId);
+
+
 
         Console.WriteLine("How many seats do you want to book?");
         int how_many_people = Convert.ToInt32(Console.ReadLine());
@@ -103,8 +109,11 @@ public abstract class TheaterBase
         for (int i = 0; i < how_many_people; i++)
         {
             Console.WriteLine($"Booking seat {i + 1}");
-            bool valid_seat_selected = false;
 
+            Console.WriteLine("Enter the row and column of the seat (e.g., 5 6):");
+            string input = Console.ReadLine();
+
+            string[] parts = input.Split(' ');
             while(!valid_seat_selected)
             {
                 Console.WriteLine("Enter the row and column of the seat (e.g., 5 6):");
@@ -121,50 +130,74 @@ public abstract class TheaterBase
                 row = seats.GetLength(0) - row; 
                 col -= 1;
 
-                if (row < 0 || row >= seats.GetLength(0) || col < 0 || col >= seats.GetLength(1))
-                {
-                    Console.WriteLine("Invalid seat selection.");
-                    continue;
-                }
 
-                if (seats[row, col] == 'A')
+            if (seats[row, col] == 'A')
+            {
+                seats[row, col] = 'C';
+                Console.WriteLine($"You have selected seat ({seats.GetLength(0) - row}, {col + 1}).");
+                var selectedSeat = new SeatsModel
                 {
-                    seats[row, col] = 'C';
+                    RowNumber = seats.GetLength(0) - row,
+                    ColumnNumber = col + 1,
+                    Price = pricingCategories[row, col]
+                };
 
-                    var seatId = (row * seats.GetLength(1)) + col;
-                    selected_seats.Add(new SeatsModel
-                    {
-                        Id = seatId,
-                        RowNumber = seats.GetLength(0) - row,
-                        ColumnNumber = col + 1,
-                        Price = pricingCategories[row, col]
-                    });
-                    
-                    valid_seat_selected = true;
-                    
-                }
-                else if (seats[row, col] == 'C')
-                {
-                    Console.WriteLine("Sorry, that seat is already taken.");
 
-                }
-                else
+                long seatId = SeatsAccess.InsertSeatAndGetId(selectedSeat);
+
+                selected_seats.Add(new SeatsModel
                 {
-                    Console.WriteLine("Sorry, that seat is not available.");
-                }
+                    Id = seatId,
+                    RowNumber = selectedSeat.RowNumber,
+                    ColumnNumber = selectedSeat.ColumnNumber,
+                    Price = selectedSeat.Price
+                });
+                // Console.WriteLine("print0");
+                // var seatId = (row * seats.GetLength(1)) + col;
+                // selected_seats.Add(new SeatsModel
+                // {
+                //     Id = seatId,
+                //     RowNumber = seats.GetLength(0) - row,
+                //     ColumnNumber = col + 1,
+                //     Price = pricingCategories[row, col]
+                // });
+                // DisplaySeats(showId);
+
+            }
+            else if (seats[row, col] == 'C')
+            {
+                Console.WriteLine("Sorry, that seat is already taken.");
+            }
+            else
+            {
+                Console.WriteLine("Sorry, that seat is not available.");
+
             }
             DisplaySeats(showId);
         }
-        UserModel currentUser = UserSession.Instance.CurrentUser;
-        if (currentUser != null)
+
+
+
+        //UserModel currentUser = UserSession.CurrentUser;
+        //Console.WriteLine($"{currentUser.FirstName}");
+        //Console.WriteLine("print3");
+        if (acc != null)
+
         {
-            MakeReservation(selected_seats, currentUser, showId);
+            Console.WriteLine("making reservation");
+            MakeReservation(selected_seats, acc, showId);
+            //Console.WriteLine("maked reservation");
+
+        }
+        else
+        {
+            Console.WriteLine("there is no user");
         }
     }
 
-    private void MakeReservation(List<SeatsModel> selectedSeats, UserModel currentUser, long showId)
+    private void MakeReservation(List<SeatsModel> selectedSeats, UserModel acc, long showId)
     {
-        Int64 userId = currentUser.Id;
+        Int64 userId = acc.Id;
         Console.WriteLine("Do you want bar service? (yes/no):");
         bool barService = Console.ReadLine().ToLower() == "yes" && IsBarAvailable(selectedSeats.Count, showId);
 
@@ -182,7 +215,7 @@ public abstract class TheaterBase
 
             ReservationLogic.WriteReservation(reservation);
         }
-        Console.WriteLine($"Successfully reserved seats for {currentUser.FirstName} {currentUser.LastName}.");
+        Console.WriteLine($"Successfully reserved seats for {acc.FirstName} {acc.LastName}.");
     }
 
     static public bool IsBarAvailable(int sizeOfGroup, long showId)
@@ -190,6 +223,7 @@ public abstract class TheaterBase
         int countBarReservations = 0;
 
         ShowModel userShow = ShowLogic.GetByID((int)showId);
+        //MoviesModel userMovie = MoviesLogic.GetById((int)userShow.MovieId);
         MoviesModel userMovie = MoviesLogic.GetById((int)userShow.MovieId);
 
         DateTime userMovieBeginTime = DateTime.Parse(userShow.Date);
@@ -204,7 +238,7 @@ public abstract class TheaterBase
 
             DateTime movieBeginTime = DateTime.Parse(show.Date);
             DateTime barReservationTimeStart = movieBeginTime.AddMinutes(movie.TimeInMinutes);
-        
+
             if (userBarReservationTimeStart == barReservationTimeStart)
             {
                 countBarReservations++;
@@ -226,7 +260,7 @@ public abstract class TheaterBase
 
 public class ConcreteTheater : TheaterBase
 {
-    public ConcreteTheater(int[,] pricingCategories) 
+    public ConcreteTheater(int[,] pricingCategories)
         : base(pricingCategories.GetLength(0), pricingCategories.GetLength(1), pricingCategories) { }
 }
 
@@ -283,9 +317,9 @@ public class Theater
                     { 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0 }
                 };
                 return new ConcreteTheater(pricingCategories);
-            
+
             case 500:
-                pricingCategories = new int[20,30]
+                pricingCategories = new int[20, 30]
                 {
                     { 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0 },
                     { 0, 0, 0, 3, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 0, 0, 0 },
