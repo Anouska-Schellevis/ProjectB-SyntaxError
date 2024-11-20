@@ -156,7 +156,7 @@ public abstract class TheaterBase
                 //     ColumnNumber = col + 1,
                 //     Price = pricingCategories[row, col]
                 // });
-                // DisplaySeats(showId);
+                DisplaySeats(showId);
 
             }
             else if (seats[row, col] == 'C')
@@ -194,7 +194,7 @@ public abstract class TheaterBase
 
         foreach (var seat in selectedSeats)
         {
-            SeatsLogic.WriteSeat(seat);
+            //SeatsLogic.WriteSeat(seat);
             var reservation = new ReservationModel
             {
                 Id = 0,
