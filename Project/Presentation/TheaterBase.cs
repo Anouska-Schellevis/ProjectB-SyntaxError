@@ -210,7 +210,12 @@ public abstract class TheaterBase
         Console.WriteLine($"Successfully reserved seats for {acc.FirstName} {acc.LastName}.");
     }
 
-    static public bool IsBarAvailable(int sizeOfGroup, long showId)
+    static private bool IsSeatValid()
+    {
+        
+    }
+
+    static private bool IsBarAvailable(int sizeOfGroup, long showId)
     {
         int countBarReservations = 0;
 
