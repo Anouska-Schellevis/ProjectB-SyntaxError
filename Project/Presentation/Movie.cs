@@ -1,3 +1,5 @@
+using Microsoft.VisualBasic;
+
 class Movie
 {
 
@@ -57,7 +59,7 @@ class Movie
             case 5:
                 Console.WriteLine("Enter the title of the movie you want to search for");
                 string Title_to_search = Console.ReadLine();
-                MovieSearch(Title_to_search);
+                Console.WriteLine(MovieSearch(Title_to_search));
                 break;
             default:
                 Console.WriteLine("No valid option selected. Please try again.");
@@ -130,23 +132,24 @@ class Movie
         }
     }
 
-    static public void MovieSearch(string Title)
+    static public string MovieSearch(string Title)
     {
         var movie = MoviesLogic.GetByTitle(Title);
         if (movie != null)
         {
-            Console.WriteLine($"ID: {movie.Id}");
-            Console.WriteLine($"Title: {movie.Title}");
-            Console.WriteLine($"Genre: {movie.Genre}");
-            Console.WriteLine($"Director: {movie.Director}");
-            Console.WriteLine($"Release Date: {movie.ReleaseDate}");
-            Console.WriteLine($"Time in minutes: {movie.TimeInMinutes} minutes");
-            Console.WriteLine($"Description: {movie.Description}");
-            Console.WriteLine("-----------------------------------------------");
+            string info = $@"ID: {movie.Id}
+Title: {movie.Title}
+Genre: {movie.Genre}
+Director: {movie.Director}
+Release Date: {movie.ReleaseDate}
+Time in minutes: {movie.TimeInMinutes} minutes
+Description: {movie.Description}
+-----------------------------------------------";
+            return info;
         }
         else
         {
-            Console.WriteLine("Movie does not exist.");
+            return "Movie does not exist.";
         }
     }
 
