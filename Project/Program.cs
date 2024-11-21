@@ -9,4 +9,5 @@ Menu.Start();
 //Show.Main();
 // Show.AdminStart();
 
-
+//SeatsAccess.ClearAllSeats();
+//ReservationAccess.ClearAllReservations();
