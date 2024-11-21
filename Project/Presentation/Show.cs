@@ -62,8 +62,9 @@ class Show
         }
     }
 
-    static public void UserStart()
+    static public void UserStart(UserModel acc)
     {
+
         string movie = "";
         int choice = 0;
         int chosennumber = 0;
@@ -132,6 +133,7 @@ class Show
                 Console.Clear();
             }
             else
+
             {
                 Console.WriteLine("There is no movie on this day");
                 printed = false;
@@ -248,6 +250,7 @@ class Show
                         theater3.SelectSeats(ChosenShow.Id);
                     }
                 }
+
                 break;
             case 3:
                 UserStart();
@@ -255,6 +258,7 @@ class Show
             default:
                 Console.WriteLine("Unexpected choice");
                 break;
+
         }
     }
 

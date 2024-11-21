@@ -6,7 +6,7 @@ using Dapper;
 public static class SeatsAccess
 {
     private static SqliteConnection _connection = new SqliteConnection($"Data Source=DataSources/project.db");
-    
+
     private static string Table = "seats";
 
     public static void Write(SeatsModel seat)
@@ -15,11 +15,18 @@ public static class SeatsAccess
         _connection.Execute(sql, seat);
     }
 
-    public static SeatsModel GetById(int id)
+    // public static SeatsModel GetById(long id)
+    // {
+    //     string sql = $"SELECT * FROM {Table} WHERE id = @Id";
+    //     return _connection.QueryFirstOrDefault<SeatsModel>(sql, new { Id = id });
+    // }
+
+    public static SeatsModel GetById(long id)
     {
-        string sql = $"SELECT * FROM {Table} WHERE id = @Id";
+        string sql = $"SELECT id AS Id, row_number AS RowNumber, column_number AS ColumnNumber, price AS Price FROM {Table} WHERE id = @Id";
         return _connection.QueryFirstOrDefault<SeatsModel>(sql, new { Id = id });
     }
+
 
     public static void Update(SeatsModel seat)
     {
@@ -32,5 +39,39 @@ public static class SeatsAccess
         string sql = $"DELETE FROM {Table} WHERE id = @Id";
         _connection.Execute(sql, new { Id = id });
     }
+
+    public static void ClearAllSeats()
+    {
+        string sql = $"DELETE FROM {Table};";
+        _connection.Execute(sql);
+        Console.WriteLine("All seats have been deleted.");
+    }
+
+    public static List<SeatsModel> GetAllSeats()
+    {
+        string sql = $"SELECT * FROM {Table}";
+        return _connection.Query<SeatsModel>(sql).ToList();
+    }
+
+    public static void AddSeat(int rowNumber, int columnNumber, int price)
+    {
+        string sql = "INSERT INTO seats (row_number, column_number, price) VALUES (@RowNumber, @ColumnNumber, @Price);";
+        _connection.Execute(sql, new { RowNumber = rowNumber, ColumnNumber = columnNumber, Price = price });
+
+    }
+
+    public static long InsertSeatAndGetId(SeatsModel seat)
+    {
+        string sql = $"INSERT INTO {Table} (row_number, column_number, price) VALUES (@RowNumber, @ColumnNumber, @Price);";
+
+        _connection.Execute(sql, seat);
+
+        sql = "SELECT last_insert_rowid();";
+        long seatId = _connection.QueryFirst<long>(sql);
+
+        return seatId;
+    }
+
+
 
 }
