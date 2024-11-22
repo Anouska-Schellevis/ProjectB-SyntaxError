@@ -24,6 +24,24 @@ public abstract class TheaterBase
         }
     }
 
+    protected void UpdateSeatsArray(List<long> reservedSeats)
+    {
+        for (int i = 0; i < seats.GetLength(0); i++)
+        {
+            for (int j = 0; j < seats.GetLength(1); j++)
+            {
+                int seatId = (i * seats.GetLength(1)) + j;
+                
+                if (reservedSeats.Contains(seatId))
+                {
+                    seats[i, j] = 'C';
+                }
+                
+            }
+        }
+        
+    }
+
     public void DisplaySeats(long showId)
     {
         List<long> reservedSeats = ReservationAccess.GetReservedSeatsByShowId(showId);
@@ -54,6 +72,8 @@ public abstract class TheaterBase
                     if (reservedSeats.Contains(seatId))
                     {
                         Console.ForegroundColor = ConsoleColor.Magenta;
+                        Console.Write("■   ");
+                        continue;
                     }
                     else
                     {
@@ -95,6 +115,7 @@ public abstract class TheaterBase
 
 
         List<long> reserved_seats = ReservationAccess.GetReservedSeatsByShowId(showId);
+        UpdateSeatsArray(reserved_seats);
         DisplaySeats(showId);
 
 
@@ -106,67 +127,93 @@ public abstract class TheaterBase
 
         for (int i = 0; i < how_many_people; i++)
         {
-            Console.WriteLine($"Booking seat {i + 1}");
-            Console.WriteLine("Enter the row and column of the seat (e.g., 5 6):");
-            string input = Console.ReadLine();
-
-            string[] parts = input.Split(' ');
-
-            if (parts.Length != 2 || !int.TryParse(parts[0], out int row) || !int.TryParse(parts[1], out int col))
+            do
             {
-                Console.WriteLine("Invalid input format.");
-                return;
-            }
+                Console.WriteLine($"Booking seat {i + 1}");
+                Console.WriteLine("Enter the row and column of the seat (e.g., 5 6):");
+                string input = Console.ReadLine();
 
-            row = seats.GetLength(0) - row; col -= 1;
+                string[] parts = input.Split(' ');
 
-            if (row < 0 || row >= seats.GetLength(0) || col < 0 || col >= seats.GetLength(1))
-            {
-                Console.WriteLine("Invalid seat selection.");
-                return;
-            }
-
-            if (seats[row, col] == 'A')
-            {
-                seats[row, col] = 'C';
-                Console.WriteLine($"You have selected seat ({seats.GetLength(0) - row}, {col + 1}).");
-                var selectedSeat = new SeatsModel
+                if (parts.Length != 2 || !int.TryParse(parts[0], out int row) || !int.TryParse(parts[1], out int col))
                 {
-                    RowNumber = seats.GetLength(0) - row,
-                    ColumnNumber = col + 1,
-                    Price = pricingCategories[row, col]
-                };
+                    Console.WriteLine("Invalid input format.");
+                    continue;
+                }
 
+                row = seats.GetLength(0) - row; col -= 1;
 
-                long seatId = SeatsAccess.InsertSeatAndGetId(selectedSeat);
-
-                selected_seats.Add(new SeatsModel
+                if (row < 0 || row >= seats.GetLength(0) || col < 0 || col >= seats.GetLength(1))
                 {
-                    Id = seatId,
-                    RowNumber = selectedSeat.RowNumber,
-                    ColumnNumber = selectedSeat.ColumnNumber,
-                    Price = selectedSeat.Price
-                });
-                // Console.WriteLine("print0");
-                // var seatId = (row * seats.GetLength(1)) + col;
-                // selected_seats.Add(new SeatsModel
-                // {
-                //     Id = seatId,
-                //     RowNumber = seats.GetLength(0) - row,
-                //     ColumnNumber = col + 1,
-                //     Price = pricingCategories[row, col]
-                // });
-                // DisplaySeats(showId);
+                    Console.WriteLine("Invalid seat selection.");
+                    continue;
+                }
 
-            }
-            else if (seats[row, col] == 'C')
-            {
-                Console.WriteLine("Sorry, that seat is already taken.");
-            }
-            else
-            {
-                Console.WriteLine("Sorry, that seat is not available.");
-            }
+                if (seats[row, col] == 'A')
+                {
+                    if (how_many_people == 1 && !IsValidSingleSeat(row, col))
+                    {
+                        Console.WriteLine("Sorry, you can't take this seat.");
+                        Console.WriteLine("Make sure their is no empty seat between you and someone else");
+                        continue;
+                    }
+                    else
+                    {
+                        List<(int row, int col)> currentSelection = selected_seats
+                            .Select(s => (seats.GetLength(0) - s.RowNumber, s.ColumnNumber - 1))
+                            .ToList();
+                        currentSelection.Add((row, col));
+
+                        if (!IsValidGroupSelection(currentSelection))
+                        {
+                            Console.WriteLine("Sorry, you can't take this seat.");
+                            Console.WriteLine("Make sure all selected seats are next to each other.");
+                            continue;
+                        }
+                    }
+                    seats[row, col] = 'C';
+                    Console.WriteLine($"You have selected seat ({seats.GetLength(0) - row}, {col + 1}).");
+                    var selectedSeat = new SeatsModel
+                    {
+                        RowNumber = seats.GetLength(0) - row,
+                        ColumnNumber = col + 1,
+                        Price = pricingCategories[row, col]
+                    };
+
+
+                    long seatId = SeatsAccess.InsertSeatAndGetId(selectedSeat);
+
+                    selected_seats.Add(new SeatsModel
+                    {
+                        Id = seatId,
+                        RowNumber = selectedSeat.RowNumber,
+                        ColumnNumber = selectedSeat.ColumnNumber,
+                        Price = selectedSeat.Price
+                    });
+                    // Console.WriteLine("print0");
+                    // var seatId = (row * seats.GetLength(1)) + col;
+                    // selected_seats.Add(new SeatsModel
+                    // {
+                    //     Id = seatId,
+                    //     RowNumber = seats.GetLength(0) - row,
+                    //     ColumnNumber = col + 1,
+                    //     Price = pricingCategories[row, col]
+                    // });
+                    DisplaySeats(showId);
+                    break;
+
+                }
+                else if (seats[row, col] == 'C')
+                {
+                    Console.WriteLine("Sorry, that seat is already taken.");
+                    continue;
+                }
+                else
+                {
+                    Console.WriteLine("Sorry, that seat is not available.");
+                    continue;
+                }
+            } while(true);
         }
 
 
@@ -194,7 +241,7 @@ public abstract class TheaterBase
 
         foreach (var seat in selectedSeats)
         {
-            SeatsLogic.WriteSeat(seat);
+            //SeatsLogic.WriteSeat(seat);
             var reservation = new ReservationModel
             {
                 Id = 0,
@@ -210,7 +257,52 @@ public abstract class TheaterBase
         Console.WriteLine($"Successfully reserved seats for {acc.FirstName} {acc.LastName}.");
     }
 
-    static public bool IsBarAvailable(int sizeOfGroup, long showId)
+    private bool IsValidSingleSeat(int row, int col)
+    {
+
+
+        bool leftValidcond1 = col - 2 >= 0 && seats[row, col - 2] == 'A' && seats[row, col - 1] == 'A';
+        bool leftValidcond2 = col - 2 >= 0 && seats[row, col - 2] == 'C' && seats[row, col - 1] == 'C';
+        
+        bool rightValidcond1 = col + 2 <= seats.GetLength(1) && seats[row, col + 2] == 'A' && seats[row, col + 1] == 'A';
+        bool rightValidcond2 = col + 2 <= seats.GetLength(1) && seats[row, col + 2] == 'C' && seats[row, col + 1] == 'C';
+
+        Console.WriteLine();
+        Console.WriteLine("Left valid:");
+        Console.WriteLine($"{col - 2} >= {0} = {col - 2 >= 0}");
+        Console.WriteLine($"Expected = 'A', 'A' or 'C', 'C'\nActual === '{seats[row, col - 2]}', '{seats[row, col - 1]}'\n{leftValidcond1 || leftValidcond2}");
+        Console.WriteLine();
+        Console.WriteLine("Right valid:");
+        Console.WriteLine($"{col + 2} <= {seats.GetLength(1)} = {col + 2 <= seats.GetLength(1)}");
+        Console.WriteLine($"Expected = 'A', 'A' or 'C', 'C'\nActual === '{seats[row, col + 2]}', '{seats[row, col + 1]}'\n{rightValidcond1 || rightValidcond2}");
+        Console.WriteLine();
+
+        Console.WriteLine($"leftValid = {leftValidcond1 || leftValidcond2}");
+        Console.WriteLine($"rightValid = {rightValidcond1 || rightValidcond2}");
+        Console.WriteLine();
+
+        bool leftValid = leftValidcond1 || leftValidcond2;
+        bool rightValid = rightValidcond1 || rightValidcond2;
+
+        return leftValid && rightValid;
+    }
+
+    private bool IsValidGroupSelection(List<(int row, int col)> selectedSeats)
+    {
+        foreach (var seat in selectedSeats)
+        {
+            int row = seat.row;
+            int col = seat.col;
+
+            if (!selectedSeats.All(s => s.row == row && Math.Abs(s.col - col) <= selectedSeats.Count - 1))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    static private bool IsBarAvailable(int sizeOfGroup, long showId)
     {
         int countBarReservations = 0;
 

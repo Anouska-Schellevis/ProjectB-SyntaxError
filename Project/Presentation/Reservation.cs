@@ -25,24 +25,24 @@ public class Reservation
 
         foreach (var group in groupedReservations)
         {
-            Console.WriteLine($"group key {group.Key}");
             ShowModel reservedShow = ShowAccess.GetByID(group.Key);
-            Console.WriteLine($"show movie id:{reservedShow.MovieId}");
             MoviesModel reservedMovie = MoviesAccess.GetByLongId(reservedShow.MovieId);
 
             if (reservedMovie != null)
             {
                 Console.WriteLine($"Reservation [{reservationNumber}]");
-                Console.WriteLine($"    Movie: {reservedMovie.Title}, Show Date: {reservedShow.Date}, Bar Service: {(group.First().Bar ? "Yes" : "No")}");
+                Console.WriteLine($"    Movie: {reservedMovie.Title}, Show Date: {reservedShow.Date}, Bar reservation: {(group.First().Bar ? "Yes" : "No")}");
 
 
                 foreach (var reservation in group)
                 {
                     SeatsModel seat = SeatsAccess.GetById((int)reservation.SeatsId);
+                    //Console.WriteLine($"Trying to fetch seat for SeatId: {reservation.SeatsId}");
 
                     if (seat != null)
                     {
-                        Console.WriteLine($"    Seat Row: {seat.RowNumber}, Column: {seat.ColumnNumber}");
+                        //Console.WriteLine($"    Seat: ");
+                        Console.WriteLine($"    Seat Row: {seat.RowNumber}, Chair: {seat.ColumnNumber}");
                     }
                     else
                     {
