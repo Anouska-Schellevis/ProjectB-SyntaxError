@@ -1,13 +1,13 @@
 class Show
 {
-    static public void Main()
-    {
-        bool admin = false;
-        if (admin)
-        { AdminStart(); }
-        else
-        { UserStart(); }
-    }
+    // static public void Main()
+    // {
+    //     bool admin = false;
+    //     if (admin)
+    //     { AdminStart(); }
+    //     else
+    //     { UserStart(); }
+    // }
     static public void AdminStart()
     {
         Console.WriteLine("[1] Overview of all show");
@@ -154,7 +154,7 @@ class Show
                     {
                         Console.WriteLine("Invalid input try again");
                     }
-                }while (secondchoice != 1 && secondchoice != 2);
+                } while (secondchoice != 1 && secondchoice != 2);
                 Console.Clear();
                 switch (secondchoice)
                 {
@@ -185,24 +185,60 @@ class Show
                             Console.Clear();
                             ShowModel ChosenShow = showtime[chosentime];
                             if (ChosenShow.TheatreId == 1)
+                            // {
+                            //     Theater150 theater = new Theater150();
+                            //     theater.SelectSeats(ChosenShow.Id);
+                            // }
+                            // if (ChosenShow.TheatreId == 2)
+                            // {
+                            //     Theater300 theater2 = new Theater300();
+                            //     theater2.SelectSeats(ChosenShow.Id);
+                            // }
+                            // if (ChosenShow.TheatreId == 3)
+                            // {
+                            //     Theater500 theater3 = new Theater500();
+                            //     theater3.SelectSeats(ChosenShow.Id);
+                            // }
                             {
-                                Theater150 theater = new Theater150();
-                                theater.SelectSeats(ChosenShow.Id);
+                                ConcreteTheater theater150 = (ConcreteTheater)Theater.GetTheater(150);
+                                if (theater150 != null)
+                                {
+                                    //Console.WriteLine($"net voor dat hij naar select seats gaat {acc.FirstName}");
+                                    theater150.SelectSeats(ChosenShow.Id, acc);
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Error: Unable to retrieve Theater 150.");
+                                }
                             }
                             if (ChosenShow.TheatreId == 2)
                             {
-                                Theater300 theater2 = new Theater300();
-                                theater2.SelectSeats(ChosenShow.Id);
+                                ConcreteTheater theater300 = (ConcreteTheater)Theater.GetTheater(300);
+                                if (theater300 != null)
+                                {
+                                    theater300.SelectSeats(ChosenShow.Id, acc);
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Error: Unable to retrieve Theater 300.");
+                                }
                             }
                             if (ChosenShow.TheatreId == 3)
                             {
-                                Theater500 theater3 = new Theater500();
-                                theater3.SelectSeats(ChosenShow.Id);
+                                ConcreteTheater theater500 = (ConcreteTheater)Theater.GetTheater(500);
+                                if (theater500 != null)
+                                {
+                                    theater500.SelectSeats(ChosenShow.Id, acc);
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Error: Unable to retrieve Theater 500.");
+                                }
                             }
                         }
                         break;
                     case 2:
-                        UserStart();
+                        UserStart(acc);
                         break;
                     default:
                         break;
@@ -236,24 +272,46 @@ class Show
                     ShowModel ChosenShow = showtime[chosentime];
                     if (ChosenShow.TheatreId == 1)
                     {
-                        Theater150 theater = new Theater150();
-                        theater.SelectSeats(ChosenShow.Id);
+                        ConcreteTheater theater150 = (ConcreteTheater)Theater.GetTheater(150);
+                        if (theater150 != null)
+                        {
+                            //Console.WriteLine($"net voor dat hij naar select seats gaat {acc.FirstName}");
+                            theater150.SelectSeats(ChosenShow.Id, acc);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Error: Unable to retrieve Theater 150.");
+                        }
                     }
                     if (ChosenShow.TheatreId == 2)
                     {
-                        Theater300 theater2 = new Theater300();
-                        theater2.SelectSeats(ChosenShow.Id);
+                        ConcreteTheater theater300 = (ConcreteTheater)Theater.GetTheater(300);
+                        if (theater300 != null)
+                        {
+                            theater300.SelectSeats(ChosenShow.Id, acc);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Error: Unable to retrieve Theater 300.");
+                        }
                     }
                     if (ChosenShow.TheatreId == 3)
                     {
-                        Theater500 theater3 = new Theater500();
-                        theater3.SelectSeats(ChosenShow.Id);
+                        ConcreteTheater theater500 = (ConcreteTheater)Theater.GetTheater(500);
+                        if (theater500 != null)
+                        {
+                            theater500.SelectSeats(ChosenShow.Id, acc);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Error: Unable to retrieve Theater 500.");
+                        }
                     }
                 }
 
                 break;
             case 3:
-                UserStart();
+                UserStart(acc);
                 break;
             default:
                 Console.WriteLine("Unexpected choice");
@@ -373,7 +431,7 @@ class Show
             {
                 Console.WriteLine("Invalid Input.Try again.");
             }
-        }while (Day < 0 || Day > 7);
+        } while (Day < 0 || Day > 7);
         Console.Clear();
         string DayToPrint = Convert.ToString((DayOfWeek)((Day) % 7));
 
