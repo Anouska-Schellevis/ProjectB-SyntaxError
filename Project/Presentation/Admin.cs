@@ -7,7 +7,7 @@ class Admin
         Console.WriteLine($"Welcome back {currentUser.FirstName} {currentUser.LastName}\n");
         while (true)
         {
-            Console.WriteLine("[1]Show the menu of the movies\n[2]Show the menu of the shows\n[3]Show the current balance\n[4]Logout");
+            Console.WriteLine("[1]Show the menu of the movies\n[2]Show the menu of the shows\n[3]Show the menu of the bar\n[4]Show the current balance\n[5]Logout");
             int input = Convert.ToInt16(Console.ReadLine());
 
             if (input == 1)
@@ -22,9 +22,13 @@ class Admin
             }
             else if (input == 3)
             {
-                PrintSeats();
+                Bar.Start();
             }
             else if (input == 4)
+            {
+                PrintSeats();
+            }
+            else if (input == 5)
             {
                 break;
             }
