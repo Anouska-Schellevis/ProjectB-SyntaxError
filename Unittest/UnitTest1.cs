@@ -47,10 +47,12 @@ public class SeatsTest
 public class ReservationTest
 {
     [TestMethod]
-    public void GetAllBar_Reservation_FromDatabase()
+    public void GetBarReservations_ReturnsOnlyBarReservations()
     {
 
-        List<ReservationModel> testReservations = new() {
+        // Arrange
+        List<ReservationModel> testReservations = new() { 
+
             new(1, true, 3, 3, 4),
             new(2, false, 4, 4, 5),
             new(3, true, 5, 5, 6)
@@ -61,6 +63,7 @@ public class ReservationTest
             ReservationLogic.WriteReservation(testReservation);
         }
 
+        // Act
         var barReservations = ReservationLogic.GetBarReservations();
 
         Assert.AreEqual(2, barReservations.Count);
