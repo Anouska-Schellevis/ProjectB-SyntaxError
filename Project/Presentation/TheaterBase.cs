@@ -262,14 +262,39 @@ public abstract class TheaterBase
         bool leftValid = false;
         bool rightValid = false;
 
+        int countLeftSpace = 0;
+
+        for (int j = 0; j < seats.GetLength(1); j++)
+        {
+            if (j < seats.GetLength(1) / 2)
+            {
+                System.Console.WriteLine("Left column:");
+                System.Console.WriteLine(seats[row, j]);
+                countLeftSpace++;
+            }
+            else if (seats[row, j] != ' ')
+            {
+                System.Console.WriteLine("Seat:");
+                System.Console.WriteLine(seats[row, j]);
+                countLeftSpace++;
+            }
+            else
+            {
+                System.Console.WriteLine("No seat:");
+                System.Console.WriteLine(seats[row, j]);
+            }
+        }
+
+        Console.WriteLine($"number of seats: {countLeftSpace}");
+
         Console.WriteLine();
         Console.WriteLine("if - left");
-        Console.WriteLine($"{col} + {1} > {0} = {col + 1 > 0}");
+        Console.WriteLine($"{col} + {1} >= {3} = {col + 1 >= 3}");
         Console.WriteLine("else if - left");
-        Console.WriteLine($"{col} + {1} == {0} = {col == 0}");
+        Console.WriteLine($"{col} + {1} == {1} = {col + 1 == 1}");
         Console.WriteLine();
-        
-        if (col + 1 > 0)
+
+        if (col + 1 >= 3)
         {
             bool leftValidCond1 = seats[row, col - 2] == 'A' && seats[row, col - 1] == 'A';
             bool leftValidCond2 = seats[row, col - 2] == 'C' && seats[row, col - 1] == 'C';
@@ -280,19 +305,23 @@ public abstract class TheaterBase
             Console.WriteLine($"Expected = 'A', 'A' or 'C', 'C'\nActual === '{seats[row, col - 2]}', '{seats[row, col - 1]}'\n{leftValid}");
             Console.WriteLine();
         }
-        else if (col + 1 == 0)
+        else if (col + 1 == 1)
+        {
+            leftValid = true;
+        }
+        else if (seats[row, col - 1] == 'C')
         {
             leftValid = true;
         }
 
         Console.WriteLine();
         Console.WriteLine("if - right");
-        Console.WriteLine($"{col} + {1} <= {seats.GetLength(1)} - {2} = {col + 1 <= seats.GetLength(1) - 2}");
+        Console.WriteLine($"{col} + {1} < {countLeftSpace} = {col + 1 < countLeftSpace}");
         Console.WriteLine("else if - right");
-        Console.WriteLine($"{col} + {1} == {seats.GetLength(1)} = {col + 1 == seats.GetLength(1)}");
+        Console.WriteLine($"{col} + {1} == {countLeftSpace} = {col + 1 == countLeftSpace}");
         Console.WriteLine();
 
-        if (col + 1 <= seats.GetLength(1) - 2)
+        if (col + 1 < countLeftSpace)
         {
             bool rightValidCond1 = seats[row, col + 2] == 'A' && seats[row, col + 1] == 'A';
             bool rightValidCond2 = seats[row, col + 2] == 'C' && seats[row, col + 1] == 'C';
@@ -303,10 +332,18 @@ public abstract class TheaterBase
             Console.WriteLine($"Expected = 'A', 'A' or 'C', 'C'\nActual === '{seats[row, col + 2]}', '{seats[row, col + 1]}'\n{rightValid}");
             Console.WriteLine();
         }
-        else if (col + 1 == seats.GetLength(1))
+        else if (col + 1 == countLeftSpace)
         {
             rightValid = true;
         }
+        else if (seats[row, col + 1] == 'C')
+        {
+            leftValid = true;
+        }
+
+        System.Console.WriteLine($"leftValid: {leftValid}");
+        System.Console.WriteLine($"rightValid: {rightValid}");
+        System.Console.WriteLine();
 
         return leftValid && rightValid;
     }
