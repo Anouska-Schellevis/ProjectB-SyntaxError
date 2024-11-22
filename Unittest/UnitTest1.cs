@@ -24,10 +24,12 @@ public class SeatsTest
     {
         List<SeatsModel> testSeats = new()
         {
-            new(44, 5, 6, 2),
-            new(45, 12, 3, 3),
-            new(46, 9, 6, 1)
+            new(1, 5, 6, 2),
+            new(2, 12, 3, 3),
+            new(3, 9, 6, 1)
         };
+
+        SeatsAccess.ClearAllSeats();
 
         foreach (SeatsModel testSeat in testSeats)
         {
@@ -47,12 +49,10 @@ public class SeatsTest
 public class ReservationTest
 {
     [TestMethod]
-    public void GetBarReservations_ReturnsOnlyBarReservations()
+    public void GetAllBar_Reservation_FromDatabase()
     {
 
-        // Arrange
-        List<ReservationModel> testReservations = new() { 
-
+        List<ReservationModel> testReservations = new() {
             new(1, true, 3, 3, 4),
             new(2, false, 4, 4, 5),
             new(3, true, 5, 5, 6)
@@ -63,7 +63,6 @@ public class ReservationTest
             ReservationLogic.WriteReservation(testReservation);
         }
 
-        // Act
         var barReservations = ReservationLogic.GetBarReservations();
 
         Assert.AreEqual(2, barReservations.Count);
