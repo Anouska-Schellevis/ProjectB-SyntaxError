@@ -112,13 +112,11 @@ public abstract class TheaterBase
     // Method to select seats
     public void SelectSeats(long showId, UserModel acc)
     {
-        SetTakenSeats(showId);
+
 
         List<long> reserved_seats = ReservationAccess.GetReservedSeatsByShowId(showId);
         UpdateSeatsArray(reserved_seats);
         DisplaySeats(showId);
-
-        char[,] lol = seats;
 
         Console.WriteLine("How many seats do you want to book?");
         int how_many_people = Convert.ToInt32(Console.ReadLine());
