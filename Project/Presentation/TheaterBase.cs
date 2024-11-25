@@ -319,19 +319,19 @@ public abstract class TheaterBase
         if (col + 1 >= 3)
         {
             bool leftValidCond1 = seats[row, col - 2] == 'A' && seats[row, col - 1] == 'A';
-            bool leftValidCond2 = seats[row, col - 2] == 'C' && seats[row, col - 1] == 'C';
+            bool leftValidCond2 = seats[row, col - 2] == 'R' && seats[row, col - 1] == 'R';
 
             leftValid = leftValidCond1 || leftValidCond2;
 
             Console.WriteLine("Left valid:");
-            Console.WriteLine($"Expected = 'A', 'A' or 'C', 'C'\nActual === '{seats[row, col - 2]}', '{seats[row, col - 1]}'\n{leftValid}");
+            Console.WriteLine($"Expected = 'A', 'A' or 'R', 'R'\nActual === '{seats[row, col - 2]}', '{seats[row, col - 1]}'\n{leftValid}");
             Console.WriteLine();
         }
         else if (col + 1 == 1)
         {
             leftValid = true;
         }
-        else if (seats[row, col - 1] == 'C')
+        else if (seats[row, col - 1] == 'R')
         {
             leftValid = true;
         }
@@ -346,19 +346,19 @@ public abstract class TheaterBase
         if (col + 1 < countLeftSpace)
         {
             bool rightValidCond1 = seats[row, col + 2] == 'A' && seats[row, col + 1] == 'A';
-            bool rightValidCond2 = seats[row, col + 2] == 'C' && seats[row, col + 1] == 'C';
+            bool rightValidCond2 = seats[row, col + 2] == 'R' && seats[row, col + 1] == 'R';
 
             rightValid = rightValidCond1 || rightValidCond2;
 
             Console.WriteLine("Right valid:");
-            Console.WriteLine($"Expected = 'A', 'A' or 'C', 'C'\nActual === '{seats[row, col + 2]}', '{seats[row, col + 1]}'\n{rightValid}");
+            Console.WriteLine($"Expected = 'A', 'A' or 'R', 'R'\nActual === '{seats[row, col + 2]}', '{seats[row, col + 1]}'\n{rightValid}");
             Console.WriteLine();
         }
         else if (col + 1 == countLeftSpace)
         {
             rightValid = true;
         }
-        else if (seats[row, col + 1] == 'C')
+        else if (seats[row, col + 1] == 'R')
         {
             leftValid = true;
         }
