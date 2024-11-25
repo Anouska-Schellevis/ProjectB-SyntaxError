@@ -18,15 +18,15 @@ public class Reservation
         var groupedReservations = userReservations
             .GroupBy(reservation => reservation.ShowId)
             .OrderBy(group => group.Key)
-            .ToList();
+            .ToList(); //group all user reservation by show id, show id is group KEY
 
         Console.WriteLine("Your reservations:");
-        int reservationNumber = 1;
+        int reservationNumber = 1; //number to incriment for amount of reservations
 
         foreach (var group in groupedReservations)
         {
-            ShowModel reservedShow = ShowAccess.GetByID(group.Key);
-            MoviesModel reservedMovie = MoviesAccess.GetByLongId(reservedShow.MovieId);
+            ShowModel reservedShow = ShowAccess.GetByID(group.Key); //get the show model with the group key aka the show id that groups that group
+            MoviesModel reservedMovie = MoviesAccess.GetByLongId(reservedShow.MovieId); // get the movie model from that show for the name 
 
             if (reservedMovie != null)
             {
@@ -37,11 +37,11 @@ public class Reservation
                 foreach (var reservation in group)
                 {
                     SeatsModel seat = SeatsAccess.GetById((int)reservation.SeatsId);
-                    //Console.WriteLine($"Trying to fetch seat for SeatId: {reservation.SeatsId}");
+                    //get the seats model for each reservation
 
                     if (seat != null)
                     {
-                        //Console.WriteLine($"    Seat: ");
+                        //print each seats row and collum aka chair
                         Console.WriteLine($"    Seat Row: {seat.RowNumber}, Chair: {seat.ColumnNumber}");
                     }
                     else
@@ -68,6 +68,7 @@ public class Reservation
             if (userInput == "1")
             {
                 var flatReservations = groupedReservations.SelectMany(group => group).ToList();
+                //grouped reservations holds multiple lists, this flat reservations makes it all into one list
                 CancelReservation(flatReservations);
                 menuChoice = true;
             }
@@ -85,6 +86,7 @@ public class Reservation
 
     public static void CancelReservation(List<ReservationModel> userReservations)
     {
+        //this gets called with that flat reservations from see reservations, which is one list of all that users reservations
         bool reservationChoice = false;
 
         while (!reservationChoice)
@@ -112,11 +114,13 @@ public class Reservation
 
                 Console.WriteLine($"Cancelling reservation for Show Reservation: {selectedReservation.ShowId}");
 
+                //because earlier we had to make user reservations one list, destroying the grouping on show id, we group these reservations on show id again,
+                // to group all reservations for each seperate show
                 var groupedReservations = userReservations
                     .Where(r => r.ShowId == selectedReservation.ShowId)
                     .ToList();
 
-                var reservedSeatIds = groupedReservations.Select(r => r.SeatsId).ToList();
+                var reservedSeatIds = groupedReservations.Select(r => r.SeatsId).ToList(); //make a list of all seats of that show
 
                 if (reservedSeatIds.Count == 0)
                 {
@@ -128,6 +132,7 @@ public class Reservation
 
                 foreach (var seatId in reservedSeatIds)
                 {
+                    //for each seat in that list remove that
                     int seatIdInt = (int)seatId;
                     SeatsAccess.Delete(seatIdInt);
                     Console.WriteLine($"Deleted seat with ID: {seatIdInt}");

@@ -14,9 +14,10 @@ class Movie
         Console.WriteLine("[3] Edit Movie");
         Console.WriteLine("[4] Delete Movie");
         Console.WriteLine("[5] Search Movie by title");
+        Console.WriteLine("[6] See most populair movie genre");
         Console.WriteLine("What would you like to do?");
         int choice = Convert.ToInt32(Console.ReadLine());
-        
+
         switch (choice)
         {
             case 1:
@@ -60,6 +61,9 @@ class Movie
                 Console.WriteLine("Enter the title of the movie you want to search for");
                 string Title_to_search = Console.ReadLine();
                 Console.WriteLine(MovieSearch(Title_to_search));
+                break;
+            case 6:
+                TrackPopularity();
                 break;
             default:
                 Console.WriteLine("No valid option selected. Please try again.");
@@ -162,5 +166,52 @@ Description: {movie.Description}
             movieDictionary.Add(Convert.ToInt32(movie.Id), movie.Title);
         }
         return movieDictionary;
+    }
+
+    public static void TrackPopularity()
+    {
+        List<ReservationModel> allReservations = ReservationAccess.GetAllReservations(); //make a list of reservation models of all reservations in the database
+
+        var groupedReservations = allReservations
+            .GroupBy(reservation => reservation.ShowId)
+            .ToList();  //group those reservations on the show id and make that into a list
+                        //group key = show id, thats the KEY that groups them all together
+
+        var genrePopularity = new Dictionary<string, int>(); //i use a dictionary to group genre and reservation amount together
+
+        foreach (var group in groupedReservations)
+        {
+            ShowModel reservedShow = ShowAccess.GetByID(group.Key); // use the group key aka show id
+            MoviesModel movie = MoviesAccess.GetByLongId(reservedShow.MovieId); //get the movie model from the show model to get to the genre
+
+            if (movie != null)
+            {
+                string genre = movie.Genre;
+                int seatsBooked = group.Count(); //count the reservations together for each group,(one group has 4 reservation == 4)
+
+                //this used the dictionary, if a genre is already in the dictionary it adds the amount of seats booked to that existing genre
+                //if the genre doesnt exist it makes it
+                if (genrePopularity.ContainsKey(genre))
+                {
+                    genrePopularity[genre] += seatsBooked;
+                }
+                else
+                {
+                    genrePopularity[genre] = seatsBooked;
+                }
+            }
+        }
+
+        var sortedGenres = genrePopularity
+            .OrderByDescending(g => g.Value)
+            .ToList();  //sort the genre by value, value = amount seats booked, refers back to the dictionary
+                        //(key is genre name value is amount of reservations)
+
+        Console.WriteLine("Most populair genre descending on amount of reservations:");
+        Console.WriteLine("-----------------------------------------------------------");
+        foreach (var genre in sortedGenres)
+        {
+            Console.WriteLine($"     {genre.Key}: {genre.Value} seats booked");
+        }
     }
 }
