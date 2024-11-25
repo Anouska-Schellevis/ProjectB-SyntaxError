@@ -45,10 +45,40 @@ public static class ReservationAccess
         // Console.WriteLine("Executing query: " + sql);
         return _connection.Query<long>(sql).AsList();
     }
+    // public static List<ReservationModel> GetReservationsByUserId(long userId)
+    // {
+    //     string sql = $"SELECT * FROM {Table} WHERE user_id = {userId}";
+    //     // Console.WriteLine("Executing query: " + sql);
+    //     return _connection.Query<ReservationModel>(sql).AsList();
+    // }
 
     public static List<ReservationModel> GetReservationsByUserId(long userId)
     {
-        string sql = $"SELECT id, bar, seats_id AS SeatsID, user_id, show_id AS ShowId FROM {Table} WHERE user_id = {userId}";
+        string sql = $"SELECT id, bar, seats_id AS SeatsID, user_id AS UserID, show_id AS ShowId FROM {Table} WHERE user_id = {userId}";
+        // Console.WriteLine("Executing query: " + sql);
         return _connection.Query<ReservationModel>(sql).AsList();
     }
+
+    public static void ClearAllReservations()
+    {
+        string sql = $"DELETE FROM {Table};";
+        _connection.Execute(sql);
+        Console.WriteLine("All reservations have been deleted.");
+    }
+
+    public static void AddReservation(int bar, int showId, int seatsId, int userId)
+    {
+
+        string sql = "INSERT INTO reservation (bar, show_id, seats_id, user_id) VALUES (@Bar, @ShowId, @SeatsId, @UserId);";
+        _connection.Execute(sql, new { Bar = bar, ShowId = showId, SeatsId = seatsId, UserId = userId });
+
+    }
+
+    public static List<ReservationModel> GetAllReservations()
+    {
+        string sql = $"SELECT id, bar, seats_id AS SeatsID, user_id AS UserID, show_id AS ShowId FROM {Table}";
+        return _connection.Query<ReservationModel>(sql).ToList();
+    }
+
+
 }
