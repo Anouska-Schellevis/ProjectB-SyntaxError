@@ -1,4 +1,5 @@
-﻿Console.WriteLine("Welcome to this amazing program");
+﻿
+Console.Clear();
 Menu.Start();
 // Movie.Main();
 
@@ -15,7 +16,9 @@ Menu.Start();
 //Show.UserStart();
 
 //Show.Main();
-// Show.AdminStart();
+//Show.AdminStart();
 
 //SeatsAccess.ClearAllSeats();
 //ReservationAccess.ClearAllReservations();
+
+//Movie.TrackPopularity();

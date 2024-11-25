@@ -74,4 +74,11 @@ public static class ReservationAccess
 
     }
 
+    public static List<ReservationModel> GetAllReservations()
+    {
+        string sql = $"SELECT id, bar, seats_id AS SeatsID, user_id AS UserID, show_id AS ShowId FROM {Table}";
+        return _connection.Query<ReservationModel>(sql).ToList();
+    }
+
+
 }
