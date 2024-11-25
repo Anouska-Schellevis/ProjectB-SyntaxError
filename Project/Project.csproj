@@ -8,7 +8,7 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <Content Include="DataSources/project-test.db">
+    <Content Include="DataSources/*">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup> 
