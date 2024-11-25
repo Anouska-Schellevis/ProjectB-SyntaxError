@@ -23,10 +23,22 @@ public abstract class TheaterBase
             }
         }
     }
-
     public void DisplaySeats(long showId)
     {
         List<long> reservedSeats = ReservationAccess.GetReservedSeatsByShowId(showId);
+
+        foreach (long seatId in reservedSeats)
+        {
+            SeatsModel seat = SeatsLogic.GetById((int)seatId);
+            int row = seats.GetLength(0) - seat.RowNumber;
+            int col = seat.ColumnNumber - 1;
+
+            if (row >= 0 && row < seats.GetLength(0) && col >= 0 && col < seats.GetLength(1))
+            {
+                seats[row, col] = 'R';
+            }
+        }
+
         int rows = seats.GetLength(0);
         int columns = seats.GetLength(1);
 
@@ -50,8 +62,7 @@ public abstract class TheaterBase
                 }
                 else
                 {
-                    int seatId = (i * columns) + j;
-                    if (reservedSeats.Contains(seatId))
+                    if (seats[i, j] == 'R')
                     {
                         Console.ForegroundColor = ConsoleColor.Magenta;
                     }
@@ -73,6 +84,7 @@ public abstract class TheaterBase
                                 break;
                         }
                     }
+
                     if (seats[i, j] == 'A')
                     {
                         Console.Write("■   ");
@@ -82,22 +94,22 @@ public abstract class TheaterBase
                         Console.ForegroundColor = ConsoleColor.DarkGreen;
                         Console.Write("■   ");
                     }
+                    else if (seats[i, j] == 'R')
+                    {
+                        Console.Write("■   ");
+                    }
                 }
             }
             Console.WriteLine();
         }
+
         Console.ResetColor();
     }
 
-    // Method to select seats
     public void SelectSeats(long showId, UserModel acc)
     {
-
-
         List<long> reserved_seats = ReservationAccess.GetReservedSeatsByShowId(showId);
         DisplaySeats(showId);
-
-
 
         Console.WriteLine("How many seats do you want to book?");
         int how_many_people = Convert.ToInt32(Console.ReadLine());
@@ -118,7 +130,8 @@ public abstract class TheaterBase
                 return;
             }
 
-            row = seats.GetLength(0) - row; col -= 1;
+            row = seats.GetLength(0) - row;
+            col -= 1;
 
             if (row < 0 || row >= seats.GetLength(0) || col < 0 || col >= seats.GetLength(1))
             {
@@ -130,13 +143,38 @@ public abstract class TheaterBase
             {
                 seats[row, col] = 'C';
                 Console.WriteLine($"You have selected seat ({seats.GetLength(0) - row}, {col + 1}).");
+
+                int chairType = pricingCategories[row, col];
+                int price;
+                //THIS HAS TO BE CHANGED TO DOUBLES IN THE CODE AND NUMERIC IN DATABASE
+                //SO THAT WE CAN DO 12.5O RIGHT NOW THIS WORKS WITH ONLY WHOLE NUMMERS BUT
+                //SHOULD EASILY WORK WITH DATABASE CHANGES
+                //CHECK IF IT WORKS WITH ANOUSKA ADMIN MONEY SYSTEM.
+
+                if (chairType == 1)
+                {
+                    price = 10;
+                }
+                else if (chairType == 2)
+                {
+                    price = 12;
+                }
+                else if (chairType == 3)
+                {
+                    price = 15;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid chair type. Please select a valid seat.");
+                    return;
+                }
+
                 var selectedSeat = new SeatsModel
                 {
                     RowNumber = seats.GetLength(0) - row,
                     ColumnNumber = col + 1,
-                    Price = pricingCategories[row, col]
+                    Price = price
                 };
-
 
                 long seatId = SeatsAccess.InsertSeatAndGetId(selectedSeat);
 
@@ -147,17 +185,8 @@ public abstract class TheaterBase
                     ColumnNumber = selectedSeat.ColumnNumber,
                     Price = selectedSeat.Price
                 });
-                // Console.WriteLine("print0");
-                // var seatId = (row * seats.GetLength(1)) + col;
-                // selected_seats.Add(new SeatsModel
-                // {
-                //     Id = seatId,
-                //     RowNumber = seats.GetLength(0) - row,
-                //     ColumnNumber = col + 1,
-                //     Price = pricingCategories[row, col]
-                // });
-                DisplaySeats(showId);
 
+                DisplaySeats(showId);
             }
             else if (seats[row, col] == 'C')
             {
@@ -169,22 +198,17 @@ public abstract class TheaterBase
             }
         }
 
-
-        //UserModel currentUser = UserSession.CurrentUser;
-        //Console.WriteLine($"{currentUser.FirstName}");
-        //Console.WriteLine("print3");
         if (acc != null)
         {
-            Console.WriteLine("making reservation");
+            Console.WriteLine("Making reservation...");
             MakeReservation(selected_seats, acc, showId);
-            //Console.WriteLine("maked reservation");
-
         }
         else
         {
-            Console.WriteLine("there is no user");
+            Console.WriteLine("No user logged in, cannot make a reservation.");
         }
     }
+
 
     private void MakeReservation(List<SeatsModel> selectedSeats, UserModel acc, long showId)
     {
