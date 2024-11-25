@@ -59,7 +59,7 @@ public class ReservationTest
     }
 
     [TestMethod]
-    public void GetBarReservations_ReturnsOnlyBarReservations()
+    public void GetBarReservations_FromDatabase()
     {
         // Arrange
         List<ReservationModel> testReservations = new() { 
