@@ -5,10 +5,16 @@ namespace Unittest;
 [TestClass]
 public class SeatsTest
 {
+    [TestInitialize]
+    public void TestInitialize()
+    {
+        SeatsAccess.ClearAllSeats();
+    }
+
     // Id, RowNumber, ColumnNumber, Price
-    [DataRow(1, 5, 8, 150)]
-    [DataRow(2, 7, 3, 200)]
-    [DataRow(3, 12, 6, 100)]
+    [DataRow(1, 5, 6, 2)]
+    [DataRow(2, 12, 3, 3)]
+    [DataRow(3, 9, 6, 1)]
     [DataTestMethod]
     public void Write_Seats(Int64 Id, int RowNumber, int ColumnNumber, int Price)
     {
@@ -18,13 +24,42 @@ public class SeatsTest
 
         Assert.IsNotNull(actual);
     }
+
+    [TestMethod]
+    public void GetAllSeats_FromDatabase()
+    {
+        List<SeatsModel> testSeats = new()
+        {
+            new(1, 5, 6, 2),
+            new(2, 12, 3, 3),
+            new(3, 9, 6, 1)
+        };
+
+        foreach (SeatsModel testSeat in testSeats)
+        {
+            SeatsLogic.WriteSeat(testSeat);
+        }
+
+        int excpectedAmount = 2 + 3 + 1;
+
+        var retrievedSeats = SeatsLogic.GetAllSeats();
+        int actualAmount = retrievedSeats.Sum(testSeat => testSeat.Price);
+
+        Assert.AreEqual(excpectedAmount, actualAmount, "error.");
+    }
 }
 
 [TestClass]
 public class ReservationTest
 {
+    [TestInitialize]
+    public void TestInitialize()
+    {
+        ReservationAccess.ClearAllReservations();
+    }
+
     [TestMethod]
-    public void GetBarReservations_ReturnsOnlyBarReservations()
+    public void GetBarReservations_FromDatabase()
     {
         // Arrange
         List<ReservationModel> testReservations = new() { 
