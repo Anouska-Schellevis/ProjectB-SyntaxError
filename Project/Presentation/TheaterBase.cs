@@ -24,23 +24,22 @@ public abstract class TheaterBase
         }
     }
 
-    protected void UpdateSeatsArray(List<long> reservedSeats)
-    {
-        for (int i = 0; i < seats.GetLength(0); i++)
-        {
-            for (int j = 0; j < seats.GetLength(1); j++)
-            {
-                int seatId = (i * seats.GetLength(1)) + j;
+    // protected void UpdateSeatsArray(List<long> reservedSeats)
+    // {
+    //     for (int i = 0; i < seats.GetLength(0); i++)
+    //     {
+    //         for (int j = 0; j < seats.GetLength(1); j++)
+    //         {
+    //             int seatId = (i * seats.GetLength(1)) + j;
                 
-                if (reservedSeats.Contains(seatId))
-                {
-                    seats[i, j] = 'R';
-                }
+    //             if (reservedSeats.Contains(seatId))
+    //             {
+    //                 seats[i, j] = 'R';
+    //             }
                 
-            }
-        }
-        
-    }
+    //         }
+    //     }
+    // }
 
     public void DisplaySeats(long showId)
     {
@@ -130,7 +129,7 @@ public abstract class TheaterBase
     public void SelectSeats(long showId, UserModel acc)
     {
         List<long> reserved_seats = ReservationAccess.GetReservedSeatsByShowId(showId);
-        UpdateSeatsArray(reserved_seats);
+        // UpdateSeatsArray(reserved_seats);
         DisplaySeats(showId);
 
         Console.WriteLine("How many seats do you want to book?");
@@ -360,6 +359,7 @@ public abstract class TheaterBase
         bool rightIsValid = false;
 
         int countSeatPlusLeftSpace = 0;
+        int countEmptyLeftSpace = 0;
 
         // Count the total number of seats and spaces on the left side in the row
         for (int j = 0; j < seats.GetLength(1); j++)
@@ -377,6 +377,7 @@ public abstract class TheaterBase
             else
             {
                 // Console.WriteLine($"No seat: {seats[row, j]}");
+                countEmptyLeftSpace++;
             }
         }
 
@@ -406,7 +407,7 @@ public abstract class TheaterBase
             bool seatGroup = false;
 
             // Console.WriteLine($"{col} > 2 = {col > 2}");
-            if (col > 2) // At least two seats away from the far-left edge
+            if (col + 1 - 2 > countEmptyLeftSpace - 1) // At least two seats away from the far-left edge
             {
                 twoEmptySeat = seats[row, col - 2] == 'A' && seats[row, col - 1] == 'A';
                 nextToTwo = seats[row, col - 2] == 'R' && seats[row, col - 1] == 'R';
@@ -423,12 +424,12 @@ public abstract class TheaterBase
                     // Console.WriteLine($"More than 1 person left to seat: {seatGroup}");
                 }
             }
-            else if (col + 1 == 2) // At the edge with exactly two seats on the left
+            else if (col + 1 - 2 == countEmptyLeftSpace - 1) // At the edge with exactly two seats on the left
             {
                 seatGroup = peopleLeftToSeat >= 2;
-                // Console.WriteLine($"space left: {col} == 2");
                 // Console.WriteLine($"More than 1 person left to seat: {seatGroup}");
             }
+            Console.WriteLine($"space left: {col} + {1} - {2} == {countEmptyLeftSpace - 1}");
 
             // Determine validity for the left side
             bool groupMember = seats[row, col - 1] == 'C';
