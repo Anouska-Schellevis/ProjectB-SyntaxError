@@ -362,11 +362,11 @@ class Show
         {
             Console.WriteLine("And at what time? Enter in '%Y-%m-%d %H:%M' format");
             newDate_time = Console.ReadLine();
-            if (newDate_time.Contains("-") != true && newDate_time.Contains(":") != true)
+            if (newDate_time.Contains("-") != true || newDate_time.Contains(":") != true)
             {
                 Console.WriteLine("Not a valid date time format. Try again.");
             }
-        } while (newDate_time.Contains("-") != true && newDate_time.Contains(":") != true);
+        } while (newDate_time.Contains("-") != true || newDate_time.Contains(":") != true);
 
 
         show.TheatreId = newTheatreId;
@@ -388,22 +388,41 @@ class Show
         string newDate_time;
         do
         {
-            Console.WriteLine("Enter new theater ID for this movie.");
+            Console.WriteLine("Enter new theater for this movie(1, 2 or 3).");
             newTheaterId = Convert.ToInt32(Console.ReadLine());
             if (newTheaterId != 1 && newTheaterId != 2 && newTheaterId != 3)
             {
                 Console.WriteLine("Theater ID does not exist. Try again.");
             }
         } while (newTheaterId != 1 && newTheaterId != 2 && newTheaterId != 3);
+        // do
+        // {
+        //     Console.WriteLine("Enter movie ID for this movie.");
+        //     newMovieId = Convert.ToInt32(Console.ReadLine());
+        //     if (MoviesAccess.GetById(newMovieId) == null)
+        //     {
+        //         Console.WriteLine("Movie ID does not exist. Try again.");
+        //     }
+        // } while (MoviesAccess.GetById(newMovieId) == null);
+        Dictionary<int, string> idmovie = Movie.MakeMovieDict();
+        int count = 0;
+        Console.WriteLine("What movie would you like to add to this show?");
+        foreach (var movie in idmovie)
+        {
+            count++;
+            Console.WriteLine($"{count}. {movie.Value}");
+        }
+        int moviechoice;
+        string title;
         do
         {
-            Console.WriteLine("Enter movie ID for this movie.");
-            newMovieId = Convert.ToInt32(Console.ReadLine());
-            if (MoviesAccess.GetById(newMovieId) == null)
+            moviechoice = Convert.ToInt32(Console.ReadLine());
+            if (moviechoice >= count)
             {
                 Console.WriteLine("Movie ID does not exist. Try again.");
             }
-        } while (MoviesAccess.GetById(newMovieId) == null);
+        }while(moviechoice >= count);
+        newMovieId = idmovie.ElementAt(moviechoice - 1).Key;
         do
         {
             Console.WriteLine("Enter date for this show in '%Y-%m-%d %H:%M' format.");
@@ -574,6 +593,7 @@ class Show
         {
             bool printed = false;
             DateTime CurrentDate = DateTime.Now;
+            DateTime WeekInFuture = CurrentDate.Date.AddDays(7).AddSeconds(-1);
             DayOfWeek CurrentDay = CurrentDate.DayOfWeek;
             DayOfWeek DayToPrint = (DayOfWeek)(((int)CurrentDay + i) % 7);
             string StringCurrentDate = Convert.ToString(CurrentDate).Split(" ")[0];
@@ -589,7 +609,7 @@ class Show
                 string StringTime = show.Date.Split(" ")[1]; ;
                 string StringCurrentTime = Convert.ToString(CurrentDate).Split(" ")[1];
 
-                if (CurrentDate < DateAndTime)
+                if (CurrentDate < DateAndTime && DateAndTime < WeekInFuture)
                 {
                     if (DateAndTime.DayOfWeek == DayToPrint)
                     {
