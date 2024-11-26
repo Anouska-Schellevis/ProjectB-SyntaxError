@@ -239,12 +239,11 @@ public abstract class TheaterBase
                             continue;
                         }
                     }
-
                     seats[row, col] = 'C';
                     Console.WriteLine($"You have selected seat ({seats.GetLength(0) - row}, {col + 1}).");
 
                     int chairType = pricingCategories[row, col];
-                    double price = 0;
+                    double price;
                     //THIS HAS TO BE CHANGED TO DOUBLES IN THE CODE AND NUMERIC IN DATABASE
                     //SO THAT WE CAN DO 12.5O RIGHT NOW THIS WORKS WITH ONLY WHOLE NUMMERS BUT
                     //SHOULD EASILY WORK WITH DATABASE CHANGES
@@ -262,12 +261,10 @@ public abstract class TheaterBase
                     {
                         price = 15.00;
                     }
-
-                    row = seats.GetLength(0) - row; col -= 1;
-
-                    if (row < 0 || row >= seats.GetLength(0) || col < 0 || col >= seats.GetLength(1))
+                    else
                     {
-                        price = 12.50;
+                        Console.WriteLine("Invalid chair type. Please select a valid seat.");
+                        continue;
                     }
 
                     var selectedSeat = new SeatsModel
