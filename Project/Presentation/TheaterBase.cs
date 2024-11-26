@@ -147,14 +147,8 @@ public abstract class TheaterBase
                 string input = Console.ReadLine();
 
                 string[] parts = input.Split(' ');
-
-                if (parts.Length != 2 || !int.TryParse(parts[0], out int row) || !int.TryParse(parts[1], out int col))
-                {
-                    Console.WriteLine("Invalid input format.");
-                    continue;
-                }
-
-                row = seats.GetLength(0) - row; col -= 1;
+                int.TryParse(parts[0], out int row);
+                int.TryParse(parts[1], out int col);
 
                 if (row < 0 || row >= seats.GetLength(0) || col < 0 || col >= seats.GetLength(1))
                 {
@@ -250,7 +244,7 @@ public abstract class TheaterBase
                     Console.WriteLine($"You have selected seat ({seats.GetLength(0) - row}, {col + 1}).");
 
                     int chairType = pricingCategories[row, col];
-                    int price;
+                    double price = 0;
                     //THIS HAS TO BE CHANGED TO DOUBLES IN THE CODE AND NUMERIC IN DATABASE
                     //SO THAT WE CAN DO 12.5O RIGHT NOW THIS WORKS WITH ONLY WHOLE NUMMERS BUT
                     //SHOULD EASILY WORK WITH DATABASE CHANGES
@@ -258,20 +252,22 @@ public abstract class TheaterBase
 
                     if (chairType == 1)
                     {
-                        price = 10;
+                        price = 10.00;
                     }
                     else if (chairType == 2)
                     {
-                        price = 12;
+                        price = 12.50;
                     }
                     else if (chairType == 3)
                     {
-                        price = 15;
+                        price = 15.00;
                     }
-                    else
+
+                    row = seats.GetLength(0) - row; col -= 1;
+
+                    if (row < 0 || row >= seats.GetLength(0) || col < 0 || col >= seats.GetLength(1))
                     {
-                        Console.WriteLine("Invalid chair type. Please select a valid seat.");
-                        return;
+                        price = 12.50;
                     }
 
                     var selectedSeat = new SeatsModel

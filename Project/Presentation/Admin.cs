@@ -2,7 +2,7 @@ class Admin
 {
     public static void Start(UserModel currentUser)
     {
-        Console.Clear();
+        //Console.Clear();
         Console.WriteLine("Admin page\n");
         Console.WriteLine($"Welcome back {currentUser.FirstName} {currentUser.LastName}\n");
         while (true)
@@ -13,12 +13,12 @@ class Admin
             if (input == 1)
             {
                 Movie.Start();
-                Console.Clear();
+                //Console.Clear();
             }
             else if (input == 2)
             {
                 Show.AdminStart();
-                Console.Clear();
+                //Console.Clear();
             }
             else if (input == 3)
             {
@@ -37,7 +37,7 @@ class Admin
 
     static void PrintSeats()
     {
-        int totalMoney = 0;
+        double totalMoney = 0;
 
         List<SeatsModel> seats = SeatsLogic.GetAllSeats();
         foreach (SeatsModel seat in seats)
