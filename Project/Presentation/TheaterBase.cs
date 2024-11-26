@@ -142,13 +142,20 @@ public abstract class TheaterBase
         {
             do
             {
-                
+                Console.WriteLine($"Booking seat {i + 1}");
                 Console.WriteLine("Enter the row and column of the seat (e.g., 5 6):");
                 string input = Console.ReadLine();
 
                 string[] parts = input.Split(' ');
-                int.TryParse(parts[0], out int row);
-                int.TryParse(parts[1], out int col);
+
+                if (parts.Length != 2 || !int.TryParse(parts[0], out int row) || !int.TryParse(parts[1], out int col))
+                {
+                    Console.WriteLine("Invalid input format.");
+                    continue;
+                }
+
+                row = seats.GetLength(0) - row;
+                col -= 1;
 
                 if (row < 0 || row >= seats.GetLength(0) || col < 0 || col >= seats.GetLength(1))
                 {
