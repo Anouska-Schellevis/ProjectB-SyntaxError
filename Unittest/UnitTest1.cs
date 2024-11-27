@@ -80,4 +80,27 @@ public class ReservationTest
         Assert.AreEqual(2, barReservations.Count, "The count of bar reservations should match the expected value.");
         Assert.IsTrue(barReservations.All(r => r.Bar), "All returned reservations should be bar reservations.");
     }
+
+    // [TestMethod]
+    // public void GetAllSeats_FromDatabase()
+    // {
+    //     List<SeatsModel> testSeats = new()
+    //     {
+    //         new(1, 5, 6, 12.5m),
+    //         new(2, 12, 3, 15.0m),
+    //         new(3, 9, 6, 10.0m)
+    //     };
+
+    //     foreach (SeatsModel testSeat in testSeats)
+    //     {
+    //         SeatsLogic.WriteSeat(testSeat);
+    //     }
+
+    //     decimal excpectedAmount = 12.5m + 15.0m + 10.0m;
+
+    //     var retrievedSeats = SeatsLogic.GetAllSeats();
+    //     decimal actualAmount = retrievedSeats.Sum(testSeat => testSeat.Price);
+
+    //     Assert.AreEqual(excpectedAmount, actualAmount, "error.");
+    // }
 }
