@@ -70,7 +70,7 @@ public class Reservation
             {
                 var flatReservations = groupedReservations.SelectMany(group => group).ToList();
                 //grouped reservations holds multiple lists, this flat reservations makes it all into one list
-                CancelReservation(flatReservations);
+                CancelReservation(flatReservations, acc);
                 menuChoice = true;
             }
             else if (userInput == "2")
@@ -85,7 +85,7 @@ public class Reservation
         }
     }
 
-    public static void CancelReservation(List<ReservationModel> userReservations)
+    public static void CancelReservation(List<ReservationModel> userReservations, UserModel acc)
     {
         //this gets called with that flat reservations from see reservations, which is one list of all that users reservations
         bool reservationChoice = false;
@@ -148,6 +148,29 @@ public class Reservation
 
                 Console.WriteLine($"Successfully canceled reservation for Movie: {reservedMovie.Title}, Show Date: {reservedShow.Date}");
                 reservationChoice = true;
+                bool menuChoice = false;
+                while (!menuChoice)
+                {
+                    Console.WriteLine("\nChoose an option:");
+                    Console.WriteLine("[1] Return to menu");
+                    Console.WriteLine("[2] See your reservations");
+                    string userInput2 = Console.ReadLine();
+
+                    if (userInput2 == "1")
+                    {
+                        User.Start(acc);
+                        menuChoice = true;
+                    }
+                    else if (userInput2 == "2")
+                    {
+                        SeeReservation(acc);
+                        menuChoice = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid option, please try again.");
+                    }
+                }
             }
             catch (FormatException)
             {
