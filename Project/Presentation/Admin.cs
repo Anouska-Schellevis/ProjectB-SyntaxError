@@ -3,7 +3,7 @@ class Admin
     public static void Start(UserModel currentUser)
     {
         Console.Clear();
-        Console.WriteLine("Admin page\n");
+        Console.WriteLine("===== Admin Page =====");
         Console.WriteLine($"Welcome back {currentUser.FirstName} {currentUser.LastName}\n");
         while (true)
         {
@@ -12,24 +12,29 @@ class Admin
 
             if (input == 1)
             {
-                Movie.Start();
                 Console.Clear();
+                Movie.Start();
+                //Console.Clear();
             }
             else if (input == 2)
             {
-                Show.AdminStart();
                 Console.Clear();
+                Show.AdminStart();
+                //Console.Clear();
             }
             else if (input == 3)
             {
+                Console.Clear();
                 Bar.Start();
             }
             else if (input == 4)
             {
+                Console.Clear();
                 PrintSeats();
             }
             else if (input == 5)
             {
+                Console.Clear();
                 break;
             }
         }
@@ -37,7 +42,8 @@ class Admin
 
     static void PrintSeats()
     {
-        int totalMoney = 0;
+        Console.Clear();
+        decimal totalMoney = 0m;
 
         List<SeatsModel> seats = SeatsLogic.GetAllSeats();
         foreach (SeatsModel seat in seats)
@@ -45,6 +51,6 @@ class Admin
             totalMoney += seat.Price;
         }
 
-        Console.WriteLine($"The total: {totalMoney}");
+        Console.WriteLine($"The total: {totalMoney:C2}");
     }
 }
