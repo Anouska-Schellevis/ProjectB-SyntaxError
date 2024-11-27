@@ -7,7 +7,12 @@ class Admin
         Console.WriteLine($"Welcome back {currentUser.FirstName} {currentUser.LastName}\n");
         while (true)
         {
-            Console.WriteLine("[1]Show the menu of the movies\n[2]Show the menu of the shows\n[3]Show the menu of the bar\n[4]Show the current balance\n[5]Logout");
+            Console.WriteLine("[1]Show the menu of the movies");
+            Console.WriteLine("[2]Show the menu of the shows");
+            Console.WriteLine("[3]Show the menu of the bar");
+            Console.WriteLine("[4]Show the current balance");
+            Console.WriteLine("[5]Show the menu of the vouchers");
+            Console.WriteLine("[6]Logout");
             int input = Convert.ToInt16(Console.ReadLine());
 
             if (input == 1)
@@ -33,6 +38,11 @@ class Admin
                 PrintSeats();
             }
             else if (input == 5)
+            {
+                Console.Clear();
+                Voucher.start();
+            }
+            else if (input == 6)
             {
                 Console.Clear();
                 break;
