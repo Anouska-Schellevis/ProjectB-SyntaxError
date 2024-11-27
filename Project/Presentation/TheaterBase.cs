@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 public abstract class TheaterBase
 {
-    protected char[,] seats;
+    public char[,] seats;
     protected int[,] pricingCategories;
 
     public TheaterBase(int rows, int columns, int[,] pricingCategories)
@@ -25,6 +25,7 @@ public abstract class TheaterBase
     }
     public void DisplaySeats(long showId)
     {
+        Console.Clear();
         List<long> reservedSeats = ReservationAccess.GetReservedSeatsByShowId(showId);
 
         foreach (long seatId in reservedSeats)
@@ -102,6 +103,18 @@ public abstract class TheaterBase
             }
             Console.WriteLine();
         }
+        Console.ResetColor();
+        Console.WriteLine("\nChair Prices:");
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.Write("■ Premium: [€15.00] ");
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.Write("■ Standard: [€12.50] ");
+        Console.ForegroundColor = ConsoleColor.Blue;
+        Console.Write("■ Basic: [€10.00] ");
+        Console.ForegroundColor = ConsoleColor.Magenta;
+        Console.WriteLine("■ Reserved chairs");
+        Console.ResetColor();
+        Console.WriteLine();
 
         Console.ResetColor();
     }
@@ -145,7 +158,7 @@ public abstract class TheaterBase
                 Console.WriteLine($"You have selected seat ({seats.GetLength(0) - row}, {col + 1}).");
 
                 int chairType = pricingCategories[row, col];
-                double price;
+                decimal price;
                 //THIS HAS TO BE CHANGED TO DOUBLES IN THE CODE AND NUMERIC IN DATABASE
                 //SO THAT WE CAN DO 12.5O RIGHT NOW THIS WORKS WITH ONLY WHOLE NUMMERS BUT
                 //SHOULD EASILY WORK WITH DATABASE CHANGES
@@ -153,15 +166,15 @@ public abstract class TheaterBase
 
                 if (chairType == 1)
                 {
-                    price = 10.00;
+                    price = 10.00m;
                 }
                 else if (chairType == 2)
                 {
-                    price = 12.50;
+                    price = 12.50m;
                 }
                 else if (chairType == 3)
                 {
-                    price = 15.00;
+                    price = 15.00m;
                 }
                 else
                 {
@@ -232,6 +245,7 @@ public abstract class TheaterBase
             ReservationLogic.WriteReservation(reservation);
         }
         Console.WriteLine($"Successfully reserved seats for {acc.FirstName} {acc.LastName}.");
+        User.Start(acc);
     }
 
     static public bool IsBarAvailable(int sizeOfGroup, long showId)
