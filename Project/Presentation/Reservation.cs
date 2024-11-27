@@ -2,6 +2,7 @@ public class Reservation
 {
     public static void SeeReservation(UserModel acc)
     {
+        Console.Clear();
 
         Console.WriteLine($"Welcome, {acc.FirstName}!");
 
@@ -74,7 +75,7 @@ public class Reservation
             }
             else if (userInput == "2")
             {
-                UserLogin.Start();
+                User.Start(acc);
                 menuChoice = true;
             }
             else
@@ -108,11 +109,15 @@ public class Reservation
 
                 if (selectedReservation == null)
                 {
-                    Console.WriteLine("Reservation is null. Cannot cancel.");
+                    Console.WriteLine("Reservation doesn't exist.");
                     return;
                 }
 
-                Console.WriteLine($"Cancelling reservation for Show Reservation: {selectedReservation.ShowId}");
+                // Get the show and movie information
+                ShowModel reservedShow = ShowAccess.GetByID((int)selectedReservation.ShowId);
+                MoviesModel reservedMovie = MoviesAccess.GetByLongId(reservedShow.MovieId);
+
+                Console.WriteLine($"Cancelling reservation for Movie: {reservedMovie.Title}, Show Date: {reservedShow.Date}");
 
                 //because earlier we had to make user reservations one list, destroying the grouping on show id, we group these reservations on show id again,
                 // to group all reservations for each seperate show
@@ -124,27 +129,24 @@ public class Reservation
 
                 if (reservedSeatIds.Count == 0)
                 {
-                    Console.WriteLine($"No reserved seats found for show {selectedReservation.ShowId}.");
+                    Console.WriteLine($"No reserved seats found for {reservedMovie.Title}, Show Date: {reservedShow.Date}");
                     return;
                 }
-
-                Console.WriteLine($"Reserved seats for Show Reservation {selectedReservation.ShowId}: {string.Join(", ", reservedSeatIds)}");
 
                 foreach (var seatId in reservedSeatIds)
                 {
                     //for each seat in that list remove that
                     int seatIdInt = (int)seatId;
                     SeatsAccess.Delete(seatIdInt);
-                    Console.WriteLine($"Deleted seat with ID: {seatIdInt}");
+                    //Console.WriteLine($"Deleted seat with ID: {seatIdInt}");
                 }
 
                 foreach (var reservation in groupedReservations)
                 {
                     ReservationAccess.Delete((int)reservation.Id);
-                    Console.WriteLine($"Deleted reservation with ID: {reservation.Id}");
                 }
 
-                Console.WriteLine($"Successfully canceled reservations and deleted associated seats for ShowId: {selectedReservation.ShowId}");
+                Console.WriteLine($"Successfully canceled reservation for Movie: {reservedMovie.Title}, Show Date: {reservedShow.Date}");
                 reservationChoice = true;
             }
             catch (FormatException)
