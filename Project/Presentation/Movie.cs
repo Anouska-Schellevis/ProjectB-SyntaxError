@@ -21,14 +21,16 @@ class Movie
         switch (choice)
         {
             case 1:
+                Console.Clear();
                 MoviePrint();
                 break;
             case 2:
-
+                Console.Clear();
                 MovieAdd();
                 Console.WriteLine("Movie is added");
                 break;
             case 3:
+                Console.Clear();
                 Console.WriteLine("Enter the title to edit");
                 string Title_to_edit = Console.ReadLine();
                 MoviesModel movie = MoviesLogic.GetByTitle(Title_to_edit);
@@ -44,6 +46,7 @@ class Movie
                 }
                 break;
             case 4:
+                Console.Clear();
                 int idToDelete;
                 do
                 {
@@ -58,11 +61,13 @@ class Movie
                 Console.WriteLine("Movie is deleted");
                 break;
             case 5:
+                Console.Clear();
                 Console.WriteLine("Enter the title of the movie you want to search for");
                 string Title_to_search = Console.ReadLine();
                 Console.WriteLine(MovieSearch(Title_to_search));
                 break;
             case 6:
+                Console.Clear();
                 TrackPopularity();
                 break;
             default:
@@ -212,6 +217,28 @@ Description: {movie.Description}
         foreach (var genre in sortedGenres)
         {
             Console.WriteLine($"     {genre.Key}: {genre.Value} seats booked");
+        }
+
+        Console.WriteLine("\n[1] Go back to movie menu");
+        Console.WriteLine("[2] Exit to admin menu");
+
+        while (true)
+        {
+            string choice = Console.ReadLine();
+            if (choice == "1")
+            {
+                Console.Clear();
+                Start();
+                return;
+            }
+            else if (choice == "2")
+            {
+                return;
+            }
+            else
+            {
+                Console.WriteLine("Invalid option. Please enter 1 or 2.");
+            }
         }
     }
 }
