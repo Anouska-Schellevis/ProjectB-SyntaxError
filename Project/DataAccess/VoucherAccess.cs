@@ -28,6 +28,12 @@ public static class VoucherAccess
         return _connection.QueryFirstOrDefault<VoucherModel>(sql, new { Type = type });
     }
 
+    public static List<VoucherModel> GetAllVouchers()
+    {
+        string sql = $"SELECT * FROM {Table}";
+        return _connection.Query<VoucherModel>(sql).ToList();
+    }
+
     // public static void Update(ShowModel show)
     // {
     //     string sql = $"UPDATE {Table} SET theatre_id = @TheatreId, movie_id = @MovieId, date = @Date WHERE id = @Id";

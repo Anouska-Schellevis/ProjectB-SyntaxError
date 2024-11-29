@@ -57,23 +57,53 @@ class Voucher
                     // Add the character to the string
                     code += codeChars[random];
                 }
+
+                List<VoucherModel> vouchers = VoucherLogic.GetAllVouchers();
+                foreach (VoucherModel voucher in vouchers)
+                {
+                    if (voucher.Code == code)
+                    {
+                        code = "";
+
+                        for (int i = 0; i < size; i++)
+                        {
+                            // Select an random index
+                            int random = res.Next(codeChars.Length);
+
+                            // Add the character to the string
+                            code += codeChars[random];
+                        }
+                    }
+                }
                 Console.WriteLine($"Generated code {code}");
 
-                VoucherModel newVoucher = new VoucherModel
-                {
-                    Id = 0,
-                    Code = code,
-                    Description = description,
-                    Amount = amount,
-                    Type = type
-                };
+                VoucherModel newVoucher = new VoucherModel(0, code, description, amount, type, null);
+                VoucherLogic.CreateVoucher(newVoucher);
 
                 Console.WriteLine("Done!!");
 
             }
             else if (input == 2)
             {
+                int count = 1;
 
+                List<VoucherModel> vouchers = VoucherLogic.GetAllVouchers();
+
+                foreach (VoucherModel voucher in vouchers)
+                {
+                    Console.WriteLine($"[{count}]");
+                    Console.WriteLine($"Code: {voucher.Code}");
+                    if (voucher.Type == "percentage")
+                    {
+                        Console.WriteLine($"Amount: {voucher.Amount}%");
+                    }
+                    else if (voucher.Type == "euro")
+                    {
+                        Console.WriteLine($"Amount: €{voucher.Amount},-");
+                    }
+                    Console.WriteLine($"Description: {voucher.Description}\n---------------------------------------");
+                    count += 1;
+                }
             }
             else if (input == 3)
             {
