@@ -13,6 +13,11 @@ public class VoucherLogic
 
     }
 
+    static public void CreateVoucher(VoucherModel voucher)
+    {
+        VoucherAccess.Write(voucher);
+    }
+
     public VoucherModel GetById(int id)
     {
         return VoucherAccess.GetById(id);
@@ -23,9 +28,9 @@ public class VoucherLogic
         return VoucherAccess.GetByType(type);
     }
 
-    public void CreateVoucher(VoucherModel voucher)
+    static public List<VoucherModel> GetAllVouchers()
     {
-        VoucherAccess.Write(voucher);
+        return VoucherAccess.GetAllVouchers();
     }
 }
 
