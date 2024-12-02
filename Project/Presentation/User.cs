@@ -2,8 +2,8 @@ class User
 {
     public static void Start(UserModel acc)
     {
-        // Console.Clear();
-        Console.WriteLine("User page\n");
+        Console.Clear();
+        Console.WriteLine("===== User Page =====");
 
         List<ReservationModel> reservationsByUser = ReservationLogic.GetReservationsByUserId(acc.Id);
 

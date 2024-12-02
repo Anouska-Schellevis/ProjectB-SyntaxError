@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 public abstract class TheaterBase
 {
-    protected char[,] seats;
+    public char[,] seats;
     protected int[,] pricingCategories;
 
     public TheaterBase(int rows, int columns, int[,] pricingCategories)
@@ -43,6 +43,7 @@ public abstract class TheaterBase
 
     public void DisplaySeats(long showId)
     {
+        Console.Clear();
         List<long> reservedSeats = ReservationAccess.GetReservedSeatsByShowId(showId);
 
         foreach (long seatId in reservedSeats)
@@ -122,6 +123,18 @@ public abstract class TheaterBase
             }
             Console.WriteLine();
         }
+        Console.ResetColor();
+        Console.WriteLine("\nChair Prices:");
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.Write("■ Premium: [€15.00] ");
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.Write("■ Standard: [€12.50] ");
+        Console.ForegroundColor = ConsoleColor.Blue;
+        Console.Write("■ Basic: [€10.00] ");
+        Console.ForegroundColor = ConsoleColor.Magenta;
+        Console.WriteLine("■ Reserved chairs");
+        Console.ResetColor();
+        Console.WriteLine();
 
         Console.ResetColor();
     }
@@ -351,6 +364,7 @@ public abstract class TheaterBase
             ReservationLogic.WriteReservation(reservation);
         }
         Console.WriteLine($"Successfully reserved seats for {acc.FirstName} {acc.LastName}.");
+        User.Start(acc);
     }
 
     private bool IsValidSingleSeat(int row, int col, int peopleLeftToSeat, int totalAmountOfPeople)
