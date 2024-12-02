@@ -275,7 +275,7 @@ public abstract class TheaterBase
                     // Console.WriteLine($"You have selected seat ({seats.GetLength(0) - row}, {col + 1}).");
 
                     int chairType = pricingCategories[row, col];
-                    double price;
+                    decimal price;
                     //THIS HAS TO BE CHANGED TO DOUBLES IN THE CODE AND NUMERIC IN DATABASE
                     //SO THAT WE CAN DO 12.5O RIGHT NOW THIS WORKS WITH ONLY WHOLE NUMMERS BUT
                     //SHOULD EASILY WORK WITH DATABASE CHANGES
@@ -283,15 +283,15 @@ public abstract class TheaterBase
 
                     if (chairType == 1)
                     {
-                        price = 10.00;
+                        price = 10.00m;
                     }
                     else if (chairType == 2)
                     {
-                        price = 12.50;
+                        price = 12.50m;
                     }
                     else if (chairType == 3)
                     {
-                        price = 15.00;
+                        price = 15.00m;
                     }
                     else
                     {
