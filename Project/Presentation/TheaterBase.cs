@@ -208,8 +208,8 @@ public abstract class TheaterBase
                             }
                         }
 
-                        // Console.WriteLine($"{countConnectedEmptySeats[selectedSeatGroupIndex]} == {how_many_people} + 1 = {countConnectedEmptySeats[selectedSeatGroupIndex] == how_many_people + 1}");
-                        // Console.WriteLine($"{countConnectedEmptySeats[selectedSeatGroupIndex]} == {how_many_people} + 3 = {countConnectedEmptySeats[selectedSeatGroupIndex] == how_many_people + 3}");
+                        Console.WriteLine($"{countConnectedEmptySeats[selectedSeatGroupIndex]} == {how_many_people} + 1 = {countConnectedEmptySeats[selectedSeatGroupIndex] == how_many_people + 1}");
+                        Console.WriteLine($"{countConnectedEmptySeats[selectedSeatGroupIndex]} == {how_many_people} + 3 = {countConnectedEmptySeats[selectedSeatGroupIndex] == how_many_people + 3}");
 
                         if (countConnectedEmptySeats[selectedSeatGroupIndex] == how_many_people + 1)
                         {
@@ -380,30 +380,30 @@ public abstract class TheaterBase
         {
             if (j < seats.GetLength(1) / 2)
             {
-                // Console.WriteLine($"Left column: {seats[row, j]}");
+                Console.WriteLine($"Left column: {seats[row, j]}");
                 countSeatPlusLeftSpace++;
             }
             else if (seats[row, j] != ' ')
             {
-                // Console.WriteLine($"Seat: {seats[row, j]}");
+                Console.WriteLine($"Seat: {seats[row, j]}");
                 countSeatPlusLeftSpace++;
             }
             else
             {
-                // Console.WriteLine($"No seat: {seats[row, j]}");
+                Console.WriteLine($"No seat: {seats[row, j]}");
                 countEmptyLeftSpace++;
             }
         }
 
-        // Console.WriteLine($"Number of seats: {countSeatPlusLeftSpace}");
-        // Console.WriteLine();
+        Console.WriteLine($"Number of seats: {countSeatPlusLeftSpace}");
+        Console.WriteLine();
 
         // Validate left side of the row
-        // Console.WriteLine("Checking left side of the row...");
-        // Console.WriteLine($"{col} + 1 == 1 = {col + 1 == 1}");
-        // Console.WriteLine($"{col} + 1 > 1 = {col + 1 > 1}");
+        Console.WriteLine("Checking left side of the row...");
+        Console.WriteLine($"{col} + 1 == 1 = {col + 1 == 1}");
+        Console.WriteLine($"{col} + 1 > 1 = {col + 1 > 1}");
 
-        if (col + 1 == 1) // No seats to the left
+        if (col + 1 == countEmptyLeftSpace + 1) // No seats to the left
         {
             leftIsValid = true;
         }
@@ -420,47 +420,55 @@ public abstract class TheaterBase
             bool nextToOne = seats[row, col - 1] == 'R';
             bool seatGroup = false;
 
-            // Console.WriteLine($"{col} > 2 = {col > 2}");
-            if (col + 1 - 2 > countEmptyLeftSpace - 1) // At least two seats away from the far-left edge
+            Console.WriteLine($"{col} + {1} - {2} > {countEmptyLeftSpace} + {1} = {col + 1 - 2 > countEmptyLeftSpace + 1}");
+            if (col + 1 - 2 > countEmptyLeftSpace + 1) // At least two seats away from the far-left edge
             {
                 twoEmptySeat = seats[row, col - 2] == 'A' && seats[row, col - 1] == 'A';
                 nextToTwo = seats[row, col - 2] == 'R' && seats[row, col - 1] == 'R';
                 nextToOne = nextToOne && seats[row, col - 2] == 'A';
-                seatGroup = peopleLeftToSeat < 1;
+                seatGroup = peopleLeftToSeat == 1;
 
-                // Console.WriteLine($"Expected = 'A', 'A' or 'A', 'R' or 'R', 'R'");
-                // Console.WriteLine($"Actual = '{seats[row, col - 2]}', '{seats[row, col - 1]}'");
+                Console.WriteLine($"Expected = 'A', 'A' or 'A', 'R' or 'R', 'R'");
+                Console.WriteLine($"Actual = '{seats[row, col - 2]}', '{seats[row, col - 1]}'");
 
-                if (seats[row, col - 2] == 'R' && seats[row, col - 1] == 'A') // Adjacent to another group
+                if (seats[row, col - 2] == 'R' && seats[row, col - 1] == 'A') // This is the seat the person is taking, 
                 {
+                    Console.WriteLine("seats[row, col - 2] == 'R' && seats[row, col - 1] == 'A'");
+
                     seatGroup = peopleLeftToSeat >= 2 && peopleLeftToSeat < totalAmountOfPeople;
-                    // Console.WriteLine("seats[row, col - 2] == 'R' && seats[row, col - 1] == 'A'");
-                    // Console.WriteLine($"More than 1 person left to seat: {seatGroup}");
+
+                    Console.WriteLine($"More than 1 person left to seat: {seatGroup}");
+                    
+                    if (seatGroup && seats[row, col + 1] == 'A' && seats[row, col + 2] == 'A')
+                    {
+                        return false; // If there are seats still to the right, these must be filled first
+                    }
                 }
             }
-            else if (col + 1 - 2 == countEmptyLeftSpace - 1) // At the edge with exactly two seats on the left
+            else if (col + 1 - 2 == countEmptyLeftSpace + 1) // At the edge with exactly two seats on the left
             {
                 seatGroup = peopleLeftToSeat >= 2;
-                // Console.WriteLine($"More than 1 person left to seat: {seatGroup}");
+                Console.WriteLine($"More than 1 person left to seat: {seatGroup}");
             }
-            Console.WriteLine($"space left: {col} + {1} - {2} == {countEmptyLeftSpace - 1}");
+            Console.WriteLine($"space left: {col} + {1} - {2} == {countEmptyLeftSpace} + {1} = {col + 1 - 2 == countEmptyLeftSpace + 1}");
 
             // Determine validity for the left side
             bool groupMember = seats[row, col - 1] == 'C';
             leftIsValid = twoEmptySeat || nextToTwo || nextToOne || groupMember || seatGroup;
-            /*
+            // /*
             Console.WriteLine($"Left is valid if one of these conditions is true:");
             Console.WriteLine($"Two empty seats: {twoEmptySeat}");
             Console.WriteLine($"Two reserved seats: {nextToTwo}");
             Console.WriteLine($"Next to one reserved seat: {nextToOne}");
             Console.WriteLine($"Next to groupmate: {groupMember}");
-            */
+            Console.WriteLine($"At least two people left to seat: {seatGroup}");
+            // */
         }
 
         // Validate right side of the row
-        // Console.WriteLine("Checking right side of the row...");
-        // Console.WriteLine($"{col} + 1 == {countSeatPlusLeftSpace} = {col + 1 == countSeatPlusLeftSpace}");
-        // Console.WriteLine($"{col} + 1 < {countSeatPlusLeftSpace} = {col + 1 < countSeatPlusLeftSpace}");
+        Console.WriteLine("Checking right side of the row...");
+        Console.WriteLine($"{col} + 1 == {countSeatPlusLeftSpace} = {col + 1 == countSeatPlusLeftSpace}");
+        Console.WriteLine($"{col} + 1 < {countSeatPlusLeftSpace} = {col + 1 < countSeatPlusLeftSpace}");
 
         if (col + 1 == countSeatPlusLeftSpace) // No seats to the right
         {
@@ -474,46 +482,56 @@ public abstract class TheaterBase
             bool nextToOne = seats[row, col + 1] == 'R';
             bool seatGroup = false;
 
-            // Console.WriteLine($"{countSeatPlusLeftSpace} - {col} > 2 = {countSeatPlusLeftSpace - col > 2}");
+            Console.WriteLine($"{countSeatPlusLeftSpace} - {col} > 2 = {countSeatPlusLeftSpace - col > 2}");
             if (countSeatPlusLeftSpace - col > 2) // At least two seats away from the far-right edge
             {
                 twoEmptySeat = seats[row, col + 1] == 'A' && seats[row, col + 2] == 'A';
                 nextToTwo = seats[row, col + 1] == 'R' && seats[row, col + 2] == 'R';
                 nextToOne = nextToOne && seats[row, col + 2] == 'A';
 
-                // Console.WriteLine($"Expected = 'A', 'A' or 'A', 'R' or 'R', 'R'");
-                // Console.WriteLine($"Actual = '{seats[row, col + 2]}', '{seats[row, col + 1]}'");
+                Console.WriteLine($"Expected = 'A', 'A' or 'A', 'R' or 'R', 'R'");
+                Console.WriteLine($"Actual = '{seats[row, col + 2]}', '{seats[row, col + 1]}'");
 
                 if (seats[row, col + 2] == 'R' && seats[row, col + 1] == 'A') // Adjacent to another group
                 {
+                    Console.WriteLine("seats[row, col + 2] == 'R' && seats[row, col + 1] == 'A'");
+                    
                     seatGroup = peopleLeftToSeat >= 2 && peopleLeftToSeat < totalAmountOfPeople;
-                    // Console.WriteLine("seats[row, col + 2] == 'R' && seats[row, col + 1] == 'A'");
-                    // Console.WriteLine($"More than 1 person left to seat: {seatGroup}");
+                    
+                    Console.WriteLine($"More than 1 person left to seat: {seatGroup}");
+
+                    if (seatGroup && seats[row, col - 1] == 'A' && seats[row, col - 2] == 'A')
+                    {
+                        return false; // If there are seats still to the right, these must be filled first
+                    }
+
+                    
+                    
                 }
             }
             else if (countSeatPlusLeftSpace - col + 1 == 2) // At the edge with exactly two seats on the right
             {
                 seatGroup = peopleLeftToSeat >= 2;
-                // Console.WriteLine($"space left: {countSeatPlusLeftSpace} - column: {col + 1} == 2");
-                // Console.WriteLine($"More than 1 person left to seat: {seatGroup}");
+                Console.WriteLine($"space left: {countSeatPlusLeftSpace} - column: {col + 1} == 2");
+                Console.WriteLine($"More than 1 person left to seat: {seatGroup}");
             }
 
             // Determine validity for the right side
             bool groupMember = seats[row, col + 1] == 'C';
             rightIsValid = twoEmptySeat || nextToTwo || nextToOne || groupMember || seatGroup;
 
-            /*
+            // /*
             Console.WriteLine($"Right is valid if one of these conditions is true:");
             Console.WriteLine($"Two empty seats: {twoEmptySeat}");
             Console.WriteLine($"Two reserved seats: {nextToTwo}");
             Console.WriteLine($"Next to one reserved seat: {nextToOne}");
             Console.WriteLine($"Next to groupmate: {groupMember}");
-            */
+            // */
         }
 
         // Output overall validation result
-        // Console.WriteLine($"Left valid: {leftIsValid}");
-        // Console.WriteLine($"Right valid: {rightIsValid}");
+        Console.WriteLine($"Left valid: {leftIsValid}");
+        Console.WriteLine($"Right valid: {rightIsValid}");
         return leftIsValid && rightIsValid;
     }
 
@@ -522,7 +540,19 @@ public abstract class TheaterBase
         /*
         Group seats must be next to each other
         */
-        if (seats[row, col - 1] == 'C' || seats[row, col + 1] == 'C')
+        if (col + 1 > 1 && col + 1 < seats.GetLength(0)) // In case this seat is one seat from the far left or right
+        {
+            if (seats[row, col - 1] == 'C' || seats[row, col + 1] == 'C') // Column must be inside the bounds of the seats array
+            {
+                return true;
+            }
+        }
+        else if (col + 1 == 1 && seats[row, col + 1] == 'C') // In case this seat is the most left seat
+        {
+            
+            return true;
+        }
+        else if (col + 1 == seats.GetLength(0) && seats[row, col - 1] == 'C') // In case this seat is the most right seat
         {
             return true;
         }
