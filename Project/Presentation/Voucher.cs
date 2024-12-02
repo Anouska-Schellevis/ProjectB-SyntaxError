@@ -33,12 +33,14 @@ class Voucher
                 Console.WriteLine("What is the amount?");
                 int amount = Convert.ToInt16(Console.ReadLine());
 
-                string answer = "";
                 string description = "";
+
+                Console.WriteLine("Would you like to add a description?(yes/no)");
+                string answer = Console.ReadLine().ToLower();
 
                 do
                 {
-                    Console.WriteLine("Would you like to add a description?(yes/no)");
+                    Console.WriteLine("Please enter a valid answer.");
                     answer = Console.ReadLine().ToLower();
                 } while (answer != "yes" && answer != "no");
                 if (answer == "yes")
