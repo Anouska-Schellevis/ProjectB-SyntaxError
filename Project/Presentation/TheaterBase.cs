@@ -397,7 +397,7 @@ public abstract class TheaterBase
         }
         else if (col + 1 > 1) // Seats exist to the left
         {
-            Console.WriteLine($"Group member sits to the left of the selected seat {seats[row, col - 1] == 'C'}");
+            Console.WriteLine($"Group member sits to the left of the selected seat: {seats[row, col - 1] == 'C'}");
             if (seats[row, col - 1] == 'C') 
             {
                 leftIsValid = true; // No need to check other conditions for the left side
@@ -409,9 +409,11 @@ public abstract class TheaterBase
             bool nextToOne = seats[row, col - 1] == 'R';
             bool seatGroup = false;
 
-            Console.WriteLine($"At least two seats away from the far-left edge: {col + 1 - 2 > countEmptyLeftSpace + 1}");
+            Console.WriteLine($"Check if there's sufficient space from the far-left edge of the row: {(col + 1) - (countEmptyLeftSpace + 1) >= 2}");
+            Console.WriteLine($"{col + 1} - {countEmptyLeftSpace + 1} >= 2");
+
             // Check if there's sufficient space from the far-left edge of the row
-            if (col > countEmptyLeftSpace + 2) 
+            if ((col + 1) - (countEmptyLeftSpace + 1) >= 2)
             {
                 // Determine seat availability to the left of the current position
                 twoEmptySeat = seats[row, col - 2] == 'A' && seats[row, col - 1] == 'A';
@@ -434,13 +436,18 @@ public abstract class TheaterBase
                         return false; 
                     }
                 }
+                
+                Console.WriteLine($"In case that two people want to sit and the first person sits in the middle of five empty seats: {totalAmountOfPeople == 2 && totalAmountOfPeople == peopleLeftToSeat && 
+                    seats[row, col + 1] == 'A' && seats[row, col + 2] == 'A' && twoEmptySeat}");
+
+                if (
+                    totalAmountOfPeople % 2 == 0 && totalAmountOfPeople == peopleLeftToSeat && 
+                    seats[row, col + 1] == 'A' && seats[row, col + 2] == 'A' && twoEmptySeat
+                    ) // In case that two people want to sit and the first person sits in the middle of five empty seats
+                    {
+                        return false; // this case won't work because one person will be sitting on an empty chair to your left or right
+                    }
             }
-            else if (col + 1 - 2 == countEmptyLeftSpace + 1) // At the edge with exactly two seats on the left
-            {
-                seatGroup = peopleLeftToSeat >= 2;
-                Console.WriteLine($"More than 1 person left to seat: {seatGroup}");
-            }
-            Console.WriteLine($"space left: {col} + {1} - {2} == {countEmptyLeftSpace} + {1} = {col + 1 - 2 == countEmptyLeftSpace + 1}");
 
             // Group member sits to the left of the selected seat
             bool groupMember = seats[row, col - 1] == 'C';
@@ -456,11 +463,11 @@ public abstract class TheaterBase
             // */
         }
 
-
         // Validate right side of the row
         Console.WriteLine("Checking right side of the row...");
         Console.WriteLine($"No seats to the right: {col + 1 == countSeatPlusLeftSpace}");
         Console.WriteLine($"Seats exist to the right: {col + 1 < countSeatPlusLeftSpace}");
+        Console.WriteLine();
 
         if (col + 1 == countSeatPlusLeftSpace) // No seats to the right
         {
@@ -474,7 +481,11 @@ public abstract class TheaterBase
             bool nextToOne = seats[row, col + 1] == 'R';
             bool seatGroup = false;
 
-            Console.WriteLine($"{countSeatPlusLeftSpace} - {col} > 2 = {countSeatPlusLeftSpace - col > 2}");
+            Console.WriteLine($"Check if there's sufficient space from the far-right edge of the row: {countSeatPlusLeftSpace - col > 2}");
+            Console.WriteLine($"{countSeatPlusLeftSpace} - {col} > {2}");
+            Console.WriteLine($"At least two seats away from the far-right edge: {countSeatPlusLeftSpace - col + 1 == 2}");
+            Console.WriteLine($"{countSeatPlusLeftSpace} - {col} + {1} == {2}");
+
             // Ensure there's a buffer of at least two seats from the far-right edge
             if (countSeatPlusLeftSpace - col > 2)
             {
@@ -487,11 +498,20 @@ public abstract class TheaterBase
                 Console.WriteLine($"Expected = 'A', 'A' or 'A', 'R' or 'R', 'R'");
                 Console.WriteLine($"Actual = '{seats[row, col + 2]}', '{seats[row, col + 1]}'");
 
+                Console.WriteLine($"In case that two people want to sit and the first person sits in the middle of five empty seats: {totalAmountOfPeople == 2 && totalAmountOfPeople == peopleLeftToSeat && 
+                    seats[row, col - 1] == 'A' && seats[row, col - 2] == 'A' && twoEmptySeat}");
+
+                if (
+                    totalAmountOfPeople % 2 == 0 && totalAmountOfPeople == peopleLeftToSeat && 
+                    seats[row, col - 1] == 'A' && seats[row, col - 2] == 'A' && twoEmptySeat
+                    ) // In case that two people want to sit and the first person sits in the middle of five empty seats
+                    {
+                        return false; // this case won't work because one person will be sitting on an empty chair to your left or right
+                    }
+
                 // Additional condition where the furthest seat is reserved and the closer one is available
                 if (seats[row, col + 2] == 'R' && seats[row, col + 1] == 'A')
                 {
-                    Console.WriteLine("seats[row, col + 2] == 'R' && seats[row, col + 1] == 'A'");
-                    
                     // Determine if the group needs more than one seat
                     seatGroup = peopleLeftToSeat >= 2 && peopleLeftToSeat < totalAmountOfPeople;
                     Console.WriteLine($"More than 1 person left to seat: {seatGroup}");
@@ -499,14 +519,13 @@ public abstract class TheaterBase
                     // Check for available seating on the left to ensure these are filled first
                     if (seatGroup && seats[row, col - 1] == 'A' && seats[row, col - 2] == 'A')
                     {
-                        return false; // Prioritize filling leftmost seats first
+                        return false;
                     }
                 }
             }
             else if (countSeatPlusLeftSpace - col + 1 == 2) // At the edge with exactly two seats on the right
             {
                 seatGroup = peopleLeftToSeat >= 2;
-                Console.WriteLine($"space left: {countSeatPlusLeftSpace} - column: {col + 1} == 2");
                 Console.WriteLine($"More than 1 person left to seat: {seatGroup}");
             }
 
