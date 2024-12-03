@@ -31,7 +31,7 @@ class Voucher
                 }
 
                 Console.WriteLine("What is the amount?");
-                int amount = Convert.ToInt16(Console.ReadLine());
+                decimal amount = Convert.ToInt16(Console.ReadLine());
 
                 string description = "";
 
