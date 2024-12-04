@@ -45,4 +45,9 @@ public static class VoucherAccess
     //     string sql = $"DELETE FROM {Table} WHERE id = @Id";
     //     _connection.Execute(sql, new { Id = id });
     // }
+    public static void ClearAllVouchers()
+    {
+        string sql = $"DELETE FROM {Table};";
+        _connection.Execute(sql);
+    }
 }

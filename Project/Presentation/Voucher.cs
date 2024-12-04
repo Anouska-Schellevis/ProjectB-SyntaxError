@@ -12,8 +12,15 @@ class Voucher
             if (input == 1)
             {
                 string type = "";
+
                 Console.WriteLine("What kind of voucher would you like to add?\n[1]percentage\n[2]amount of money");
                 int typeAnswer = Convert.ToInt16(Console.ReadLine());
+
+                do
+                {
+                    Console.WriteLine("Please enter a valid answer.");
+                    typeAnswer = Convert.ToInt16(Console.ReadLine());
+                } while (typeAnswer != 1 && typeAnswer != 2);
                 if (typeAnswer == 1)
                 {
                     type = "percentage";
@@ -24,13 +31,16 @@ class Voucher
                 }
 
                 Console.WriteLine("What is the amount?");
-                int amount = Convert.ToInt16(Console.ReadLine());
+                decimal amount = Convert.ToInt16(Console.ReadLine());
 
-                string answer = "";
                 string description = "";
+
+                Console.WriteLine("Would you like to add a description?(yes/no)");
+                string answer = Console.ReadLine().ToLower();
+
                 do
                 {
-                    Console.WriteLine("Would you like to add a description?(yes/no)");
+                    Console.WriteLine("Please enter a valid answer.");
                     answer = Console.ReadLine().ToLower();
                 } while (answer != "yes" && answer != "no");
                 if (answer == "yes")

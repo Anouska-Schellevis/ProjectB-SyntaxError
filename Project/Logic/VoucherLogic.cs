@@ -15,6 +15,10 @@ public class VoucherLogic
 
     static public void CreateVoucher(VoucherModel voucher)
     {
+        if (voucher.Type != "percentage" && voucher.Type != "euro")
+        {
+            throw new ArgumentException("Invalid voucher type.");
+        }
         VoucherAccess.Write(voucher);
     }
 
