@@ -37,7 +37,7 @@ public class VoucherLogic
         return VoucherAccess.GetAllVouchers();
     }
 
-    static public List<VoucherModel> GetVouchersByUserId(int userId)
+    static public List<VoucherModel> GetVouchersByUserId(long userId)
     {
         return VoucherAccess.GetVouchersByUserId(userId);
     }

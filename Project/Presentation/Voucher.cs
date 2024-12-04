@@ -1,6 +1,6 @@
 class Voucher
 {
-    public static void start()
+    public static void AdminStart()
     {
         while (true)
         {
@@ -120,6 +120,58 @@ class Voucher
                 Console.Clear();
                 break;
             }
+        }
+    }
+
+    public static void UserStart(UserModel acc)
+    {
+        Console.WriteLine("[1] See all your vouchers");
+        Console.WriteLine("[2] Go back");
+        Console.WriteLine("What would you like to do?");
+        
+        bool isCorrectFormat = int.TryParse(Console.ReadLine(), out int choice);
+        if (!isCorrectFormat)
+        {
+            Console.WriteLine("Invalid format. Make sure to enter a number.");
+            UserStart(acc);
+        }
+
+        switch (choice)
+        {
+            case 1:
+                Console.Clear();
+                PrintAllUserVouchers(acc);
+                break;
+            case 2:
+                Console.Clear();
+                break;
+            default:
+                Console.WriteLine("This option is not available.");
+                UserStart(acc);
+                break;
+        }
+    }
+
+    public static void PrintAllUserVouchers(UserModel acc)
+    {
+        int count = 1;
+
+        List<VoucherModel> vouchers = VoucherLogic.GetVouchersByUserId((int)acc.Id);
+
+        foreach (VoucherModel voucher in vouchers)
+        {
+            Console.WriteLine($"[{count}]");
+            Console.WriteLine($"Code: {voucher.Code}");
+            if (voucher.Type == "percentage")
+            {
+                Console.WriteLine($"Amount: {voucher.Amount}%");
+            }
+            else if (voucher.Type == "euro")
+            {
+                Console.WriteLine($"Amount: €{voucher.Amount},-");
+            }
+            Console.WriteLine($"Description: {voucher.Description}\n---------------------------------------");
+            count += 1;
         }
     }
 }
