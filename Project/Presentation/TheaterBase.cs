@@ -23,24 +23,6 @@ public abstract class TheaterBase
             }
         }
     }
-
-    // protected void UpdateSeatsArray(List<long> reservedSeats)
-    // {
-    //     for (int i = 0; i < seats.GetLength(0); i++)
-    //     {
-    //         for (int j = 0; j < seats.GetLength(1); j++)
-    //         {
-    //             int seatId = (i * seats.GetLength(1)) + j;
-                
-    //             if (reservedSeats.Contains(seatId))
-    //             {
-    //                 seats[i, j] = 'R';
-    //             }
-                
-    //         }
-    //     }
-    // }
-
     public void DisplaySeats(long showId)
     {
         Console.Clear();
@@ -84,8 +66,6 @@ public abstract class TheaterBase
                     if (seats[i, j] == 'R')
                     {
                         Console.ForegroundColor = ConsoleColor.Magenta;
-                        Console.Write("■   ");
-                        continue;
                     }
                     else
                     {
