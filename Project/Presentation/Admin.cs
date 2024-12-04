@@ -12,7 +12,8 @@ class Admin
             Console.WriteLine("[3]Show the menu of the bar");
             Console.WriteLine("[4]Show the current balance");
             Console.WriteLine("[5]Show the menu of the vouchers");
-            Console.WriteLine("[6]Logout");
+            Console.WriteLine("[6]Show the movie snack menu");
+            Console.WriteLine("[7]Logout");
             int input = Convert.ToInt16(Console.ReadLine());
 
             if (input == 1)
@@ -43,6 +44,10 @@ class Admin
                 Voucher.start();
             }
             else if (input == 6)
+            {
+                SnackMenu.CreateMenu(currentUser);
+            }
+            else if (input == 7)
             {
                 Console.Clear();
                 break;
