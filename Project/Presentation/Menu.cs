@@ -7,17 +7,23 @@ static class Menu
     static public void Start()
     {
         Console.Clear();
-        Console.WriteLine("Enter 1 to login");
-        Console.WriteLine("Enter 2 to create a new account");
+        Console.WriteLine("Welcome to the cinema. You can choose the following options.\n");
+        Console.WriteLine("[1]Login");
+        Console.WriteLine("[2]Create a new account");
+        Console.WriteLine("[3]View our info page");
 
-        string input = Console.ReadLine();
-        if (input == "1")
+        int input = Convert.ToInt16(Console.ReadLine());
+        if (input == 1)
         {
             UserLogin.Start();
         }
-        else if (input == "2")
+        else if (input == 2)
         {
             UserNewAccountLogic.Start();
+        }
+        else if (input == 3)
+        {
+            InfoPage.Start();
         }
         else
         {
