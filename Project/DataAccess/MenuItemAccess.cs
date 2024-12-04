@@ -44,7 +44,12 @@ public static class MenuItemAccess
 
     public static void ClearMenuItems()
     {
-        string sql = $"DELETE FROM {Table}";
-        _connection.Execute(sql);
+        string deleteSql = $"DELETE FROM {Table};";
+        _connection.Execute(deleteSql);
+
+        string resetSql = $"UPDATE sqlite_sequence SET seq = 0 WHERE name = @TableName;";
+        _connection.Execute(resetSql, new { TableName = Table });
+
+        Console.WriteLine("All menu items have been deleted and auto-increment has been reset.");
     }
 }

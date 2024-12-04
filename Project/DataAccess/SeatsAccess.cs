@@ -42,9 +42,13 @@ public static class SeatsAccess
 
     public static void ClearAllSeats()
     {
-        string sql = $"DELETE FROM {Table};";
-        _connection.Execute(sql);
-        Console.WriteLine("All seats have been deleted.");
+        string deleteSql = $"DELETE FROM {Table};";
+        _connection.Execute(deleteSql);
+
+        string resetSql = $"UPDATE sqlite_sequence SET seq = 0 WHERE name = @TableName;";
+        _connection.Execute(resetSql, new { TableName = Table });
+
+        Console.WriteLine("All seats have been deleted and auto-increment has been reset.");
     }
 
     public static List<SeatsModel> GetAllSeats()
