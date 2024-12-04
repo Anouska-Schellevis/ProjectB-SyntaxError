@@ -12,13 +12,13 @@ public class SeatsTest
     }
 
     // Id, RowNumber, ColumnNumber, Price
-    [DataRow(1, 5, 6, 2)]
-    [DataRow(2, 12, 3, 3)]
-    [DataRow(3, 9, 6, 1)]
+    [DataRow(1, 5, 6, 12.5)]
+    [DataRow(1, 12, 3, 15.0)]
+    [DataRow(1, 9, 6, 10.0)]
     [DataTestMethod]
-    public void Write_Seats(Int64 Id, int RowNumber, int ColumnNumber, int Price)
+    public void Write_Seats(long Id, int RowNumber, int ColumnNumber, double Price)
     {
-        SeatsLogic.WriteSeat(new(Id, RowNumber, ColumnNumber, Price));
+        SeatsLogic.WriteSeat(new(Id, RowNumber, ColumnNumber, Convert.ToDecimal(Price)));
 
         var actual = SeatsLogic.GetById((int)Id);
 
@@ -63,9 +63,9 @@ public class ReservationTest
     {
         // Arrange
         List<ReservationModel> testReservations = new() {
-            new(1, true, 3, 3, 4),
-            new(2, false, 4, 4, 5),
-            new(3, true, 5, 5, 6)
+            new(1, true, 3, 3, 4, ""),
+            new(2, false, 4, 4, 5, ""),
+            new(3, true, 5, 5, 6, "")
         };
 
         foreach (ReservationModel testReservation in testReservations)

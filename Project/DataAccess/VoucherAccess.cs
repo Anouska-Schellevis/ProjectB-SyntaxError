@@ -36,7 +36,7 @@ public static class VoucherAccess
 
     public static List<VoucherModel> GetVouchersByUserId(int userId)
     {
-        string sql = $"SELECT * FROM {Table} WHERE user_id = @UserId";
+        string sql = $"SELECT id AS Id, code AS Code, description AS Description, amount AS Amount, type AS Type, user_id AS UserId FROM {Table} WHERE user_id = @UserId";
         return _connection.Query<VoucherModel>(sql, new { UserId = userId }).ToList();
     }
 
@@ -54,7 +54,12 @@ public static class VoucherAccess
     // }
     public static void ClearAllVouchers()
     {
-        string sql = $"DELETE FROM {Table};";
-        _connection.Execute(sql);
+        string deleteSql = $"DELETE FROM {Table};";
+        _connection.Execute(deleteSql);
+
+        string resetSql = $"UPDATE sqlite_sequence SET seq = 0 WHERE name = @TableName;";
+        _connection.Execute(resetSql, new { TableName = Table });
+
+        Console.WriteLine("All vouchers have been deleted and auto-increment has been reset.");
     }
 }

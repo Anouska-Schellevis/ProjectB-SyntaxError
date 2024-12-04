@@ -99,8 +99,8 @@ public class VoucherTest
             VoucherLogic.CreateVoucher(testVoucher);
         }
 
-        var allUserVouchers = VoucherLogic.GetAllVouchers();
+        var allUserVouchers = VoucherLogic.GetVouchersByUserId(1);
 
-        Assert.IsTrue(allUserVouchers.All(v => v.UserId == 1), $"voucher id 3 with user id 3 still came through");
+        Assert.IsTrue(allUserVouchers.All(v => v.UserId == 1));
     }
 }
