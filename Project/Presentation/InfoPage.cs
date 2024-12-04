@@ -12,7 +12,7 @@ class InfoPage
             Console.WriteLine("reserve a place at the bar to get a drink after the movie.\n");
 
             Console.WriteLine("Location: Wijnhaven 107, 3011 WN in Rotterdam");
-            Console.WriteLine("Openingstijden: 10:00 uur - 00:00 uur\n");
+            Console.WriteLine("Opening hours: 10:00 uur - 00:00 uur\n");
             Console.WriteLine("[B]Go back");
             string input = Console.ReadLine().ToLower();
 
