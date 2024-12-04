@@ -1,17 +1,14 @@
 using Microsoft.Data.Sqlite;
-
 using Dapper;
-
 
 public static class ReservationAccess
 {
     private static SqliteConnection _connection = new SqliteConnection($"Data Source=DataSources/project.db");
-
     private static string Table = "reservation";
 
     public static void Write(ReservationModel reservation)
     {
-        string sql = $"INSERT INTO {Table} (bar, seats_id, user_id, show_id) VALUES (@Bar, @SeatsId, @UserId, @ShowId)";
+        string sql = $"INSERT INTO {Table} (bar, seats_id, user_id, show_id, snacks) VALUES (@Bar, @SeatsId, @UserId, @ShowId, @Snacks)";
         _connection.Execute(sql, reservation);
     }
 
@@ -29,7 +26,7 @@ public static class ReservationAccess
 
     public static void Update(ReservationModel reservation)
     {
-        string sql = $"UPDATE {Table} SET bar = @Bar, seats_id = @SeatsId, user_id = @UserId, show_id = @ShowId WHERE id = @Id";
+        string sql = $"UPDATE {Table} SET bar = @Bar, seats_id = @SeatsId, user_id = @UserId, show_id = @ShowId, snacks = @Snacks WHERE id = @Id";
         _connection.Execute(sql, reservation);
     }
 
@@ -45,6 +42,7 @@ public static class ReservationAccess
         // Console.WriteLine("Executing query: " + sql);
         return _connection.Query<long>(sql).AsList();
     }
+
     // public static List<ReservationModel> GetReservationsByUserId(long userId)
     // {
     //     string sql = $"SELECT * FROM {Table} WHERE user_id = {userId}";
@@ -54,7 +52,7 @@ public static class ReservationAccess
 
     public static List<ReservationModel> GetReservationsByUserId(long userId)
     {
-        string sql = $"SELECT id, bar, seats_id AS SeatsID, user_id AS UserID, show_id AS ShowId FROM {Table} WHERE user_id = {userId}";
+        string sql = $"SELECT id, bar, seats_id AS SeatsID, user_id AS UserID, show_id AS ShowId, snacks AS Snacks FROM {Table} WHERE user_id = {userId}";
         // Console.WriteLine("Executing query: " + sql);
         return _connection.Query<ReservationModel>(sql).AsList();
     }
@@ -72,17 +70,13 @@ public static class ReservationAccess
 
     public static void AddReservation(int bar, int showId, int seatsId, int userId)
     {
-
-        string sql = "INSERT INTO reservation (bar, show_id, seats_id, user_id) VALUES (@Bar, @ShowId, @SeatsId, @UserId);";
-        _connection.Execute(sql, new { Bar = bar, ShowId = showId, SeatsId = seatsId, UserId = userId });
-
+        string sql = "INSERT INTO reservation (bar, show_id, seats_id, user_id, snacks) VALUES (@Bar, @ShowId, @SeatsId, @UserId, @Snacks);";
+        _connection.Execute(sql, new { Bar = bar, ShowId = showId, SeatsId = seatsId, UserId = userId, Snacks = "" });
     }
 
     public static List<ReservationModel> GetAllReservations()
     {
-        string sql = $"SELECT id, bar, seats_id AS SeatsID, user_id AS UserID, show_id AS ShowId FROM {Table}";
+        string sql = $"SELECT id, bar, seats_id AS SeatsID, user_id AS UserID, show_id AS ShowId, snacks AS Snacks FROM {Table}";
         return _connection.Query<ReservationModel>(sql).ToList();
     }
-
-
 }
