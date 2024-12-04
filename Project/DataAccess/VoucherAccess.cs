@@ -34,6 +34,13 @@ public static class VoucherAccess
         return _connection.Query<VoucherModel>(sql).ToList();
     }
 
+    public static List<VoucherModel> GetVouchersByUserId(int userId)
+    {
+        string sql = $"SELECT * FROM {Table} WHERE user_id = @UserId";
+        return _connection.Query<VoucherModel>(sql, new { UserId = userId }).ToList();
+    }
+
+
     // public static void Update(ShowModel show)
     // {
     //     string sql = $"UPDATE {Table} SET theatre_id = @TheatreId, movie_id = @MovieId, date = @Date WHERE id = @Id";

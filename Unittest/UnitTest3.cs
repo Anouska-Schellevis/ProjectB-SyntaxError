@@ -81,4 +81,26 @@ public class VoucherTest
         Assert.AreEqual(1, allVouchers.Count(v => v.Code == "QtTNU6G"), "Valid");
         // Assert.AreEqual(0, allVouchers.Count(v => v.Id == 2), "Amount is not an int");
     }
+
+    [TestMethod]
+    public void GetVouchersForUser1()
+    {
+        VoucherAccess.ClearAllVouchers();
+
+        List<VoucherModel> testVouchers = new()
+        {
+            new(1, "16dFecD", "This is the first test", 20m, "percentage", 1),
+            new(2, "OcjBkca", "This is the second test", 13m, "euro", 1),
+            new(3, "yitrFeF", "This is the third test", 33m, "euro", 3)
+        };
+
+        foreach (VoucherModel testVoucher in testVouchers)
+        {
+            VoucherLogic.CreateVoucher(testVoucher);
+        }
+
+        var allUserVouchers = VoucherLogic.GetAllVouchers();
+
+        Assert.IsTrue(allUserVouchers.All(v => v.UserId == 1), $"voucher id 3 with user id 3 still came through");
+    }
 }
