@@ -228,15 +228,18 @@ public abstract class TheaterBase
                     }
                     else if (how_many_people > 1) // For groups
                     {
+                        /*
+                        Use countAvailableSeats to determine the amount of available seats next to each other
+                        */
                         if (i == 0 && countAvailableSeats[row, col] == how_many_people + 3) // + 3 for three empty seats
                         {
                             int countAvailableSeatsLeft = 0, countAvailableSeatsRight = 0;
                             int rowWidth = seats.GetLength(1);
 
-                            for (int j = 0; j < rowWidth && j != col && (rowWidth-1-j) != col; j++)
+                            for (int j = 0; j < rowWidth; j++)
                             {
-                                if (seats[row, j] == 'A') countAvailableSeatsLeft++;
-                                if (seats[row, rowWidth-1-j] == 'A') countAvailableSeatsRight++;
+                                if (seats[row, j] == 'A' && j < col) countAvailableSeatsLeft++;
+                                if (seats[row, rowWidth-1-j] == 'A' && rowWidth-1-j > col) countAvailableSeatsRight++;
                             }
 
                             if (countAvailableSeatsLeft > 0 && countAvailableSeatsRight > 0) // The first seat has to be either at the left edge or the right edge
