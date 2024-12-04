@@ -3,8 +3,6 @@ Console.Clear();
 Menu.Start();
 // Movie.Main();
 
-// Show.UserStart();
-
 //Show.UserStart();
 
 //Show.Main();
