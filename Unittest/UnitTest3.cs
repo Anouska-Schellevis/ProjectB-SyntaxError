@@ -7,11 +7,15 @@ namespace UnittestVoucher;
 [TestClass]
 public class VoucherTest
 {
+    [TestInitialize]
+    public void TestInitialize()
+    {
+        VoucherAccess.ClearAllVouchers();
+    }
+
     [TestMethod]
     public void AddCorrectVoucher()
     {
-        VoucherAccess.ClearAllVouchers();
-
         List<VoucherModel> testVouchers = new()
         {
             new(1, "QtTNU6G", "This is test one", 10m, "percentage", null),
@@ -32,8 +36,6 @@ public class VoucherTest
     [TestMethod]
     public void Incorrect_Type()
     {
-        VoucherAccess.ClearAllVouchers();
-
         var testVoucher = new VoucherModel(1, "YCyb3nt", "", 10m, "hello", null);
 
         bool exceptionThrown = false;
@@ -59,8 +61,6 @@ public class VoucherTest
     [TestMethod]
     public void Duplicate_Code()
     {
-        VoucherAccess.ClearAllVouchers();
-
         var testVoucher = new VoucherModel(1, "QtTNU6G", "This is test one", 10m, "percentage", null);
         VoucherLogic.CreateVoucher(testVoucher);
 
@@ -85,8 +85,6 @@ public class VoucherTest
     [TestMethod]
     public void GetVouchersForUser1()
     {
-        VoucherAccess.ClearAllVouchers();
-
         List<VoucherModel> testVouchers = new()
         {
             new(1, "16dFecD", "This is the first test", 20m, "percentage", 1),
