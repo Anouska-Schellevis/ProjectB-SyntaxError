@@ -5,19 +5,17 @@ public class ReservationModel
     public int SeatsId { get; set; }
     public int UserId { get; set; }
     public int ShowId { get; set; }
-    public ReservationModel() {}
+    public string Snacks { get; set; }
 
-    public ReservationModel(Int64 id, bool bar, int seatsId, int userId, int showId)
+    public ReservationModel() { }
+
+    public ReservationModel(Int64 id, bool bar, int seatsId, int userId, int showId, string snacks)
     {
         Id = id;
         Bar = bar;
         SeatsId = seatsId;
         UserId = userId;
         ShowId = showId;
+        Snacks = snacks;
     }
-
-
 }
-
-
-
