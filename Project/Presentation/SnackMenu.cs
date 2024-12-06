@@ -1,5 +1,46 @@
 public class SnackMenu
 {
+
+    public static void AdminSnackMenu(UserModel acc)
+    {
+        Console.Clear();
+        Console.WriteLine("[1] See current snack menu");
+        Console.WriteLine("[2] Add menu item");
+
+        string choice = Console.ReadLine();
+        if (choice == "1")
+        {
+            bool continueViewing = true;
+            while (continueViewing)
+            {
+                Console.Clear();
+                ShowSnackMenu();
+
+                Console.WriteLine("[1] Go back to admin menu");
+                string returnChoice = Console.ReadLine();
+
+                if (returnChoice == "1")
+                {
+                    continueViewing = false;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid choice. Please choose [1] to go back to admin menu.");
+                    Console.ReadKey();//it will
+                }
+            }
+
+            Console.Clear();
+            AdminSnackMenu(acc);
+        }
+        else if (choice == "2")
+        {
+            Console.Clear();
+            CreateMenu(acc);
+        }
+    }
+
+
     public static void CreateMenu(UserModel acc)
     {
         Console.Clear();

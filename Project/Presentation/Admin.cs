@@ -45,7 +45,7 @@ class Admin
             }
             else if (input == 6)
             {
-                SnackMenu.CreateMenu(currentUser);
+                SnackMenu.AdminSnackMenu(currentUser);
             }
             else if (input == 7)
             {
@@ -68,4 +68,9 @@ class Admin
 
         Console.WriteLine($"The total: {totalMoney:C2}");
     }
+
+
+
+
+
 }
