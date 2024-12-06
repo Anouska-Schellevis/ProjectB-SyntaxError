@@ -19,7 +19,7 @@ class InfoPage
             if (input == "b")
             {
                 Console.Clear();
-                break;
+                Menu.Start();
             }
         }
     }
