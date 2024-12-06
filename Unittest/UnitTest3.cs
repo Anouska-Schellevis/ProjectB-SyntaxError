@@ -101,4 +101,21 @@ public class VoucherTest
 
         Assert.IsTrue(allUserVouchers.All(v => v.UserId == 1));
     }
+
+    public void CalcDiscountedPrice_PerSeatByCategory_ForUser1()
+    {
+        List<VoucherModel> testVouchers = new()
+        {
+            new(1, "16dFecD", "This is the first test", 20m, "percentage", 1),
+            new(2, "OcjBkca", "This is the second test", 13m, "euro", 1),
+            new(3, "yitrFeF", "This is the third test", 33m, "euro", 3)
+        };
+
+        foreach (VoucherModel testVoucher in testVouchers)
+        {
+            VoucherLogic.CreateVoucher(testVoucher);
+        }
+
+        var allUserVouchers = VoucherLogic.GetVouchersByUserId(1);
+    }
 }

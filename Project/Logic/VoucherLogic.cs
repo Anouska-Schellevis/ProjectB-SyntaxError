@@ -41,6 +41,27 @@ public class VoucherLogic
     {
         return VoucherAccess.GetVouchersByUserId(userId);
     }
+    
+    static public double PriceIncludingVoucherDiscount(VoucherModel voucher, double seatPrice)
+    {
+        if (voucher.Type == "percentage")
+        {
+            double discountPrice = seatPrice / 100 * (double)voucher.Amount;
+            return seatPrice - discountPrice;
+        }
+        if (voucher.Type == "euro")
+        {
+            if (seatPrice < (double)voucher.Amount)
+            {
+                voucher.Amount -= (decimal)seatPrice;
+                return 0;
+            }
+
+            return seatPrice - (double)voucher.Amount;
+        }
+
+        return seatPrice;
+    }
 }
 
 

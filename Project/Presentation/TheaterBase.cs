@@ -122,7 +122,6 @@ public abstract class TheaterBase
     public void SelectSeats(long showId, UserModel acc)
     {
         List<long> reserved_seats = ReservationAccess.GetReservedSeatsByShowId(showId);
-        // UpdateSeatsArray(reserved_seats);
         DisplaySeats(showId);
 
         Console.WriteLine("How many seats do you want to book?");
@@ -333,6 +332,21 @@ public abstract class TheaterBase
 
     private void MakeReservation(List<SeatsModel> selectedSeats, UserModel acc, long showId)
     {
+        // check if the user has a voucher, otherwise this option doesn't show up
+        // List<VoucherModel> userVouchers = VoucherLogic.GetVouchersByUserId(acc.Id);
+        // if (userVouchers.Count < 0)
+        // {
+        //     Console.WriteLine("You have active vouchers");
+        //     Voucher.PrintAllUserVouchers(acc);
+        //     Console.WriteLine("Would you like to use a voucher? ");
+        //     Console.ReadLine();
+
+        //     foreach(SeatsModel selectedSeat in selectedSeats)
+        //     {
+        //         VoucherLogic.PriceIncludingVoucherDiscount(selectedSeat, selectedSeat.Price);
+        //     }
+        // }
+        
         Int64 userId = acc.Id;
         Console.WriteLine("Do you want bar service? (yes/no):");
         bool barService = Console.ReadLine().ToLower() == "yes" && IsBarAvailable(selectedSeats.Count, showId);
