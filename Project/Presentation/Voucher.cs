@@ -146,7 +146,8 @@ class Voucher
                 Console.Clear();
                 break;
             default:
-                Console.WriteLine("This option is not available.");
+                Console.Clear();
+                Console.WriteLine("Invalid number. This option is not available.");
                 UserStart(acc);
                 break;
         }
@@ -164,6 +165,7 @@ class Voucher
             Console.WriteLine($"Code: {voucher.Code}");
             if (voucher.Type == "percentage")
             {
+                Console.Clear();
                 Console.WriteLine($"Amount: {voucher.Amount}%");
             }
             else if (voucher.Type == "euro")
