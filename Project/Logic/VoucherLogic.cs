@@ -37,9 +37,9 @@ public class VoucherLogic
         return VoucherAccess.GetAllVouchers();
     }
 
-    static public List<VoucherModel> GetVouchersByUserId(long userId)
+    static public List<VoucherModel> GetVouchersByUserId(UserModel user)
     {
-        return VoucherAccess.GetVouchersByUserId(userId);
+        return VoucherAccess.GetVouchersByUserId(user);
     }
     
     static public double PriceIncludingVoucherDiscount(VoucherModel voucher, double seatPrice)

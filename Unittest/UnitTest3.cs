@@ -85,6 +85,8 @@ public class VoucherTest
     [TestMethod]
     public void GetVouchersForUser1()
     {
+        UserModel acc = new(1, "kevin@kevin.nl", "kevin", "", "", 0, 0, 0);
+
         List<VoucherModel> testVouchers = new()
         {
             new(1, "16dFecD", "This is the first test", 20m, "percentage", 1),
@@ -97,17 +99,27 @@ public class VoucherTest
             VoucherLogic.CreateVoucher(testVoucher);
         }
 
-        var allUserVouchers = VoucherLogic.GetVouchersByUserId(1);
+        var allUserVouchers = VoucherLogic.GetVouchersByUserId(acc);
 
         Assert.IsTrue(allUserVouchers.All(v => v.UserId == 1));
     }
 
-    public void CalcDiscountedPrice_PerSeatByCategory_ForUser1()
+    [DataRow(1, 12.5, 10.0)]
+    [DataRow(2, 12.5, 1.5)]
+    [DataRow(3, 12.5, 0)] // residual value: 20.5
+    [DataRow(1, 15.0, 12)]
+    [DataRow(2, 15.0, 4)]
+    [DataRow(3, 15.0, 0)] // residual value: 18
+    [DataRow(1, 10.0, 8)]
+    [DataRow(2, 10.0, 0.0)] // residual value: 1
+    [DataRow(3, 10.0, 0.0)] // residual value: 23
+    [DataTestMethod]
+    public void CalcDiscountedPrice_PerSeatByCategory_ForUser1(long voucherId, double seatPrice, double expected)
     {
         List<VoucherModel> testVouchers = new()
         {
             new(1, "16dFecD", "This is the first test", 20m, "percentage", 1),
-            new(2, "OcjBkca", "This is the second test", 13m, "euro", 1),
+            new(2, "OcjBkca", "This is the second test", 11m, "euro", 1),
             new(3, "yitrFeF", "This is the third test", 33m, "euro", 3)
         };
 
@@ -116,6 +128,10 @@ public class VoucherTest
             VoucherLogic.CreateVoucher(testVoucher);
         }
 
-        var allUserVouchers = VoucherLogic.GetVouchersByUserId(1);
+        VoucherLogic voucherLogic = new();
+        VoucherModel voucher = voucherLogic.GetById((int)voucherId);
+
+        double actual = VoucherLogic.PriceIncludingVoucherDiscount(voucher, seatPrice);
+        Assert.AreEqual(expected, actual);
     }
 }
