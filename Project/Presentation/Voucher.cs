@@ -13,6 +13,7 @@ class Voucher
             {
                 string type = "";
 
+                // Ask the admin what kind of voucher he would like to make
                 Console.WriteLine("What kind of voucher would you like to add?\n[1]percentage\n[2]amount of money");
                 int typeAnswer = Convert.ToInt16(Console.ReadLine());
 
@@ -30,11 +31,12 @@ class Voucher
                     type = "euro";
                 }
 
+                // Ask the admin what the amount of the voucher will be
                 Console.WriteLine("What is the amount?");
                 decimal amount = Convert.ToInt16(Console.ReadLine());
 
+                // Ask the admin if the voucher needs a description
                 string description = "";
-
                 Console.WriteLine("Would you like to add a description?(yes/no)");
                 string answer = Console.ReadLine().ToLower();
 
@@ -59,6 +61,7 @@ class Voucher
                 int size = 7;
                 string code = "";
 
+                // The loop goes seven times through the characters
                 for (int i = 0; i < size; i++)
                 {
                     // Select an random index
@@ -68,6 +71,7 @@ class Voucher
                     code += codeChars[random];
                 }
 
+                // If the code already exists in the database, the code is generated again
                 List<VoucherModel> vouchers = VoucherLogic.GetAllVouchers();
                 foreach (VoucherModel voucher in vouchers)
                 {
@@ -87,6 +91,7 @@ class Voucher
                 }
                 Console.WriteLine($"Generated code {code}");
 
+                // A new voucher will be made and send to the create voucher function
                 VoucherModel newVoucher = new VoucherModel(0, code, description, amount, type, null);
                 VoucherLogic.CreateVoucher(newVoucher);
 
