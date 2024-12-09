@@ -34,10 +34,10 @@ public static class VoucherAccess
         return _connection.Query<VoucherModel>(sql).ToList();
     }
 
-    public static List<VoucherModel> GetVouchersByUserId(long userId)
+    public static List<VoucherModel> GetVouchersByUserId(UserModel user)
     {
-        string sql = $"SELECT id AS Id, code AS Code, description AS Description, amount AS Amount, type AS Type, user_id AS UserId FROM {Table} WHERE user_id = @UserId";
-        return _connection.Query<VoucherModel>(sql, new { UserId = userId }).ToList();
+        string sql = $"SELECT id AS Id, code AS Code, description AS Description, amount AS Amount, type AS Type, user_id AS UserId FROM {Table} WHERE user_id = @Id";
+        return _connection.Query<VoucherModel>(sql, user).ToList();
     }
 
 

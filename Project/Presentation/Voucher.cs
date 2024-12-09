@@ -162,7 +162,7 @@ class Voucher
     {
         int count = 1;
 
-        List<VoucherModel> vouchers = VoucherLogic.GetVouchersByUserId((int)acc.Id);
+        List<VoucherModel> vouchers = VoucherLogic.GetVouchersByUserId(acc);
 
         foreach (VoucherModel voucher in vouchers)
         {
