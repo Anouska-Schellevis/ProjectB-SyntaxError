@@ -21,6 +21,10 @@ public class VoucherLogic
         }
         VoucherAccess.Write(voucher);
     }
+    static public void UpdateVoucher(VoucherModel voucher)
+    {
+        VoucherAccess.Update(voucher);
+    }
 
     public VoucherModel GetById(int id)
     {
