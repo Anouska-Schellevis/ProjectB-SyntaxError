@@ -157,9 +157,9 @@ public abstract class TheaterBase
             {
                 if (seats[i, jBack] == 'A')
                 {
-                    if (seats[i, jBack-1] == 'A')
+                    if (seats[i, jBack - 1] == 'A')
                     {
-                        countAvailableSeats[i, jBack-1] = countAvailableSeats[i, jBack];
+                        countAvailableSeats[i, jBack - 1] = countAvailableSeats[i, jBack];
                     }
                 }
                 else
@@ -219,7 +219,7 @@ public abstract class TheaterBase
                             for (int j = 0; j < rowWidth; j++)
                             {
                                 if (seats[row, j] == 'A' && j < col) countAvailableSeatsLeft++;
-                                if (seats[row, rowWidth-1-j] == 'A' && rowWidth-1-j > col) countAvailableSeatsRight++;
+                                if (seats[row, rowWidth - 1 - j] == 'A' && rowWidth - 1 - j > col) countAvailableSeatsRight++;
                             }
 
                             if (countAvailableSeatsLeft > 0 && countAvailableSeatsRight > 0) // The first seat has to be either at the left edge or the right edge
@@ -235,7 +235,7 @@ public abstract class TheaterBase
                             Console.WriteLine("Make sure all selected seats are next to each other.");
                             continue;
                         }
-    	                /*
+                        /*
                         Only validate individual seat selection if 2 or more seats stay empty
                         Else the group can just seat all empty seats and this logic doesn't apply
                         */
@@ -316,7 +316,7 @@ public abstract class TheaterBase
                 {
                     Console.WriteLine("Sorry, that seat is not available.");
                 }
-            } while(true);
+            } while (true);
         }
 
         if (acc != null)
@@ -337,22 +337,38 @@ public abstract class TheaterBase
         Console.WriteLine("Do you want bar service? (yes/no):");
         bool barService = Console.ReadLine().ToLower() == "yes" && IsBarAvailable(selectedSeats.Count, showId);
 
+        Console.WriteLine("Would you like to order snacks?");
+        Console.WriteLine("[1] Yes");
+        Console.WriteLine("[2] No");
+
+        string snacks = "";
+        if (Console.ReadLine() == "1")
+        {
+            List<MenuItem> selectedSnacks = SnackMenu.SelectSnacks();
+            List<string> snackNames = new List<string>();
+            foreach (MenuItem snack in selectedSnacks)
+            {
+                snackNames.Add(snack.Name);
+            }
+            snacks = string.Join(",", snackNames);
+        }
+
         foreach (var seat in selectedSeats)
         {
-            //SeatsLogic.WriteSeat(seat);
             var reservation = new ReservationModel
             {
                 Id = 0,
                 Bar = barService,
                 SeatsId = (int)seat.Id,
-                // SeatsId = (seat.RowNumber - 1) * seats.GetLength(1) + (seat.ColumnNumber - 1),
                 UserId = Convert.ToInt32(userId),
                 ShowId = (int)showId,
+                Snacks = snacks
             };
 
             ReservationLogic.WriteReservation(reservation);
         }
-        Console.WriteLine($"Successfully reserved seats for {acc.FirstName} {acc.LastName}.");
+
+        Console.WriteLine($"Successfully reserved seats and snacks for {acc.FirstName} {acc.LastName}.");
         User.Start(acc);
     }
 
@@ -405,14 +421,14 @@ public abstract class TheaterBase
                 seatGroup = peopleLeftToSeat == 1;
 
                 // Check if a person is taking a seat between a reserved and an available seat
-                if (seats[row, col - 2] == 'R' && seats[row, col - 1] == 'A') 
+                if (seats[row, col - 2] == 'R' && seats[row, col - 1] == 'A')
                 {
                     seatGroup = peopleLeftToSeat >= 2 && peopleLeftToSeat < totalAmountOfPeople;
 
                     // Ensure that remaining seats to the right are filled first
                     if (seatGroup && seats[row, col + 1] == 'A' && seats[row, col + 2] == 'A')
                     {
-                        return false; 
+                        return false;
                     }
                 }
             }
@@ -460,7 +476,7 @@ public abstract class TheaterBase
 
             rightIsValid = twoEmptySeat || nextToTwo || nextToOne || groupMember || seatGroup;
         }
-        
+
         return leftIsValid && rightIsValid;
     }
 
