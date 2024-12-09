@@ -131,7 +131,7 @@ public class VoucherTest
         VoucherLogic voucherLogic = new();
         VoucherModel voucher = voucherLogic.GetById((int)voucherId);
 
-        double actual = VoucherLogic.PriceIncludingVoucherDiscount(voucher, seatPrice);
+        double actual = VoucherLogic.PriceIncludingVoucherDiscount(voucher, Convert.ToDecimal(seatPrice));
         Assert.AreEqual(expected, actual);
     }
 }
