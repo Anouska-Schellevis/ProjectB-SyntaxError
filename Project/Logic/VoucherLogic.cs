@@ -22,6 +22,11 @@ public class VoucherLogic
         VoucherAccess.Write(voucher);
     }
 
+    static public void UpdateVoucher(VoucherModel voucher)
+    {
+        VoucherAccess.Update(voucher);
+    }
+
     public VoucherModel GetById(int id)
     {
         return VoucherAccess.GetById(id);
@@ -42,25 +47,38 @@ public class VoucherLogic
         return VoucherAccess.GetVouchersByUserId(user);
     }
     
-    static public double PriceIncludingVoucherDiscount(VoucherModel voucher, double seatPrice)
+    static public decimal CalculateDiscountedPrice(ref VoucherModel voucher, decimal price)
     {
         if (voucher.Type == "percentage")
         {
-            double discountPrice = seatPrice / 100 * (double)voucher.Amount;
-            return seatPrice - discountPrice;
+            decimal discountPrice = price / 100 * voucher.Amount;
+
+            // Voucher doesn't have a value anymore
+            voucher.Amount = 0;
+
+            return price - discountPrice;
         }
-        if (voucher.Type == "euro")
+        else if (voucher.Type == "euro")
         {
-            if (seatPrice < (double)voucher.Amount)
+            if (price < voucher.Amount)
             {
-                voucher.Amount -= (decimal)seatPrice;
+                // The value of the voucher drops
+                voucher.Amount -= price;
+
                 return 0;
             }
 
-            return seatPrice - (double)voucher.Amount;
-        }
+            decimal newPrice = price - voucher.Amount;
 
-        return seatPrice;
+            // Voucher doesn't have a value anymore
+            voucher.Amount = 0;
+            
+            return newPrice;
+        }
+        else
+        {
+            return price;
+        }
     }
 }
 

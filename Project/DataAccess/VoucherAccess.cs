@@ -16,6 +16,12 @@ public static class VoucherAccess
         _connection.Execute(sql, voucher);
     }
 
+    public static void Update(VoucherModel voucher)
+    {
+        string sql = $"UPDATE {Table} SET code = @Code, description = @Description, amount = @Amount, type = @Type, user_id = @UserId WHERE id = @Id";
+        _connection.Execute(sql, voucher);
+    }
+
     public static VoucherModel GetById(int id)
     {
         string sql = $"SELECT * FROM {Table} WHERE id = @Id";
