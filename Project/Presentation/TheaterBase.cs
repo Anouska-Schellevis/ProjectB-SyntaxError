@@ -365,7 +365,6 @@ public abstract class TheaterBase
                     {
                         voucher.Amount = oldAmount; // To ensure that all seats are discounted before the cost is finally deducted from the voucher.
                         selectedSeats[i].Price = VoucherLogic.CalculateDiscountedPrice(ref voucher, selectedSeats[i].Price); // ref is used to make a reference to voucher outside this function.
-                        Console.WriteLine($"New seat price: {selectedSeats[i].Price}");
                     }
 
                     VoucherLogic.UpdateVoucher(voucher); // Changes to the voucher are written to the database
