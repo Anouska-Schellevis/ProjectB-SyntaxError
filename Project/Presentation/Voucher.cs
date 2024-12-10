@@ -160,17 +160,18 @@ class Voucher
 
     public static void PrintAllUserVouchers(UserModel acc)
     {
-        int count = 1;
-
         List<VoucherModel> vouchers = VoucherLogic.GetVouchersByUserId(acc);
 
         foreach (VoucherModel voucher in vouchers)
         {
-            Console.WriteLine($"[{count}]");
+            /*
+            I have choosen to use the voucher id instead of the iteration number, 
+            because in the theaterbase.cs this method is used and in the theaterbase the user chooses a voucher id.
+            */
+            Console.WriteLine($"[{voucher.Id}]");
             Console.WriteLine($"Code: {voucher.Code}");
             if (voucher.Type == "percentage")
             {
-                Console.Clear();
                 Console.WriteLine($"Amount: {voucher.Amount}%");
             }
             else if (voucher.Type == "euro")
@@ -178,7 +179,6 @@ class Voucher
                 Console.WriteLine($"Amount: €{voucher.Amount},-");
             }
             Console.WriteLine($"Description: {voucher.Description}\n---------------------------------------");
-            count += 1;
         }
     }
 }

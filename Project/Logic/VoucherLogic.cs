@@ -26,11 +26,6 @@ public class VoucherLogic
         VoucherAccess.Update(voucher);
     }
 
-    static public void UpdateVoucher(VoucherModel voucher)
-    {
-        VoucherAccess.Update(voucher);
-    }
-
     public VoucherModel GetById(int id)
     {
         return VoucherAccess.GetById(id);
@@ -57,7 +52,7 @@ public class VoucherLogic
         {
             decimal discountPrice = price / 100 * voucher.Amount;
 
-            // Voucher doesn't have a value anymore
+            // voucher doesn't have a value anymore
             voucher.Amount = 0;
 
             return price - discountPrice;
@@ -69,12 +64,12 @@ public class VoucherLogic
                 // The value of the voucher drops
                 voucher.Amount -= price;
 
-                return 0;
+                return 0; // Since the voucher is worth more than the regarding price, the discounted price will always be 0
             }
 
             decimal newPrice = price - voucher.Amount;
 
-            // Voucher doesn't have a value anymore
+            // voucher doesn't have a value anymore
             voucher.Amount = 0;
             
             return newPrice;
