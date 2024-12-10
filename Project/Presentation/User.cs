@@ -45,7 +45,8 @@ class User
             Console.WriteLine("Welcome back " + acc.FirstName + " " + acc.LastName);
             Console.WriteLine("[1] See week overview of available movies");
             Console.WriteLine("[2] See your reservations");
-            Console.WriteLine("[3] Go back to login screen");
+            Console.WriteLine("[3] See your vouchers");
+            Console.WriteLine("[4] Go back to login screen");
             string user_answer = Console.ReadLine().ToLower();
 
             if (user_answer == "1")
@@ -59,6 +60,11 @@ class User
                 exitMenu = true;
             }
             else if (user_answer == "3")
+            {
+                Voucher.UserStart(acc);
+                exitMenu = true;
+            }
+            else if (user_answer == "4")
             {
                 Console.WriteLine("Logging out");
                 return;

@@ -43,7 +43,7 @@ class Admin
             else if (input == 5)
             {
                 Console.Clear();
-                Voucher.start();
+                Voucher.AdminStart();
             }
             else if (input == 6)
             {
