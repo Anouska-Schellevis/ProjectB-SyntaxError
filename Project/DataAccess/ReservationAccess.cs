@@ -59,9 +59,13 @@ public static class ReservationAccess
 
     public static void ClearAllReservations()
     {
-        string sql = $"DELETE FROM {Table};";
-        _connection.Execute(sql);
-        Console.WriteLine("All reservations have been deleted.");
+        string deleteSql = $"DELETE FROM {Table};";
+        _connection.Execute(deleteSql);
+
+        string resetSql = $"UPDATE sqlite_sequence SET seq = 0 WHERE name = @TableName;";
+        _connection.Execute(resetSql, new { TableName = Table });
+
+        Console.WriteLine("All reservations have been deleted and auto-increment has been reset.");
     }
 
     public static void AddReservation(int bar, int showId, int seatsId, int userId)
