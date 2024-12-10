@@ -51,4 +51,10 @@ public static class ShowAccess
         string sql = $"DELETE FROM {Table}";
         _connection.Execute(sql);
     }
+
+    public static List<ShowModel> AllOrderedByDate()
+    {
+        string sql = $"SELECT * FROM {Table} ORDER BY date";
+        return _connection.Query<ShowModel>(sql).ToList();
+    }
 }
