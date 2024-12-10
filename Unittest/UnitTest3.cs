@@ -104,17 +104,17 @@ public class VoucherTest
         Assert.IsTrue(allUserVouchers.All(v => v.UserId == 1));
     }
 
-    [DataRow(1, 12.5, 10.0)]
-    [DataRow(2, 12.5, 1.5)]
-    [DataRow(3, 12.5, 0)] // residual value: 20.5
-    [DataRow(1, 15.0, 12)]
-    [DataRow(2, 15.0, 4)]
-    [DataRow(3, 15.0, 0)] // residual value: 18
-    [DataRow(1, 10.0, 8)]
-    [DataRow(2, 10.0, 0.0)] // residual value: 1
-    [DataRow(3, 10.0, 0.0)] // residual value: 23
+    [DataRow(1, 12.5, 10.0, 0)]
+    [DataRow(2, 12.5, 1.5, 0)]
+    [DataRow(3, 12.5, 0, 20.5)]
+    [DataRow(1, 15.0, 12, 0)]
+    [DataRow(2, 15.0, 4, 0)]
+    [DataRow(3, 15.0, 0, 18)]
+    [DataRow(1, 10.0, 8, 0)]
+    [DataRow(2, 10.0, 0.0, 1)]
+    [DataRow(3, 10.0, 0.0, 23)]
     [DataTestMethod]
-    public void CalcDiscountedPrice_PerSeatByCategory_ForUser1(long voucherId, double seatPrice, double expected)
+    public void CalculateDiscountedPrice_BySeatCategory(long voucherId, double seatPrice, double expectedPrice, double expectedCouponVal)
     {
         List<VoucherModel> testVouchers = new()
         {
@@ -131,7 +131,10 @@ public class VoucherTest
         VoucherLogic voucherLogic = new();
         VoucherModel voucher = voucherLogic.GetById((int)voucherId);
 
-        double actual = VoucherLogic.PriceIncludingVoucherDiscount(voucher, seatPrice);
-        Assert.AreEqual(expected, actual);
+        decimal actualPrice = VoucherLogic.CalculateDiscountedPrice(ref voucher, Convert.ToDecimal(seatPrice));
+        decimal actualCouponVal = voucher.Amount;
+
+        Assert.AreEqual(Convert.ToDecimal(expectedPrice), actualPrice);
+        Assert.AreEqual(Convert.ToDecimal(expectedCouponVal), actualCouponVal);
     }
 }

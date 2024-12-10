@@ -331,24 +331,49 @@ public abstract class TheaterBase
 
 
     private void MakeReservation(List<SeatsModel> selectedSeats, UserModel acc, long showId)
-    {
-        // check if the user has a voucher, otherwise this option doesn't show up
+    {   
         List<VoucherModel> userVouchers = VoucherLogic.GetVouchersByUserId(acc);
-        if (userVouchers.Count < 0)
+        if (userVouchers.Count < 0) // Check if the user has a voucher, otherwise this option doesn't show up
         {
             Console.WriteLine("You have active vouchers");
-            Voucher.PrintAllUserVouchers(acc);
-            Console.WriteLine("Would you like to use an voucher? ");
-            Console.ReadLine();
-
-
-            // Discount for the entire reservation
-            foreach(SeatsModel selectedSeat in selectedSeats)
+            Console.WriteLine("Would you like to use a voucher? (yes/no)");
+            bool useVoucher = Console.ReadLine().ToLower() == "yes";
+            
+            if (useVoucher)
             {
-                VoucherLogic.PriceIncludingVoucherDiscount(, selectedSeat.Price);
-            }
+                do
+                {
+                    Console.Clear();
+                    
+                    Voucher.PrintAllUserVouchers(acc);
+                    Console.WriteLine("Enter the ID of the voucher you wish to use");
+                    
+                    bool isValidFormat = int.TryParse(Console.ReadLine(), out int inputId);
+                    if(!isValidFormat)
+                    {
+                        Console.WriteLine("Invalid format. Make sure to enter a number.");
+                        continue;
+                    }
 
-            VoucherLogic.UpdateVoucher()
+                    VoucherModel voucher = userVouchers.FirstOrDefault(v => v.Id == inputId);
+                    if (voucher is null)
+                    {
+                        Console.WriteLine("This ID doesn't exist. Try again");
+                        continue;
+                    }
+                    
+                    for(int i = 0; i < selectedSeats.Count; i++)
+                    {
+                        selectedSeats[i].Price = VoucherLogic.CalculateDiscountedPrice(ref voucher, selectedSeats[i].Price);
+                    }
+
+                    VoucherLogic.UpdateVoucher(voucher);
+
+                    Console.WriteLine("Your voucher is succesfully applied!");
+                    break;
+                } while(true);
+            }
+            
         }
         
         long userId = acc.Id;
