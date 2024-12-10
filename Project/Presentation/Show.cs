@@ -10,6 +10,7 @@ class Show
     // }
     static public void AdminStart()
     {
+        Console.Clear();
         Console.WriteLine("[1] Overview of all show");
         Console.WriteLine("[2] Add Show");
         Console.WriteLine("[3] Edit Show");
@@ -345,12 +346,14 @@ class Show
         Console.WriteLine("Would you like to change the theater ID?");
         Console.WriteLine("1. yes\n2. no");
         int question1 = Convert.ToInt32(Console.ReadLine());
+        Console.Clear();
         while (1 != 1 && question1 != 2)
         {
             Console.WriteLine("Invalid input. Try again");
             Console.WriteLine("Would you like to change the theater ID?");
             Console.WriteLine("1. yes\n2. no");
             question1 = Convert.ToInt32(Console.ReadLine());
+            Console.Clear();
         }
         if (question1 == 1)
         {
@@ -358,6 +361,7 @@ class Show
             {
                 Console.WriteLine("Enter new theater ID for this movie.");
                 newTheatreId = Convert.ToInt32(Console.ReadLine());
+                Console.Clear();
                 if (newTheatreId != 1 && newTheatreId != 2 && newTheatreId != 3)
                 {
                     Console.WriteLine("Theater ID does not exist. Try again.");
@@ -367,12 +371,14 @@ class Show
         Console.WriteLine("Would you like to change the movie ID?");
         Console.WriteLine("1. yes\n2. no");
         int question2 = Convert.ToInt32(Console.ReadLine());
+        Console.Clear();
         while (question2 != 1 && question2 != 2)
         {
             Console.WriteLine("Invalid input. Try again");
             Console.WriteLine("Would you like to change the theater ID?");
             Console.WriteLine("1. yes\n2. no");
             question2 = Convert.ToInt32(Console.ReadLine());
+            Console.Clear();
         }
         if (question2 == 1)
         {
@@ -382,6 +388,7 @@ class Show
             do
             {
                 title = Console.ReadLine();
+                Console.Clear();
                 if (title.Contains(" "))
                 {
                     string[] words = title.Split(" ");
@@ -410,12 +417,14 @@ class Show
         Console.WriteLine("Would you like to change the date/time?");
         Console.WriteLine("1. yes\n2. no");
         int question = Convert.ToInt32(Console.ReadLine());
+        Console.Clear();
         while (question != 1 && question != 2)
         {
             Console.WriteLine("Invalid input. Try again");
             Console.WriteLine("Would you like to change the theater ID?");
             Console.WriteLine("1. yes\n2. no");
             question = Convert.ToInt32(Console.ReadLine());
+            Console.Clear();
         }
         if (question == 1)
         {
@@ -426,6 +435,7 @@ class Show
                 {
                     Console.WriteLine("Enter date for this show in '%Y-%m-%d' format.");
                     Date = Console.ReadLine();
+                    Console.Clear();
                     if (DateTime.TryParse(Date, out _) == false)
                     {
                         Console.WriteLine("Not a valid date time format. Try again.");
@@ -446,6 +456,7 @@ class Show
                     }
                     Console.WriteLine("What time would you like to choose('HH:MM' format)?");
                     time = Console.ReadLine();
+                    Console.Clear();
                     int timeinminutes = 0;
                     if (question2 == 1)
                     {
@@ -481,6 +492,7 @@ class Show
                                         Console.WriteLine("Would you like to pick one of the suggested times for this day?");
                                         Console.WriteLine("1. Yes\n 2. No");
                                         int yesno = Convert.ToInt32(Console.ReadLine());
+                                        Console.Clear();
                                         if (yesno == 1)
                                         {
                                             Console.WriteLine("You can choose one of the following times");
@@ -491,6 +503,7 @@ class Show
                                                 Console.WriteLine($"{count}. {availabletime}");
                                             }
                                             int timechoice = Convert.ToInt32(Console.ReadLine());
+                                            Console.Clear();
                                             time = Convert.ToString(avalabletimes[timechoice - 1]);
                                             backtodate = false;
                                             break;
@@ -534,6 +547,7 @@ class Show
                                                 Console.WriteLine($"{count}. {availabletime}");
                                             }
                                             int timechoice = Convert.ToInt32(Console.ReadLine());
+                                            Console.Clear();
                                             time = Convert.ToString(avalabletimes[timechoice - 1]);
                                             backtodate = false;
                                             break;
@@ -593,6 +607,7 @@ class Show
         {
             Console.WriteLine("Enter new theater ID for this movie.");
             newTheaterId = Convert.ToInt32(Console.ReadLine());
+            Console.Clear();
             if (newTheaterId != 1 && newTheaterId != 2 && newTheaterId != 3)
             {
                 Console.WriteLine("Theater ID does not exist. Try again.");
@@ -613,6 +628,7 @@ class Show
         do
         {
             title = Console.ReadLine();
+            Console.Clear();
             if (title.Contains(" "))
             {
                 string[] words = title.Split(" ");
@@ -653,6 +669,7 @@ class Show
             {
                 Console.WriteLine("Enter date for this show in '%Y-%m-%d' format.");
                 Date = Console.ReadLine();
+                Console.Clear();
                 if (DateTime.TryParse(Date, out _) == false)
                 {
                     Console.WriteLine("Not a valid date time format. Try again.");
@@ -666,6 +683,7 @@ class Show
                 PrintShowsInTheaterThisDay(Date, newTheaterId);
                 Console.WriteLine("What time would you like to choose('HH:MM' format)?");
                 time = Console.ReadLine();
+                Console.Clear();
                 int timeinminutes = Convert.ToInt32(MoviesLogic.GetById(newMovieId).TimeInMinutes);
                 if (TimeSpan.TryParse(time, out _) == true)
                 {
@@ -691,6 +709,7 @@ class Show
                                 Console.WriteLine("Would you like to pick one of the suggested times for this day?");
                                 Console.WriteLine("1. Yes\n 2. No");
                                 int yesno = Convert.ToInt32(Console.ReadLine());
+                                Console.Clear();
                                 if (yesno == 1)
                                 {
                                     Console.WriteLine("You can choose one of the following times");
@@ -701,6 +720,7 @@ class Show
                                         Console.WriteLine($"{count}. {availabletime}");
                                     }
                                     int timechoice = Convert.ToInt32(Console.ReadLine());
+                                    Console.Clear();
                                     time = Convert.ToString(avalabletimes[timechoice - 1]);
                                     backtodate = false;
                                     break;
