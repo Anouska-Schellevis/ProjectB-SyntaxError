@@ -150,45 +150,87 @@ public class SnackMenu
         }
     }
 
+
     public static void ShowSnackMenu()
     {
-        List<MenuItem> snacks = MenuItemLogic.GetAllMenuItems(); //get all items from the database
+        List<MenuItem> snacks = MenuItemLogic.GetAllMenuItems();
         Console.Clear();
         Console.WriteLine("===== Snack Menu =====\n");
 
-        int longest = 0;
-        foreach (var snack in snacks)
+        List<MenuItem> foodItems = new List<MenuItem>();
+        List<MenuItem> drinkItems = new List<MenuItem>();
+
+        foreach (var item in snacks)
         {
-            if (snack.Name.Length > longest)
+            if (item.Type)
             {
-                longest = snack.Name.Length;
+                drinkItems.Add(item);
+            }
+            else
+            {
+                foodItems.Add(item);
             }
         }
-        longest = longest + 5; //here we want the longest word + 5 to be able to print everything neatly later
-        // the five is so the price is neatly to the side, we want to find the longest word so
-        // that we can add spaces to the shortest word so that they print on the same index and it looks nice
 
-        for (int i = 0; i < snacks.Count; i++)
+        int itemNumber = 1;
+
+        if (foodItems.Count > 0)
         {
-            string number = $"[{i + 1}]"; //get the number use +1 because 0 based index
-            string name = snacks[i].Name; //get current snack name
-            string spaces = ""; //make empty string we can later use to ensure neat alligment
+            Console.WriteLine("=== Food ===");
+            itemNumber = AllignmentMenuItems(foodItems, itemNumber);
+        }
+        else
+        {
+            Console.WriteLine("No food items available.");
+        }
 
-            int spacesNeeded = longest - name.Length; //this here takes the longest word example, 7 and the current word example 5, and the difference is
-            //the amount of spaces needed to make the alligment the same
+        if (drinkItems.Count > 0)
+        {
+            Console.WriteLine("\n=== Drinks ===");
+            itemNumber = AllignmentMenuItems(drinkItems, itemNumber);
+        }
+        else
+        {
+            Console.WriteLine("\nNo drink items available.");
+        }
+
+        Console.WriteLine($"[{itemNumber}] Done ordering");
+    }
+
+
+
+    private static int AllignmentMenuItems(List<MenuItem> items, int startNumber)
+    {
+        int longest = 0;
+        foreach (var item in items)
+        {
+            if (item.Name.Length > longest)
+            {
+                longest = item.Name.Length; //get longest length word
+            }
+        }
+        longest = longest + 5; //+5 for alligments
+
+        for (int i = 0; i < items.Count; i++)
+        {
+            string number = $"[{startNumber}]"; //number for item selecting
+            string name = items[i].Name;
+            string spaces = "";
+
+            int spacesNeeded = longest - name.Length;
             for (int j = 0; j < spacesNeeded; j++)
             {
-                spaces += " ";//then add the empty space to the string
+                spaces += " "; //it takes the number for longest word +5 and that is the max alligment, so it takes current word - that number = the amount of spaces needed
             }
 
-            string price = $"€{snacks[i].Price:F2}"; //format the price with 2 decimal
-            Console.WriteLine($"{number} {name}{spaces}{price}"); //print it all with the correct spaces
+            string price = $"€{items[i].Price:F2}";
+            Console.WriteLine($"{number} {name}{spaces}{price}");
+            startNumber++;
         }
 
-        Console.WriteLine($"[{snacks.Count + 1}] Done ordering");
-        //the final one will always be done ordering so we can see the end of the menu
-        //and use it to end the user select snacks method
+        return startNumber;
     }
+
 
     public static List<MenuItem> SelectSnacks()
     {
