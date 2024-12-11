@@ -922,9 +922,10 @@ class Show
         {
             bool printed = false;
             DateTime CurrentDate = DateTime.Now;
+            DateTime Datetoprint = CurrentDate.AddDays(i);
             DayOfWeek CurrentDay = CurrentDate.DayOfWeek;
             DayOfWeek DayToPrint = (DayOfWeek)(((int)CurrentDay + i) % 7);
-            string StringCurrentDate = Convert.ToString(CurrentDate).Split(" ")[0];
+            string StringCurrentDate = Convert.ToString(Datetoprint).Split(" ")[0];
             Console.WriteLine($"{DayToPrint} {StringCurrentDate}");
             Console.WriteLine("________________________________________");
             Dictionary<string, string> movieTimes = new Dictionary<string, string>();
