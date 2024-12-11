@@ -427,8 +427,8 @@ public abstract class TheaterBase
         {
             Console.WriteLine("You have active vouchers");
             Console.WriteLine("Would you like to use a voucher?");
-            Console.WriteLine("[1] yes]");
-            Console.WriteLine("[2] no]");
+            Console.WriteLine("[1] yes");
+            Console.WriteLine("[2] no");
             bool useVoucher = Console.ReadLine() == "1";
             if (useVoucher)
             {
@@ -468,7 +468,7 @@ public abstract class TheaterBase
         }
 
         long userId = acc.Id;
-        Console.WriteLine("Do you want bar service? \n[1] Yes \n[2] No:");
+        Console.WriteLine("Do you want bar service? \n[1] Yes \n[2] No");
         bool barService = Console.ReadLine() == "1" && IsBarAvailable(selectedSeats.Count, showId);
 
         Console.WriteLine("Would you like to order snacks? \n[1] Yes \n[2] No");
