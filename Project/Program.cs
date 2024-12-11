@@ -1,11 +1,11 @@
 ﻿//Console.Clear();
-//Menu.Start();
+Menu.Start();
 //Movie.Main();
 
 //Show.UserStart();
 
 //Show.Main();
-Show.AdminStart();
+//Show.AdminStart();
 
 //SeatsAccess.ClearAllSeats();
 //ReservationAccess.ClearAllReservations();

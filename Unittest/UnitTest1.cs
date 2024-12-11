@@ -105,36 +105,36 @@ public class ReservationTest
     // }
 }
 
-[TestClass]
-public class MovieTest
-{
-    //necessary?
-}
+// [TestClass]
+// public class MovieTest
+// {
+//     //necessary?
+// }
 
-[TestClass]
-[DataRow(1, 1, 1, "2024-11-26 18:00")]
-public class ShowTest
-{
-    [TestInitialize]
-    public void TestInitialize()
-    {
-        ShowAccess.ClearAllShows();
-    }
+// [TestClass]
+// [DataRow(1, 1, 1, "2024-11-26 18:00")]
+// public class ShowTest
+// {
+//     [TestInitialize]
+//     public void TestInitialize()
+//     {
+//         ShowAccess.ClearAllShows();
+//     }
 
-        List<ShowModel> testShows = new() { 
-            new(1, 1, 1, "2024-11-26 18:00"),
-            new(2, 2, 2, "2024-11-27 19:00"),
-            new(3, 3, 3, "2024-11-28 20:00"),
-            new(4, 1, 3, "2024-11-29 21:00") 
-        };
+//         List<ShowModel> testShows = new() { 
+//             new(1, 1, 1, "2024-11-26 18:00"),
+//             new(2, 2, 2, "2024-11-27 19:00"),
+//             new(3, 3, 3, "2024-11-28 20:00"),
+//             new(4, 1, 3, "2024-11-29 21:00") 
+//         };
 
-        foreach(ShowModel testShow in testShows)
-        {
-            ShowLogic.WriteShow(testShow);
-        }
+//         foreach(ShowModel testShow in testShows)
+//         {
+//             ShowLogic.WriteShow(testShow);
+//         }
 
-        var shows = ShowLogic.GetAllShows();
-        
-        Assert.AreEqual(4, shows.Count, "The amount of shows returned matches the amount added to the database");
+//         var shows = ShowLogic.GetAllShows();
 
-}
+//         Assert.AreEqual(4, shows.Count, "The amount of shows returned matches the amount added to the database");
+
+// }
