@@ -233,6 +233,7 @@ Description: {movie.Description}
             }
             else if (choice == "2")
             {
+                Console.Clear();
                 return;
             }
             else
