@@ -119,11 +119,13 @@ class Voucher
                     Console.WriteLine($"Description: {voucher.Description}\n---------------------------------------");
                     count += 1;
                 }
+
+
             }
             else if (input == 3)
             {
                 Console.Clear();
-                break;
+
             }
         }
     }
@@ -133,7 +135,7 @@ class Voucher
         Console.WriteLine("[1] See all your vouchers");
         Console.WriteLine("[2] Go back");
         Console.WriteLine("What would you like to do?");
-        
+
         bool isCorrectFormat = int.TryParse(Console.ReadLine(), out int choice);
         if (!isCorrectFormat)
         {
@@ -149,6 +151,7 @@ class Voucher
                 break;
             case 2:
                 Console.Clear();
+                User.Start(acc);
                 break;
             default:
                 Console.Clear();
@@ -180,5 +183,26 @@ class Voucher
             }
             Console.WriteLine($"Description: {voucher.Description}\n---------------------------------------");
         }
+        string choice;
+
+        do
+        {
+            Console.WriteLine("[1] Go back to voucher menu");
+            choice = Console.ReadLine();
+
+            if (choice == "1")
+            {
+                Console.Clear();
+                Voucher.UserStart(acc);
+            }
+            else
+            {
+                Console.WriteLine("Invalid input, please try again.");
+            }
+
+        } while (choice != "1");
+
     }
+
 }
+

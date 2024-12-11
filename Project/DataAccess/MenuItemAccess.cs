@@ -24,11 +24,12 @@ public static class MenuItemAccess
         _connection.Execute(sql, item);
     }
 
-    public static void Delete(int id)
+    public static void Delete(MenuItem item)
     {
-        string sql = $"DELETE FROM {Table} WHERE id = @Id";
-        _connection.Execute(sql, new { Id = id });
+        string sql = $"DELETE FROM {Table} WHERE Name = @Name";
+        _connection.Execute(sql, new { Name = item.Name });
     }
+
 
     public static MenuItem GetById(int id)
     {
