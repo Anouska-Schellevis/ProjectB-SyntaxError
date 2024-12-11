@@ -1,4 +1,4 @@
-﻿//Console.Clear();
+﻿Console.Clear();
 Menu.Start();
 //Movie.Main();
 

@@ -45,8 +45,9 @@ public class Reservation
                     }
                 }
 
+                //check if there are any snacks to show
                 string snacks = group.First().Snacks;
-                if (snacks != "")
+                if (!string.IsNullOrEmpty(snacks)) //will only print if snacks is not null or not empty, otherwise it just skips
                 {
                     Console.WriteLine("    Ordered Snacks:");
                     string[] snackList = snacks.Split(',');
