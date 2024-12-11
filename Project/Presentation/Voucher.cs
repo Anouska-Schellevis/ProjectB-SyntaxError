@@ -92,7 +92,7 @@ class Voucher
                 Console.WriteLine($"Generated code {code}");
 
                 // A new voucher will be made and send to the create voucher function
-                VoucherModel newVoucher = new VoucherModel(0, code, description, amount, type, null);
+                VoucherModel newVoucher = new VoucherModel(0, code, description, amount, type, "2025-02-12 14:30", null);
                 VoucherLogic.CreateVoucher(newVoucher);
 
                 Console.WriteLine("Done!!");
