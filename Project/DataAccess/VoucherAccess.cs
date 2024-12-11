@@ -16,6 +16,12 @@ public static class VoucherAccess
         _connection.Execute(sql, voucher);
     }
 
+    public static void Update(VoucherModel voucher)
+    {
+        string sql = $"UPDATE {Table} SET code = @Code, description = @Description, amount = @Amount, type = @Type, user_id = @UserId WHERE id = @Id";
+        _connection.Execute(sql, voucher);
+    }
+
     public static VoucherModel GetById(int id)
     {
         string sql = $"SELECT * FROM {Table} WHERE id = @Id";
@@ -33,6 +39,13 @@ public static class VoucherAccess
         string sql = $"SELECT * FROM {Table}";
         return _connection.Query<VoucherModel>(sql).ToList();
     }
+
+    public static List<VoucherModel> GetVouchersByUserId(UserModel user)
+    {
+        string sql = $"SELECT id AS Id, code AS Code, description AS Description, amount AS Amount, type AS Type, user_id AS UserId FROM {Table} WHERE user_id = @Id";
+        return _connection.Query<VoucherModel>(sql, user).ToList();
+    }
+
 
     // public static void Update(ShowModel show)
     // {

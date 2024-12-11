@@ -1,7 +1,6 @@
-﻿
-Console.Clear();
+﻿Console.Clear();
 Menu.Start();
-// Movie.Main();
+//Movie.Main();
 
 //Show.UserStart();
 
