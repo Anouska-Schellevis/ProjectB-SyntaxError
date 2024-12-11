@@ -1,6 +1,5 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
 
 namespace UnittestSnacks;
 
@@ -64,5 +63,44 @@ public class SnackTest
         {
             Assert.AreEqual("A snack with this name already exists.", ex.Message);
         }
+    }
+
+    [TestMethod]
+    public void Delete_Snack_UnitTest()
+    {
+        var snack = new MenuItem
+        {
+            Name = "Popcorn",
+            Price = 2.50m,
+            Type = false
+        };
+
+        MenuItemLogic.WriteMenuItem(snack);
+
+        MenuItemLogic.DeleteMenuItem(snack);
+
+        var deletedSnack = MenuItemLogic.GetByName("Popcorn");
+        Assert.IsNull(deletedSnack);
+    }
+
+    [TestMethod]
+    public void Delete_Snack_SystemTest()
+    {
+        var snack = new MenuItem
+        {
+            Name = "Popcorn",
+            Price = 2.50m,
+            Type = false
+        };
+
+        MenuItemLogic.WriteMenuItem(snack);
+
+        var actualSnack = MenuItemLogic.GetByName("Popcorn");
+        Assert.IsNotNull(actualSnack);
+
+        MenuItemLogic.DeleteMenuItem(snack);
+
+        var deletedSnack = MenuItemLogic.GetByName("Popcorn");
+        Assert.IsNull(deletedSnack);
     }
 }
