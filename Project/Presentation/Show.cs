@@ -1,6 +1,3 @@
-using System.Runtime.InteropServices;
-using System.Security.Cryptography.X509Certificates;
-
 class Show
 {
     // static public void Main()
@@ -931,6 +928,7 @@ class Show
             Console.WriteLine($"{DayToPrint} {StringCurrentDate}");
             Console.WriteLine("________________________________________");
             Dictionary<string, string> movieTimes = new Dictionary<string, string>();
+            DateTime oneweekfromnow = CurrentDate.AddDays(7).AddSeconds(-1);
             foreach (var show in shows)
             {
                 DateTime DateAndTime = DateTime.Parse(show.Date);
@@ -940,7 +938,7 @@ class Show
                 string StringTime = show.Date.Split(" ")[1]; ;
                 string StringCurrentTime = Convert.ToString(CurrentDate).Split(" ")[1];
 
-                if (CurrentDate < DateAndTime)
+                if (CurrentDate < DateAndTime && DateAndTime < oneweekfromnow)
                 {
                     if (DateAndTime.DayOfWeek == DayToPrint)
                     {
