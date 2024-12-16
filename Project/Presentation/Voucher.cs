@@ -15,9 +15,6 @@ class Voucher
                 int typeAnswer = 0;
                 string description = "";
                 int answer = 0;
-                string enterDate = "";
-                DateTime dateTime;
-                DateTime currentDate = DateTime.Now;
 
                 do
                 {
@@ -49,19 +46,6 @@ class Voucher
                     Console.WriteLine("Type your description");
                     description = Console.ReadLine();
                 }
-
-                do
-                {
-                    Console.WriteLine("Enter the expiration date?(YYYY-MM-DD)");
-                    enterDate = Console.ReadLine();
-
-                    if (DateTime.TryParse(enterDate, out dateTime))
-                    {
-
-                    }
-                } while (dateTime < currentDate);
-
-                Console.ReadLine();
 
                 Random res = new Random();
 
