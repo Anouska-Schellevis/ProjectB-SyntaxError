@@ -108,7 +108,8 @@ class Voucher
                     {
                         Console.WriteLine($"Amount: €{voucher.Amount},-");
                     }
-                    Console.WriteLine($"Description: {voucher.Description}\n---------------------------------------");
+                    Console.WriteLine($"Description: {voucher.Description}");
+                    Console.WriteLine($"Expiration Date: {voucher.ExpirationDate}\n---------------------------------------");
                     count += 1;
                 }
 
@@ -140,6 +141,7 @@ class Voucher
             case 1:
                 Console.Clear();
                 PrintAllUserVouchers(acc);
+                UserStart(acc);
                 break;
             case 2:
                 Console.Clear();
@@ -173,27 +175,9 @@ class Voucher
             {
                 Console.WriteLine($"Amount: €{voucher.Amount},-");
             }
-            Console.WriteLine($"Description: {voucher.Description}\n---------------------------------------");
+            Console.WriteLine($"Description: {voucher.Description}");
+            Console.WriteLine($"Expiration Date: {voucher.ExpirationDate}\n---------------------------------------");
         }
-        string choice;
-
-        do
-        {
-            Console.WriteLine("[1] Go back to voucher menu");
-            choice = Console.ReadLine();
-
-            if (choice == "1")
-            {
-                Console.Clear();
-                Voucher.UserStart(acc);
-            }
-            else
-            {
-                Console.WriteLine("Invalid input, please try again.");
-            }
-
-        } while (choice != "1");
-
     }
 
 }
