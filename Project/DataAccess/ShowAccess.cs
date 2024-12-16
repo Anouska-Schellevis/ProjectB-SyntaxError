@@ -56,4 +56,10 @@ public static class ShowAccess
 
         Console.WriteLine("All shows have been deleted and auto-increment has been reset.");
     }
+
+    public static List<ShowModel> AllOrderedByDate()
+    {
+        string sql = $"SELECT * FROM {Table} ORDER BY date";
+        return _connection.Query<ShowModel>(sql).ToList();
+    }
 }
