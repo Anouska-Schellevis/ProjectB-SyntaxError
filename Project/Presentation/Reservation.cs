@@ -6,7 +6,6 @@ public class Reservation
 
         Console.WriteLine($"Welcome, {acc.FirstName}!");
 
-
         List<ReservationModel> userReservations = ReservationAccess.GetReservationsByUserId(acc.Id);
 
         if (userReservations.Count == 0)
@@ -15,34 +14,29 @@ public class Reservation
             return;
         }
 
-
         var groupedReservations = userReservations
             .GroupBy(reservation => reservation.ShowId)
             .OrderBy(group => group.Key)
-            .ToList(); //group all user reservation by show id, show id is group KEY
+            .ToList(); //group all user reservations by show id, show id is group KEY
 
         Console.WriteLine("Your reservations:");
-        int reservationNumber = 1; //number to incriment for amount of reservations
+        int reservationNumber = 1; //number to increment for amount of reservations
 
         foreach (var group in groupedReservations)
         {
             ShowModel reservedShow = ShowAccess.GetByID(group.Key); //get the show model with the group key aka the show id that groups that group
-            MoviesModel reservedMovie = MoviesAccess.GetByLongId(reservedShow.MovieId); // get the movie model from that show for the name 
+            MoviesModel reservedMovie = MoviesAccess.GetByLongId(reservedShow.MovieId); //get the movie model from that show for the name 
 
             if (reservedMovie != null)
             {
                 Console.WriteLine($"Reservation [{reservationNumber}]");
                 Console.WriteLine($"    Movie: {reservedMovie.Title}, Show Date: {reservedShow.Date}, Bar reservation: {(group.First().Bar ? "Yes" : "No")}");
 
-
                 foreach (var reservation in group)
                 {
                     SeatsModel seat = SeatsAccess.GetById((int)reservation.SeatsId);
-                    //get the seats model for each reservation
-
                     if (seat != null)
                     {
-                        //print each seats row and collum aka chair
                         Console.WriteLine($"    Seat Row: {seat.RowNumber}, Chair: {seat.ColumnNumber}");
                     }
                     else
@@ -50,6 +44,19 @@ public class Reservation
                         Console.WriteLine("    Seat information not available.");
                     }
                 }
+
+                //check if there are any snacks to show
+                string snacks = group.First().Snacks;
+                if (!string.IsNullOrEmpty(snacks)) //will only print if snacks is not null or not empty, otherwise it just skips
+                {
+                    Console.WriteLine("    Ordered Snacks:");
+                    string[] snackList = snacks.Split(',');
+                    foreach (string snack in snackList)
+                    {
+                        Console.WriteLine($"        - {snack}");
+                    }
+                }
+
                 reservationNumber++;
             }
             else
@@ -85,9 +92,10 @@ public class Reservation
         }
     }
 
+
     public static void CancelReservation(List<ReservationModel> userReservations, UserModel acc)
     {
-        //this gets called with that flat reservations from see reservations, which is one list of all that users reservations
+        // This gets called with that flat reservations from see reservations, which is one list of all that user's reservations
         bool reservationChoice = false;
 
         while (!reservationChoice)
@@ -119,13 +127,13 @@ public class Reservation
 
                 Console.WriteLine($"Cancelling reservation for Movie: {reservedMovie.Title}, Show Date: {reservedShow.Date}");
 
-                //because earlier we had to make user reservations one list, destroying the grouping on show id, we group these reservations on show id again,
-                // to group all reservations for each seperate show
+                // Because earlier we had to make user reservations one list, destroying the grouping on show id, we group these reservations on show id again,
+                // to group all reservations for each separate show
                 var groupedReservations = userReservations
                     .Where(r => r.ShowId == selectedReservation.ShowId)
                     .ToList();
 
-                var reservedSeatIds = groupedReservations.Select(r => r.SeatsId).ToList(); //make a list of all seats of that show
+                var reservedSeatIds = groupedReservations.Select(r => r.SeatsId).ToList(); // Make a list of all seats of that show
 
                 if (reservedSeatIds.Count == 0)
                 {
@@ -135,10 +143,10 @@ public class Reservation
 
                 foreach (var seatId in reservedSeatIds)
                 {
-                    //for each seat in that list remove that
+                    // For each seat in that list remove that
                     int seatIdInt = (int)seatId;
                     SeatsAccess.Delete(seatIdInt);
-                    //Console.WriteLine($"Deleted seat with ID: {seatIdInt}");
+                    // Console.WriteLine($"Deleted seat with ID: {seatIdInt}");
                 }
 
                 foreach (var reservation in groupedReservations)
