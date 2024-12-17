@@ -435,16 +435,16 @@ public abstract class TheaterBase
                 do
                 {
                     Voucher.PrintAllUserVouchers(acc);
-                    Console.WriteLine("Enter the ID of the voucher you wish to use");
+                    Console.WriteLine("Enter the voucher you wish to use");
 
-                    bool isValidFormat = int.TryParse(Console.ReadLine(), out int inputId);
+                    bool isValidFormat = int.TryParse(Console.ReadLine(), out int inputNum);
                     if (!isValidFormat)
                     {
                         Console.WriteLine("Invalid format. Make sure to enter a number.");
                         continue;
                     }
 
-                    VoucherModel voucher = userVouchers.FirstOrDefault(v => v.Id == inputId); // Looks up if the input ID is from an existing voucher obj
+                    VoucherModel voucher = userVouchers.ElementAtOrDefault(inputNum-1); // the index is one smaller than the count
                     if (voucher is null)
                     {
                         Console.WriteLine("This ID doesn't exist. Try again");
