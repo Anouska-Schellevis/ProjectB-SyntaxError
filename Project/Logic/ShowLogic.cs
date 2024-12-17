@@ -26,4 +26,18 @@ static public class ShowLogic
     {
         ShowAccess.Write(show);
     }
+
+    static public List<ShowModel> AllOrderedByDate(string date)
+    {
+        List<ShowModel> shows = ShowAccess.AllOrderedByDate();
+        List<ShowModel> newList = new List<ShowModel>();
+        foreach (var show in shows)
+        {
+            if (show.Date.Contains(date))
+            {
+                newList.Add(show);
+            }
+        }
+        return newList;
+    }
 }

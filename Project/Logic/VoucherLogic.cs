@@ -21,6 +21,10 @@ public class VoucherLogic
         }
         VoucherAccess.Write(voucher);
     }
+    static public void UpdateVoucher(VoucherModel voucher)
+    {
+        VoucherAccess.Update(voucher);
+    }
 
     public VoucherModel GetById(int id)
     {
@@ -35,6 +39,45 @@ public class VoucherLogic
     static public List<VoucherModel> GetAllVouchers()
     {
         return VoucherAccess.GetAllVouchers();
+    }
+
+    static public List<VoucherModel> GetVouchersByUserId(UserModel user)
+    {
+        return VoucherAccess.GetVouchersByUserId(user);
+    }
+    
+    static public decimal CalculateDiscountedPrice(ref VoucherModel voucher, decimal price)
+    {
+        if (voucher.Type == "percentage")
+        {
+            decimal discountPrice = price / 100 * voucher.Amount;
+
+            // voucher doesn't have a value anymore
+            voucher.Amount = 0;
+
+            return price - discountPrice;
+        }
+        else if (voucher.Type == "euro")
+        {
+            if (price < voucher.Amount)
+            {
+                // The value of the voucher drops
+                voucher.Amount -= price;
+
+                return 0; // Since the voucher is worth more than the regarding price, the discounted price will always be 0
+            }
+
+            decimal newPrice = price - voucher.Amount;
+
+            // voucher doesn't have a value anymore
+            voucher.Amount = 0;
+            
+            return newPrice;
+        }
+        else
+        {
+            return price;
+        }
     }
 }
 
