@@ -12,14 +12,17 @@ class Voucher
             if (input == 1)
             {
                 string type = "";
-
-                // Ask the admin what kind of voucher he would like to make
-                Console.WriteLine("What kind of voucher would you like to add?\n[1]percentage\n[2]amount of money");
-                int typeAnswer = Convert.ToInt16(Console.ReadLine());
+                int typeAnswer = 0;
+                string description = "";
+                int answer = 0;
+                string enterDate = "";
+                DateTime dateTime;
+                DateTime currentDate = DateTime.Now;
 
                 do
                 {
-                    Console.WriteLine("Please enter a valid answer.");
+                    // Ask the admin what kind of voucher he would like to make
+                    Console.WriteLine("What kind of voucher would you like to add?\n[1]percentage\n[2]amount of money");
                     typeAnswer = Convert.ToInt16(Console.ReadLine());
                 } while (typeAnswer != 1 && typeAnswer != 2);
                 if (typeAnswer == 1)
@@ -35,25 +38,28 @@ class Voucher
                 Console.WriteLine("What is the amount?");
                 decimal amount = Convert.ToInt16(Console.ReadLine());
 
-                // Ask the admin if the voucher needs a description
-                string description = "";
-                Console.WriteLine("Would you like to add a description?(yes/no)");
-                string answer = Console.ReadLine().ToLower();
-
                 do
                 {
-                    Console.WriteLine("Please enter a valid answer.");
-                    answer = Console.ReadLine().ToLower();
-                } while (answer != "yes" && answer != "no");
-                if (answer == "yes")
+                    // Ask the admin if the voucher needs a description
+                    Console.WriteLine("Would you like to add a description?\n[1]Yes\n[2]No");
+                    answer = Convert.ToInt16(Console.ReadLine());
+                } while (answer != 1 && answer != 2);
+                if (answer == 1)
                 {
                     Console.WriteLine("Type your description");
                     description = Console.ReadLine();
                 }
-                else if (answer == "no")
+
+                do
                 {
-                    Console.WriteLine("No");
-                }
+                    Console.WriteLine("Enter the expiration date?(YYYY-MM-DD)");
+                    enterDate = Console.ReadLine();
+
+                    DateTime.TryParse(enterDate, out dateTime);
+                } while (dateTime < currentDate);
+
+                Console.WriteLine(enterDate, dateTime);
+                Console.ReadLine();
 
                 Random res = new Random();
 
@@ -92,7 +98,7 @@ class Voucher
                 Console.WriteLine($"Generated code {code}");
 
                 // A new voucher will be made and send to the create voucher function
-                VoucherModel newVoucher = new VoucherModel(0, code, description, amount, type, "2025-02-12 14:30", null);
+                VoucherModel newVoucher = new VoucherModel(0, code, description, amount, type, enterDate, null);
                 VoucherLogic.CreateVoucher(newVoucher);
 
                 Console.WriteLine("Done!!");
