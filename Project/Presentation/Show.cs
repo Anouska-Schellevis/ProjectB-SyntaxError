@@ -623,9 +623,15 @@ class Show
         //         Console.WriteLine("Movie ID does not exist. Try again.");
         //     }
         // } while (MoviesAccess.GetById(newMovieId) == null);
-        Console.WriteLine("Enter movie name(not uppercase sensitive)");
         string title = "";
         MoviesModel movie;
+        List<MoviesModel> movies = MoviesLogic.GetAllMovies();
+        Console.WriteLine("Movies you can choose from: ");
+        foreach (var item in movies)
+        {
+            Console.WriteLine($"- {item.Title}");
+        }
+        Console.WriteLine("\nEnter movie name(not uppercase sensitive)");
         do
         {
             title = Console.ReadLine();
