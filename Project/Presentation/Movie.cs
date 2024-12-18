@@ -196,18 +196,24 @@ Description: {movie.Description}
 
             if (movie != null)
             {
-                string genre = movie.Genre;
+                string[] genres = movie.Genre.Split(','); // Split the genres by commas
+
                 int seatsBooked = group.Count(); //count the reservations together for each group,(one group has 4 reservation == 4)
 
                 //this used the dictionary, if a genre is already in the dictionary it adds the amount of seats booked to that existing genre
                 //if the genre doesnt exist it makes it
-                if (genrePopularity.ContainsKey(genre))
+                foreach (string genre in genres)
                 {
-                    genrePopularity[genre] += seatsBooked;
-                }
-                else
-                {
-                    genrePopularity[genre] = seatsBooked;
+                    string trimmedGenre = genre.Trim(); // Remove any leading/trailing spaces from the genre
+
+                    if (genrePopularity.ContainsKey(trimmedGenre))
+                    {
+                        genrePopularity[trimmedGenre] += seatsBooked;
+                    }
+                    else
+                    {
+                        genrePopularity[trimmedGenre] = seatsBooked;
+                    }
                 }
             }
         }
@@ -217,11 +223,38 @@ Description: {movie.Description}
             .ToList();  //sort the genre by value, value = amount seats booked, refers back to the dictionary
                         //(key is genre name value is amount of reservations)
 
-        Console.WriteLine("Most populair genre descending on amount of reservations:");
+        Console.WriteLine("Most popular genres descending on amount of reservations:");
         Console.WriteLine("-----------------------------------------------------------");
+
+        int genreNumber = 1;
+        int longestGenre = 0;
+
+        //find the longest genre name for alignment
         foreach (var genre in sortedGenres)
         {
-            Console.WriteLine($"     {genre.Key}: {genre.Value} seats booked");
+            if (genre.Key.Length > longestGenre)
+            {
+                longestGenre = genre.Key.Length; //get longest length word
+            }
+        }
+        longestGenre += 5; //+5 for alignment
+
+
+        foreach (var genre in sortedGenres)
+        {
+            string genreName = genre.Key;
+            string spaces = "";  //create empty string to hold the spaces
+
+            //calculate how many spaces are needed
+            int spacesNeeded = longestGenre - genreName.Length;
+            for (int i = 0; i < spacesNeeded; i++)
+            {
+                spaces += " ";  //add space one by one
+            }
+
+            string seatsBooked = $"{genre.Value} seats booked";
+            Console.WriteLine($"{genreName}{spaces}{seatsBooked}");
+            genreNumber++;
         }
 
         Console.WriteLine("\n[1] Go back to movie menu");
@@ -247,4 +280,6 @@ Description: {movie.Description}
             }
         }
     }
+
+
 }

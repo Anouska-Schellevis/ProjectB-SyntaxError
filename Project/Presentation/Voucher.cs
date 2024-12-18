@@ -1,6 +1,6 @@
 class Voucher
 {
-    public static void AdminStart()
+    public static void AdminStart(UserModel acc)
     {
         while (true)
         {
@@ -126,13 +126,11 @@ class Voucher
                     Console.WriteLine($"Expiration Date: {voucher.ExpirationDate}\n---------------------------------------");
                     count += 1;
                 }
-
-
             }
             else if (input == 3)
             {
                 Console.Clear();
-
+                break;
             }
         }
     }
@@ -173,13 +171,11 @@ class Voucher
     {
         List<VoucherModel> vouchers = VoucherLogic.GetVouchersByUserId(acc);
 
+        int count = 1;
+
         foreach (VoucherModel voucher in vouchers)
         {
-            /*
-            I have choosen to use the voucher id instead of the iteration number, 
-            because in the theaterbase.cs this method is used and in the theaterbase the user chooses a voucher id.
-            */
-            Console.WriteLine($"[{voucher.Id}]");
+            Console.WriteLine($"[{count}]");
             Console.WriteLine($"Code: {voucher.Code}");
             if (voucher.Type == "percentage")
             {
@@ -191,6 +187,7 @@ class Voucher
             }
             Console.WriteLine($"Description: {voucher.Description}");
             Console.WriteLine($"Expiration Date: {voucher.ExpirationDate}\n---------------------------------------");
+            count += 1;
         }
     }
 

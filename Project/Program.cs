@@ -11,3 +11,5 @@ Menu.Start();
 //ReservationAccess.ClearAllReservations();
 
 //Movie.TrackPopularity();
+
+//SnackMenu.SelectSnacks();
