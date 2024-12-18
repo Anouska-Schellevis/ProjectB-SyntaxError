@@ -1,6 +1,6 @@
 class Voucher
 {
-    public static void AdminStart()
+    public static void AdminStart(UserModel acc)
     {
         while (true)
         {
@@ -126,13 +126,11 @@ class Voucher
                     Console.WriteLine($"Expiration Date: {voucher.ExpirationDate}\n---------------------------------------");
                     count += 1;
                 }
-
-
             }
             else if (input == 3)
             {
                 Console.Clear();
-
+                Admin.Start(acc);
             }
         }
     }
