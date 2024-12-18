@@ -435,32 +435,53 @@ public abstract class TheaterBase
                 do
                 {
                     Voucher.PrintAllUserVouchers(acc);
-                    Console.WriteLine("Enter the ID of the voucher you wish to use");
+                    Console.WriteLine("Enter the voucher you wish to use");
 
-                    bool isValidFormat = int.TryParse(Console.ReadLine(), out int inputId);
+                    bool isValidFormat = int.TryParse(Console.ReadLine(), out int inputNum);
                     if (!isValidFormat)
                     {
                         Console.WriteLine("Invalid format. Make sure to enter a number.");
                         continue;
                     }
 
-                    VoucherModel voucher = userVouchers.FirstOrDefault(v => v.Id == inputId); // Looks up if the input ID is from an existing voucher obj
+                    VoucherModel voucher = userVouchers.ElementAtOrDefault(inputNum-1); // the index is one smaller than the count
                     if (voucher is null)
                     {
                         Console.WriteLine("This ID doesn't exist. Try again");
                         continue;
                     }
 
-                    decimal oldAmount = voucher.Amount;
+                    string oldVoucherType = voucher.Type;
+
+                    if (voucher.Type == "percentage" && selectedSeats.Count > 1) // CalculateDiscountedPrice() is not intended to subtract the percentage amount from more than one seat alternately. Then change it to a euro voucher.
+                    {
+                        decimal totalSeatsAmount = 0;
+
+                        foreach (SeatsModel seat in selectedSeats)
+                        {
+                            totalSeatsAmount += seat.Price;
+                        }
+
+                        decimal voucherEuroAmount = totalSeatsAmount / 100 * voucher.Amount;
+
+                        voucher.Type = "euro"; // euro voucher to correctly subtract the voucher from every seat until empty
+                        voucher.Amount = voucherEuroAmount;
+                    }
 
                     for (int i = 0; i < selectedSeats.Count; i++)
                     {
-                        voucher.Amount = oldAmount; // To ensure that all seats are discounted before the cost is finally deducted from the voucher.
                         selectedSeats[i].Price = VoucherLogic.CalculateDiscountedPrice(ref voucher, selectedSeats[i].Price); // ref is used to make a reference to voucher outside this function.
+                        SeatsLogic.UpdateSeat(selectedSeats[i]); // the new price of seats is written to the database
+                    }
+
+                    if (oldVoucherType == "percentage" && selectedSeats.Count > 1)
+                    {
+                        voucher.Type = "percentage";
+                        voucher.Amount = 0;
                     }
 
                     VoucherLogic.UpdateVoucher(voucher); // Changes to the voucher are written to the database
-
+                    
                     Console.WriteLine("Your voucher is succesfully applied!");
                     break;
                 } while (true);

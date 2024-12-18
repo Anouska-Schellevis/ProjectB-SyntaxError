@@ -3,59 +3,62 @@ public class SnackMenu
 
     public static void AdminSnackMenu(UserModel acc)
     {
-        Console.Clear();
-        Console.WriteLine("[1] See current snack menu");
-        Console.WriteLine("[2] Add menu item");
-        Console.WriteLine("[3] Delete menu item");
-        Console.WriteLine("[4] Edit menu item");
-        Console.WriteLine("[5] Go back to Admin page");
-
-        string choice = Console.ReadLine();
-        if (choice == "1")
+        while(true)
         {
-            bool continueViewing = true;
-            while (continueViewing)
+            Console.Clear();
+            Console.WriteLine("[1] See current snack menu");
+            Console.WriteLine("[2] Add menu item");
+            Console.WriteLine("[3] Delete menu item");
+            Console.WriteLine("[4] Edit menu item");
+            Console.WriteLine("[5] Go back to Admin page");
+
+            string choice = Console.ReadLine();
+            if (choice == "1")
+            {
+                bool continueViewing = true;
+                while (continueViewing)
+                {
+                    Console.Clear();
+                    ShowSnackMenu();
+
+                    Console.WriteLine("\n[1] Go back to admin snack menu");
+                    string returnChoice = Console.ReadLine();
+
+                    if (returnChoice == "1")
+                    {
+                        continueViewing = false;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid choice. Please choose [1] to go back to admin snack menu.");
+                        Console.ReadKey();//it will go back when pressing 1, i made it like this because i didnt want to change showsnackmenu but that method immidiatly ends
+                        //i wanted it to show to the admin for longer
+                    }
+                }
+
+                Console.Clear();
+                AdminSnackMenu(acc);
+            }
+            else if (choice == "2")
             {
                 Console.Clear();
-                ShowSnackMenu();
-
-                Console.WriteLine("\n[1] Go back to admin snack menu");
-                string returnChoice = Console.ReadLine();
-
-                if (returnChoice == "1")
-                {
-                    continueViewing = false;
-                }
-                else
-                {
-                    Console.WriteLine("Invalid choice. Please choose [1] to go back to admin snack menu.");
-                    Console.ReadKey();//it will go back when pressing 1, i made it like this because i didnt want to change showsnackmenu but that method immidiatly ends
-                    //i wanted it to show to the admin for longer
-                }
+                CreateMenu(acc);
             }
-
-            Console.Clear();
-            AdminSnackMenu(acc);
-        }
-        else if (choice == "2")
-        {
-            Console.Clear();
-            CreateMenu(acc);
-        }
-        else if (choice == "3")
-        {
-            Console.Clear();
-            DeleteMenuItem(acc);
-        }
-        else if (choice == "4")
-        {
-            Console.Clear();
-            EditMenuItem(acc);
-        }
-        else if (choice == "5")
-        {
-            Console.Clear();
-            Admin.Start(acc);
+            else if (choice == "3")
+            {
+                Console.Clear();
+                DeleteMenuItem(acc);
+            }
+            else if (choice == "4")
+            {
+                Console.Clear();
+                EditMenuItem(acc);
+            }
+            else if (choice == "5")
+            {
+                Console.Clear();
+                break;
+            }
         }
     }
 
