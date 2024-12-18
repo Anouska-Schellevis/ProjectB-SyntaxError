@@ -130,12 +130,11 @@ class Movie
         List<MoviesModel> movies = MoviesLogic.GetAllMovies();
         foreach (MoviesModel movie in movies)
         {
-            Console.WriteLine($"ID: {movie.Id}");
             Console.WriteLine($"Title: {movie.Title}");
             Console.WriteLine($"Genre: {movie.Genre}");
             Console.WriteLine($"Director: {movie.Director}");
             Console.WriteLine($"Release Date: {movie.ReleaseDate}");
-            Console.WriteLine($"Time in minutes: {movie.TimeInMinutes} minutes");
+            Console.WriteLine($"Duration: {movie.TimeInMinutes} minutes");
             Console.WriteLine($"Description: {movie.Description}");
             Console.WriteLine("-----------------------------------------------");
         }
@@ -147,13 +146,13 @@ class Movie
         if (movie != null)
         {
             string info = $@"ID: {movie.Id}
-Title: {movie.Title}
-Genre: {movie.Genre}
-Director: {movie.Director}
-Release Date: {movie.ReleaseDate}
-Time in minutes: {movie.TimeInMinutes} minutes
-Description: {movie.Description}
------------------------------------------------";
+                Title: {movie.Title}
+                Genre: {movie.Genre}
+                Director: {movie.Director}
+                Release Date: {movie.ReleaseDate}
+                Time in minutes: {movie.TimeInMinutes} minutes
+                Description: {movie.Description}
+                -----------------------------------------------";
             return info;
         }
         else
