@@ -130,7 +130,7 @@ class Voucher
             else if (input == 3)
             {
                 Console.Clear();
-                Admin.Start(acc);
+                break;
             }
         }
     }
