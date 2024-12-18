@@ -9,15 +9,17 @@ class Show
     //     // { UserStart(); }
     // }
     public static int day;
-    static public void AdminStart()
+    static public void AdminStart(UserModel acc)
     {
         Console.Clear();
         Console.WriteLine("[1] Overview of all show");
         Console.WriteLine("[2] Add Show");
         Console.WriteLine("[3] Edit Show");
         Console.WriteLine("[4] Delete Show");
+        Console.WriteLine("[5] Go back to admin menu");
         Console.WriteLine("What would you like to do?");
         int choice = Convert.ToInt32(Console.ReadLine());
+        int idToDelete;
 
         switch (choice)
         {
@@ -44,29 +46,31 @@ class Show
                 }
                 break;
             case 4:
-                int idToDelete;
                 do
                 {
                     Console.WriteLine("Enter the id of the show you want to delete");
                     idToDelete = Convert.ToInt32(Console.ReadLine());
-                    if (MoviesAccess.GetById(idToDelete) == null)
+                    if (ShowAccess.GetByID(idToDelete) == null)
                     {
                         Console.WriteLine("This ID does not exist. Try again");
                     }
-                } while (MoviesAccess.GetById(idToDelete) == null);
+                } while (ShowAccess.GetByID(idToDelete) == null);
                 ShowDelete(idToDelete);
                 Console.WriteLine("Show is deleted");
                 break;
+            case 5:
+                Console.Clear();
+                Admin.Start(acc);
+                break;
             default:
                 Console.WriteLine("No valid option selected. Please try again.");
-                AdminStart();
+                AdminStart(acc);
                 break;
         }
     }
 
     static public void UserStart(UserModel acc)
     {
-
         string movie = "";
         int choice = 0;
         int chosennumber = 0;
@@ -74,7 +78,6 @@ class Show
         Dictionary<int, string> movies;
         bool loop = true;
         bool printed = true;
-        Console.Clear();
         movies = PrintOverviewMovie_Time();
         while (loop)
         {
@@ -110,10 +113,11 @@ class Show
                 Console.WriteLine("2. Choose time");
                 Console.WriteLine("3. Go back to week overview");
                 Console.WriteLine("4. Go back to day overview");
+                Console.WriteLine("5. Go back to UserMenu");
                 do
                 {
                     choice = Convert.ToInt32(Console.ReadLine());
-                    if (choice == 1 || choice == 2 || choice == 3)
+                    if (choice == 1 || choice == 2 || choice == 3 || choice == 5)
                     {
                         loop = false;
                     }
@@ -126,7 +130,7 @@ class Show
                     {
                         Console.WriteLine("Invalid input.");
                     }
-                } while (choice < 1 || choice > 4);
+                } while (choice < 1 || choice > 5);
                 if (choice == 4)
                 {
                     printed = false;
@@ -328,6 +332,9 @@ class Show
                 break;
             case 3:
                 UserStart(acc);
+                break;
+            case 5:
+                User.Start(acc);
                 break;
             default:
                 Console.WriteLine("Unexpected choice");

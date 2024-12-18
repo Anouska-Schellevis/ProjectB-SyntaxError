@@ -21,13 +21,13 @@ class Admin
             if (input == 1)
             {
                 Console.Clear();
-                Movie.Start();
+                Movie.Start(currentUser);
                 //Console.Clear();
             }
             else if (input == 2)
             {
                 Console.Clear();
-                Show.AdminStart();
+                Show.AdminStart(currentUser);
                 //Console.Clear();
             }
             else if (input == 3)

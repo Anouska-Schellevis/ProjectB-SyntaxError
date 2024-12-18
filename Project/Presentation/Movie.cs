@@ -3,11 +3,11 @@ using Microsoft.VisualBasic;
 class Movie
 {
 
-    static public void Main()
-    {
-        Start();
-    }
-    static public void Start()
+    // static public void Main()
+    // {
+    //     Start(acc);
+    // }
+    static public void Start(UserModel acc)
     {
         Console.WriteLine("[1] Overview of all movies");
         Console.WriteLine("[2] Add Movie");
@@ -15,6 +15,7 @@ class Movie
         Console.WriteLine("[4] Delete Movie");
         Console.WriteLine("[5] Search Movie by title");
         Console.WriteLine("[6] See most populair movie genre");
+        Console.WriteLine("[7] Go back to Start Menu");
         Console.WriteLine("What would you like to do?");
         int choice = Convert.ToInt32(Console.ReadLine());
 
@@ -68,11 +69,15 @@ class Movie
                 break;
             case 6:
                 Console.Clear();
-                TrackPopularity();
+                TrackPopularity(acc);
+                break;
+            case 7:
+                Console.Clear();
+                Admin.Start(acc);
                 break;
             default:
                 Console.WriteLine("No valid option selected. Please try again.");
-                Start();
+                Start(acc);
                 break;
         }
     }
@@ -173,7 +178,7 @@ Description: {movie.Description}
         return movieDictionary;
     }
 
-    public static void TrackPopularity()
+    public static void TrackPopularity(UserModel acc)
     {
         List<ReservationModel> allReservations = ReservationAccess.GetAllReservations(); //make a list of reservation models of all reservations in the database
 
@@ -261,7 +266,7 @@ Description: {movie.Description}
             if (choice == "1")
             {
                 Console.Clear();
-                Start();
+                Start(acc);
                 return;
             }
             else if (choice == "2")
