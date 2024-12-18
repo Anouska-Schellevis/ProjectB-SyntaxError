@@ -493,17 +493,24 @@ public abstract class TheaterBase
         bool barService = Console.ReadLine() == "1" && IsBarAvailable(selectedSeats.Count, showId);
 
         Console.WriteLine("Would you like to order snacks? \n[1] Yes \n[2] No");
-
         string snacks = "";
+
         if (Console.ReadLine() == "1")
         {
-            List<MenuItem> selectedSnacks = SnackMenu.SelectSnacks();
-            List<string> snackNames = new List<string>();
-            foreach (MenuItem snack in selectedSnacks)
+            Dictionary<MenuItem, int> selectedSnacks = SnackMenu.SelectSnacks();
+
+
+
+            foreach (var snack in selectedSnacks)
             {
-                snackNames.Add(snack.Name);
+                if (snacks != string.Empty)//if the string isnt empty it knows to add a comma
+                {
+                    snacks += ", ";
+                }
+                snacks += snack.Key.Name;
             }
-            snacks = string.Join(",", snackNames);
+
+
         }
 
         foreach (var seat in selectedSeats)
