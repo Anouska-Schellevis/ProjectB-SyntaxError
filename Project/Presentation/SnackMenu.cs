@@ -280,13 +280,13 @@ public class SnackMenu
                                         // can keep track of how much they are spending
                 foreach (var entry in orderDict)
                 {
-                    Console.WriteLine($"- {entry.Value} x {entry.Key.Name} (€{entry.Key.Price * entry.Value:F2})");
+                    Console.WriteLine($"- {entry.Value} x {entry.Key.Name} - €{entry.Key.Price * entry.Value:F2}");
                     orderTotal += entry.Key.Price * entry.Value;
                 }
                 Console.WriteLine($"Total: €{orderTotal:F2}");
             }
 
-            Console.Write($"\nWhat would you like to order? input any number from the menu above or type {snacks.Count + 1} to stop ordering ");
+            Console.Write($"\nWhat would you like to order? input any number from the menu above or type {snacks.Count + 1} to be done ordering ");
             string answer = Console.ReadLine();
 
             bool isNumber = int.TryParse(answer, out int choice); //change user string input into int
