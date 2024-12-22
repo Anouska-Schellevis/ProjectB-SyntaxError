@@ -6,7 +6,7 @@ class Admin
     {
         Console.Clear();
         Console.WriteLine("===== Admin Page =====");
-        Console.WriteLine($"Welcome back {currentUser.FirstName} {currentUser.LastName}\n");
+        Console.WriteLine($"Welcome {currentUser.FirstName} {currentUser.LastName}\n");
         while (true)
         {
             Console.WriteLine("[1]Show the menu of the movies");
@@ -22,13 +22,13 @@ class Admin
             if (input == 1)
             {
                 Console.Clear();
-                Movie.Start();
+                Movie.Start(currentUser);
                 //Console.Clear();
             }
             else if (input == 2)
             {
                 Console.Clear();
-                Show.AdminStart();
+                Show.AdminStart(currentUser);
                 //Console.Clear();
             }
             else if (input == 3)
