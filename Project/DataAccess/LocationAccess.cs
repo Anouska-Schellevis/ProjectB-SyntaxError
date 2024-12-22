@@ -11,4 +11,9 @@ public static class LocationAccess
         string sql = $"INSERT INTO {Table} (city, address, postal_code) VALUES (@City, @Address, @PostalCode)";
         _connection.Execute(sql, location);
     }
+    public static List<LocationModel> GetAllLocations()
+    {
+        string sql = $"SELECT * FROM {Table}";
+        return _connection.Query<LocationModel>(sql).ToList();
+    }
 }
