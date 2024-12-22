@@ -1,8 +1,6 @@
-using System.Dynamic;
+namespace UnittestSeats;
 
-
-namespace UnitTestReservation;
-
+[TestClass]
 public class SeatsTest
 {
     [TestInitialize]
