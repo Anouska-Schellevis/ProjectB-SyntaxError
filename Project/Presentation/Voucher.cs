@@ -159,7 +159,8 @@ class Voucher
         PrintAllUserVouchers(acc);
 
         // Option to go back to the user menu
-        while (true)
+        bool menuChoice = false;
+        while (!menuChoice)
         {
             Console.WriteLine("Would you like to go back to the user menu?\n[1] Yes\n[2] No");
             bool isCorrectFormat = int.TryParse(Console.ReadLine(), out int choice);
@@ -175,11 +176,12 @@ class Voucher
             else if (choice == 1)  // In case the answer is Yes
             {
                 User.Start(acc);
+                menuChoice = true;
             }
             else  // In case the answer is No
             {
                 Console.Clear();
-                PrintAllUserVouchers(acc);
+                UserStart(acc);
             }
         }
     }
