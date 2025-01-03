@@ -156,33 +156,31 @@ class Voucher
 
     public static void UserStart(UserModel acc)
     {
-        Console.WriteLine("[1] See all your vouchers");
-        Console.WriteLine("[2] Go back");
-        Console.WriteLine("What would you like to do?");
+        PrintAllUserVouchers(acc);
 
-        bool isCorrectFormat = int.TryParse(Console.ReadLine(), out int choice);
-        if (!isCorrectFormat)
+        // Option to go back to the user menu
+        while (true)
         {
-            Console.WriteLine("Invalid format. Make sure to enter a number.");
-            UserStart(acc);
-        }
-
-        switch (choice)
-        {
-            case 1:
+            Console.WriteLine("Would you like to go back to the user menu?\n[1] Yes\n[2] No");
+            bool isCorrectFormat = int.TryParse(Console.ReadLine(), out int choice);
+            if (!isCorrectFormat)
+            {
+                Console.WriteLine("Invalid format. Make sure to enter a number.");
+                
+            }
+            else if (0 >= choice || choice > 2)
+            {
+                Console.WriteLine("Invalid number. This option is not available.");
+            }
+            else if (choice == 1)  // In case the answer is Yes
+            {
+                User.Start(acc);
+            }
+            else  // In case the answer is No
+            {
                 Console.Clear();
                 PrintAllUserVouchers(acc);
-                UserStart(acc);
-                break;
-            case 2:
-                Console.Clear();
-                User.Start(acc);
-                break;
-            default:
-                Console.Clear();
-                Console.WriteLine("Invalid number. This option is not available.");
-                UserStart(acc);
-                break;
+            }
         }
     }
 
@@ -211,4 +209,3 @@ class Voucher
     }
 
 }
-
