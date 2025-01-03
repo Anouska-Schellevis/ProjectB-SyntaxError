@@ -25,6 +25,7 @@ class Voucher
                     Console.WriteLine("What kind of voucher would you like to add?\n[1]percentage\n[2]amount of money");
                     typeAnswer = Convert.ToInt16(Console.ReadLine());
                 } while (typeAnswer != 1 && typeAnswer != 2);
+                
                 if (typeAnswer == 1)
                 {
                     type = "percentage";
@@ -34,10 +35,31 @@ class Voucher
                     type = "euro";
                 }
 
-                // Ask the admin what the amount of the voucher will be
-                Console.WriteLine("What is the amount?");
-                decimal amount = Convert.ToInt16(Console.ReadLine());
+                decimal amount;
+                while(true)
+                {
+                    // Ask the admin what the amount of the voucher will be
+                    Console.WriteLine("What is the amount?");
+                    amount = Convert.ToInt16(Console.ReadLine());
 
+                    if (typeAnswer == 1 && amount < 0)
+                    {
+                        Console.WriteLine("Please try again. A percentage amount cannot be a negative number");
+                    }
+                    else if (typeAnswer == 1 && amount > 100)
+                    {
+                        Console.WriteLine("Please try again. A percentage amount cannot be higher than 100");
+                    }
+                    else if (typeAnswer == 2 && amount < 0)
+                    {
+                        Console.WriteLine("Please try again. A euro amount cannot be a negative number");
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                
                 do
                 {
                     // Ask the admin if the voucher needs a description
@@ -57,9 +79,6 @@ class Voucher
 
                     DateTime.TryParse(enterDate, out dateTime);
                 } while (dateTime < currentDate);
-
-                Console.WriteLine(enterDate, dateTime);
-                Console.ReadLine();
 
                 Random res = new Random();
 
