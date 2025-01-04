@@ -530,7 +530,9 @@ public abstract class TheaterBase
             ReservationLogic.WriteReservation(reservation);
         }
 
+
         Console.WriteLine($"Successfully reserved ticket(s) for {acc.FirstName} {acc.LastName}.");
+
         Thread.Sleep(2000);
         User.Start(acc);
     }

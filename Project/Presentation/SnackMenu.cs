@@ -79,7 +79,6 @@ public class SnackMenu
                 Console.WriteLine("A snack with this name already exists.");
                 Thread.Sleep(2000);
                 return;
-
             }
         }
         Console.WriteLine("Enter the price of the menu item:");
