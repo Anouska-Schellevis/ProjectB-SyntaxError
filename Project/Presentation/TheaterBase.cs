@@ -72,13 +72,13 @@ public abstract class TheaterBase
                         switch (pricingCategories[i, j])
                         {
                             case 1:
-                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.ForegroundColor = ConsoleColor.Blue;
                                 break;
                             case 2:
                                 Console.ForegroundColor = ConsoleColor.Yellow;
                                 break;
                             case 3:
-                                Console.ForegroundColor = ConsoleColor.Blue;
+                                Console.ForegroundColor = ConsoleColor.Red;
                                 break;
                             default:
                                 Console.ForegroundColor = ConsoleColor.Gray;
