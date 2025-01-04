@@ -15,14 +15,14 @@ public class UserNewAccountLogic
         string password;
         do
         {
-            Console.WriteLine("Please enter your password");
+            Console.WriteLine("Please enter your password:");
             password = Console.ReadLine();
         } while (!IsValidPassword(password));
 
         string firstName;
         do
         {
-            Console.WriteLine("Please enter your first name (letters only):");
+            Console.WriteLine("Please enter your first name:");
             firstName = Console.ReadLine();
         } while (!OnlyLetters(firstName));
 
@@ -30,7 +30,7 @@ public class UserNewAccountLogic
         string lastName;
         do
         {
-            Console.WriteLine("Please enter your last name (letters only):");
+            Console.WriteLine("Please enter your last name:");
             lastName = Console.ReadLine();
         } while (!OnlyLetters(lastName));
 
@@ -58,6 +58,7 @@ public class UserNewAccountLogic
 
         userLogic.CreateAccount(newUser);
         Console.WriteLine("Account created successfully! You can now log in.");
+        Thread.Sleep(2000);
         Menu.Start();
     }
 
