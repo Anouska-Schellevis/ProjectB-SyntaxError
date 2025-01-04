@@ -181,7 +181,7 @@ class Voucher
             else  // In case the answer is No
             {
                 Console.Clear();
-                UserStart(acc);
+                PrintAllUserVouchers(acc);
             }
         }
     }
