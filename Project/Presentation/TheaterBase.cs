@@ -204,7 +204,7 @@ public abstract class TheaterBase
                         Console.WriteLine("Please choose another row. Make sure no empty seat is left unoccupied.");
                         continue;
                     }
-                    else if (countAvailableSeats[row, col] < how_many_people) // Not enough consecutive empty seats
+                    else if (i == 0 && countAvailableSeats[row, col] < how_many_people) // Not enough consecutive empty seats
                     {
                         Console.WriteLine("There aren't enough seats here for everyone.");
                         continue;
