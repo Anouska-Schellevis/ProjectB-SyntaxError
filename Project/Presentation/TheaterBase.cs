@@ -444,7 +444,7 @@ public abstract class TheaterBase
                         continue;
                     }
 
-                    VoucherModel voucher = userVouchers.ElementAtOrDefault(inputNum-1); // the index is one smaller than the count
+                    VoucherModel voucher = userVouchers.ElementAtOrDefault(inputNum - 1); // the index is one smaller than the count
                     if (voucher is null)
                     {
                         Console.WriteLine("This ID doesn't exist. Try again");
@@ -481,7 +481,7 @@ public abstract class TheaterBase
                     }
 
                     VoucherLogic.UpdateVoucher(voucher); // Changes to the voucher are written to the database
-                    
+
                     Console.WriteLine("Your voucher is succesfully applied!");
                     break;
                 } while (true);
@@ -498,16 +498,18 @@ public abstract class TheaterBase
         if (Console.ReadLine() == "1")
         {
             Dictionary<MenuItem, int> selectedSnacks = SnackMenu.SelectSnacks();
-
-
+            //string snack = "";
 
             foreach (var snack in selectedSnacks)
             {
-                if (snacks != string.Empty)//if the string isnt empty it knows to add a comma
+                for (int i = 0; i < snack.Value; i++)
                 {
-                    snacks += ", ";
+                    if (snacks != string.Empty)
+                    {
+                        snacks += ", ";
+                    }
+                    snacks += snack.Key.Name;
                 }
-                snacks += snack.Key.Name;
             }
 
 
@@ -528,7 +530,9 @@ public abstract class TheaterBase
             ReservationLogic.WriteReservation(reservation);
         }
 
-        Console.WriteLine($"Successfully reserved seats and snacks for {acc.FirstName} {acc.LastName}.");
+
+        Console.WriteLine($"Successfully reserved ticket(s) for {acc.FirstName} {acc.LastName}.");
+
         Thread.Sleep(2000);
         User.Start(acc);
     }

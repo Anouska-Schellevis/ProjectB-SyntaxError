@@ -25,7 +25,7 @@ class Voucher
                     Console.WriteLine("What kind of voucher would you like to add?\n[1]percentage\n[2]amount of money");
                     typeAnswer = Convert.ToInt16(Console.ReadLine());
                 } while (typeAnswer != 1 && typeAnswer != 2);
-                
+
                 if (typeAnswer == 1)
                 {
                     type = "percentage";
@@ -36,7 +36,7 @@ class Voucher
                 }
 
                 decimal amount;
-                while(true)
+                while (true)
                 {
                     // Ask the admin what the amount of the voucher will be
                     Console.WriteLine("What is the amount?");
@@ -59,7 +59,7 @@ class Voucher
                         break;
                     }
                 }
-                
+
                 do
                 {
                     // Ask the admin if the voucher needs a description
@@ -167,7 +167,7 @@ class Voucher
             if (!isCorrectFormat)
             {
                 Console.WriteLine("Invalid format. Make sure to enter a number.");
-                
+
             }
             else if (0 >= choice || choice > 2)
             {

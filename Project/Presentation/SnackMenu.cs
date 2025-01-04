@@ -3,7 +3,7 @@ public class SnackMenu
 
     public static void AdminSnackMenu(UserModel acc)
     {
-        while(true)
+        while (true)
         {
             Console.Clear();
             Console.WriteLine("[1] See current snack menu");
@@ -257,7 +257,102 @@ public class SnackMenu
         Console.WriteLine($"[{itemNumber}] Done ordering");
     }
 
+    // public static Dictionary<MenuItem, int> SelectSnacks()
+    // {
+    //     List<MenuItem> snacks = MenuItemLogic.GetAllMenuItems();
+    //     Dictionary<MenuItem, int> orderDict = new Dictionary<MenuItem, int>();
+    //     bool stillOrdering = true;
 
+    //     while (stillOrdering) //a while loop that will run while the user is stillOrdering
+    //     {
+    //         ShowSnackMenu();
+
+    //         Console.WriteLine("\nYour order:");
+    //         if (orderDict.Count == 0)
+    //         {
+    //             Console.WriteLine("Your order is empty");
+    //         }
+    //         else
+    //         {
+    //             decimal orderTotal = 0; //keep track of orderTotal money
+    //                                     //this here prints everytime user picks new item because of while loop
+    //                                     //so it looks like live updating, it prints the item name and price with 2 decimal
+    //                                     // adds that price to toal price, and then prints the total order money so that user
+    //                                     // can keep track of how much they are spending
+    //             foreach (var order in orderDict)
+    //             {
+    //                 Console.WriteLine($"- {order.Value} x {order.Key.Name}");
+    //                 orderTotal += order.Key.Price * order.Value;
+    //             }
+    //             Console.WriteLine($"Total: €{orderTotal:F2}");
+    //         }
+
+    //         Console.Write($"\nWhat would you like to order? input any number from the menu above or type {snacks.Count + 1} to stop ordering ");
+    //         string answer = Console.ReadLine();
+
+    //         bool isNumber = int.TryParse(answer, out int choice); //change user string input into int
+
+    //         if (isNumber)
+    //         {
+    //             if (choice == snacks.Count + 1)
+    //             {
+    //                 stillOrdering = false; //this will always refere to the done ordering and will stop the loop
+    //             }
+    //             else if (choice > 0 && choice <= snacks.Count) //if choice is bigger then 0 and smaller then max length of list
+    //             {
+    //                 MenuItem chosenSnack = snacks[choice - 1]; //have to do -1 because of 0 based index, (if user picks number 7 they have actually picked number six)
+    //                 Console.Write($"\nHow many of {chosenSnack.Name} would you like to order? ");
+    //                 string AmountSnacks = Console.ReadLine();
+
+    //                 bool validAmount = int.TryParse(AmountSnacks, out int quantity) && quantity > 0;//as long as its a int and bigger then 0
+    //                 if (validAmount)
+    //                 {
+    //                     if (orderDict.ContainsKey(chosenSnack))
+    //                     {
+    //                         orderDict[chosenSnack] += quantity;
+    //                     }
+    //                     else
+    //                     {
+    //                         orderDict[chosenSnack] = quantity;
+    //                     }
+    //                     Console.WriteLine($"\nAdded {quantity} x {chosenSnack.Name} to your order.");
+    //                 }
+    //                 else
+    //                 {
+    //                     Console.WriteLine("\nPlease enter a valid quantity.");
+    //                 }
+    //             }
+    //             else
+    //             {
+    //                 Console.WriteLine("\nPlease pick a number from the menu.");
+    //             }
+    //         }
+    //         else
+    //         {
+    //             Console.WriteLine("\nPlease enter a number.");
+    //         }
+    //     }
+
+    //     Console.Clear();
+    //     Console.WriteLine("===== Your Final Order =====");
+
+    //     if (orderDict.Count == 0)
+    //     {
+    //         Console.WriteLine("No snacks ordered.");
+    //     }
+    //     else
+    //     {
+    //         decimal finalTotal = 0;
+    //         foreach (var order in orderDict)
+    //         {
+    //             Console.WriteLine($"- {order.Value} x {order.Key.Name}");
+    //             finalTotal += order.Key.Price * order.Value;
+    //         }
+    //         Console.WriteLine($"Total: €{finalTotal:F2}");
+    //     }
+
+    //     return orderDict; //this will just show the user their final order works the same as earlier
+    // }
 
     public static Dictionary<MenuItem, int> SelectSnacks()
     {
@@ -265,48 +360,44 @@ public class SnackMenu
         Dictionary<MenuItem, int> orderDict = new Dictionary<MenuItem, int>();
         bool stillOrdering = true;
 
-        while (stillOrdering) //a while loop that will run while the user is stillOrdering
+        while (stillOrdering)
         {
             ShowSnackMenu();
 
             Console.WriteLine("\nYour order:");
             if (orderDict.Count == 0)
             {
-                Console.WriteLine("Your order is empty");
+                Console.WriteLine("Your order is empty.");
             }
             else
             {
-                decimal orderTotal = 0; //keep track of orderTotal money
-                                        //this here prints everytime user picks new item because of while loop
-                                        //so it looks like live updating, it prints the item name and price with 2 decimal
-                                        // adds that price to toal price, and then prints the total order money so that user
-                                        // can keep track of how much they are spending
-                foreach (var entry in orderDict)
+                decimal orderTotal = 0;
+                foreach (var order in orderDict)
                 {
-                    Console.WriteLine($"- {entry.Value} x {entry.Key.Name} (€{entry.Key.Price * entry.Value:F2})");
-                    orderTotal += entry.Key.Price * entry.Value;
+                    Console.WriteLine($"- {order.Value} x {order.Key.Name}");
+                    orderTotal += order.Key.Price * order.Value;
                 }
                 Console.WriteLine($"Total: €{orderTotal:F2}");
             }
 
-            Console.Write($"\nWhat would you like to order? input any number from the menu above or type {snacks.Count + 1} to stop ordering ");
+            Console.Write($"\nWhat would you like to order? Input any number from the menu above or type {snacks.Count + 1} to stop ordering: ");
             string answer = Console.ReadLine();
 
-            bool isNumber = int.TryParse(answer, out int choice); //change user string input into int
+            bool isNumber = int.TryParse(answer, out int choice);
 
             if (isNumber)
             {
                 if (choice == snacks.Count + 1)
                 {
-                    stillOrdering = false; //this will always refere to the done ordering and will stop the loop
+                    stillOrdering = false;
                 }
-                else if (choice > 0 && choice <= snacks.Count) //if choice is bigger then 0 and smaller then max length of list
+                else if (choice > 0 && choice <= snacks.Count)
                 {
-                    MenuItem chosenSnack = snacks[choice - 1]; //have to do -1 because of 0 based index, (if user picks number 7 they have actually picked number six)
+                    MenuItem chosenSnack = snacks[choice - 1];
                     Console.Write($"\nHow many of {chosenSnack.Name} would you like to order? ");
                     string AmountSnacks = Console.ReadLine();
 
-                    bool validAmount = int.TryParse(AmountSnacks, out int quantity) && quantity > 0;//as long as its a int and bigger then 0
+                    bool validAmount = int.TryParse(AmountSnacks, out int quantity) && quantity > 0;
                     if (validAmount)
                     {
                         if (orderDict.ContainsKey(chosenSnack))
@@ -335,26 +426,137 @@ public class SnackMenu
             }
         }
 
-        Console.Clear();
-        Console.WriteLine("===== Your Final Order =====");
-
-        if (orderDict.Count == 0)
+        bool orderConfirmed = false;
+        while (!orderConfirmed)
         {
-            Console.WriteLine("No snacks ordered.");
-        }
-        else
-        {
+            Console.Clear();
+            Console.WriteLine("===== Your Final Order =====");
             decimal finalTotal = 0;
-            foreach (var order in orderDict)
+            if (orderDict.Count == 0)
             {
-                Console.WriteLine($"- {order.Value} x {order.Key.Name}");
-                finalTotal += order.Key.Price * order.Value;
+                Console.WriteLine("No snacks ordered.");
             }
-            Console.WriteLine($"Total: €{finalTotal:F2}");
+            else
+            {
+                foreach (var order in orderDict)
+                {
+                    Console.WriteLine($"- {order.Value} x {order.Key.Name}");
+                    finalTotal += order.Key.Price * order.Value;
+                }
+                Console.WriteLine($"Total: €{finalTotal:F2}");
+            }
+
+            Console.WriteLine("\nWould you like to:");
+            Console.WriteLine("[1] Confirm your order");
+            Console.WriteLine("[2] Edit your order");
+
+            string editChoice = Console.ReadLine();
+            if (editChoice == "1")
+            {
+                orderConfirmed = true;
+            }
+            else if (editChoice == "2")
+            {
+                bool editingOrder = true;
+                while (editingOrder)
+                {
+                    Console.Clear();
+                    Console.WriteLine("Choose the number for which item you want to edit");
+                    Console.WriteLine("===== Your Order =====");
+                    int itemNumber = 1;
+                    foreach (var order in orderDict)
+                    {
+                        Console.WriteLine($"[{itemNumber}] {order.Value} x {order.Key.Name}");
+                        itemNumber++;
+                    }
+                    Console.WriteLine($"[{itemNumber}] Go back to final order.");
+
+                    string order_edit_choice = Console.ReadLine();
+
+                    if (order_edit_choice == (itemNumber.ToString()))
+                    {
+                        editingOrder = false;
+                        continue;
+                    }
+
+
+                    if (int.TryParse(order_edit_choice, out int selectedItem) && selectedItem > 0 && selectedItem <= orderDict.Count)
+                    {
+                        Console.Clear();
+                        var selectedOrderItem = orderDict.ElementAt(selectedItem - 1);//pick user pick -1 for 0 based index
+
+
+                        Console.WriteLine("[1] Change amount");
+                        Console.WriteLine("[2] Remove this item");
+                        Console.WriteLine("[3] Go back to final order");
+
+                        string user_edit_order_choice = Console.ReadLine();
+
+                        if (user_edit_order_choice == "1")
+                        {
+
+                            Console.WriteLine("Enter the new amount you want of this item:");
+                            string newQuantityInput = Console.ReadLine();
+                            if (int.TryParse(newQuantityInput, out int newQuantity) && newQuantity > 0)
+                            {
+                                orderDict[selectedOrderItem.Key] = newQuantity;
+                                Console.WriteLine($"Updated {selectedOrderItem.Key.Name} to {newQuantity}.");
+                            }
+                            else
+                            {
+                                Console.WriteLine("invalid amount");
+                            }
+                        }
+                        else if (user_edit_order_choice == "2")
+                        {
+                            orderDict.Remove(selectedOrderItem.Key);
+                            Console.WriteLine($"Removed {selectedOrderItem.Key.Name} from your order");
+                        }
+
+                        Console.Clear();
+                        Console.WriteLine("===== Your Final Order =====");
+                        decimal finalOrderTotal = 0;
+                        if (orderDict.Count == 0)
+                        {
+                            Console.WriteLine("No snacks ordered");
+                        }
+                        else
+                        {
+                            foreach (var order in orderDict)
+                            {
+                                Console.WriteLine($"- {order.Value} x {order.Key.Name}");
+                                finalOrderTotal += order.Key.Price * order.Value;
+                            }
+                            Console.WriteLine($"Total: €{finalOrderTotal:F2}");
+                        }
+
+                        Console.WriteLine("\nWould you like to:");
+                        Console.WriteLine("[1] Confirm your order");
+                        Console.WriteLine("[2] Edit your order");
+                        string finalChoice = Console.ReadLine();
+
+                        if (finalChoice == "1")
+                        {
+                            editingOrder = false;
+                        }
+                        else if (finalChoice == "2")
+                        {
+                            continue;
+                        }
+                    }
+                }
+
+            }
+            else
+            {
+                Console.WriteLine("Invalid choice. Please choose [1] to confirm or [2] to edit.");
+            }
         }
 
-        return orderDict; //this will just show the user their final order works the same as earlier
+        return orderDict;
     }
+
+
 
 
     public static void DeleteMenuItem(UserModel acc)
