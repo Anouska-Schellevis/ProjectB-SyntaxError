@@ -386,7 +386,7 @@ class Movie
 Genre: {movie.Genre}
 Director: {movie.Director}
 Release Date: {movie.ReleaseDate}
-Time in minutes: {movie.TimeInMinutes} minutes
+Duration: {movie.TimeInMinutes} minutes
 Description: {movie.Description}
 -----------------------------------------------";
 

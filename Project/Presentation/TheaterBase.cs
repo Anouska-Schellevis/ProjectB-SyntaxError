@@ -529,6 +529,7 @@ public abstract class TheaterBase
         }
 
         Console.WriteLine($"Successfully reserved seats and snacks for {acc.FirstName} {acc.LastName}.");
+        Thread.Sleep(2000);
         User.Start(acc);
     }
 
