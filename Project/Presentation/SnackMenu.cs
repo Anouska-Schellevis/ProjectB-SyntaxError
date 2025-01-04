@@ -5,7 +5,7 @@ public class SnackMenu
     {
         while(true)
         {
-            // Console.Clear();
+            Console.Clear();
             Console.WriteLine("[1] See current snack menu");
             Console.WriteLine("[2] Add menu item");
             Console.WriteLine("[3] Delete menu item");
@@ -77,8 +77,8 @@ public class SnackMenu
             if (item.Name.ToLower() == name.ToLower())
             {
                 Console.WriteLine("A snack with this name already exists.");
+                Thread.Sleep(2000);
                 return;
-
             }
         }
         Console.WriteLine("Enter the price of the menu item:");
