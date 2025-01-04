@@ -69,7 +69,7 @@ class Movie
                         Console.WriteLine("Invalid movie. Try again.");
                     }
                 } while (movieforedit == null);
-                
+
                 MoviesModel movie = MoviesLogic.GetByTitle(Title_to_edit);
                 if (movie != null)
                 {
@@ -237,7 +237,7 @@ class Movie
             Console.WriteLine("Enter new description for this movie.");
             newDescription = Console.ReadLine();
         }
-        
+
         Console.WriteLine("Would you like to change the title?");
         Console.WriteLine("1. yes\n2. no");
         int question4 = Convert.ToInt32(Console.ReadLine());
@@ -255,7 +255,7 @@ class Movie
             Console.WriteLine("Enter new title for this movie.");
             newTitle = Console.ReadLine();
         }
-        
+
         Console.WriteLine("Would you like to change the director?");
         Console.WriteLine("1. yes\n2. no");
         int question5 = Convert.ToInt32(Console.ReadLine());
@@ -273,7 +273,7 @@ class Movie
             Console.WriteLine("Enter new director for this movie.");
             newDirector = Console.ReadLine();
         }
-        
+
         Console.WriteLine("Would you like to change the release date?");
         Console.WriteLine("1. yes\n2. no");
         int question6 = Convert.ToInt32(Console.ReadLine());
@@ -299,7 +299,7 @@ class Movie
                 }
             } while (DateTime.TryParse(newReleaseDate, out _) != true);
         }
-        
+
         if (question1 == 1)
         {
             movie.TimeInMinutes = newTimeInMinutes;
@@ -386,7 +386,7 @@ class Movie
 Genre: {movie.Genre}
 Director: {movie.Director}
 Release Date: {movie.ReleaseDate}
-Time in minutes: {movie.TimeInMinutes} minutes
+Duration: {movie.TimeInMinutes} minutes
 Description: {movie.Description}
 -----------------------------------------------";
 
