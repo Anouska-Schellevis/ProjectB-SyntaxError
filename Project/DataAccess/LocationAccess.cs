@@ -14,7 +14,7 @@ public static class LocationAccess
 
     public static List<LocationModel> GetAllLocations()
     {
-        string sql = $"SELECT * FROM {Table}";
+        string sql = $"SELECT Id, City, Address, postal_code AS PostalCode FROM {Table}";
         return _connection.Query<LocationModel>(sql).ToList();
     }
 

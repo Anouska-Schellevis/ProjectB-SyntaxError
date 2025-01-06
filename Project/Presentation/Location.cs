@@ -5,40 +5,70 @@ class Location
     public static void Start()
     {
         Console.Clear();
-        Console.WriteLine("[1] Overview of all locations");
-        Console.WriteLine("[2] Add Location");
-        Console.WriteLine("[3] Go back");
-        Console.WriteLine("What would you like to do?");
-
-        bool isCorrectFormat = int.TryParse(Console.ReadLine(), out int choice);
-        if (!isCorrectFormat)
+        while (true)
         {
-            Console.WriteLine("Invalid format. Make sure to enter a number.");
-            Start();
-        }
+            Console.WriteLine("[1] Overview of all locations");
+            Console.WriteLine("[2] Add Location");
+            Console.WriteLine("[3] Go back");
+            Console.WriteLine("What would you like to do?");
 
-        switch (choice)
-        {
-            case 1:
+            int input = Convert.ToInt16(Console.ReadLine());
+
+            if (input == 1)
+            {
+                Console.Clear();
                 PrintAllLocations();
-                Start();
-                break;
-            case 2:
+            }
+            else if (input == 2)
+            {
+                Console.Clear();
                 AddLocation();
-                Start();
+            }
+            else if (input == 3)
+            {
+                Console.Clear();
                 break;
-            case 3:
-                break;
-            default:
-                Console.WriteLine("No valid option selected. Please try again.");
-                Start();
-                break;
+            }
+
+
+            // bool isCorrectFormat = int.TryParse(Console.ReadLine(), out int choice);
+            // if (!isCorrectFormat)
+            // {
+            //     Console.WriteLine("Invalid format. Make sure to enter a number.");
+            //     Start();
+            // }
+
+            // switch (choice)
+            // {
+            //     case 1:
+            //         PrintAllLocations();
+            //         Start();
+            //         break;
+            //     case 2:
+            //         AddLocation();
+            //         Start();
+            //         break;
+            //     case 3:
+            //         break;
+            //     default:
+            //         Console.WriteLine("No valid option selected. Please try again.");
+            //         Start();
+            //         break;
+            // }
         }
     }
 
     public static void PrintAllLocations()
     {
+        List<LocationModel> locations = LocationLogic.GetAllLocations();
 
+        foreach (LocationModel location in locations)
+        {
+            Console.WriteLine($"City: {location.City}");
+            Console.WriteLine($"Address: {location.Address}");
+            Console.WriteLine($"Postal Code: {location.PostalCode}");
+            Console.WriteLine("----------------------------------------");
+        }
     }
 
     public static void AddLocation()
