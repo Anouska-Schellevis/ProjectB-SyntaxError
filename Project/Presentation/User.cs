@@ -42,11 +42,10 @@ class User
         {
             //Console.Clear();
             //Console.WriteLine("User page\n");
-            Console.WriteLine("Welcome back " + acc.FirstName + " " + acc.LastName);
+            Console.WriteLine("Welcome " + acc.FirstName + " " + acc.LastName);
             Console.WriteLine("[1] See week overview of available movies");
-            Console.WriteLine("[2] See your reservations");
-            Console.WriteLine("[3] See your vouchers");
-            Console.WriteLine("[4] Go back to login screen");
+            Console.WriteLine("[2] Account info");
+            Console.WriteLine("[3] Logout");
             string user_answer = Console.ReadLine().ToLower();
 
             if (user_answer == "1")
@@ -56,15 +55,10 @@ class User
             }
             else if (user_answer == "2")
             {
-                Reservation.SeeReservation(acc);
+                AccountInfo(acc);
                 exitMenu = true;
             }
             else if (user_answer == "3")
-            {
-                Voucher.UserStart(acc);
-                exitMenu = true;
-            }
-            else if (user_answer == "4")
             {
                 Console.WriteLine("Logging out");
                 return;
@@ -88,5 +82,43 @@ class User
         //     Console.WriteLine("back to the menu...");
         //     Menu.Start();
         // }
+    }
+
+    public static void AccountInfo(UserModel acc)
+    {
+        Console.Clear();
+        bool exitMenu = false;
+        do
+        {
+            Console.WriteLine("===== Account Info =====\n");
+            Console.WriteLine("[1] See your reservations");
+            Console.WriteLine("[2] See your vouchers");
+            Console.WriteLine("[3] Go back to user menu");
+
+            string user_answer = Console.ReadLine().ToLower();
+
+            if (user_answer == "1")
+            {
+                Console.Clear();
+                Reservation.SeeReservation(acc);
+                exitMenu = true;
+            }
+            else if (user_answer == "2")
+            {
+                Console.Clear();
+                Voucher.UserStart(acc);
+                exitMenu = true;
+            }
+            else if (user_answer == "3")
+            {
+                exitMenu = true;
+            }
+            else
+            {
+                Console.WriteLine("Invalid option, please try again.");
+            }
+        } while (!exitMenu);
+
+
     }
 }

@@ -47,15 +47,34 @@ public class Reservation
 
                 //check if there are any snacks to show
                 string snacks = group.First().Snacks;
-                if (!string.IsNullOrEmpty(snacks)) //will only print if snacks is not null or not empty, otherwise it just skips
+                if (!string.IsNullOrEmpty(snacks)) // Check if snacks is not null or empty
                 {
                     Console.WriteLine("    Ordered Snacks:");
+
+                    //split the snacks string into a list
                     string[] snackList = snacks.Split(',');
-                    foreach (string snack in snackList)
+
+                    //create a dictionary to count how many times a snack is in the string
+                    Dictionary<string, int> snackCounts = new Dictionary<string, int>();
+                    foreach (string snack in snackList.Select(s => s.Trim())) //lambda do trim extra white space because of spaces in item names
                     {
-                        Console.WriteLine($"        - {snack}");
+                        if (snackCounts.ContainsKey(snack))
+                        {
+                            snackCounts[snack]++;
+                        }
+                        else
+                        {
+                            snackCounts[snack] = 1;
+                        }
+                    }
+
+
+                    foreach (var snack in snackCounts)
+                    {
+                        Console.WriteLine($"        - {snack.Value} x {snack.Key}");
                     }
                 }
+
 
                 reservationNumber++;
             }
@@ -92,10 +111,8 @@ public class Reservation
         }
     }
 
-
     public static void CancelReservation(List<ReservationModel> userReservations, UserModel acc)
     {
-        // This gets called with that flat reservations from see reservations, which is one list of all that user's reservations
         bool reservationChoice = false;
 
         while (!reservationChoice)
@@ -121,63 +138,102 @@ public class Reservation
                     return;
                 }
 
-                // Get the show and movie information
                 ShowModel reservedShow = ShowAccess.GetByID((int)selectedReservation.ShowId);
                 MoviesModel reservedMovie = MoviesAccess.GetByLongId(reservedShow.MovieId);
 
-                Console.WriteLine($"Cancelling reservation for Movie: {reservedMovie.Title}, Show Date: {reservedShow.Date}");
+                Console.Clear();
+                Console.WriteLine($"You have selected this Movie: {reservedMovie.Title} on this Show Date: {reservedShow.Date} to cancel");
 
-                // Because earlier we had to make user reservations one list, destroying the grouping on show id, we group these reservations on show id again,
-                // to group all reservations for each separate show
-                var groupedReservations = userReservations
-                    .Where(r => r.ShowId == selectedReservation.ShowId)
-                    .ToList();
+                Console.WriteLine("Are you sure you want to cancel this reservation?");
+                Console.WriteLine("[1] Yes");
+                Console.WriteLine("[2] No");
 
-                var reservedSeatIds = groupedReservations.Select(r => r.SeatsId).ToList(); // Make a list of all seats of that show
+                string confirmationInput = Console.ReadLine();
 
-                if (reservedSeatIds.Count == 0)
+                if (confirmationInput == "1")
                 {
-                    Console.WriteLine($"No reserved seats found for {reservedMovie.Title}, Show Date: {reservedShow.Date}");
-                    return;
-                }
+                    var groupedReservations = userReservations
+                        .Where(r => r.ShowId == selectedReservation.ShowId)
+                        .ToList();
 
-                foreach (var seatId in reservedSeatIds)
-                {
-                    // For each seat in that list remove that
-                    int seatIdInt = (int)seatId;
-                    SeatsAccess.Delete(seatIdInt);
-                    // Console.WriteLine($"Deleted seat with ID: {seatIdInt}");
-                }
+                    var reservedSeatIds = groupedReservations.Select(r => r.SeatsId).ToList();
 
-                foreach (var reservation in groupedReservations)
-                {
-                    ReservationAccess.Delete((int)reservation.Id);
-                }
-
-                Console.WriteLine($"Successfully canceled reservation for Movie: {reservedMovie.Title}, Show Date: {reservedShow.Date}");
-                reservationChoice = true;
-                bool menuChoice = false;
-                while (!menuChoice)
-                {
-                    Console.WriteLine("\nChoose an option:");
-                    Console.WriteLine("[1] Return to menu");
-                    Console.WriteLine("[2] See your reservations");
-                    string userInput2 = Console.ReadLine();
-
-                    if (userInput2 == "1")
+                    if (reservedSeatIds.Count == 0)
                     {
-                        User.Start(acc);
-                        menuChoice = true;
+                        Console.WriteLine($"No reserved seats found for {reservedMovie.Title}, Show Date: {reservedShow.Date}");
+                        return;
                     }
-                    else if (userInput2 == "2")
+
+                    foreach (var seatId in reservedSeatIds)
                     {
-                        SeeReservation(acc);
-                        menuChoice = true;
+                        int seatIdInt = (int)seatId;
+                        SeatsAccess.Delete(seatIdInt);
                     }
-                    else
+
+                    foreach (var reservation in groupedReservations)
                     {
-                        Console.WriteLine("Invalid option, please try again.");
+                        ReservationAccess.Delete((int)reservation.Id);
                     }
+
+                    Console.WriteLine($"Successfully canceled reservation for Movie: {reservedMovie.Title}, Show Date: {reservedShow.Date}");
+                    reservationChoice = true;
+
+                    bool menuChoice = false;
+                    while (!menuChoice)
+                    {
+                        Console.WriteLine("\nChoose an option:");
+                        Console.WriteLine("[1] Cancel a reservation");
+                        Console.WriteLine("[2] Go back to the user menu");
+                        string userInput2 = Console.ReadLine();
+
+                        if (userInput2 == "1")
+                        {
+                            CancelReservation(userReservations, acc);
+                            menuChoice = true;
+                        }
+                        else if (userInput2 == "2")
+                        {
+                            User.Start(acc);
+                            menuChoice = true;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid option, please try again.");
+                        }
+                    }
+                }
+                else if (confirmationInput == "2")
+                {
+                    Console.WriteLine("Reservation Cancellation stopped.");
+                    reservationChoice = true;
+
+                    bool menuChoice = false;
+                    while (!menuChoice)
+                    {
+                        Console.WriteLine("\nChoose an option:");
+                        Console.WriteLine("[1] Cancel a reservation");
+                        Console.WriteLine("[2] Go back to the user menu");
+                        string userInput2 = Console.ReadLine();
+
+                        if (userInput2 == "1")
+                        {
+                            CancelReservation(userReservations, acc);
+                            menuChoice = true;
+                        }
+                        else if (userInput2 == "2")
+                        {
+                            User.Start(acc);
+                            menuChoice = true;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid option, please try again.");
+                        }
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Invalid option. Please choose [1] Yes or [2] No.");
                 }
             }
             catch (FormatException)

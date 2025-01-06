@@ -1,4 +1,3 @@
-using System.Dynamic;
 using Microsoft.Data.Sqlite;
 
 
@@ -116,6 +115,9 @@ public class VoucherTest
     [DataTestMethod]
     public void CalculateDiscountedPrice_BySeatCategory(long voucherId, double seatPrice, double expectedPrice, double expectedCouponVal)
     {
+        /*
+        This test only works for single reservations, not group reservations
+        */
         List<VoucherModel> testVouchers = new()
         {
             new(1, "16dFecD", "This is the first test", 20m, "percentage", "", 1),

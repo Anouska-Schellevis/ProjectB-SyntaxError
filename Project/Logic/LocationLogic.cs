@@ -4,4 +4,8 @@ public static class LocationLogic
     {
         LocationAccess.Write(location);
     }
+    static public List<LocationModel> GetAllLocations()
+    {
+        return LocationAccess.GetAllLocations();
+    }
 }

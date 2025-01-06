@@ -6,7 +6,7 @@ class Admin
     {
         Console.Clear();
         Console.WriteLine("===== Admin Page =====");
-        Console.WriteLine($"Welcome back {currentUser.FirstName} {currentUser.LastName}\n");
+        Console.WriteLine($"Welcome {currentUser.FirstName} {currentUser.LastName}\n");
         while (true)
         {
             Console.WriteLine("[1]Show the menu of the movies");
@@ -15,19 +15,20 @@ class Admin
             Console.WriteLine("[4]Show the current balance");
             Console.WriteLine("[5]Show the menu of the vouchers");
             Console.WriteLine("[6]Show the movie snack menu");
-            Console.WriteLine("[7]Logout");
+            Console.WriteLine("[7]Show the menu of the locations");
+            Console.WriteLine("[8]Logout");
             int input = Convert.ToInt16(Console.ReadLine());
 
             if (input == 1)
             {
                 Console.Clear();
-                Movie.Start();
+                Movie.Start(currentUser);
                 //Console.Clear();
             }
             else if (input == 2)
             {
                 Console.Clear();
-                Show.AdminStart();
+                Show.AdminStart(currentUser);
                 //Console.Clear();
             }
             else if (input == 3)
@@ -50,6 +51,10 @@ class Admin
                 SnackMenu.AdminSnackMenu(currentUser);
             }
             else if (input == 7)
+            {
+                Location.Start();
+            }
+            else if (input == 8)
             {
                 Console.Clear();
                 break;
