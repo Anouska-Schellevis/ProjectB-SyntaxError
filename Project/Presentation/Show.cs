@@ -355,7 +355,7 @@ class Show
         Console.WriteLine("1. yes\n2. no");
         int question1 = Convert.ToInt32(Console.ReadLine());
         Console.Clear();
-        while (1 != 1 && question1 != 2)
+        while (question1 != 1 && question1 != 2)
         {
             Console.WriteLine("Invalid input. Try again");
             Console.WriteLine("Would you like to change the theater ID?");
@@ -441,7 +441,7 @@ class Show
             {
                 do
                 {
-                    Console.WriteLine("Enter date for this show in '%Y-%m-%d' format.");
+                    Console.WriteLine("Enter date for this show in '%Y-%M-%D' format. (Example: 2024-12-11, 2025-01-01)");
                     Date = Console.ReadLine();
                     Console.Clear();
                     if (DateTime.TryParse(Date, out _) == false)
@@ -681,7 +681,7 @@ class Show
         {
             do
             {
-                Console.WriteLine("Enter date for this show in '%Y-%m-%d' format.");
+                Console.WriteLine("Enter date for this show in '%Y-%m-%d' format. (Example: 2024-12-11, 2025-01-01)");
                 Date = Console.ReadLine();
                 Console.Clear();
                 if (DateTime.TryParse(Date, out _) == false)
@@ -771,8 +771,9 @@ class Show
         foreach (ShowModel show in shows)
         {
             Console.WriteLine($"ID: {show.Id}");
-            Console.WriteLine($"TheaterID: {show.TheatreId}");
-            Console.WriteLine($"MovieID: {show.MovieId}");
+            Console.WriteLine($"Theater: {show.TheatreId}");
+            string movietitle = MoviesLogic.GetById(Convert.ToInt32(show.MovieId)).Title;
+            Console.WriteLine($"MovieTitle: {movietitle}");
             Console.WriteLine($"Date: {show.Date}");
             Console.WriteLine("-----------------------------------------------");
         }

@@ -91,6 +91,11 @@ public class UserNewAccountLogic
         {
             return true;
         }
+        else if (email.IndexOf('.') < email.IndexOf('@'))
+        {
+            Console.WriteLine("Invalid email. The \".\" has to come after the \"@\".");
+            return false;
+        }
         else
         {
             Console.WriteLine("Invalid email. Please enter a valid email address (e.g., email@gmail.com).");

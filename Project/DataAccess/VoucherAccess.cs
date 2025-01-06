@@ -36,7 +36,7 @@ public static class VoucherAccess
 
     public static List<VoucherModel> GetAllVouchers()
     {
-        string sql = $"SELECT * FROM {Table}";
+        string sql = $"SELECT id AS Id, code AS Code, description AS Description, amount AS Amount, type AS Type, expiration_date AS ExpirationDate, user_id AS UserId FROM {Table}";
         return _connection.Query<VoucherModel>(sql).ToList();
     }
 
