@@ -12,13 +12,13 @@ public static class VoucherAccess
 
     public static void Write(VoucherModel voucher)
     {
-        string sql = $"INSERT INTO {Table} (code, description, amount, type, user_id) VALUES (@Code, @Description, @Amount, @Type, @UserId)";
+        string sql = $"INSERT INTO {Table} (code, description, amount, type, expiration_date, user_id) VALUES (@Code, @Description, @Amount, @Type, @ExpirationDate, @UserId)";
         _connection.Execute(sql, voucher);
     }
 
     public static void Update(VoucherModel voucher)
     {
-        string sql = $"UPDATE {Table} SET code = @Code, description = @Description, amount = @Amount, type = @Type, user_id = @UserId WHERE id = @Id";
+        string sql = $"UPDATE {Table} SET code = @Code, description = @Description, amount = @Amount, type = @Type, expiration_date = @ExpirationDate, user_id = @UserId WHERE id = @Id";
         _connection.Execute(sql, voucher);
     }
 
@@ -36,13 +36,13 @@ public static class VoucherAccess
 
     public static List<VoucherModel> GetAllVouchers()
     {
-        string sql = $"SELECT * FROM {Table}";
+        string sql = $"SELECT id AS Id, code AS Code, description AS Description, amount AS Amount, type AS Type, expiration_date AS ExpirationDate, user_id AS UserId FROM {Table}";
         return _connection.Query<VoucherModel>(sql).ToList();
     }
 
     public static List<VoucherModel> GetVouchersByUserId(UserModel user)
     {
-        string sql = $"SELECT id AS Id, code AS Code, description AS Description, amount AS Amount, type AS Type, user_id AS UserId FROM {Table} WHERE user_id = @Id";
+        string sql = $"SELECT id AS Id, code AS Code, description AS Description, amount AS Amount, type AS Type, expiration_date AS ExpirationDate, user_id AS UserId FROM {Table} WHERE user_id = @Id";
         return _connection.Query<VoucherModel>(sql, user).ToList();
     }
 

@@ -1,4 +1,3 @@
-using System.Dynamic;
 using Microsoft.Data.Sqlite;
 
 
@@ -18,8 +17,8 @@ public class VoucherTest
     {
         List<VoucherModel> testVouchers = new()
         {
-            new(1, "QtTNU6G", "This is test one", 10m, "percentage", null),
-            new(2, "R6RvM8K", "This is test two", 10.10m, "euro", null),
+            new(1, "QtTNU6G", "This is test one", 10m, "percentage", "", null),
+            new(2, "R6RvM8K", "This is test two", 10.10m, "euro", "", null),
         };
 
         foreach (VoucherModel testVoucher in testVouchers)
@@ -36,7 +35,7 @@ public class VoucherTest
     [TestMethod]
     public void Incorrect_Type()
     {
-        var testVoucher = new VoucherModel(1, "YCyb3nt", "", 10m, "hello", null);
+        var testVoucher = new VoucherModel(1, "YCyb3nt", "", 10m, "hello", "", null);
 
         bool exceptionThrown = false;
 
@@ -61,10 +60,10 @@ public class VoucherTest
     [TestMethod]
     public void Duplicate_Code()
     {
-        var testVoucher = new VoucherModel(1, "QtTNU6G", "This is test one", 10m, "percentage", null);
+        var testVoucher = new VoucherModel(1, "QtTNU6G", "This is test one", 10m, "percentage", "", null);
         VoucherLogic.CreateVoucher(testVoucher);
 
-        var incorrectTestVoucher = new VoucherModel(2, "QtTNU6G", "This test has to go wrong", 10m, "percentage", null);
+        var incorrectTestVoucher = new VoucherModel(2, "QtTNU6G", "This test has to go wrong", 10m, "percentage", "", null);
 
         try
         {
@@ -85,13 +84,13 @@ public class VoucherTest
     [TestMethod]
     public void GetVouchersForUser1()
     {
-        UserModel acc = new(1, "kevin@kevin.nl", "kevin", "", "", 0, 0, 0);
+        UserModel acc = new(4, "gebruiker1@gmail.com", "Wachtwoord1", "gebruiker", "eerste", 1234567812, 0, 0);
 
         List<VoucherModel> testVouchers = new()
         {
-            new(1, "16dFecD", "This is the first test", 20m, "percentage", 1),
-            new(2, "OcjBkca", "This is the second test", 13m, "euro", 1),
-            new(3, "yitrFeF", "This is the third test", 33m, "euro", 3)
+            new(1, "16dFecD", "This is the first test", 20m, "percentage", "", 1),
+            new(2, "OcjBkca", "This is the second test", 11m, "euro", "", 1),
+            new(3, "yitrFeF", "This is the third test", 33m, "euro", "", 3)
         };
 
         foreach (VoucherModel testVoucher in testVouchers)
@@ -116,11 +115,14 @@ public class VoucherTest
     [DataTestMethod]
     public void CalculateDiscountedPrice_BySeatCategory(long voucherId, double seatPrice, double expectedPrice, double expectedCouponVal)
     {
+        /*
+        This test only works for single reservations, not group reservations
+        */
         List<VoucherModel> testVouchers = new()
         {
-            new(1, "16dFecD", "This is the first test", 20m, "percentage", 1),
-            new(2, "OcjBkca", "This is the second test", 11m, "euro", 1),
-            new(3, "yitrFeF", "This is the third test", 33m, "euro", 3)
+            new(1, "16dFecD", "This is the first test", 20m, "percentage", "", 1),
+            new(2, "OcjBkca", "This is the second test", 11m, "euro", "", 1),
+            new(3, "yitrFeF", "This is the third test", 33m, "euro", "", 3)
         };
 
         foreach (VoucherModel testVoucher in testVouchers)

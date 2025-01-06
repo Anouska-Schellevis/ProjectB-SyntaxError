@@ -72,13 +72,13 @@ public abstract class TheaterBase
                         switch (pricingCategories[i, j])
                         {
                             case 1:
-                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.ForegroundColor = ConsoleColor.Blue;
                                 break;
                             case 2:
                                 Console.ForegroundColor = ConsoleColor.Yellow;
                                 break;
                             case 3:
-                                Console.ForegroundColor = ConsoleColor.Blue;
+                                Console.ForegroundColor = ConsoleColor.Red;
                                 break;
                             default:
                                 Console.ForegroundColor = ConsoleColor.Gray;
@@ -204,7 +204,7 @@ public abstract class TheaterBase
                         Console.WriteLine("Please choose another row. Make sure no empty seat is left unoccupied.");
                         continue;
                     }
-                    else if (countAvailableSeats[row, col] < how_many_people) // Not enough consecutive empty seats
+                    else if (i == 0 && countAvailableSeats[row, col] < how_many_people) // Not enough consecutive empty seats
                     {
                         Console.WriteLine("There aren't enough seats here for everyone.");
                         continue;
@@ -435,28 +435,49 @@ public abstract class TheaterBase
                 do
                 {
                     Voucher.PrintAllUserVouchers(acc);
-                    Console.WriteLine("Enter the ID of the voucher you wish to use");
+                    Console.WriteLine("Enter the voucher you wish to use");
 
-                    bool isValidFormat = int.TryParse(Console.ReadLine(), out int inputId);
+                    bool isValidFormat = int.TryParse(Console.ReadLine(), out int inputNum);
                     if (!isValidFormat)
                     {
                         Console.WriteLine("Invalid format. Make sure to enter a number.");
                         continue;
                     }
 
-                    VoucherModel voucher = userVouchers.FirstOrDefault(v => v.Id == inputId); // Looks up if the input ID is from an existing voucher obj
+                    VoucherModel voucher = userVouchers.ElementAtOrDefault(inputNum - 1); // the index is one smaller than the count
                     if (voucher is null)
                     {
                         Console.WriteLine("This ID doesn't exist. Try again");
                         continue;
                     }
 
-                    decimal oldAmount = voucher.Amount;
+                    string oldVoucherType = voucher.Type;
+
+                    if (voucher.Type == "percentage" && selectedSeats.Count > 1) // CalculateDiscountedPrice() is not intended to subtract the percentage amount from more than one seat alternately. Then change it to a euro voucher.
+                    {
+                        decimal totalSeatsAmount = 0;
+
+                        foreach (SeatsModel seat in selectedSeats)
+                        {
+                            totalSeatsAmount += seat.Price;
+                        }
+
+                        decimal voucherEuroAmount = totalSeatsAmount / 100 * voucher.Amount;
+
+                        voucher.Type = "euro"; // euro voucher to correctly subtract the voucher from every seat until empty
+                        voucher.Amount = voucherEuroAmount;
+                    }
 
                     for (int i = 0; i < selectedSeats.Count; i++)
                     {
-                        voucher.Amount = oldAmount; // To ensure that all seats are discounted before the cost is finally deducted from the voucher.
                         selectedSeats[i].Price = VoucherLogic.CalculateDiscountedPrice(ref voucher, selectedSeats[i].Price); // ref is used to make a reference to voucher outside this function.
+                        SeatsLogic.UpdateSeat(selectedSeats[i]); // the new price of seats is written to the database
+                    }
+
+                    if (oldVoucherType == "percentage" && selectedSeats.Count > 1)
+                    {
+                        voucher.Type = "percentage";
+                        voucher.Amount = 0;
                     }
 
                     VoucherLogic.UpdateVoucher(voucher); // Changes to the voucher are written to the database
@@ -472,17 +493,26 @@ public abstract class TheaterBase
         bool barService = Console.ReadLine() == "1" && IsBarAvailable(selectedSeats.Count, showId);
 
         Console.WriteLine("Would you like to order snacks? \n[1] Yes \n[2] No");
-
         string snacks = "";
+
         if (Console.ReadLine() == "1")
         {
-            List<MenuItem> selectedSnacks = SnackMenu.SelectSnacks();
-            List<string> snackNames = new List<string>();
-            foreach (MenuItem snack in selectedSnacks)
+            Dictionary<MenuItem, int> selectedSnacks = SnackMenu.SelectSnacks();
+            //string snack = "";
+
+            foreach (var snack in selectedSnacks)
             {
-                snackNames.Add(snack.Name);
+                for (int i = 0; i < snack.Value; i++)
+                {
+                    if (snacks != string.Empty)
+                    {
+                        snacks += ", ";
+                    }
+                    snacks += snack.Key.Name;
+                }
             }
-            snacks = string.Join(",", snackNames);
+
+
         }
 
         foreach (var seat in selectedSeats)
@@ -500,7 +530,10 @@ public abstract class TheaterBase
             ReservationLogic.WriteReservation(reservation);
         }
 
-        Console.WriteLine($"Successfully reserved seats and snacks for {acc.FirstName} {acc.LastName}.");
+
+        Console.WriteLine($"Successfully reserved ticket(s) for {acc.FirstName} {acc.LastName}.");
+
+        Thread.Sleep(2000);
         User.Start(acc);
     }
 
@@ -538,36 +571,36 @@ public abstract class TheaterBase
         }
         else if (col + 1 > 1) // Seats exist to the left
         {
-            bool twoEmptySeat = false;
+            bool twoEmptySeats = false;
             bool nextToTwo = false;
             bool nextToOne = seats[row, col - 1] == 'R';
-            bool seatGroup = false;
-            bool groupMember = seats[row, col - 1] == 'C'; // Group member sits to the left of the selected seat
+            bool PeopleLeftToSeat = false;
+            bool nextToGroupMember = seats[row, col - 1] == 'C'; // Group member sits to the left of the selected seat
 
             // Ensure there's enough space from the row's far-left edge to check seat positions within array bounds.
             if ((col + 1) - (countEmptyLeftSpace + 1) >= 2)
             {
                 // The conditions for a valid seat
-                twoEmptySeat = seats[row, col - 2] == 'A' && seats[row, col - 1] == 'A';
+                twoEmptySeats = seats[row, col - 2] == 'A' && seats[row, col - 1] == 'A';
                 nextToTwo = seats[row, col - 2] == 'R' && seats[row, col - 1] == 'R';
                 nextToOne = nextToOne && seats[row, col - 2] == 'A';
-                seatGroup = peopleLeftToSeat == 1;
+                PeopleLeftToSeat = peopleLeftToSeat == 1;
 
                 // Additional condition where the furthest seat is reserved and the closer one is available
                 if (seats[row, col - 2] == 'R' && seats[row, col - 1] == 'A')
                 {
                     // Determine if the group needs more than one seat
-                    seatGroup = peopleLeftToSeat >= 2 && peopleLeftToSeat < totalAmountOfPeople;
+                    PeopleLeftToSeat = peopleLeftToSeat >= 2 && peopleLeftToSeat < totalAmountOfPeople;
 
                     // Ensure that remaining seats to the right are filled first
-                    if (seatGroup && seats[row, col + 1] == 'A' && seats[row, col + 2] == 'A')
+                    if (PeopleLeftToSeat && seats[row, col + 1] == 'A' && seats[row, col + 2] == 'A')
                     {
                         return false;
                     }
                 }
             }
 
-            leftIsValid = twoEmptySeat || nextToTwo || nextToOne || groupMember || seatGroup;
+            leftIsValid = twoEmptySeats || nextToTwo || nextToOne || nextToGroupMember || PeopleLeftToSeat;
         }
 
         /*
@@ -579,36 +612,36 @@ public abstract class TheaterBase
         }
         else if (col + 1 < countSeatPlusLeftSpace) // Seats exist to the right
         {
-            bool twoEmptySeat = false;
+            bool twoEmptySeats = false;
             bool nextToTwo = false;
             bool nextToOne = seats[row, col + 1] == 'R';
-            bool seatGroup = false;
-            bool groupMember = seats[row, col + 1] == 'C'; // Group member sits to the right of the selected seat
+            bool PeopleLeftToSeat = false;
+            bool nextToGroupMember = seats[row, col + 1] == 'C'; // Group member sits to the right of the selected seat
 
             // Ensure there's enough space from the row's far-right edge to check seat positions within array bounds.
             if (countSeatPlusLeftSpace - (col + 1) >= 2)
             {
                 // The conditions for a valid seat
-                twoEmptySeat = seats[row, col + 1] == 'A' && seats[row, col + 2] == 'A';
+                twoEmptySeats = seats[row, col + 1] == 'A' && seats[row, col + 2] == 'A';
                 nextToTwo = seats[row, col + 1] == 'R' && seats[row, col + 2] == 'R';
                 nextToOne = nextToOne && seats[row, col + 2] == 'A';
-                seatGroup = peopleLeftToSeat == 1;
+                PeopleLeftToSeat = peopleLeftToSeat == 1;
 
                 // Additional condition where the furthest seat is reserved and the closer one is available
                 if (seats[row, col + 2] == 'R' && seats[row, col + 1] == 'A')
                 {
                     // Determine if the group needs more than one seat
-                    seatGroup = peopleLeftToSeat >= 2 && peopleLeftToSeat < totalAmountOfPeople;
+                    PeopleLeftToSeat = peopleLeftToSeat >= 2 && peopleLeftToSeat < totalAmountOfPeople;
 
                     // Ensure that remaining seats to the left are filled first
-                    if (seatGroup && seats[row, col - 1] == 'A' && seats[row, col - 2] == 'A')
+                    if (PeopleLeftToSeat && seats[row, col - 1] == 'A' && seats[row, col - 2] == 'A')
                     {
                         return false;
                     }
                 }
             }
 
-            rightIsValid = twoEmptySeat || nextToTwo || nextToOne || groupMember || seatGroup;
+            rightIsValid = twoEmptySeats || nextToTwo || nextToOne || nextToGroupMember || PeopleLeftToSeat;
         }
 
         return leftIsValid && rightIsValid;

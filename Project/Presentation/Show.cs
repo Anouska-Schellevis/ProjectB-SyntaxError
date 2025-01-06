@@ -9,15 +9,17 @@ class Show
     //     // { UserStart(); }
     // }
     public static int day;
-    static public void AdminStart()
+    static public void AdminStart(UserModel acc)
     {
         Console.Clear();
         Console.WriteLine("[1] Overview of all show");
         Console.WriteLine("[2] Add Show");
         Console.WriteLine("[3] Edit Show");
         Console.WriteLine("[4] Delete Show");
+        Console.WriteLine("[5] Go back to admin menu");
         Console.WriteLine("What would you like to do?");
         int choice = Convert.ToInt32(Console.ReadLine());
+        int idToDelete;
 
         switch (choice)
         {
@@ -44,29 +46,31 @@ class Show
                 }
                 break;
             case 4:
-                int idToDelete;
                 do
                 {
                     Console.WriteLine("Enter the id of the show you want to delete");
                     idToDelete = Convert.ToInt32(Console.ReadLine());
-                    if (MoviesAccess.GetById(idToDelete) == null)
+                    if (ShowAccess.GetByID(idToDelete) == null)
                     {
                         Console.WriteLine("This ID does not exist. Try again");
                     }
-                } while (MoviesAccess.GetById(idToDelete) == null);
+                } while (ShowAccess.GetByID(idToDelete) == null);
                 ShowDelete(idToDelete);
                 Console.WriteLine("Show is deleted");
                 break;
+            case 5:
+                Console.Clear();
+                Admin.Start(acc);
+                break;
             default:
                 Console.WriteLine("No valid option selected. Please try again.");
-                AdminStart();
+                AdminStart(acc);
                 break;
         }
     }
 
     static public void UserStart(UserModel acc)
     {
-
         string movie = "";
         int choice = 0;
         int chosennumber = 0;
@@ -74,7 +78,6 @@ class Show
         Dictionary<int, string> movies;
         bool loop = true;
         bool printed = true;
-        Console.Clear();
         movies = PrintOverviewMovie_Time();
         while (loop)
         {
@@ -110,10 +113,11 @@ class Show
                 Console.WriteLine("2. Choose time");
                 Console.WriteLine("3. Go back to week overview");
                 Console.WriteLine("4. Go back to day overview");
+                Console.WriteLine("5. Go back to UserMenu");
                 do
                 {
                     choice = Convert.ToInt32(Console.ReadLine());
-                    if (choice == 1 || choice == 2 || choice == 3)
+                    if (choice == 1 || choice == 2 || choice == 3 || choice == 5)
                     {
                         loop = false;
                     }
@@ -126,7 +130,7 @@ class Show
                     {
                         Console.WriteLine("Invalid input.");
                     }
-                } while (choice < 1 || choice > 4);
+                } while (choice < 1 || choice > 5);
                 if (choice == 4)
                 {
                     printed = false;
@@ -329,6 +333,9 @@ class Show
             case 3:
                 UserStart(acc);
                 break;
+            case 5:
+                User.Start(acc);
+                break;
             default:
                 Console.WriteLine("Unexpected choice");
                 break;
@@ -348,7 +355,7 @@ class Show
         Console.WriteLine("1. yes\n2. no");
         int question1 = Convert.ToInt32(Console.ReadLine());
         Console.Clear();
-        while (1 != 1 && question1 != 2)
+        while (question1 != 1 && question1 != 2)
         {
             Console.WriteLine("Invalid input. Try again");
             Console.WriteLine("Would you like to change the theater ID?");
@@ -434,7 +441,7 @@ class Show
             {
                 do
                 {
-                    Console.WriteLine("Enter date for this show in '%Y-%m-%d' format.");
+                    Console.WriteLine("Enter date for this show in '%Y-%M-%D' format. (Example: 2024-12-11, 2025-01-01)");
                     Date = Console.ReadLine();
                     Console.Clear();
                     if (DateTime.TryParse(Date, out _) == false)
@@ -623,9 +630,15 @@ class Show
         //         Console.WriteLine("Movie ID does not exist. Try again.");
         //     }
         // } while (MoviesAccess.GetById(newMovieId) == null);
-        Console.WriteLine("Enter movie name(not uppercase sensitive)");
         string title = "";
         MoviesModel movie;
+        List<MoviesModel> movies = MoviesLogic.GetAllMovies();
+        Console.WriteLine("Movies you can choose from: ");
+        foreach (var item in movies)
+        {
+            Console.WriteLine($"- {item.Title}");
+        }
+        Console.WriteLine("\nEnter movie name(not uppercase sensitive)");
         do
         {
             title = Console.ReadLine();
@@ -668,7 +681,7 @@ class Show
         {
             do
             {
-                Console.WriteLine("Enter date for this show in '%Y-%m-%d' format.");
+                Console.WriteLine("Enter date for this show in '%Y-%m-%d' format. (Example: 2024-12-11, 2025-01-01)");
                 Date = Console.ReadLine();
                 Console.Clear();
                 if (DateTime.TryParse(Date, out _) == false)
@@ -758,8 +771,9 @@ class Show
         foreach (ShowModel show in shows)
         {
             Console.WriteLine($"ID: {show.Id}");
-            Console.WriteLine($"TheaterID: {show.TheatreId}");
-            Console.WriteLine($"MovieID: {show.MovieId}");
+            Console.WriteLine($"Theater: {show.TheatreId}");
+            string movietitle = MoviesLogic.GetById(Convert.ToInt32(show.MovieId)).Title;
+            Console.WriteLine($"MovieTitle: {movietitle}");
             Console.WriteLine($"Date: {show.Date}");
             Console.WriteLine("-----------------------------------------------");
         }

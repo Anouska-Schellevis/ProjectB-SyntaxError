@@ -1,6 +1,6 @@
 class Voucher
 {
-    public static void AdminStart()
+    public static void AdminStart(UserModel acc)
     {
         while (true)
         {
@@ -25,6 +25,7 @@ class Voucher
                     Console.WriteLine("What kind of voucher would you like to add?\n[1]percentage\n[2]amount of money");
                     typeAnswer = Convert.ToInt16(Console.ReadLine());
                 } while (typeAnswer != 1 && typeAnswer != 2);
+
                 if (typeAnswer == 1)
                 {
                     type = "percentage";
@@ -34,9 +35,38 @@ class Voucher
                     type = "euro";
                 }
 
-                // Ask the admin what the amount of the voucher will be
-                Console.WriteLine("What is the amount?");
-                decimal amount = Convert.ToInt16(Console.ReadLine());
+                decimal amount;
+                while (true)
+                {
+                    // Ask the admin what the amount of the voucher will be
+                    Console.WriteLine("What is the amount?");
+                    amount = Convert.ToInt16(Console.ReadLine());
+
+                    if (typeAnswer == 1 && amount < 0)
+                    {
+                        Console.WriteLine("Please try again. A percentage amount cannot be a negative number");
+                    }
+                    else if (typeAnswer == 1 && amount > 100)
+                    {
+                        Console.WriteLine("Please try again. A percentage amount cannot be higher than 100");
+                    }
+                    else if (typeAnswer == 2 && amount < 0)
+                    {
+                        Console.WriteLine("Please try again. A euro amount cannot be a negative number");
+                    }
+                    else if (typeAnswer == 1 && amount == 0)
+                    {
+                        Console.WriteLine("Please try again. A percentage amount must be higher than 0%");
+                    }
+                    else if (typeAnswer == 2 && amount == 0)
+                    {
+                        Console.WriteLine("Please try again. A euro amount must be higher than €0");
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
 
                 do
                 {
@@ -57,8 +87,6 @@ class Voucher
 
                     DateTime.TryParse(enterDate, out dateTime);
                 } while (dateTime < currentDate);
-
-                Console.ReadLine();
 
                 Random res = new Random();
 
@@ -97,7 +125,7 @@ class Voucher
                 Console.WriteLine($"Generated code {code}");
 
                 // A new voucher will be made and send to the create voucher function
-                VoucherModel newVoucher = new VoucherModel(0, code, description, amount, type, null);
+                VoucherModel newVoucher = new VoucherModel(0, code, description, amount, type, enterDate, null);
                 VoucherLogic.CreateVoucher(newVoucher);
 
                 Console.WriteLine("Done!!");
@@ -121,48 +149,48 @@ class Voucher
                     {
                         Console.WriteLine($"Amount: €{voucher.Amount},-");
                     }
-                    Console.WriteLine($"Description: {voucher.Description}\n---------------------------------------");
+                    Console.WriteLine($"Description: {voucher.Description}");
+                    Console.WriteLine($"Expiration Date: {voucher.ExpirationDate}\n---------------------------------------");
                     count += 1;
                 }
-
-
             }
             else if (input == 3)
             {
                 Console.Clear();
-
+                break;
             }
         }
     }
 
     public static void UserStart(UserModel acc)
     {
-        Console.WriteLine("[1] See all your vouchers");
-        Console.WriteLine("[2] Go back");
-        Console.WriteLine("What would you like to do?");
+        PrintAllUserVouchers(acc);
 
-        bool isCorrectFormat = int.TryParse(Console.ReadLine(), out int choice);
-        if (!isCorrectFormat)
+        // Option to go back to the user menu
+        bool menuChoice = false;
+        while (!menuChoice)
         {
-            Console.WriteLine("Invalid format. Make sure to enter a number.");
-            UserStart(acc);
-        }
+            Console.WriteLine("Would you like to go back to the user menu?\n[1] Yes\n[2] No");
+            bool isCorrectFormat = int.TryParse(Console.ReadLine(), out int choice);
+            if (!isCorrectFormat)
+            {
+                Console.WriteLine("Invalid format. Make sure to enter a number.");
 
-        switch (choice)
-        {
-            case 1:
+            }
+            else if (0 >= choice || choice > 2)
+            {
+                Console.WriteLine("Invalid number. This option is not available.");
+            }
+            else if (choice == 1)  // In case the answer is Yes
+            {
+                User.Start(acc);
+                menuChoice = true;
+            }
+            else  // In case the answer is No
+            {
                 Console.Clear();
                 PrintAllUserVouchers(acc);
-                break;
-            case 2:
-                Console.Clear();
-                User.Start(acc);
-                break;
-            default:
-                Console.Clear();
-                Console.WriteLine("Invalid number. This option is not available.");
-                UserStart(acc);
-                break;
+            }
         }
     }
 
@@ -170,13 +198,11 @@ class Voucher
     {
         List<VoucherModel> vouchers = VoucherLogic.GetVouchersByUserId(acc);
 
+        int count = 1;
+
         foreach (VoucherModel voucher in vouchers)
         {
-            /*
-            I have choosen to use the voucher id instead of the iteration number, 
-            because in the theaterbase.cs this method is used and in the theaterbase the user chooses a voucher id.
-            */
-            Console.WriteLine($"[{voucher.Id}]");
+            Console.WriteLine($"[{count}]");
             Console.WriteLine($"Code: {voucher.Code}");
             if (voucher.Type == "percentage")
             {
@@ -186,28 +212,10 @@ class Voucher
             {
                 Console.WriteLine($"Amount: €{voucher.Amount},-");
             }
-            Console.WriteLine($"Description: {voucher.Description}\n---------------------------------------");
+            Console.WriteLine($"Description: {voucher.Description}");
+            Console.WriteLine($"Expiration Date: {voucher.ExpirationDate}\n---------------------------------------");
+            count += 1;
         }
-        string choice;
-
-        do
-        {
-            Console.WriteLine("[1] Go back to voucher menu");
-            choice = Console.ReadLine();
-
-            if (choice == "1")
-            {
-                Console.Clear();
-                Voucher.UserStart(acc);
-            }
-            else
-            {
-                Console.WriteLine("Invalid input, please try again.");
-            }
-
-        } while (choice != "1");
-
     }
 
 }
-

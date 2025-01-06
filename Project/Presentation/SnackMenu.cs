@@ -3,56 +3,64 @@ public class SnackMenu
 
     public static void AdminSnackMenu(UserModel acc)
     {
-        Console.Clear();
-        Console.WriteLine("[1] See current snack menu");
-        Console.WriteLine("[2] Add menu item");
-        Console.WriteLine("[3] Delete menu item");
-        Console.WriteLine("[4] Go back to Admin page");
-
-        string choice = Console.ReadLine();
-        if (choice == "1")
+        while (true)
         {
-            bool continueViewing = true;
-            while (continueViewing)
+            Console.Clear();
+            Console.WriteLine("[1] See current snack menu");
+            Console.WriteLine("[2] Add menu item");
+            Console.WriteLine("[3] Delete menu item");
+            Console.WriteLine("[4] Edit menu item");
+            Console.WriteLine("[5] Go back to Admin page");
+
+            string choice = Console.ReadLine();
+            if (choice == "1")
+            {
+                bool continueViewing = true;
+                while (continueViewing)
+                {
+                    Console.Clear();
+                    ShowSnackMenu();
+
+                    Console.WriteLine("\n[1] Go back to admin snack menu");
+                    string returnChoice = Console.ReadLine();
+
+                    if (returnChoice == "1")
+                    {
+                        continueViewing = false;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid choice. Please choose [1] to go back to admin snack menu.");
+                        Console.ReadKey();//it will go back when pressing 1, i made it like this because i didnt want to change showsnackmenu but that method immidiatly ends
+                        //i wanted it to show to the admin for longer
+                    }
+                }
+
+                Console.Clear();
+                AdminSnackMenu(acc);
+            }
+            else if (choice == "2")
             {
                 Console.Clear();
-                ShowSnackMenu();
-
-                Console.WriteLine("\n[1] Go back to admin snack menu");
-                string returnChoice = Console.ReadLine();
-
-                if (returnChoice == "1")
-                {
-                    continueViewing = false;
-                }
-                else
-                {
-                    Console.WriteLine("Invalid choice. Please choose [1] to go back to admin snack menu.");
-                    Console.ReadKey();//it will go back when pressing 1, i made it like this because i didnt want to change showsnackmenu but that method immidiatly ends
-                    //i wanted it to show to the admin for longer
-                }
+                CreateMenu(acc);
             }
-
-            Console.Clear();
-            AdminSnackMenu(acc);
-        }
-        else if (choice == "2")
-        {
-            Console.Clear();
-            CreateMenu(acc);
-        }
-        else if (choice == "3")
-        {
-            Console.Clear();
-            DeleteMenuItem(acc);
-        }
-        else if (choice == "4")
-        {
-            Console.Clear();
-            Admin.Start(acc);
+            else if (choice == "3")
+            {
+                Console.Clear();
+                DeleteMenuItem(acc);
+            }
+            else if (choice == "4")
+            {
+                Console.Clear();
+                EditMenuItem(acc);
+            }
+            else if (choice == "5")
+            {
+                Console.Clear();
+                break;
+            }
         }
     }
-
 
     public static void CreateMenu(UserModel acc)
     {
@@ -69,8 +77,8 @@ public class SnackMenu
             if (item.Name.ToLower() == name.ToLower())
             {
                 Console.WriteLine("A snack with this name already exists.");
+                Thread.Sleep(2000);
                 return;
-
             }
         }
         Console.WriteLine("Enter the price of the menu item:");
@@ -111,7 +119,7 @@ public class SnackMenu
         Console.WriteLine("Do you want to add another item or go back to the admin menu");
         Console.WriteLine("[1] Add another menu item");
         Console.WriteLine("[2] See current menu");
-        Console.WriteLine("[3] Go back to admin snack menu");
+        Console.WriteLine("[3] Go back to snack menu");
 
         string choice = Console.ReadLine();
         if (choice == "1")
@@ -146,9 +154,11 @@ public class SnackMenu
         else if (choice == "3")
         {
             Console.Clear();
-            return;
+            SnackMenu.AdminSnackMenu(acc);
         }
     }
+
+
 
 
     public static void ShowSnackMenu()
@@ -173,11 +183,45 @@ public class SnackMenu
         }
 
         int itemNumber = 1;
+        int longest = 0;
+
+        // Find the longest item name for alignment
+        foreach (var item in foodItems)
+        {
+            if (item.Name.Length > longest)
+            {
+                longest = item.Name.Length; //get longest length word
+            }
+        }
+        foreach (var item in drinkItems)
+        {
+            if (item.Name.Length > longest)
+            {
+                longest = item.Name.Length; //get longest length word
+            }
+        }
+        longest += 5; //+5 for alignment
 
         if (foodItems.Count > 0)
         {
             Console.WriteLine("=== Food ===");
-            itemNumber = AllignmentMenuItems(foodItems, itemNumber);
+            foreach (var item in foodItems)
+            {
+                string number = $"[{itemNumber}]";
+                string name = item.Name;
+                string spaces = "";  //create empty string to hold the spaces
+
+                //calculate how many spaces are needed
+                int spacesNeeded = longest - name.Length;
+                for (int i = 0; i < spacesNeeded; i++)
+                {
+                    spaces += " ";  //add space one by one
+                }
+
+                string price = $"€{item.Price:F2}";
+                Console.WriteLine($"{number} {name}{spaces}{price}");
+                itemNumber++;
+            }
         }
         else
         {
@@ -187,7 +231,23 @@ public class SnackMenu
         if (drinkItems.Count > 0)
         {
             Console.WriteLine("\n=== Drinks ===");
-            itemNumber = AllignmentMenuItems(drinkItems, itemNumber);
+            foreach (var item in drinkItems)
+            {
+                string number = $"[{itemNumber}]";
+                string name = item.Name;
+                string spaces = "";  //create empty string to hold the spaces
+
+                //calculate how many spaces are needed
+                int spacesNeeded = longest - name.Length;
+                for (int i = 0; i < spacesNeeded; i++)
+                {
+                    spaces += " ";  //add space one by one
+                }
+
+                string price = $"€{item.Price:F2}";
+                Console.WriteLine($"{number} {name}{spaces}{price}");
+                itemNumber++;
+            }
         }
         else
         {
@@ -197,88 +257,163 @@ public class SnackMenu
         Console.WriteLine($"[{itemNumber}] Done ordering");
     }
 
+    // public static Dictionary<MenuItem, int> SelectSnacks()
+    // {
+    //     List<MenuItem> snacks = MenuItemLogic.GetAllMenuItems();
+    //     Dictionary<MenuItem, int> orderDict = new Dictionary<MenuItem, int>();
+    //     bool stillOrdering = true;
 
+    //     while (stillOrdering) //a while loop that will run while the user is stillOrdering
+    //     {
+    //         ShowSnackMenu();
 
-    private static int AllignmentMenuItems(List<MenuItem> items, int startNumber)
-    {
-        int longest = 0;
-        foreach (var item in items)
-        {
-            if (item.Name.Length > longest)
-            {
-                longest = item.Name.Length; //get longest length word
-            }
-        }
-        longest = longest + 5; //+5 for alligments
+    //         Console.WriteLine("\nYour order:");
+    //         if (orderDict.Count == 0)
+    //         {
+    //             Console.WriteLine("Your order is empty");
+    //         }
+    //         else
+    //         {
+    //             decimal orderTotal = 0; //keep track of orderTotal money
+    //                                     //this here prints everytime user picks new item because of while loop
+    //                                     //so it looks like live updating, it prints the item name and price with 2 decimal
+    //                                     // adds that price to toal price, and then prints the total order money so that user
+    //                                     // can keep track of how much they are spending
+    //             foreach (var order in orderDict)
+    //             {
+    //                 Console.WriteLine($"- {order.Value} x {order.Key.Name}");
+    //                 orderTotal += order.Key.Price * order.Value;
+    //             }
+    //             Console.WriteLine($"Total: €{orderTotal:F2}");
+    //         }
 
-        for (int i = 0; i < items.Count; i++)
-        {
-            string number = $"[{startNumber}]"; //number for item selecting
-            string name = items[i].Name;
-            string spaces = "";
+    //         Console.Write($"\nWhat would you like to order? input any number from the menu above or type {snacks.Count + 1} to stop ordering ");
+    //         string answer = Console.ReadLine();
 
-            int spacesNeeded = longest - name.Length;
-            for (int j = 0; j < spacesNeeded; j++)
-            {
-                spaces += " "; //it takes the number for longest word +5 and that is the max alligment, so it takes current word - that number = the amount of spaces needed
-            }
+    //         bool isNumber = int.TryParse(answer, out int choice); //change user string input into int
 
-            string price = $"€{items[i].Price:F2}";
-            Console.WriteLine($"{number} {name}{spaces}{price}");
-            startNumber++;
-        }
+    //         if (isNumber)
+    //         {
+    //             if (choice == snacks.Count + 1)
+    //             {
+    //                 stillOrdering = false; //this will always refere to the done ordering and will stop the loop
+    //             }
+    //             else if (choice > 0 && choice <= snacks.Count) //if choice is bigger then 0 and smaller then max length of list
+    //             {
+    //                 MenuItem chosenSnack = snacks[choice - 1]; //have to do -1 because of 0 based index, (if user picks number 7 they have actually picked number six)
+    //                 Console.Write($"\nHow many of {chosenSnack.Name} would you like to order? ");
+    //                 string AmountSnacks = Console.ReadLine();
 
-        return startNumber;
-    }
+    //                 bool validAmount = int.TryParse(AmountSnacks, out int quantity) && quantity > 0;//as long as its a int and bigger then 0
+    //                 if (validAmount)
+    //                 {
+    //                     if (orderDict.ContainsKey(chosenSnack))
+    //                     {
+    //                         orderDict[chosenSnack] += quantity;
+    //                     }
+    //                     else
+    //                     {
+    //                         orderDict[chosenSnack] = quantity;
+    //                     }
+    //                     Console.WriteLine($"\nAdded {quantity} x {chosenSnack.Name} to your order.");
+    //                 }
+    //                 else
+    //                 {
+    //                     Console.WriteLine("\nPlease enter a valid quantity.");
+    //                 }
+    //             }
+    //             else
+    //             {
+    //                 Console.WriteLine("\nPlease pick a number from the menu.");
+    //             }
+    //         }
+    //         else
+    //         {
+    //             Console.WriteLine("\nPlease enter a number.");
+    //         }
+    //     }
 
+    //     Console.Clear();
+    //     Console.WriteLine("===== Your Final Order =====");
 
-    public static List<MenuItem> SelectSnacks()
+    //     if (orderDict.Count == 0)
+    //     {
+    //         Console.WriteLine("No snacks ordered.");
+    //     }
+    //     else
+    //     {
+    //         decimal finalTotal = 0;
+    //         foreach (var order in orderDict)
+    //         {
+    //             Console.WriteLine($"- {order.Value} x {order.Key.Name}");
+    //             finalTotal += order.Key.Price * order.Value;
+    //         }
+    //         Console.WriteLine($"Total: €{finalTotal:F2}");
+    //     }
+
+    //     return orderDict; //this will just show the user their final order works the same as earlier
+    // }
+
+    public static Dictionary<MenuItem, int> SelectSnacks()
     {
         List<MenuItem> snacks = MenuItemLogic.GetAllMenuItems();
-        List<MenuItem> orderList = new List<MenuItem>();// will hold all users snack orders
+        Dictionary<MenuItem, int> orderDict = new Dictionary<MenuItem, int>();
         bool stillOrdering = true;
 
-        while (stillOrdering) //a while loop that will run while the user is stillOrdering
+        while (stillOrdering)
         {
             ShowSnackMenu();
 
             Console.WriteLine("\nYour order:");
-            if (orderList.Count == 0)
+            if (orderDict.Count == 0)
             {
-                Console.WriteLine("Your order is empty");
+                Console.WriteLine("Your order is empty.");
             }
             else
             {
-                decimal orderTotal = 0; //keep track of orderTotal money
-                //this here prints everytime user picks new item because of while loop
-                //so it looks like live updating, it prints the item name and price with 2 decimal
-                // adds that price to toal price, and then prints the total order money so that user
-                // can keep track of how much they are spending
-                foreach (var item in orderList)
+                decimal orderTotal = 0;
+                foreach (var order in orderDict)
                 {
-                    Console.WriteLine($"- {item.Name}");//(€{item.Price:F2})
-                    orderTotal += item.Price;
+                    Console.WriteLine($"- {order.Value} x {order.Key.Name}");
+                    orderTotal += order.Key.Price * order.Value;
                 }
                 Console.WriteLine($"Total: €{orderTotal:F2}");
-
             }
 
-            Console.Write($"\nWhat would you like to order? input any number from the menu above or type {snacks.Count + 1} to stop ordering ");
+            Console.Write($"\nWhat would you like to order? Input any number from the menu above or type {snacks.Count + 1} to stop ordering: ");
             string answer = Console.ReadLine();
 
-            bool isNumber = int.TryParse(answer, out int choice); //change user string input into int
+            bool isNumber = int.TryParse(answer, out int choice);
 
             if (isNumber)
             {
                 if (choice == snacks.Count + 1)
                 {
-                    stillOrdering = false; //this will always refere to the done ordering and will stop the loop
+                    stillOrdering = false;
                 }
-                else if (choice > 0 && choice <= snacks.Count) //if choice is bigger then 0 and smaller then max length of list
+                else if (choice > 0 && choice <= snacks.Count)
                 {
-                    MenuItem chosenSnack = snacks[choice - 1]; //have to do -1 because of 0 based index, (if user picks number 7 they have actually picked number six)
-                    orderList.Add(chosenSnack); //add to order list
-                    Console.WriteLine($"\nAdded {chosenSnack.Name} to your order.");
+                    MenuItem chosenSnack = snacks[choice - 1];
+                    Console.Write($"\nHow many of {chosenSnack.Name} would you like to order? ");
+                    string AmountSnacks = Console.ReadLine();
+
+                    bool validAmount = int.TryParse(AmountSnacks, out int quantity) && quantity > 0;
+                    if (validAmount)
+                    {
+                        if (orderDict.ContainsKey(chosenSnack))
+                        {
+                            orderDict[chosenSnack] += quantity;
+                        }
+                        else
+                        {
+                            orderDict[chosenSnack] = quantity;
+                        }
+                        Console.WriteLine($"\nAdded {quantity} x {chosenSnack.Name} to your order.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("\nPlease enter a valid quantity.");
+                    }
                 }
                 else
                 {
@@ -291,27 +426,138 @@ public class SnackMenu
             }
         }
 
-        Console.Clear();
-        Console.WriteLine("===== Your Final Order =====");
-
-        if (orderList.Count == 0)
+        bool orderConfirmed = false;
+        while (!orderConfirmed)
         {
-            Console.WriteLine("No snacks ordered.");
-        }
-        else
-        {
+            Console.Clear();
+            Console.WriteLine("===== Your Final Order =====");
             decimal finalTotal = 0;
-            foreach (var item in orderList)
+            if (orderDict.Count == 0)
             {
-                Console.WriteLine($"- {item.Name} (€{item.Price:F2})");
-                finalTotal += item.Price;
+                Console.WriteLine("No snacks ordered.");
             }
-            Console.WriteLine($"Total: €{finalTotal:F2}");
+            else
+            {
+                foreach (var order in orderDict)
+                {
+                    Console.WriteLine($"- {order.Value} x {order.Key.Name}");
+                    finalTotal += order.Key.Price * order.Value;
+                }
+                Console.WriteLine($"Total: €{finalTotal:F2}");
+            }
+
+            Console.WriteLine("\nWould you like to:");
+            Console.WriteLine("[1] Confirm your order");
+            Console.WriteLine("[2] Edit your order");
+
+            string editChoice = Console.ReadLine();
+            if (editChoice == "1")
+            {
+                orderConfirmed = true;
+            }
+            else if (editChoice == "2")
+            {
+                bool editingOrder = true;
+                while (editingOrder)
+                {
+                    Console.Clear();
+                    Console.WriteLine("Choose the number for which item you want to edit");
+                    Console.WriteLine("===== Your Order =====");
+                    int itemNumber = 1;
+                    foreach (var order in orderDict)
+                    {
+                        Console.WriteLine($"[{itemNumber}] {order.Value} x {order.Key.Name}");
+                        itemNumber++;
+                    }
+                    Console.WriteLine($"[{itemNumber}] Go back to final order.");
+
+                    string order_edit_choice = Console.ReadLine();
+
+                    if (order_edit_choice == (itemNumber.ToString()))
+                    {
+                        editingOrder = false;
+                        continue;
+                    }
+
+
+                    if (int.TryParse(order_edit_choice, out int selectedItem) && selectedItem > 0 && selectedItem <= orderDict.Count)
+                    {
+                        Console.Clear();
+                        var selectedOrderItem = orderDict.ElementAt(selectedItem - 1);//pick user pick -1 for 0 based index
+
+
+                        Console.WriteLine("[1] Change amount");
+                        Console.WriteLine("[2] Remove this item");
+                        Console.WriteLine("[3] Go back to final order");
+
+                        string user_edit_order_choice = Console.ReadLine();
+
+                        if (user_edit_order_choice == "1")
+                        {
+
+                            Console.WriteLine("Enter the new amount you want of this item:");
+                            string newQuantityInput = Console.ReadLine();
+                            if (int.TryParse(newQuantityInput, out int newQuantity) && newQuantity > 0)
+                            {
+                                orderDict[selectedOrderItem.Key] = newQuantity;
+                                Console.WriteLine($"Updated {selectedOrderItem.Key.Name} to {newQuantity}.");
+                            }
+                            else
+                            {
+                                Console.WriteLine("invalid amount");
+                            }
+                        }
+                        else if (user_edit_order_choice == "2")
+                        {
+                            orderDict.Remove(selectedOrderItem.Key);
+                            Console.WriteLine($"Removed {selectedOrderItem.Key.Name} from your order");
+                        }
+
+                        Console.Clear();
+                        Console.WriteLine("===== Your Final Order =====");
+                        decimal finalOrderTotal = 0;
+                        if (orderDict.Count == 0)
+                        {
+                            Console.WriteLine("No snacks ordered");
+                        }
+                        else
+                        {
+                            foreach (var order in orderDict)
+                            {
+                                Console.WriteLine($"- {order.Value} x {order.Key.Name}");
+                                finalOrderTotal += order.Key.Price * order.Value;
+                            }
+                            Console.WriteLine($"Total: €{finalOrderTotal:F2}");
+                        }
+
+                        Console.WriteLine("\nWould you like to:");
+                        Console.WriteLine("[1] Confirm your order");
+                        Console.WriteLine("[2] Edit your order");
+                        string finalChoice = Console.ReadLine();
+
+                        if (finalChoice == "1")
+                        {
+                            editingOrder = false;
+                        }
+                        else if (finalChoice == "2")
+                        {
+                            continue;
+                        }
+                    }
+                }
+
+            }
+            else
+            {
+                Console.WriteLine("Invalid choice. Please choose [1] to confirm or [2] to edit.");
+            }
         }
 
-        return orderList;
-        //this will just show the user their final order works the same as earlier
+        return orderDict;
     }
+
+
+
 
     public static void DeleteMenuItem(UserModel acc)
     {
@@ -374,6 +620,118 @@ public class SnackMenu
         Console.Clear();
         AdminSnackMenu(acc);
     }
+
+    public static void EditMenuItem(UserModel acc)
+    {
+        List<MenuItem> snacks = MenuItemLogic.GetAllMenuItems();
+
+        Console.Clear();
+        Console.WriteLine("===== Edit Snack Item =====\n");
+
+        for (int i = 0; i < snacks.Count; i++)
+        {
+            Console.WriteLine($"[{i + 1}] {snacks[i].Name} (€{snacks[i].Price:F2})");
+        }
+        Console.WriteLine($"[{snacks.Count + 1}] Go back to Snack Menu");
+
+        Console.WriteLine($"\nPlease select a snack to edit by entering its number or type [{snacks.Count + 1}] to go back.");
+        string input = Console.ReadLine();
+
+        if (int.TryParse(input, out int choice) && choice > 0 && choice <= snacks.Count)
+        {
+            MenuItem selectedSnack = snacks[choice - 1];
+
+            Console.Clear();
+            Console.WriteLine($"You are editing: {selectedSnack.Name} (€{selectedSnack.Price:F2})");
+
+            Console.WriteLine("\nWould you like to edit the name?");
+            Console.WriteLine("[1] Yes");
+            Console.WriteLine("[2] No");
+            string nameChoice = Console.ReadLine();
+            if (nameChoice == "1")
+            {
+                Console.WriteLine("Enter the new name:");
+                selectedSnack.Name = Console.ReadLine();
+            }
+
+            Console.WriteLine("\nWould you like to edit the price?");
+            Console.WriteLine("[1] Yes");
+            Console.WriteLine("[2] No");
+            string priceChoice = Console.ReadLine();
+            if (priceChoice == "1")
+            {
+                Console.WriteLine("Enter the new price:");
+                decimal newPrice;
+                while (!decimal.TryParse(Console.ReadLine(), out newPrice) || newPrice <= 0)
+                {
+                    Console.WriteLine("Invalid price. Please enter a number greater than 0:");
+                }
+                selectedSnack.Price = newPrice;
+            }
+
+            Console.WriteLine("\nWould you like to change the type?");
+            Console.WriteLine("[1] Yes");
+            Console.WriteLine("[2] No");
+            string typeChoice = Console.ReadLine();
+            if (typeChoice == "1")
+            {
+                Console.WriteLine("\nWhat type is this menu item?");
+                Console.WriteLine("[1] Drink");
+                Console.WriteLine("[2] Food");
+
+                bool type;
+                while (true)
+                {
+                    string typeSelection = Console.ReadLine();
+                    if (typeSelection == "1")
+                    {
+                        type = true;
+                        break;
+                    }
+                    else if (typeSelection == "2")
+                    {
+                        type = false;
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid choice. Please enter 1 for drink or 2 for food:");
+                    }
+                }
+
+                selectedSnack.Type = type;
+            }
+
+            MenuItemLogic.UpdateMenuItem(selectedSnack);
+
+            Console.WriteLine("\nMenu item updated successfully!");
+            Console.WriteLine("\nWould you like to edit another item?");
+            Console.WriteLine("[1] Yes");
+            Console.WriteLine("[2] Go back to Snack Menu");
+
+            string againChoice = Console.ReadLine();
+            if (againChoice == "1")
+            {
+                EditMenuItem(acc);
+            }
+            else if (againChoice == "2")
+            {
+                AdminSnackMenu(acc);
+            }
+        }
+        else if (choice == snacks.Count + 1)
+        {
+            Console.Clear();
+            AdminSnackMenu(acc);
+        }
+        else
+        {
+            Console.WriteLine("\nInvalid selection. Please try again.");
+            EditMenuItem(acc);
+        }
+    }
+
+
 
 
 
