@@ -50,7 +50,6 @@ class Location
         {
             Console.WriteLine("Enter the city name: ");
             inputCity = Console.ReadLine();
-            // checks are placed in the logic layer
         } while (!OnlyLetters(inputCity));
 
         string inputAddress;
@@ -58,7 +57,6 @@ class Location
         {
             Console.WriteLine("Enter the address like this 'Street 1': ");
             inputAddress = Console.ReadLine();
-            // checks are placed in the logic layer
         } while (!CheckAddress(inputAddress));
 
         string inputPostalCode;
@@ -66,7 +64,6 @@ class Location
         {
             Console.WriteLine("Enter the postal code like this '1111 AA': ");
             inputPostalCode = Console.ReadLine();
-            // checks are placed in the logic layer
         } while (!CheckPostalCode(inputPostalCode));
 
         LocationModel newLocation = new LocationModel(0, inputCity, inputAddress, inputPostalCode);
