@@ -54,6 +54,14 @@ class Voucher
                     {
                         Console.WriteLine("Please try again. A euro amount cannot be a negative number");
                     }
+                    else if (typeAnswer == 1 && amount == 0)
+                    {
+                        Console.WriteLine("Please try again. A percentage amount must be higher than 0%");
+                    }
+                    else if (typeAnswer == 2 && amount == 0)
+                    {
+                        Console.WriteLine("Please try again. A euro amount must be higher than €0");
+                    }
                     else
                     {
                         break;
