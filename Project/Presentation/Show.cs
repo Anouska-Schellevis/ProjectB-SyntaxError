@@ -8,7 +8,7 @@ class Show
     //     // else
     //     // { UserStart(); }
     // }
-    public static int day;
+    public static string dateofshow;
     static public void AdminStart(UserModel acc)
     {
         Console.Clear();
@@ -167,7 +167,7 @@ class Show
                     case 1:
                         if (movie != null)
                         {
-                            Dictionary<int, ShowModel> showtime = TimeOptions(movies[chosennumber], day);
+                            Dictionary<int, ShowModel> showtime = TimeOptions(movies[chosennumber], dateofshow);
                             Console.WriteLine("And at what time?");
                             foreach (var datetime in showtime)
                             {
@@ -253,7 +253,7 @@ class Show
             case 2:
                 if (movie != null)
                 {
-                    Dictionary<int, ShowModel> showtime = TimeOptions(movies[chosennumber], day);
+                    Dictionary<int, ShowModel> showtime = TimeOptions(movies[chosennumber], dateofshow);
                     Console.WriteLine("And at what time?");
                     foreach (var datetime in showtime)
                     {
@@ -760,9 +760,23 @@ class Show
         }
         newDate_time = $"{Date} {time}";
         ShowModel new_show = new ShowModel(1, newTheaterId, newMovieId, newDate_time);
-
         ShowLogic.WriteShow(new_show);
-
+        int answer = 0;
+        do
+        {
+            Console.WriteLine("Would you also like to plan this show at the same time for the next 6 days?");
+            Console.WriteLine("1. Yes\n2. No");
+            answer = Convert.ToInt32(Console.ReadLine());
+            Console.Clear();
+            if (answer != 1 && answer != 2)
+            {
+                Console.WriteLine("Invalid input try again.");
+            }
+        } while (answer != 1 && answer != 2);
+        if (answer == 1)
+        {
+            PlanForAWholeWeek(new_show);
+        }
     }
 
     static void ShowPrint()
@@ -781,19 +795,43 @@ class Show
     public static Dictionary<int, string> PrintOverviewMovie_Time()
     {
         Console.WriteLine("On what day would you like to watch a movie?");
-        Console.WriteLine("1. Monday\n2. Tuesday\n3. Wednesday\n4. Thursday");
-        Console.WriteLine("5. Friday\n6. Saturday\n7. Sunday");
+        // Console.WriteLine("1. Monday\n2. Tuesday\n3. Wednesday\n4. Thursday");
+        // Console.WriteLine("5. Friday\n6. Saturday\n7. Sunday");
+        DayOfWeek Currentday = DateTime.Now.DayOfWeek;
+        int currentDay = (int)Currentday;
+        int thursDay = (int)DayOfWeek.Thursday;
+        int daysTilNextThursday = (thursDay - currentDay + 7) % 7;
+
+        if (daysTilNextThursday == 0)
+        {
+            daysTilNextThursday = 7;
+        }
+        if (currentDay == 2)
+        {
+            daysTilNextThursday += 7;
+        }
+
+        for (int i = 0; i <= daysTilNextThursday; i++)
+        {
+            DayOfWeek printedday = DateTime.Now.AddDays(i).DayOfWeek;
+            string printeddate = DateTime.Now.AddDays(i).Date.ToString("yyyy-MM-dd");
+            Console.WriteLine($"{i + 1}. {printedday} {printeddate}");
+        }
+
         int Day;
         do
         {
             Day = Convert.ToInt32(Console.ReadLine());
-            if (Day < 0 || Day > 7)
+            if (Day <= 0 || Day > daysTilNextThursday)
             {
                 Console.WriteLine("Invalid Input.Try again.");
             }
-        } while (Day < 0 || Day > 7);
+        } while (Day <= 0 || Day > daysTilNextThursday);
         Console.Clear();
-        string DayToPrint = Convert.ToString((DayOfWeek)((Day) % 7));
+        string DayToPrint = Convert.ToString(DateTime.Now.AddDays(Day - 1).DayOfWeek);
+        string date = DateTime.Now.AddDays(Day - 1).Date.ToString("yyyy-MM-dd");
+
+        // string DayToPrint = Convert.ToString((DayOfWeek)((Day) % 7));
 
         Dictionary<int, string> movies = Movie.MakeMovieDict();
         List<ShowModel> shows = ShowLogic.GetAllShows();
@@ -805,10 +843,11 @@ class Show
 
         foreach (var show in shows)
         {
-            string object_day = show.Date;
-            DayOfWeek showDate = DateTime.Parse(object_day).DayOfWeek;
-            string dayofweek = Convert.ToString(showDate);
-            if (dayofweek == DayToPrint)
+            // string object_day = show.Date;
+            // DayOfWeek showDate = DateTime.Parse(object_day).DayOfWeek;
+            // string dayofweek = Convert.ToString(showDate);
+            string showdate = show.Date;
+            if (showdate.Contains(date))
             {
                 ShowsOnDay.Add(show);
             }
@@ -825,25 +864,23 @@ class Show
                 DateTime DateAndTime = DateTime.Parse(show.Date);
                 if (movie.Key == show.MovieId)
                 {
-                    if (CurrentDate < DateAndTime && DateAndTime < oneweekfromnow)
+                    if (moviePrinted == false)
                     {
-                        if (moviePrinted == false)
-                        {
-                            Console.WriteLine("movie title: " + movie.Value);
-                            Console.WriteLine("available show times:");
-                            moviePrinted = true;
-                            moviecount++;
-                            MovieCanWatch.Add(moviecount, movie.Value);
-                        }
-                        if (showTimes == "")
-                        {
-                            showTimes += $"{show.Date.Split(" ")[1]}";
-                        }
-                        else
-                        {
-                            showTimes += $" {show.Date.Split(" ")[1]}";
-                        }
+                        Console.WriteLine("movie title: " + movie.Value);
+                        Console.WriteLine("available show times:");
+                        moviePrinted = true;
+                        moviecount++;
+                        MovieCanWatch.Add(moviecount, movie.Value);
                     }
+                    if (showTimes == "")
+                    {
+                        showTimes += $"{show.Date.Split(" ")[1]}";
+                    }
+                    else
+                    {
+                        showTimes += $" {show.Date.Split(" ")[1]}";
+                    }
+                    
                 }
             }
             if (showTimes != "")
@@ -852,16 +889,12 @@ class Show
                 Console.WriteLine("-----------------------------------");
             }
         }
-        day = Day;
+        dateofshow = date;
         return MovieCanWatch;
     }
 
-    public static Dictionary<int, ShowModel> TimeOptions(string movie_name, int Day)
+    public static Dictionary<int, ShowModel> TimeOptions(string movie_name, string Datefortime)
     {
-        if (Day == 7)
-        {
-            Day = 0;
-        }
         Dictionary<int, string> movies = Movie.MakeMovieDict();
         Dictionary<int, ShowModel> ShowTime = new Dictionary<int, ShowModel>();
         int movie_id = 0;
@@ -875,18 +908,19 @@ class Show
         List<ShowModel> shows = new List<ShowModel>(ShowAccess.GetByMovieID(movie_id));
         int count = 1;
         DateTime CurrentDate = DateTime.Now;
-        DateTime oneweekfromnow = CurrentDate.AddDays(7).AddSeconds(-1);
-        DayOfWeek dayneeded = (DayOfWeek)Day;
-        int daystilldayneeded = ((int)dayneeded - (int)CurrentDate.DayOfWeek + 7) % 7;
-        DateTime DDay = CurrentDate.AddDays(daystilldayneeded);
+        // DateTime oneweekfromnow = CurrentDate.AddDays(7).AddSeconds(-1);
+        // DayOfWeek dayneeded = (DayOfWeek)Day;
+        // int daystilldayneeded = ((int)dayneeded - (int)CurrentDate.DayOfWeek + 7) % 7;
+        DateTime DDay = DateTime.Parse(Datefortime);;
         foreach (var show in shows)
         {
             string show_date = show.Date.Split(" ")[0];
-            string ddate = DDay.ToString("yyyy-MM-dd");
+            // string ddate = DDay.ToString("yyyy-MM-dd");
             DateTime showdate = DateTime.Parse(show.Date);
-            if (show_date == ddate)
+            if (show_date == Datefortime)
             {
-                if (showdate > CurrentDate && showdate < oneweekfromnow)
+                // int daystilldayneeded = (DDay - CurrentDate).Days;
+                if (showdate > CurrentDate)
                 {
                     ShowTime.Add(count, show);
                     count++;
@@ -932,10 +966,27 @@ class Show
     {
         Dictionary<int, string> movies = Movie.MakeMovieDict();
         List<ShowModel> shows = ShowLogic.GetAllShows();
-        for (int i = 0; i < 7; i++)
+
+        int currentDay = (int)DateTime.Now.DayOfWeek;
+        int thursDay = (int)DayOfWeek.Thursday;
+
+        int daysTilNextThursday = (thursDay - currentDay + 7) % 7;
+
+        if (daysTilNextThursday == 0)
+        {
+            daysTilNextThursday = 7;
+        }
+
+        if (currentDay == 2)
+        {
+            daysTilNextThursday += 7;
+        }
+
+        for (int i = 0; i <= daysTilNextThursday; i++)
         {
             bool printed = false;
-            DateTime CurrentDate = DateTime.Now;
+
+            DateTime CurrentDate = DateTime.Now; // datetime at this date and time
             DateTime Datetoprint = CurrentDate.AddDays(i);
             DayOfWeek CurrentDay = CurrentDate.DayOfWeek;
             DayOfWeek DayToPrint = (DayOfWeek)(((int)CurrentDay + i) % 7);
@@ -943,19 +994,19 @@ class Show
             Console.WriteLine($"{DayToPrint} {StringCurrentDate}");
             Console.WriteLine("________________________________________");
             Dictionary<string, string> movieTimes = new Dictionary<string, string>();
-            DateTime oneweekfromnow = CurrentDate.AddDays(7).AddSeconds(-1);
+            // DateTime oneweekfromnow = CurrentDate.AddDays(7).AddSeconds(-1);
             foreach (var show in shows)
             {
-                DateTime DateAndTime = DateTime.Parse(show.Date);
+                DateTime DateAndTime = DateTime.Parse(show.Date); //datetime of show.date
 
-                string StringDate = Convert.ToString(DateAndTime).Split(" ")[0];
+                string StringDate = Convert.ToString(DateAndTime).Split(" ")[0]; // just the date of show.date in string form
 
-                string StringTime = show.Date.Split(" ")[1]; ;
-                string StringCurrentTime = Convert.ToString(CurrentDate).Split(" ")[1];
+                string StringTime = show.Date.Split(" ")[1]; ; // just the time of show.date in string form
+                string StringCurrentTime = Convert.ToString(CurrentDate).Split(" ")[1]; // just the time of the current date in string form 
 
-                if (CurrentDate < DateAndTime && DateAndTime < oneweekfromnow)
+                if (CurrentDate < DateAndTime)
                 {
-                    if (DateAndTime.DayOfWeek == DayToPrint)
+                    if (StringCurrentDate == StringDate)
                     {
                         foreach (var movie in movies)
                         {
@@ -974,6 +1025,8 @@ class Show
                     }
                 }
             }
+
+
             foreach (var movietime in movieTimes)
             {
                 Console.WriteLine($"{movietime.Key} {movietime.Value}");
@@ -1055,14 +1108,7 @@ class Show
                 }
             }
         }
-        if (doublebooked == false)
-        {
-            return doublebooked;
-        }
-        else
-        {
-            return doublebooked;
-        }
+        return doublebooked;
     }
 
     public static List<string> AnotherSpotToday(int minutesNewShow, string date)
@@ -1104,5 +1150,27 @@ class Show
             StartOpenSpot = EndTime;
         }
         return AvailableStartTimes;
+    }
+
+    public static void PlanForAWholeWeek(ShowModel showtostartwith)
+    {
+        for (int i = 1; i < 7; i++)
+        {
+            DateTime newshowdate = DateTime.Parse(showtostartwith.Date).AddDays(i);
+            string newstringshowdate = newshowdate.ToString("yyyy-MM-dd HH:mm");
+            MoviesModel movie = MoviesLogic.GetById(Convert.ToInt32(showtostartwith.MovieId));
+            string time = showtostartwith.Date.Split(" ")[1];
+            string endtime = GetEndTime(time, Convert.ToInt32(movie.TimeInMinutes));
+            if (WithinOpeningHours(time, Convert.ToInt32(movie.TimeInMinutes)) && IsDoubleBooked(time, endtime, Convert.ToInt32(showtostartwith.TheatreId), newstringshowdate) == false)
+            {
+                ShowModel new_show = new ShowModel(1, showtostartwith.TheatreId, showtostartwith.MovieId, newstringshowdate);
+                ShowLogic.WriteShow(new_show);
+                Console.WriteLine("This show is added");
+            }
+            else
+            {
+                Console.WriteLine("his show is not added");
+            }
+        }
     }
 }
