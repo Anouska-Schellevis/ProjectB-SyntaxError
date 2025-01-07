@@ -15,7 +15,7 @@ public class UserNewAccountLogic
         string password;
         do
         {
-            Console.WriteLine("Please enter your password address:");
+            Console.WriteLine("Please enter your password");
             password = Console.ReadLine();
         } while (!IsValidPassword(password));
 

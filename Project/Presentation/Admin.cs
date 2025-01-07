@@ -6,7 +6,7 @@ class Admin
     {
         Console.Clear();
         Console.WriteLine("===== Admin Page =====");
-        Console.WriteLine($"Welcome back {currentUser.FirstName} {currentUser.LastName}\n");
+        Console.WriteLine($"Welcome {currentUser.FirstName} {currentUser.LastName}\n");
         while (true)
         {
             Console.WriteLine("[1]Show the menu of the movies");
