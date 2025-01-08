@@ -17,9 +17,14 @@ class Admin
             Console.WriteLine("[6]Show the movie snack menu");
             Console.WriteLine("[7]Show the menu of the locations");
             Console.WriteLine("[8]Logout");
-            int input = Convert.ToInt16(Console.ReadLine());
-
-            if (input == 1)
+            bool isNum = int.TryParse(Console.ReadLine(), out int input);
+            if (!isNum)
+            {
+                Console.WriteLine("Invalid input. Must be a number");
+                Thread.Sleep(2000);
+                Console.Clear();
+            }
+            else if (input == 1)
             {
                 Console.Clear();
                 Movie.Start(currentUser);
@@ -58,6 +63,12 @@ class Admin
             {
                 Console.Clear();
                 break;
+            }
+            else
+            {
+                Console.WriteLine("Invalid input. This option doesn't exist");
+                Thread.Sleep(2000);
+                Console.Clear();
             }
         }
     }
