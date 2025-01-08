@@ -10,8 +10,6 @@ public class UserNewAccountLogic
             email = Console.ReadLine();
         } while (!IsValidEmail(email));
 
-
-
         string password;
         do
         {

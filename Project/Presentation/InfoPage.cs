@@ -21,6 +21,12 @@ class InfoPage
                 Console.Clear();
                 Menu.Start();
             }
+            else
+            {
+                Console.WriteLine("Invalid input. Try again");
+                Thread.Sleep(2000);
+                Start();
+            }
         }
     }
 }
