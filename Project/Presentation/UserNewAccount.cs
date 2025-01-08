@@ -88,13 +88,16 @@ public class UserNewAccountLogic
     private static bool IsValidEmail(string email)
     {
         //check if email contains @ and that it contains a "." that . also has to come after the @ "email@gmail.com"
-        if (email.Contains("@") && email.IndexOf('.') > email.IndexOf('@'))
+        if (email.Contains("@"))
         {
-            return true;
-        }
-        else if (email.IndexOf('.') < email.IndexOf('@'))
-        {
-            Console.WriteLine("Invalid email. The \".\" has to come after the \"@\".");
+            for(int i = email.IndexOf('@'); i < email.Length; i++)
+            {
+                if (email[i] == '.')
+                {
+                    return true;
+                }
+            }
+            Console.WriteLine("Invalid email. Please enter a valid email address (e.g., email@gmail.com).");
             return false;
         }
         else
