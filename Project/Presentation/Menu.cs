@@ -12,8 +12,14 @@ static class Menu
         Console.WriteLine("[2]Create a new account");
         Console.WriteLine("[3]View our info page");
 
-        int input = Convert.ToInt16(Console.ReadLine());
-        if (input == 1)
+        bool isNum = int.TryParse(Console.ReadLine(), out int input);
+        if (!isNum)
+        {
+            Console.WriteLine("Invalid input. Must be a number");
+            Thread.Sleep(2000);
+            Start();
+        }
+        else if (input == 1)
         {
             UserLogin.Start();
         }
@@ -27,9 +33,9 @@ static class Menu
         }
         else
         {
-            Console.WriteLine("Invalid input");
+            Console.WriteLine("Invalid input. This option doesn't exist");
+            Thread.Sleep(2000);
             Start();
         }
-
     }
 }
