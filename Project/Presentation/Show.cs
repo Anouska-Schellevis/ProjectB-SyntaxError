@@ -12,11 +12,11 @@ class Show
     static public void AdminStart(UserModel acc)
     {
         Console.Clear();
-        Console.WriteLine("[1] Overview of all show");
-        Console.WriteLine("[2] Add Show");
-        Console.WriteLine("[3] Edit Show");
-        Console.WriteLine("[4] Delete Show");
-        Console.WriteLine("[5] Go back to admin menu");
+        Console.WriteLine("[1]Overview of all show");
+        Console.WriteLine("[2]Add show");
+        Console.WriteLine("[3]Edit show");
+        Console.WriteLine("[4]Delete show");
+        Console.WriteLine("[5]Go back to the menu");
         Console.WriteLine("What would you like to do?");
         int choice = Convert.ToInt32(Console.ReadLine());
         int idToDelete;
@@ -108,7 +108,7 @@ class Show
                 Console.Clear();
                 string chosenmovie = movies[chosennumber];
                 movie = Movie.MovieSearch(chosenmovie);
-                Console.WriteLine("Whould you like to:");
+                Console.WriteLine("What would you like to do?");
                 Console.WriteLine("[1]Get movie info");
                 Console.WriteLine("[2]Choose time");
                 Console.WriteLine("[3]Go back to week overview");

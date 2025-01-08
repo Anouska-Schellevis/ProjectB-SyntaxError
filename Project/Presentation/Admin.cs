@@ -57,6 +57,7 @@ class Admin
             else if (input == 8)
             {
                 Console.Clear();
+                Menu.Start();
                 break;
             }
         }

@@ -10,6 +10,7 @@ class Bar
         Console.WriteLine("[1]Overview of all reservations");
         Console.WriteLine("[2]Status");
         Console.WriteLine("[3]Overview of all users");
+        Console.WriteLine("[4]Go back to the menu");
 
         Console.WriteLine("What would you like to do?");
         int choice = Convert.ToInt32(Console.ReadLine());
@@ -24,6 +25,9 @@ class Bar
                 break;
             case 3:
                 AllUsersPrint();
+                break;
+            case 4:
+                Console.Clear();
                 break;
             default:
                 Console.WriteLine("No valid option selected. Please try again.");

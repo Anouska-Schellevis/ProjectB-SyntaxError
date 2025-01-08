@@ -117,9 +117,9 @@ public class SnackMenu
 
         Console.WriteLine("\nMenu item created successfully!");
         Console.WriteLine("Do you want to add another item or go back to the admin menu");
-        Console.WriteLine("[1] Add another menu item");
-        Console.WriteLine("[2] See current menu");
-        Console.WriteLine("[3] Go back to snack menu");
+        Console.WriteLine("[1]Add another menu item");
+        Console.WriteLine("[2]See current menu");
+        Console.WriteLine("[3]Go back to snack menu");
 
         string choice = Console.ReadLine();
         if (choice == "1")
@@ -135,7 +135,7 @@ public class SnackMenu
                 Console.Clear();
                 ShowSnackMenu();
 
-                Console.WriteLine("\n[1] Go back to admin menu");
+                Console.WriteLine("\n[1]Go back to admin menu");
                 string returnChoice = Console.ReadLine();
 
                 if (returnChoice == "1")
@@ -245,7 +245,7 @@ public class SnackMenu
                 }
 
                 string price = $"€{item.Price:F2}";
-                Console.WriteLine($"{number} {name}{spaces}{price}");
+                Console.WriteLine($"{number}{name}{spaces}{price}");
                 itemNumber++;
             }
         }
@@ -447,8 +447,8 @@ public class SnackMenu
             }
 
             Console.WriteLine("\nWould you like to:");
-            Console.WriteLine("[1] Confirm your order");
-            Console.WriteLine("[2] Edit your order");
+            Console.WriteLine("[1]Confirm your order");
+            Console.WriteLine("[2]Edit your order");
 
             string editChoice = Console.ReadLine();
             if (editChoice == "1")
@@ -469,7 +469,7 @@ public class SnackMenu
                         Console.WriteLine($"[{itemNumber}] {order.Value} x {order.Key.Name}");
                         itemNumber++;
                     }
-                    Console.WriteLine($"[{itemNumber}] Go back to final order.");
+                    Console.WriteLine($"[{itemNumber}]Go back to final order.");
 
                     string order_edit_choice = Console.ReadLine();
 
@@ -486,9 +486,9 @@ public class SnackMenu
                         var selectedOrderItem = orderDict.ElementAt(selectedItem - 1);//pick user pick -1 for 0 based index
 
 
-                        Console.WriteLine("[1] Change amount");
-                        Console.WriteLine("[2] Remove this item");
-                        Console.WriteLine("[3] Go back to final order");
+                        Console.WriteLine("[1]Change amount");
+                        Console.WriteLine("[2]Remove this item");
+                        Console.WriteLine("[3]Go back to final order");
 
                         string user_edit_order_choice = Console.ReadLine();
 
@@ -531,8 +531,8 @@ public class SnackMenu
                         }
 
                         Console.WriteLine("\nWould you like to:");
-                        Console.WriteLine("[1] Confirm your order");
-                        Console.WriteLine("[2] Edit your order");
+                        Console.WriteLine("[1]Confirm your order");
+                        Console.WriteLine("[2]Edit your order");
                         string finalChoice = Console.ReadLine();
 
                         if (finalChoice == "1")
@@ -572,9 +572,9 @@ public class SnackMenu
 
             for (int i = 0; i < snacks.Count; i++) //loop over all the snacks and print name and price
             {
-                Console.WriteLine($"[{i + 1}] {snacks[i].Name} (€{snacks[i].Price:F2})");
+                Console.WriteLine($"[{i + 1}]{snacks[i].Name} (€{snacks[i].Price:F2})");
             }
-            Console.WriteLine($"[{snacks.Count + 1}] Go back to Snack Menu"); //use same +1 menu as in selecting snacks in user
+            Console.WriteLine($"[{snacks.Count + 1}]Go back to Snack Menu"); //use same +1 menu as in selecting snacks in user
 
             Console.WriteLine($"\nPlease select a snack to delete by entering its number or type {snacks.Count + 1} to go back to the snack menu.");
             string input = Console.ReadLine();
@@ -582,8 +582,8 @@ public class SnackMenu
             if (int.TryParse(input, out int choice) && choice > 0 && choice <= snacks.Count) //tries to make string into int, and if the choice falls in our marges it contines
             {
                 Console.WriteLine($"\nAre you sure you want to delete {snacks[choice - 1].Name}? "); // ask for confirmation
-                Console.WriteLine("[1] Yes");
-                Console.WriteLine("[2] No");
+                Console.WriteLine("[1]Yes");
+                Console.WriteLine("[2]No");
 
                 string confirm = Console.ReadLine();
 
@@ -632,7 +632,7 @@ public class SnackMenu
         {
             Console.WriteLine($"[{i + 1}] {snacks[i].Name} (€{snacks[i].Price:F2})");
         }
-        Console.WriteLine($"[{snacks.Count + 1}] Go back to Snack Menu");
+        Console.WriteLine($"[{snacks.Count + 1}]Go back to Snack Menu");
 
         Console.WriteLine($"\nPlease select a snack to edit by entering its number or type [{snacks.Count + 1}] to go back.");
         string input = Console.ReadLine();
@@ -645,8 +645,8 @@ public class SnackMenu
             Console.WriteLine($"You are editing: {selectedSnack.Name} (€{selectedSnack.Price:F2})");
 
             Console.WriteLine("\nWould you like to edit the name?");
-            Console.WriteLine("[1] Yes");
-            Console.WriteLine("[2] No");
+            Console.WriteLine("[1]Yes");
+            Console.WriteLine("[2]No");
             string nameChoice = Console.ReadLine();
             if (nameChoice == "1")
             {
@@ -655,8 +655,8 @@ public class SnackMenu
             }
 
             Console.WriteLine("\nWould you like to edit the price?");
-            Console.WriteLine("[1] Yes");
-            Console.WriteLine("[2] No");
+            Console.WriteLine("[1]Yes");
+            Console.WriteLine("[2]No");
             string priceChoice = Console.ReadLine();
             if (priceChoice == "1")
             {
@@ -670,14 +670,14 @@ public class SnackMenu
             }
 
             Console.WriteLine("\nWould you like to change the type?");
-            Console.WriteLine("[1] Yes");
-            Console.WriteLine("[2] No");
+            Console.WriteLine("[1]Yes");
+            Console.WriteLine("[2]No");
             string typeChoice = Console.ReadLine();
             if (typeChoice == "1")
             {
                 Console.WriteLine("\nWhat type is this menu item?");
-                Console.WriteLine("[1] Drink");
-                Console.WriteLine("[2] Food");
+                Console.WriteLine("[1]Drink");
+                Console.WriteLine("[2]Food");
 
                 bool type;
                 while (true)
@@ -706,8 +706,8 @@ public class SnackMenu
 
             Console.WriteLine("\nMenu item updated successfully!");
             Console.WriteLine("\nWould you like to edit another item?");
-            Console.WriteLine("[1] Yes");
-            Console.WriteLine("[2] Go back to Snack Menu");
+            Console.WriteLine("[1]Yes");
+            Console.WriteLine("[2]Go back to Snack Menu");
 
             string againChoice = Console.ReadLine();
             if (againChoice == "1")

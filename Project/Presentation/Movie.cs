@@ -10,12 +10,12 @@ class Movie
     static public void Start(UserModel acc)
     {
         Console.WriteLine("[1]Overview of all movies");
-        Console.WriteLine("[2]Add Movie");
-        Console.WriteLine("[3]Edit Movie");
-        Console.WriteLine("[4]Delete Movie");
-        Console.WriteLine("[5]Search Movie by title");
+        Console.WriteLine("[2]Add movie");
+        Console.WriteLine("[3]Edit movie");
+        Console.WriteLine("[4]Delete movie");
+        Console.WriteLine("[5]Search movie by title");
         Console.WriteLine("[6]See most populair movie genre");
-        Console.WriteLine("[7]Go back to Start Menu");
+        Console.WriteLine("[7]Go back to the menu");
         Console.WriteLine("What would you like to do?");
         int choice = Convert.ToInt32(Console.ReadLine());
 
