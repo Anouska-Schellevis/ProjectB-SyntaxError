@@ -810,6 +810,10 @@ class Show
         {
             daysTilNextThursday += 7;
         }
+        if (currentDay == 3)
+        {
+            daysTilNextThursday += 6;
+        }
 
         for (int i = 0; i <= daysTilNextThursday; i++)
         {
@@ -822,11 +826,11 @@ class Show
         do
         {
             Day = Convert.ToInt32(Console.ReadLine());
-            if (Day <= 0 || Day > daysTilNextThursday)
+            if (Day <= 0 || Day >= (daysTilNextThursday + 1))
             {
                 Console.WriteLine("Invalid Input.Try again.");
             }
-        } while (Day <= 0 || Day > daysTilNextThursday);
+        } while (Day <= 0 || Day > (daysTilNextThursday + 1));
         Console.Clear();
         string DayToPrint = Convert.ToString(DateTime.Now.AddDays(Day - 1).DayOfWeek);
         string date = DateTime.Now.AddDays(Day - 1).Date.ToString("yyyy-MM-dd");
@@ -880,7 +884,7 @@ class Show
                     {
                         showTimes += $" {show.Date.Split(" ")[1]}";
                     }
-                    
+
                 }
             }
             if (showTimes != "")
@@ -911,7 +915,7 @@ class Show
         // DateTime oneweekfromnow = CurrentDate.AddDays(7).AddSeconds(-1);
         // DayOfWeek dayneeded = (DayOfWeek)Day;
         // int daystilldayneeded = ((int)dayneeded - (int)CurrentDate.DayOfWeek + 7) % 7;
-        DateTime DDay = DateTime.Parse(Datefortime);;
+        DateTime DDay = DateTime.Parse(Datefortime); ;
         foreach (var show in shows)
         {
             string show_date = show.Date.Split(" ")[0];
@@ -980,6 +984,11 @@ class Show
         if (currentDay == 2)
         {
             daysTilNextThursday += 7;
+        }
+        
+        if (currentDay == 3)
+        {
+            daysTilNextThursday += 6;
         }
 
         for (int i = 0; i <= daysTilNextThursday; i++)
