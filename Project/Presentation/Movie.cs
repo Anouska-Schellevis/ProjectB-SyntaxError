@@ -9,13 +9,13 @@ class Movie
     // }
     static public void Start(UserModel acc)
     {
-        Console.WriteLine("[1] Overview of all movies");
-        Console.WriteLine("[2] Add Movie");
-        Console.WriteLine("[3] Edit Movie");
-        Console.WriteLine("[4] Delete Movie");
-        Console.WriteLine("[5] Search Movie by title");
-        Console.WriteLine("[6] See most populair movie genre");
-        Console.WriteLine("[7] Go back to Start Menu");
+        Console.WriteLine("[1]Overview of all movies");
+        Console.WriteLine("[2]Add movie");
+        Console.WriteLine("[3]Edit movie");
+        Console.WriteLine("[4]Delete movie");
+        Console.WriteLine("[5]Search movie by title");
+        Console.WriteLine("[6]See most populair movie genre");
+        Console.WriteLine("[7]Go back to the menu");
         Console.WriteLine("What would you like to do?");
         int choice = Convert.ToInt32(Console.ReadLine());
 
@@ -185,86 +185,86 @@ class Movie
         string newReleaseDate = "";
 
         Console.WriteLine("Would you like to change the time in minutes?");
-        Console.WriteLine("1. yes\n2. no");
+        Console.WriteLine("[1]Yes\n[2]No");
         int question1 = Convert.ToInt32(Console.ReadLine());
         Console.Clear();
         while (question1 != 1 && question1 != 2)
         {
             Console.WriteLine("Invalid input. Try again");
             Console.WriteLine("Would you like to change the time in minutes?");
-            Console.WriteLine("1. yes\n2. no");
+            Console.WriteLine("[1]Yes\n[2]No");
             question1 = Convert.ToInt32(Console.ReadLine());
             Console.Clear();
         }
         if (question1 == 1)
         {
-            Console.WriteLine("Enter new time in minutes for this movie.");
+            Console.WriteLine("Enter a new time in minutes for this movie.");
             newTimeInMinutes = Convert.ToInt32(Console.ReadLine());
         }
 
         Console.WriteLine("Would you like to change the genre?");
-        Console.WriteLine("1. yes\n2. no");
+        Console.WriteLine("[1]Yes\n[2]No");
         int question2 = Convert.ToInt32(Console.ReadLine());
         Console.Clear();
         while (question2 != 1 && question2 != 2)
         {
             Console.WriteLine("Invalid input. Try again");
             Console.WriteLine("Would you like to change the genre?");
-            Console.WriteLine("1. yes\n2. no");
+            Console.WriteLine("[1]Yes\n[2]No");
             question2 = Convert.ToInt32(Console.ReadLine());
             Console.Clear();
         }
         if (question2 == 1)
         {
-            Console.WriteLine("Enter new genre for this movie.");
+            Console.WriteLine("Enter a new genre for this movie.");
             newGenre = Console.ReadLine();
         }
 
         Console.WriteLine("Would you like to change the description?");
-        Console.WriteLine("1. yes\n2. no");
+        Console.WriteLine("[1]Yes\n[2]No");
         int question3 = Convert.ToInt32(Console.ReadLine());
         Console.Clear();
         while (question3 != 1 && question3 != 2)
         {
             Console.WriteLine("Invalid input. Try again");
             Console.WriteLine("Would you like to change the description?");
-            Console.WriteLine("1. yes\n2. no");
+            Console.WriteLine("[1]Yes\n[2]No");
             question3 = Convert.ToInt32(Console.ReadLine());
             Console.Clear();
         }
         if (question3 == 1)
         {
-            Console.WriteLine("Enter new description for this movie.");
+            Console.WriteLine("Enter a new description for this movie.");
             newDescription = Console.ReadLine();
         }
 
         Console.WriteLine("Would you like to change the title?");
-        Console.WriteLine("1. yes\n2. no");
+        Console.WriteLine("[1]Yes\n[2]No");
         int question4 = Convert.ToInt32(Console.ReadLine());
         Console.Clear();
         while (question4 != 1 && question4 != 2)
         {
             Console.WriteLine("Invalid input. Try again");
             Console.WriteLine("Would you like to change the title?");
-            Console.WriteLine("1. yes\n2. no");
+            Console.WriteLine("[1]Yes\n[2]No");
             question4 = Convert.ToInt32(Console.ReadLine());
             Console.Clear();
         }
         if (question4 == 1)
         {
-            Console.WriteLine("Enter new title for this movie.");
+            Console.WriteLine("Enter a new title for this movie.");
             newTitle = Console.ReadLine();
         }
 
         Console.WriteLine("Would you like to change the director?");
-        Console.WriteLine("1. yes\n2. no");
+        Console.WriteLine("[1]Yes\n[2]No");
         int question5 = Convert.ToInt32(Console.ReadLine());
         Console.Clear();
         while (question5 != 1 && question5 != 2)
         {
             Console.WriteLine("Invalid input. Try again");
             Console.WriteLine("Would you like to change the director?");
-            Console.WriteLine("1. yes\n2. no");
+            Console.WriteLine("[1]Yes\n[2]No");
             question5 = Convert.ToInt32(Console.ReadLine());
             Console.Clear();
         }
@@ -275,14 +275,14 @@ class Movie
         }
 
         Console.WriteLine("Would you like to change the release date?");
-        Console.WriteLine("1. yes\n2. no");
+        Console.WriteLine("[1]Yes\n[2]No");
         int question6 = Convert.ToInt32(Console.ReadLine());
         Console.Clear();
         while (question6 != 1 && question6 != 2)
         {
             Console.WriteLine("Invalid input. Try again");
             Console.WriteLine("Would you like to change the release date?");
-            Console.WriteLine("1. yes\n2. no");
+            Console.WriteLine("[1]Yes\n[2]No");
             question6 = Convert.ToInt32(Console.ReadLine());
             Console.Clear();
         }
@@ -290,7 +290,7 @@ class Movie
         {
             do
             {
-                Console.WriteLine("Enter new release_date for this movie. '%Y-%M-%D' format. (Example: 2024-12-11, 2025-01-01)");
+                Console.WriteLine("Enter new release_date for this movie. 'YYYY-MM-DD' format. (Example: 2024-12-11, 2025-01-01)");
                 newReleaseDate = Console.ReadLine();
                 Console.Clear();
                 if (DateTime.TryParse(newReleaseDate, out _) == false)
@@ -337,19 +337,27 @@ class Movie
     {
         string newReleaseDate = "";
 
-        Console.WriteLine("Enter new time in minutes for this movie.");
-        int newTimeInMinutes = Convert.ToInt32(Console.ReadLine());
-        Console.WriteLine("Enter new genre for this movie.");
-        string newGenre = Console.ReadLine();
-        Console.WriteLine("Enter new description for this movie.");
-        string newDescription = Console.ReadLine();
-        Console.WriteLine("Enter new title for this movie.");
+        Console.WriteLine("Enter a new title for this movie.");
         string newTitle = Console.ReadLine();
-        Console.WriteLine("Enter new director for this movie.");
+
+        Console.WriteLine("Enter a new description for this movie.");
+        string newDescription = Console.ReadLine();
+
+        int newTimeInMinutes;
+        do
+        {
+            Console.WriteLine("Enter a new time in minutes for this movie.");
+            newTimeInMinutes = Convert.ToInt32(Console.ReadLine());
+        } while (newTimeInMinutes <= 0);
+
+        Console.WriteLine("Enter a new genre for this movie.");
+        string newGenre = Console.ReadLine();
+
+        Console.WriteLine("Enter a new director for this movie.");
         string newDirector = Console.ReadLine();
         do
         {
-            Console.WriteLine("Enter new release_date for this movie. '%Y-%M-%D' format. (Example: 2024-12-11, 2025-01-01)");
+            Console.WriteLine("Enter a new release_date for this movie. 'YYYY-MM-DD' format. (Example: 2024-12-11, 2025-01-01)");
             newReleaseDate = Console.ReadLine();
             Console.Clear();
             if (DateTime.TryParse(newReleaseDate, out _) == false)
@@ -488,8 +496,8 @@ Description: {movie.Description}
             genreNumber++;
         }
 
-        Console.WriteLine("\n[1] Go back to movie menu");
-        Console.WriteLine("[2] Exit to admin menu");
+        Console.WriteLine("\n[1]Go back to movie menu");
+        Console.WriteLine("[2]Exit to admin menu");
 
         while (true)
         {
