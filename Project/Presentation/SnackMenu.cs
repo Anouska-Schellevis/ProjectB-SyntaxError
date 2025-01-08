@@ -6,11 +6,11 @@ public class SnackMenu
         while (true)
         {
             Console.Clear();
-            Console.WriteLine("[1] See current snack menu");
-            Console.WriteLine("[2] Add menu item");
-            Console.WriteLine("[3] Delete menu item");
-            Console.WriteLine("[4] Edit menu item");
-            Console.WriteLine("[5] Go back to Admin page");
+            Console.WriteLine("[1]See current snack menu");
+            Console.WriteLine("[2]Add menu item");
+            Console.WriteLine("[3]Delete menu item");
+            Console.WriteLine("[4]Edit menu item");
+            Console.WriteLine("[5]Go back to Admin page");
 
             string choice = Console.ReadLine();
             if (choice == "1")
@@ -21,7 +21,7 @@ public class SnackMenu
                     Console.Clear();
                     ShowSnackMenu();
 
-                    Console.WriteLine("\n[1] Go back to admin snack menu");
+                    Console.WriteLine("\n[1]Go back to admin snack menu");
                     string returnChoice = Console.ReadLine();
 
                     if (returnChoice == "1")
@@ -89,8 +89,8 @@ public class SnackMenu
         }
 
         Console.WriteLine("\nWhat type is this menu item?");
-        Console.WriteLine("[1] Drink");
-        Console.WriteLine("[2] Food");
+        Console.WriteLine("[1]Drink");
+        Console.WriteLine("[2]Food");
 
         bool type;
         while (true)

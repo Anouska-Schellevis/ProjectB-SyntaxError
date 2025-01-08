@@ -7,9 +7,9 @@ class Location
         Console.Clear();
         while (true)
         {
-            Console.WriteLine("[1] Overview of all locations");
-            Console.WriteLine("[2] Add Location");
-            Console.WriteLine("[3] Go back");
+            Console.WriteLine("[1]Overview of all locations");
+            Console.WriteLine("[2]Add Location");
+            Console.WriteLine("[3]Go back");
             Console.WriteLine("What would you like to do?");
 
             int input = Convert.ToInt16(Console.ReadLine());

@@ -7,13 +7,13 @@ class Bar
     }
     static public void Start()
     {
-        Console.WriteLine("[1] Overview of all reservations");
-        Console.WriteLine("[2] Status");
-        Console.WriteLine("[3] Overview of all users");
+        Console.WriteLine("[1]Overview of all reservations");
+        Console.WriteLine("[2]Status");
+        Console.WriteLine("[3]Overview of all users");
 
         Console.WriteLine("What would you like to do?");
         int choice = Convert.ToInt32(Console.ReadLine());
-        
+
         switch (choice)
         {
             case 1:
@@ -30,7 +30,7 @@ class Bar
                 Start();
                 break;
         }
-        
+
     }
 
     static public void AllReservationsPrint()
@@ -82,7 +82,7 @@ class Bar
 
         const int numberOfSeats = 40;
         int currentNumOfBarPeople = 0;
-        
+
         foreach (ReservationModel reservation in reservations)
         {
             ShowModel show = ShowLogic.GetByID(reservation.ShowId);
@@ -115,7 +115,7 @@ class Bar
     {
 
         var usersByTime = MakeUserBarDict();
-        
+
         if (usersByTime.Count > 0)
         {
             Console.WriteLine("-----------------------------------------------");
@@ -165,7 +165,7 @@ class Bar
         UserLogic userLogic = new UserLogic();
         return MakeBarDict(reservation => userLogic.GetById(reservation.UserId));
     }
-    
+
     private static Dictionary<DateTime, List<T>> MakeBarDict<T>(Func<ReservationModel, T> selector)
     {
         List<ReservationModel> reservations = ReservationLogic.GetBarReservations();
