@@ -87,22 +87,19 @@ public class UserNewAccountLogic
 
     private static bool IsValidEmail(string email)
     {
-        //check if email contains @ and that it contains a "." that . also has to come after the @ "email@gmail.com"
-        if (email.Contains("@") && email.IndexOf('.') > email.IndexOf('@'))
+        //check if the email has s @ and ends with the valid domains
+        if (email.Contains("@") &&
+            (email.EndsWith(".com") || email.EndsWith(".nl") || email.EndsWith(".net")))
         {
             return true;
         }
-        else if (email.IndexOf('.') < email.IndexOf('@'))
-        {
-            Console.WriteLine("Invalid email. The \".\" has to come after the \"@\".");
-            return false;
-        }
         else
         {
-            Console.WriteLine("Invalid email. Please enter a valid email address (e.g., email@gmail.com).");
+            Console.WriteLine("Invalid email. try another format");
             return false;
         }
     }
+
 
     //check if user password is atleast 5 char long and has a capital letter and lower letter in it.
     private static bool IsValidPassword(string password)

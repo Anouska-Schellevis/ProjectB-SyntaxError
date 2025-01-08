@@ -29,7 +29,7 @@ public class Reservation
 
             if (reservedMovie != null)
             {
-                Console.WriteLine($"Reservation [{reservationNumber}]");
+                Console.WriteLine($"[{reservationNumber}]");
                 Console.WriteLine($"    Movie: {reservedMovie.Title}, Show Date: {reservedShow.Date}, Bar reservation: {(group.First().Bar ? "Yes" : "No")}");
 
                 foreach (var reservation in group)
