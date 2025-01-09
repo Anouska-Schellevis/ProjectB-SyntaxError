@@ -181,6 +181,17 @@ public abstract class TheaterBase
                 if (parts.Length != 2 || !int.TryParse(parts[0], out int row) || !int.TryParse(parts[1], out int col))
                 {
                     Console.WriteLine("Invalid input format.");
+                    Thread.Sleep(2000);
+                    /*
+                    The cursor goes back to the position of the error message, which is replaced after 2 seconds with an empty string.
+                    */
+                    Console.SetCursorPosition(0, Console.CursorTop - 1);
+                    Console.Write(new string(' ', Console.WindowWidth));
+                    Console.SetCursorPosition(0, Console.CursorTop - 1);
+                    Console.Write(new string(' ', Console.WindowWidth));
+                    Console.SetCursorPosition(0, Console.CursorTop - 1);
+                    Console.Write(new string(' ', Console.WindowWidth));
+                    Console.SetCursorPosition(0, Console.CursorTop - 1);
                     continue;
                 }
 
@@ -190,6 +201,17 @@ public abstract class TheaterBase
                 if (row < 0 || row >= seats.GetLength(0) || col < 0 || col >= seats.GetLength(1))
                 {
                     Console.WriteLine("Invalid seat selection.");
+                    Thread.Sleep(2000);
+                    /*
+                    The cursor goes back to the position of the error message, which is replaced after 2 seconds with an empty string.
+                    */
+                    Console.SetCursorPosition(0, Console.CursorTop - 1);
+                    Console.Write(new string(' ', Console.WindowWidth));
+                    Console.SetCursorPosition(0, Console.CursorTop - 1);
+                    Console.Write(new string(' ', Console.WindowWidth));
+                    Console.SetCursorPosition(0, Console.CursorTop - 1);
+                    Console.Write(new string(' ', Console.WindowWidth));
+                    Console.SetCursorPosition(0, Console.CursorTop - 1);
                     continue;
                 }
 
@@ -202,11 +224,33 @@ public abstract class TheaterBase
                     if (countAvailableSeats[row, col] == how_many_people + 1)
                     {
                         Console.WriteLine("Please choose another row. Make sure no empty seat is left unoccupied.");
+                        Thread.Sleep(2000);
+                        /*
+                        The cursor goes back to the position of the error message, which is replaced after 2 seconds with an empty string.
+                        */
+                        Console.SetCursorPosition(0, Console.CursorTop - 1);
+                        Console.Write(new string(' ', Console.WindowWidth));
+                        Console.SetCursorPosition(0, Console.CursorTop - 1);
+                        Console.Write(new string(' ', Console.WindowWidth));
+                        Console.SetCursorPosition(0, Console.CursorTop - 1);
+                        Console.Write(new string(' ', Console.WindowWidth));
+                        Console.SetCursorPosition(0, Console.CursorTop - 1);
                         continue;
                     }
                     else if (i == 0 && countAvailableSeats[row, col] < how_many_people) // Not enough consecutive empty seats
                     {
                         Console.WriteLine("There aren't enough seats here for everyone.");
+                        Thread.Sleep(2000);
+                        /*
+                        The cursor goes back to the position of the error message, which is replaced after 2 seconds with an empty string.
+                        */
+                        Console.SetCursorPosition(0, Console.CursorTop - 1);
+                        Console.Write(new string(' ', Console.WindowWidth));
+                        Console.SetCursorPosition(0, Console.CursorTop - 1);
+                        Console.Write(new string(' ', Console.WindowWidth));
+                        Console.SetCursorPosition(0, Console.CursorTop - 1);
+                        Console.Write(new string(' ', Console.WindowWidth));
+                        Console.SetCursorPosition(0, Console.CursorTop - 1);
                         continue;
                     }
                     else if (how_many_people > 1) // For groups
@@ -232,6 +276,19 @@ public abstract class TheaterBase
                             {
                                 Console.WriteLine("Sorry, you can't take this seat");
                                 Console.WriteLine("Your seat may only be located on the left or right edge of the row");
+                                Thread.Sleep(2000);
+                                /*
+                                The cursor goes back to the position of the error message, which is replaced after 2 seconds with an empty string.
+                                */
+                                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                                Console.Write(new string(' ', Console.WindowWidth));
+                                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                                Console.Write(new string(' ', Console.WindowWidth));
+                                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                                Console.Write(new string(' ', Console.WindowWidth));
+                                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                                Console.Write(new string(' ', Console.WindowWidth));
+                                Console.SetCursorPosition(0, Console.CursorTop - 1);
                                 continue;
                             }
                         }
@@ -239,6 +296,19 @@ public abstract class TheaterBase
                         {
                             Console.WriteLine("Sorry, you can't take this seat.");
                             Console.WriteLine("Make sure all selected seats are next to each other.");
+                            Thread.Sleep(2000);
+                            /*
+                            The cursor goes back to the position of the error message, which is replaced after 2 seconds with an empty string.
+                            */
+                            Console.SetCursorPosition(0, Console.CursorTop - 1);
+                            Console.Write(new string(' ', Console.WindowWidth));
+                            Console.SetCursorPosition(0, Console.CursorTop - 1);
+                            Console.Write(new string(' ', Console.WindowWidth));
+                            Console.SetCursorPosition(0, Console.CursorTop - 1);
+                            Console.Write(new string(' ', Console.WindowWidth));
+                            Console.SetCursorPosition(0, Console.CursorTop - 1);
+                            Console.Write(new string(' ', Console.WindowWidth));
+                            Console.SetCursorPosition(0, Console.CursorTop - 1);
                             continue;
                         }
                         /*
@@ -252,6 +322,19 @@ public abstract class TheaterBase
                             {
                                 Console.WriteLine("Sorry, you can't take this seat.");
                                 Console.WriteLine("Make sure there is no empty seat between you and anyone else.");
+                                Thread.Sleep(2000);
+                                /*
+                                The cursor goes back to the position of the error message, which is replaced after 2 seconds with an empty string.
+                                */
+                                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                                Console.Write(new string(' ', Console.WindowWidth));
+                                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                                Console.Write(new string(' ', Console.WindowWidth));
+                                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                                Console.Write(new string(' ', Console.WindowWidth));
+                                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                                Console.Write(new string(' ', Console.WindowWidth));
+                                Console.SetCursorPosition(0, Console.CursorTop - 1);
                                 continue;
                             }
                         }
@@ -262,6 +345,19 @@ public abstract class TheaterBase
                         {
                             Console.WriteLine("Sorry, you can't take this seat.");
                             Console.WriteLine("Make sure there is no empty seat between you and anyone else.");
+                            Thread.Sleep(2000);
+                            /*
+                            The cursor goes back to the position of the error message, which is replaced after 2 seconds with an empty string.
+                            */
+                            Console.SetCursorPosition(0, Console.CursorTop - 1);
+                            Console.Write(new string(' ', Console.WindowWidth));
+                            Console.SetCursorPosition(0, Console.CursorTop - 1);
+                            Console.Write(new string(' ', Console.WindowWidth));
+                            Console.SetCursorPosition(0, Console.CursorTop - 1);
+                            Console.Write(new string(' ', Console.WindowWidth));
+                            Console.SetCursorPosition(0, Console.CursorTop - 1);
+                            Console.Write(new string(' ', Console.WindowWidth));
+                            Console.SetCursorPosition(0, Console.CursorTop - 1);                            
                             continue;
                         }
                     }
@@ -291,6 +387,17 @@ public abstract class TheaterBase
                     else
                     {
                         Console.WriteLine("Invalid chair type. Please select a valid seat.");
+                        Thread.Sleep(2000);
+                        /*
+                        The cursor goes back to the position of the error message, which is replaced after 2 seconds with an empty string.
+                        */
+                        Console.SetCursorPosition(0, Console.CursorTop - 1);
+                        Console.Write(new string(' ', Console.WindowWidth));
+                        Console.SetCursorPosition(0, Console.CursorTop - 1);
+                        Console.Write(new string(' ', Console.WindowWidth));
+                        Console.SetCursorPosition(0, Console.CursorTop - 1);
+                        Console.Write(new string(' ', Console.WindowWidth));
+                        Console.SetCursorPosition(0, Console.CursorTop - 1);
                         continue;
                     }
 
@@ -317,10 +424,32 @@ public abstract class TheaterBase
                 else if (seats[row, col] == 'C')
                 {
                     Console.WriteLine("Sorry, that seat is already taken.");
+                    Thread.Sleep(2000);
+                    /*
+                    The cursor goes back to the position of the error message, which is replaced after 2 seconds with an empty string.
+                    */
+                    Console.SetCursorPosition(0, Console.CursorTop - 1);
+                    Console.Write(new string(' ', Console.WindowWidth));
+                    Console.SetCursorPosition(0, Console.CursorTop - 1);
+                    Console.Write(new string(' ', Console.WindowWidth));
+                    Console.SetCursorPosition(0, Console.CursorTop - 1);
+                    Console.Write(new string(' ', Console.WindowWidth));
+                    Console.SetCursorPosition(0, Console.CursorTop - 1);
                 }
                 else
                 {
                     Console.WriteLine("Sorry, that seat is not available.");
+                    Thread.Sleep(2000);
+                    /*
+                    The cursor goes back to the position of the error message, which is replaced after 2 seconds with an empty string.
+                    */
+                    Console.SetCursorPosition(0, Console.CursorTop - 1);
+                    Console.Write(new string(' ', Console.WindowWidth));
+                    Console.SetCursorPosition(0, Console.CursorTop - 1);
+                    Console.Write(new string(' ', Console.WindowWidth));
+                    Console.SetCursorPosition(0, Console.CursorTop - 1);
+                    Console.Write(new string(' ', Console.WindowWidth));
+                    Console.SetCursorPosition(0, Console.CursorTop - 1);
                 }
             } while (true);
         }
@@ -328,11 +457,14 @@ public abstract class TheaterBase
         if (acc != null)
         {
             Console.WriteLine("Making reservation...");
+            Thread.Sleep(2000);
+            Console.Clear();
             MakeReservation(selected_seats, acc, showId);
         }
         else
         {
             Console.WriteLine("No user logged in, cannot make a reservation.");
+            Thread.Sleep(2000);
         }
     }
 
@@ -483,10 +615,13 @@ public abstract class TheaterBase
                     VoucherLogic.UpdateVoucher(voucher); // Changes to the voucher are written to the database
 
                     Console.WriteLine("Your voucher is succesfully applied!");
+                    Thread.Sleep(2000);
                     break;
                 } while (true);
             }
         }
+
+        Console.Clear();
 
         long userId = acc.Id;
         Console.WriteLine("Do you want bar service? \n[1] Yes \n[2] No");
