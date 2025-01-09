@@ -13,7 +13,7 @@ public class UserNewAccountLogic
         string password;
         do
         {
-            Console.WriteLine("Please enter your password:");
+            Console.WriteLine("Create password:");
             password = Console.ReadLine();
         } while (!IsValidPassword(password));
 

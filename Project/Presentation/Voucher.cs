@@ -6,7 +6,7 @@ class Voucher
         {
             Console.WriteLine("[1]Add a new voucher");
             Console.WriteLine("[2]Show all the vouchers");
-            Console.WriteLine("[3]Go back");
+            Console.WriteLine("[3]Go back to the menu");
             int input = Convert.ToInt16(Console.ReadLine());
 
             if (input == 1)
@@ -22,7 +22,7 @@ class Voucher
                 do
                 {
                     // Ask the admin what kind of voucher he would like to make
-                    Console.WriteLine("What kind of voucher would you like to add?\n[1]percentage\n[2]amount of money");
+                    Console.WriteLine("What kind of voucher would you like to add?\n[1]Percentage\n[2]Amount of money");
                     typeAnswer = Convert.ToInt16(Console.ReadLine());
                 } while (typeAnswer != 1 && typeAnswer != 2);
 
@@ -122,13 +122,12 @@ class Voucher
                         }
                     }
                 }
-                Console.WriteLine($"Generated code {code}");
 
                 // A new voucher will be made and send to the create voucher function
                 VoucherModel newVoucher = new VoucherModel(0, code, description, amount, type, enterDate, null);
                 VoucherLogic.CreateVoucher(newVoucher);
 
-                Console.WriteLine("Done!!");
+                Console.WriteLine("The voucher is created!");
 
             }
             else if (input == 2)
@@ -170,7 +169,7 @@ class Voucher
         bool menuChoice = false;
         while (!menuChoice)
         {
-            Console.WriteLine("Would you like to go back to the user menu?\n[1] Yes\n[2] No");
+            Console.WriteLine("Would you like to go back to the user menu?\n[1]Yes\n[2]No");
             bool isCorrectFormat = int.TryParse(Console.ReadLine(), out int choice);
             if (!isCorrectFormat)
             {

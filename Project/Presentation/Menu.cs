@@ -6,11 +6,14 @@ static class Menu
     //You could edit this to show different menus depending on the user's role
     static public void Start()
     {
-        Console.Clear();
-        Console.WriteLine("Welcome to the cinema. You can choose the following options.\n");
-        Console.WriteLine("[1]Login");
-        Console.WriteLine("[2]Create a new account");
-        Console.WriteLine("[3]View our info page");
+        while (true)
+        {
+            Console.Clear();
+            Console.WriteLine("Welcome to the cinema. You can choose the following options.\n");
+            Console.WriteLine("[1]Login");
+            Console.WriteLine("[2]Create a new account");
+            Console.WriteLine("[3]View our info page");
+            Console.WriteLine("[4]Stop the program");
 
         bool isNum = int.TryParse(Console.ReadLine(), out int input);
         if (!isNum)
