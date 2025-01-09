@@ -303,6 +303,11 @@ class Voucher
 
         int count = 1;
 
+        if (vouchers.Count == 0)
+        {
+            Console.WriteLine("Sorry, you have currently no vouchers.");
+        }
+
         foreach (VoucherModel voucher in vouchers)
         {
             Console.WriteLine($"[{count}]");
