@@ -41,6 +41,7 @@ class Admin
             else if (input == 4)
             {
                 TrackMoney();
+                Thread.Sleep(2000);
             }
             else if (input == 5)
             {
