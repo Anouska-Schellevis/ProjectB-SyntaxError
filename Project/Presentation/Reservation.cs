@@ -107,6 +107,22 @@ public class Reservation
             else
             {
                 Console.WriteLine("Invalid option, please try again.");
+                Thread.Sleep(2000);
+
+                /*
+                The cursor goes back to the position of the option message, which is replaced after 2 seconds with an empty string.
+                */
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                Console.Write(new string(' ', Console.WindowWidth));
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                Console.Write(new string(' ', Console.WindowWidth));
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                Console.Write(new string(' ', Console.WindowWidth));
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                Console.Write(new string(' ', Console.WindowWidth));
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                Console.Write(new string(' ', Console.WindowWidth));
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
             }
         }
     }
@@ -127,6 +143,16 @@ public class Reservation
                 if (userInput < 1 || userInput > userReservations.Count)
                 {
                     Console.WriteLine($"Invalid reservation number. Please choose a number between 1 and {userReservations.Count}.");
+                    Thread.Sleep(2000);
+
+                    /*
+                    The cursor goes back to the position of the option message, which is replaced after 2 seconds with an empty string.
+                    */
+                    Console.SetCursorPosition(0, Console.CursorTop - 1);
+                    Console.Write(new string(' ', Console.WindowWidth));
+                    Console.SetCursorPosition(0, Console.CursorTop - 1);
+                    Console.Write(new string(' ', Console.WindowWidth));
+                    Console.SetCursorPosition(0, Console.CursorTop - 1);
                     continue;
                 }
 
@@ -152,6 +178,7 @@ public class Reservation
 
                 if (confirmationInput == "1")
                 {
+                    Console.Clear();
                     var groupedReservations = userReservations
                         .Where(r => r.ShowId == selectedReservation.ShowId)
                         .ToList();
@@ -176,6 +203,7 @@ public class Reservation
                     }
 
                     Console.WriteLine($"Successfully canceled reservation for Movie: {reservedMovie.Title}, Show Date: {reservedShow.Date}");
+                    Thread.Sleep(2000);
                     reservationChoice = true;
 
                     bool menuChoice = false;
@@ -199,11 +227,28 @@ public class Reservation
                         else
                         {
                             Console.WriteLine("Invalid option, please try again.");
+                            Thread.Sleep(2000);
+
+                            /*
+                            The cursor goes back to the position of the option message, which is replaced after 2 seconds with an empty string.
+                            */
+                            Console.SetCursorPosition(0, Console.CursorTop - 1);
+                            Console.Write(new string(' ', Console.WindowWidth));
+                            Console.SetCursorPosition(0, Console.CursorTop - 1);
+                            Console.Write(new string(' ', Console.WindowWidth));
+                            Console.SetCursorPosition(0, Console.CursorTop - 1);
+                            Console.Write(new string(' ', Console.WindowWidth));
+                            Console.SetCursorPosition(0, Console.CursorTop - 1);
+                            Console.Write(new string(' ', Console.WindowWidth));
+                            Console.SetCursorPosition(0, Console.CursorTop - 1);
+                            Console.Write(new string(' ', Console.WindowWidth));
+                            Console.SetCursorPosition(0, Console.CursorTop - 1);
                         }
                     }
                 }
                 else if (confirmationInput == "2")
                 {
+                    Console.Clear();
                     Console.WriteLine("Reservation Cancellation stopped.");
                     reservationChoice = true;
 
@@ -228,17 +273,51 @@ public class Reservation
                         else
                         {
                             Console.WriteLine("Invalid option, please try again.");
+                            Thread.Sleep(2000);
+
+                            /*
+                            The cursor goes back to the position of the option message, which is replaced after 2 seconds with an empty string.
+                            */
+                            Console.SetCursorPosition(0, Console.CursorTop - 1);
+                            Console.Write(new string(' ', Console.WindowWidth));
+                            Console.SetCursorPosition(0, Console.CursorTop - 1);
+                            Console.Write(new string(' ', Console.WindowWidth));
+                            Console.SetCursorPosition(0, Console.CursorTop - 1);
+                            Console.Write(new string(' ', Console.WindowWidth));
+                            Console.SetCursorPosition(0, Console.CursorTop - 1);
+                            Console.Write(new string(' ', Console.WindowWidth));
+                            Console.SetCursorPosition(0, Console.CursorTop - 1);
+                            Console.Write(new string(' ', Console.WindowWidth));
+                            Console.SetCursorPosition(0, Console.CursorTop - 1);
                         }
                     }
                 }
                 else
                 {
                     Console.WriteLine("Invalid option. Please choose [1] Yes or [2] No.");
+                    // Thread.Sleep(2000);
+
+                    // /*
+                    // The cursor goes back to the position of the option message, which is replaced after 2 seconds with an empty string.
+                    // */
+                    // Console.SetCursorPosition(0, Console.CursorTop - 1);
+                    // Console.Write(new string(' ', Console.WindowWidth));
+                    // Console.SetCursorPosition(0, Console.CursorTop - 1);
                 }
             }
             catch (FormatException)
             {
                 Console.WriteLine("Invalid input. Please enter a valid number.");
+                Thread.Sleep(2000);
+
+                /*
+                The cursor goes back to the position of the option message, which is replaced after 2 seconds with an empty string.
+                */
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                Console.Write(new string(' ', Console.WindowWidth));
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                Console.Write(new string(' ', Console.WindowWidth));
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
             }
         }
     }
