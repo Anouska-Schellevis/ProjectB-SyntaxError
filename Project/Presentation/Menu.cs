@@ -34,6 +34,11 @@ static class Menu
         {
             InfoPage.Start();
         }
+        else if (input == 4)
+        {
+            Console.WriteLine("Quiting...");
+            Environment.Exit(0);
+        }
         else
         {
             Console.WriteLine("Invalid input. This option doesn't exist");
