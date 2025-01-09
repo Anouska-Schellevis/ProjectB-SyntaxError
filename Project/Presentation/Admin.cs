@@ -52,7 +52,7 @@ class Admin
             }
             else if (input == 7)
             {
-                Location.Start();
+                Location.Start(currentUser);
             }
             else if (input == 8)
             {
