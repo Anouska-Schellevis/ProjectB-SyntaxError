@@ -13,7 +13,7 @@ class InfoPage
 
             Console.WriteLine("Location: Wijnhaven 107, 3011 WN in Rotterdam");
             Console.WriteLine("Opening hours: 10:00 uur - 00:00 uur\n");
-            Console.WriteLine("[B]Go back");
+            Console.WriteLine("[B]Go back to the cinema menu");
             string input = Console.ReadLine().ToLower();
 
             if (input == "b")
@@ -23,10 +23,12 @@ class InfoPage
             }
             else
             {
-                Console.WriteLine("Invalid input. Try again");
+                Console.WriteLine("Invalid choice. Please choose [B] to go back to the cinema menu.");
                 Thread.Sleep(2000);
                 Start();
             }
+
+            
         }
     }
 }
