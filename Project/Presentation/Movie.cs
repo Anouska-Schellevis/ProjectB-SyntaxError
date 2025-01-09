@@ -124,6 +124,7 @@ class Movie
                     else
                     {
                         Console.WriteLine("Such a movie does not exist");
+                        Thread.Sleep(2000);
                     }
                     break;
                 case 4:
