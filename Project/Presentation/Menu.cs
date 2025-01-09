@@ -40,5 +40,6 @@ static class Menu
             Thread.Sleep(2000);
             Start();
         }
+        }
     }
 }
