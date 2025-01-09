@@ -245,25 +245,47 @@ class Voucher
 
     public static void UserStart(UserModel acc)
     {
-        PrintAllUserVouchers(acc);
-
         // Option to go back to the user menu
         bool menuChoice = false;
         while (!menuChoice)
         {
+            Console.Clear();
+            PrintAllUserVouchers(acc);
             Console.WriteLine("Would you like to go back to the user menu?\n[1]Yes\n[2]No");
             bool isCorrectFormat = int.TryParse(Console.ReadLine(), out int choice);
             if (!isCorrectFormat)
             {
                 Console.WriteLine("Invalid format. Make sure to enter a number.");
+                Thread.Sleep(2000);
 
+                /*
+                The cursor goes back to the position of the error message, which is replaced after 2 seconds with an empty string.
+                */
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                Console.Write(new string(' ', Console.WindowWidth));
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                Console.Write(new string(' ', Console.WindowWidth));
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                Console.SetCursorPosition(0, Console.CursorTop + 1);
             }
             else if (0 >= choice || choice > 2)
             {
-                Console.WriteLine("Invalid number. This option is not available.");
+                Console.WriteLine("Invalid option. Please enter 1 or 2.");
+                Thread.Sleep(2000);
+
+                /*
+                The cursor goes back to the position of the error message, which is replaced after 2 seconds with an empty string.
+                */
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                Console.Write(new string(' ', Console.WindowWidth));
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                Console.Write(new string(' ', Console.WindowWidth));
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                Console.SetCursorPosition(0, Console.CursorTop + 1);
             }
             else if (choice == 1)  // In case the answer is Yes
             {
+                Console.Clear();
                 User.Start(acc);
                 menuChoice = true;
             }
