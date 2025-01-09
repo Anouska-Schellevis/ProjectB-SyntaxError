@@ -51,6 +51,7 @@ class Show
                         else if (menuChoice == "2")
                         {
                             Console.Clear();
+                            Admin.Start(acc);
                             return;
                         }
                         else

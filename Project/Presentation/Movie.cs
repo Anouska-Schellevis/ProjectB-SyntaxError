@@ -49,6 +49,7 @@ class Movie
                         else if (menuChoice == "2")
                         {
                             Console.Clear();
+                            Admin.Start(acc);
                             return;
                         }
                         else
@@ -221,6 +222,7 @@ class Movie
                         else if (menuChoice == "2")
                         {
                             Console.Clear();
+                            Admin.Start(acc);
                             return;
                         }
                         else
@@ -258,6 +260,7 @@ class Movie
                         else if (menuChoice == "2")
                         {
                             Console.Clear();
+                            Admin.Start(acc);
                             return;
                         }
                         else
