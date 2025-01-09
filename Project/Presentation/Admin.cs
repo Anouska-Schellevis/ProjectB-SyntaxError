@@ -26,29 +26,24 @@ class Admin
             }
             else if (input == 1)
             {
-                Console.Clear();
                 Movie.Start(currentUser);
                 //Console.Clear();
             }
             else if (input == 2)
             {
-                Console.Clear();
                 Show.AdminStart(currentUser);
                 //Console.Clear();
             }
             else if (input == 3)
             {
-                Console.Clear();
                 Bar.Start(currentUser);
             }
             else if (input == 4)
             {
-                Console.Clear();
                 TrackMoney();
             }
             else if (input == 5)
             {
-                Console.Clear();
                 Voucher.AdminStart(currentUser);
             }
             else if (input == 6)
