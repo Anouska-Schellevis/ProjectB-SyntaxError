@@ -39,7 +39,7 @@ class Admin
             else if (input == 3)
             {
                 Console.Clear();
-                Bar.Start();
+                Bar.Start(currentUser);
             }
             else if (input == 4)
             {
