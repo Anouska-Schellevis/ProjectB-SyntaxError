@@ -69,6 +69,12 @@ class Location
                 Console.Clear();
                 break;
             }
+            else
+            {
+                Console.WriteLine("Invalid input. This option doesn't exist");
+                Thread.Sleep(2000);
+                Console.Clear();
+            }
 
 
             // bool isCorrectFormat = int.TryParse(Console.ReadLine(), out int choice);
