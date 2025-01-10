@@ -124,9 +124,37 @@ public abstract class TheaterBase
         List<long> reserved_seats = ReservationAccess.GetReservedSeatsByShowId(showId);
         DisplaySeats(showId);
 
+        bool isNum = false;
+        int how_many_people = 0;
         Console.WriteLine("How many seats do you want to book?");
-        int how_many_people = Convert.ToInt32(Console.ReadLine());
-
+        do
+        {
+            isNum = int.TryParse(Console.ReadLine(), out how_many_people);
+            if (!isNum)
+            {
+                Console.WriteLine("Invalid input. Must be a number");
+                Thread.Sleep(2000);
+            }
+            else if (how_many_people <= 0)
+            {
+                Console.WriteLine("Invalid number of people");
+                Thread.Sleep(2000);
+            }
+            else
+            {
+                break;
+            }
+            /*
+            The cursor goes back to the position of the error message, which is replaced after 2 seconds with an empty string.
+            */
+            Console.SetCursorPosition(0, Console.CursorTop - 1);
+            Console.Write(new string(' ', Console.WindowWidth));
+            Console.SetCursorPosition(0, Console.CursorTop - 1);
+            Console.Write(new string(' ', Console.WindowWidth));
+            Console.SetCursorPosition(0, Console.CursorTop - 1);
+            Console.SetCursorPosition(0, Console.CursorTop + 1);
+        } while (!isNum || how_many_people <= 0);
+        
         List<SeatsModel> selected_seats = new List<SeatsModel>();
 
         /*
@@ -557,15 +585,31 @@ public abstract class TheaterBase
         List<VoucherModel> userVouchers = VoucherLogic.GetVouchersByUserId(acc);
         if (userVouchers.Count > 0) // Check if the user has a voucher, otherwise this option doesn't show up
         {
-            Console.WriteLine("You have active vouchers");
-            Console.WriteLine("Would you like to use a voucher?");
-            Console.WriteLine("[1] yes");
-            Console.WriteLine("[2] no");
-            bool useVoucher = Console.ReadLine() == "1";
-            if (useVoucher)
+            bool isNum = false;
+            int voucherYesNo;
+            do
+            {
+                Console.WriteLine("You have active vouchers");
+                Console.WriteLine("Would you like to use a voucher?");
+                Console.WriteLine("[1] yes");
+                Console.WriteLine("[2] no");
+
+                isNum = int.TryParse(Console.ReadLine(), out voucherYesNo);
+                Console.Clear();
+                if (!isNum)
+                {
+                    Console.WriteLine("Invalid input. Must be a number");
+                }
+                else if (voucherYesNo != 1 && voucherYesNo != 2)
+                {
+                    Console.WriteLine("Invalid option. Please enter 1 or 2");
+                }
+            } while (voucherYesNo != 1 && voucherYesNo != 2);
+            if (voucherYesNo == 1)
             {
                 do
                 {
+                    Console.Clear();
                     Voucher.PrintAllUserVouchers(acc);
                     Console.WriteLine("Enter the voucher you wish to use");
 
@@ -573,6 +617,7 @@ public abstract class TheaterBase
                     if (!isValidFormat)
                     {
                         Console.WriteLine("Invalid format. Make sure to enter a number.");
+                        Thread.Sleep(2000);
                         continue;
                     }
 
@@ -580,6 +625,7 @@ public abstract class TheaterBase
                     if (voucher is null)
                     {
                         Console.WriteLine("This ID doesn't exist. Try again");
+                        Thread.Sleep(2000);
                         continue;
                     }
 
@@ -624,13 +670,43 @@ public abstract class TheaterBase
         Console.Clear();
 
         long userId = acc.Id;
-        Console.WriteLine("Do you want bar service? \n[1] Yes \n[2] No");
-        bool barService = Console.ReadLine() == "1" && IsBarAvailable(selectedSeats.Count, showId);
 
-        Console.WriteLine("Would you like to order snacks? \n[1] Yes \n[2] No");
+        int barChoice;
+        do
+        {
+            Console.WriteLine("Do you want bar service? \n[1] Yes \n[2] No");
+            bool isNum = int.TryParse(Console.ReadLine(), out barChoice);
+            Console.Clear();
+            if (!isNum)
+            {
+                Console.WriteLine("Invalid input. Must be a number");
+            }
+            else if (barChoice != 1 && barChoice != 2)
+            {
+                Console.WriteLine("Invalid option. Please enter 1 or 2");
+            }
+        } while(barChoice != 1 && barChoice != 2);
+
+        bool barService = barChoice == 1 && IsBarAvailable(selectedSeats.Count, showId);
+        Thread.Sleep(2000);
+
+        int snackChoice;
+        do
+        {
+            Console.WriteLine("Would you like to order snacks? \n[1] Yes \n[2] No");
+            bool isNum = int.TryParse(Console.ReadLine(), out snackChoice);
+            Console.Clear();
+            if (!isNum)
+            {
+                Console.WriteLine("Invalid input. Must be a number");
+            }
+            else if (snackChoice != 1 && snackChoice != 2)
+            {
+                Console.WriteLine("Invalid option. Please enter 1 or 2");
+            }
+        } while(snackChoice != 1 && snackChoice != 2);
         string snacks = "";
-
-        if (Console.ReadLine() == "1")
+        if (snackChoice == 1)
         {
             Dictionary<MenuItem, int> selectedSnacks = SnackMenu.SelectSnacks();
             //string snack = "";
@@ -646,8 +722,6 @@ public abstract class TheaterBase
                     snacks += snack.Key.Name;
                 }
             }
-
-
         }
 
         foreach (var seat in selectedSeats)
@@ -665,6 +739,7 @@ public abstract class TheaterBase
             ReservationLogic.WriteReservation(reservation);
         }
 
+        Console.Clear();
 
         Console.WriteLine($"Successfully reserved ticket(s) for {acc.FirstName} {acc.LastName}.");
 
