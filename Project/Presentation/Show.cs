@@ -160,47 +160,78 @@ class Show
             if (movies.Count != 0)
             {
                 Console.WriteLine("What movie would you like to watch?");
-                foreach (var movie_count in movies)
-                {
-                    string movie_name = movie_count.Value;
-                    Console.WriteLine($"{movie_count.Key}. {movie_name}");
-                }
                 do
                 {
-                    chosennumber = Convert.ToInt32(Console.ReadLine());
-                    if (movies.ContainsKey(chosennumber))
+                    foreach (var movie_count in movies)
+                    {
+                        string movie_name = movie_count.Value;
+                        Console.WriteLine($"{movie_count.Key}. {movie_name}");
+                    }
+
+                    bool isNum = int.TryParse(Console.ReadLine(), out chosennumber);
+                    if (!isNum)
+                    {
+                        Console.WriteLine("Invalid input. Must be a number");
+                        Thread.Sleep(2000);
+
+                    }
+                    else if (movies.ContainsKey(chosennumber))
                     {
                         break;
                     }
                     else
                     {
                         Console.WriteLine("Not a valid choice. Try again.");
+                        Thread.Sleep(2000);
                     }
+
+                    /*
+                    The cursor goes back to the position of the error message, which is replaced after 2 seconds with an empty string.
+                    */
+                    Console.SetCursorPosition(0, Console.CursorTop - 1);
+                    Console.Write(new string(' ', Console.WindowWidth));
+                    Console.SetCursorPosition(0, Console.CursorTop - 1);
+                    Console.Write(new string(' ', Console.WindowWidth));
+                    Console.SetCursorPosition(0, Console.CursorTop - 1);
+                    Console.Write(new string(' ', Console.WindowWidth));
+                    Console.SetCursorPosition(0, Console.CursorTop - 1);
+                    Console.SetCursorPosition(0, Console.CursorTop + 1);
                 } while (true);
                 Console.Clear();
                 string chosenmovie = movies[chosennumber];
                 movie = Movie.MovieSearch(chosenmovie);
-                Console.WriteLine("What would you like to do?");
-                Console.WriteLine("[1]Get movie info");
-                Console.WriteLine("[2]Choose time");
-                Console.WriteLine("[3]Go back to week overview");
-                Console.WriteLine("[4]Go back to day overview");
-                Console.WriteLine("[5]Go back to the menu");
                 do
                 {
-                    choice = Convert.ToInt32(Console.ReadLine());
-                    if (choice == 1 || choice == 2 || choice == 3 || choice == 5)
+                    Console.WriteLine("What would you like to do?");
+                    Console.WriteLine("[1]Get movie info");
+                    Console.WriteLine("[2]Choose time");
+                    Console.WriteLine("[3]Go back to week overview");
+                    Console.WriteLine("[4]Go back to day overview");
+                    Console.WriteLine("[5]Go back to the menu");
+
+                    bool isNum = int.TryParse(Console.ReadLine(), out choice);
+                    if (!isNum)
+                    {
+                        Console.WriteLine("Invalid input. Must be a number");
+                        Thread.Sleep(2000);
+                        Console.Clear();
+                    }
+                    else if (choice == 1 || choice == 2 || choice == 3 || choice == 5)
                     {
                         loop = false;
                     }
                     else if (choice == 4)
                     {
                         Console.WriteLine("Returning to day overview");
+                        Thread.Sleep(2000);
+                        Console.Clear();
                         break;
                     }
                     else
                     {
                         Console.WriteLine("Invalid input.");
+                        Thread.Sleep(2000);
+                        Console.Clear();
                     }
                 } while (choice < 1 || choice > 5);
                 if (choice == 4)
@@ -220,17 +251,26 @@ class Show
         switch (choice)
         {
             case 1:
-                Console.WriteLine(movie);
-                Console.WriteLine("\n\nWhat would you like to do?");
-                Console.WriteLine("[1]Choose time");
-                Console.WriteLine("[2]Go back to week overview");
+
                 int secondchoice;
                 do
                 {
-                    secondchoice = Convert.ToInt32(Console.ReadLine());
-                    if (secondchoice != 1 && secondchoice != 2)
+                    Console.WriteLine(movie);
+                    Console.WriteLine("\nWhat would you like to do?");
+                    Console.WriteLine("[1]Choose time");
+                    Console.WriteLine("[2]Go back to week overview");
+                    bool isNum = int.TryParse(Console.ReadLine(), out secondchoice);
+                    if (!isNum)
+                    {
+                        Console.WriteLine("Invalid input. Must be a number");
+                        Thread.Sleep(2000);
+                        Console.Clear();
+                    }
+                    else if (secondchoice != 1 && secondchoice != 2)
                     {
                         Console.WriteLine("Invalid input try again");
+                        Thread.Sleep(2000);
+                        Console.Clear();
                     }
                 } while (secondchoice != 1 && secondchoice != 2);
                 Console.Clear();
@@ -240,27 +280,33 @@ class Show
                         if (movie != null)
                         {
                             Dictionary<int, ShowModel> showtime = TimeOptions(movies[chosennumber], dateofshow);
-                            Console.WriteLine("And at what time?");
-                            foreach (var datetime in showtime)
-                            {
-                                string time = datetime.Value.Date.Split(' ')[1];
-                                Console.WriteLine($"{datetime.Key}. {time}");
-                            }
                             int chosentime;
                             do
                             {
-                                chosentime = Convert.ToInt32(Console.ReadLine());
-                                if (showtime.ContainsKey(chosentime))
+                                Console.WriteLine("And at what time?");
+                                foreach (var datetime in showtime)
+                                {
+                                    string time = datetime.Value.Date.Split(' ')[1];
+                                    Console.WriteLine($"{datetime.Key}. {time}");
+                                }
+                                bool isNum = int.TryParse(Console.ReadLine(), out chosentime);
+                                Console.Clear();
+                                if (!isNum)
+                                {
+                                    Console.WriteLine("Invalid input. Must be a number");
+                                    Thread.Sleep(2000);
+                                }
+                                else if (showtime.ContainsKey(chosentime))
                                 {
                                     break;
                                 }
                                 else
                                 {
                                     Console.WriteLine("Not a valid choice. Try again.");
+                                    Thread.Sleep(2000);
                                 }
-                            }
+                            } while (true);
 
-                            while (true);
                             ShowModel ChosenShow = showtime[chosentime];
                             if (ChosenShow.TheatreId == 1)
                             // {
@@ -326,23 +372,30 @@ class Show
                 if (movie != null)
                 {
                     Dictionary<int, ShowModel> showtime = TimeOptions(movies[chosennumber], dateofshow);
-                    Console.WriteLine("And at what time?");
-                    foreach (var datetime in showtime)
-                    {
-                        string time = datetime.Value.Date.Split(' ')[1];
-                        Console.WriteLine($"{datetime.Key}. {time}");
-                    }
                     int chosentime;
                     do
                     {
-                        chosentime = Convert.ToInt32(Console.ReadLine());
-                        if (showtime.ContainsKey(chosentime))
+                        Console.WriteLine("And at what time?");
+                        foreach (var datetime in showtime)
+                        {
+                            string time = datetime.Value.Date.Split(' ')[1];
+                            Console.WriteLine($"{datetime.Key}. {time}");
+                        }
+                        bool isNum = int.TryParse(Console.ReadLine(), out chosentime);
+                        Console.Clear();
+                        if (!isNum)
+                        {
+                            Console.WriteLine("Invalid input. Must be a number");
+                            Thread.Sleep(2000);
+                        }
+                        else if (showtime.ContainsKey(chosentime))
                         {
                             break;
                         }
                         else
                         {
                             Console.WriteLine("Not a valid choice. Try again.");
+                            Thread.Sleep(2000);
                         }
                     }
 
@@ -403,9 +456,11 @@ class Show
 
                 break;
             case 3:
+                Console.Clear();
                 UserStart(acc);
                 break;
             case 5:
+                Console.Clear();
                 User.Start(acc);
                 break;
             default:
@@ -478,7 +533,7 @@ class Show
         while (question2 != 1 && question2 != 2);
         if (question2 == 1)
         {
-            Console.WriteLine("Enter movie title(not uppercase sensitive)");
+            Console.WriteLine("Enter movie title (not uppercase sensitive)");
             string title = "";
             MoviesModel movie;
             do
@@ -943,11 +998,26 @@ class Show
         int Day;
         do
         {
-            Day = Convert.ToInt32(Console.ReadLine());
-            if (Day <= 0 || Day >= (daysTilNextThursday + 1))
+            bool isNum = int.TryParse(Console.ReadLine(), out Day);
+            if (!isNum)
             {
-                Console.WriteLine("Invalid Input.Try again.");
+                Console.WriteLine("Invalid input. Must be a number");
+                Thread.Sleep(2000);
             }
+            else if (Day <= 0 || Day >= (daysTilNextThursday + 1))
+            {
+                Console.WriteLine("Invalid Input. Try again.");
+                Thread.Sleep(2000);
+            }
+            /*
+            The cursor goes back to the position of the error message, which is replaced after 2 seconds with an empty string.
+            */
+            Console.SetCursorPosition(0, Console.CursorTop - 1);
+            Console.Write(new string(' ', Console.WindowWidth));
+            Console.SetCursorPosition(0, Console.CursorTop - 1);
+            Console.Write(new string(' ', Console.WindowWidth));
+            Console.SetCursorPosition(0, Console.CursorTop - 1);
+            Console.SetCursorPosition(0, Console.CursorTop + 1);
         } while (Day <= 0 || Day > (daysTilNextThursday + 1));
         Console.Clear();
         string DayToPrint = Convert.ToString(DateTime.Now.AddDays(Day - 1).DayOfWeek);
