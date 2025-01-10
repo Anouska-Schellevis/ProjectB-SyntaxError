@@ -28,6 +28,14 @@ class InfoPage
                 Console.Clear();
                 Menu.Start();
             }
+            else
+            {
+                Console.WriteLine("Invalid choice. Please choose [B] to go back to the cinema menu.");
+                Thread.Sleep(2000);
+                Start();
+            }
+
+            
         }
     }
 }

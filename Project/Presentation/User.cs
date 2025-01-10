@@ -68,6 +68,8 @@ class User
             else
             {
                 Console.WriteLine("Invalid option, please try again.");
+                Thread.Sleep(2000);
+                Console.Clear();
             }
         }
         // bool exitMenu = false;
@@ -148,6 +150,8 @@ class User
             else
             {
                 Console.WriteLine("Invalid option, please try again.");
+                Thread.Sleep(2000);
+                Console.Clear();
             }
         }
         // bool exitMenu = false;
@@ -182,6 +186,6 @@ class User
         //     }
         // } while (!exitMenu);
 
-
+        Start(acc);
     }
 }
