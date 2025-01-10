@@ -460,118 +460,121 @@ public class SnackMenu
                 Console.WriteLine($"Total: €{finalTotal:F2}");
             }
 
-            Console.WriteLine("\nWould you like to:");
-            Console.WriteLine("[1]Confirm your order");
-            Console.WriteLine("[2]Edit your order");
+            int editChoice;
+            do
+            {
+                Console.WriteLine("\nWould you like to:");
+                Console.WriteLine("[1]Confirm your order");
+                Console.WriteLine("[2]Edit your order");
+                bool isNum = int.TryParse(Console.ReadLine(), out editChoice);
 
-            string editChoice = Console.ReadLine();
-            if (editChoice == "1")
-            {
-                orderConfirmed = true;
-            }
-            else if (editChoice == "2")
-            {
-                bool editingOrder = true;
-                while (editingOrder)
+                if (!isNum)
                 {
-                    Console.Clear();
-                    Console.WriteLine("Choose the number for which item you want to edit");
-                    Console.WriteLine("===== Your Order =====");
-                    int itemNumber = 1;
-                    foreach (var order in orderDict)
-                    {
-                        Console.WriteLine($"[{itemNumber}] {order.Value} x {order.Key.Name}");
-                        itemNumber++;
-                    }
-                    Console.WriteLine($"[{itemNumber}]Go back to final order.");
-
-                    string order_edit_choice = Console.ReadLine();
-
-                    if (order_edit_choice == (itemNumber.ToString()))
-                    {
-                        editingOrder = false;
-                        continue;
-                    }
-
-
-                    if (int.TryParse(order_edit_choice, out int selectedItem) && selectedItem > 0 && selectedItem <= orderDict.Count)
+                    Console.WriteLine("Invalid input. Must be a number");
+                }
+                else if (editChoice == 1)
+                {
+                    orderConfirmed = true;
+                }
+                else if (editChoice == 2)
+                {
+                    bool editingOrder = true;
+                    while (editingOrder)
                     {
                         Console.Clear();
-                        var selectedOrderItem = orderDict.ElementAt(selectedItem - 1);//pick user pick -1 for 0 based index
-
-
-                        Console.WriteLine("[1]Change amount");
-                        Console.WriteLine("[2]Remove this item");
-                        Console.WriteLine("[3]Go back to final order");
-
-                        string user_edit_order_choice = Console.ReadLine();
-
-                        if (user_edit_order_choice == "1")
+                        Console.WriteLine("Choose the number for which item you want to edit");
+                        Console.WriteLine("===== Your Order =====");
+                        int itemNumber = 1;
+                        foreach (var order in orderDict)
                         {
+                            Console.WriteLine($"[{itemNumber}] {order.Value} x {order.Key.Name}");
+                            itemNumber++;
+                        }
+                        Console.WriteLine($"[{itemNumber}]Go back to final order.");
 
-                            Console.WriteLine("Enter the new amount you want of this item:");
-                            string newQuantityInput = Console.ReadLine();
-                            if (int.TryParse(newQuantityInput, out int newQuantity) && newQuantity > 0)
+                        string order_edit_choice = Console.ReadLine();
+
+                        if (order_edit_choice == (itemNumber.ToString()))
+                        {
+                            editingOrder = false;
+                            continue;
+                        }
+
+
+                        if (int.TryParse(order_edit_choice, out int selectedItem) && selectedItem > 0 && selectedItem <= orderDict.Count)
+                        {
+                            Console.Clear();
+                            var selectedOrderItem = orderDict.ElementAt(selectedItem - 1);//pick user pick -1 for 0 based index
+
+
+                            Console.WriteLine("[1]Change amount");
+                            Console.WriteLine("[2]Remove this item");
+                            Console.WriteLine("[3]Go back to final order");
+
+                            string user_edit_order_choice = Console.ReadLine();
+
+                            if (user_edit_order_choice == "1")
                             {
-                                orderDict[selectedOrderItem.Key] = newQuantity;
-                                Console.WriteLine($"Updated {selectedOrderItem.Key.Name} to {newQuantity}.");
+
+                                Console.WriteLine("Enter the new amount you want of this item:");
+                                string newQuantityInput = Console.ReadLine();
+                                if (int.TryParse(newQuantityInput, out int newQuantity) && newQuantity > 0)
+                                {
+                                    orderDict[selectedOrderItem.Key] = newQuantity;
+                                    Console.WriteLine($"Updated {selectedOrderItem.Key.Name} to {newQuantity}.");
+                                }
+                                else
+                                {
+                                    Console.WriteLine("invalid amount");
+                                }
+                            }
+                            else if (user_edit_order_choice == "2")
+                            {
+                                orderDict.Remove(selectedOrderItem.Key);
+                                Console.WriteLine($"Removed {selectedOrderItem.Key.Name} from your order");
+                            }
+
+                            Console.Clear();
+                            Console.WriteLine("===== Your Final Order =====");
+                            decimal finalOrderTotal = 0;
+                            if (orderDict.Count == 0)
+                            {
+                                Console.WriteLine("No snacks ordered");
                             }
                             else
                             {
-                                Console.WriteLine("invalid amount");
+                                foreach (var order in orderDict)
+                                {
+                                    Console.WriteLine($"- {order.Value} x {order.Key.Name}");
+                                    finalOrderTotal += order.Key.Price * order.Value;
+                                }
+                                Console.WriteLine($"Total: €{finalOrderTotal:F2}");
                             }
-                        }
-                        else if (user_edit_order_choice == "2")
-                        {
-                            orderDict.Remove(selectedOrderItem.Key);
-                            Console.WriteLine($"Removed {selectedOrderItem.Key.Name} from your order");
-                        }
 
-                        Console.Clear();
-                        Console.WriteLine("===== Your Final Order =====");
-                        decimal finalOrderTotal = 0;
-                        if (orderDict.Count == 0)
-                        {
-                            Console.WriteLine("No snacks ordered");
-                        }
-                        else
-                        {
-                            foreach (var order in orderDict)
+                            Console.WriteLine("\nWould you like to:");
+                            Console.WriteLine("[1]Confirm your order");
+                            Console.WriteLine("[2]Edit your order");
+                            string finalChoice = Console.ReadLine();
+
+                            if (finalChoice == "1")
                             {
-                                Console.WriteLine($"- {order.Value} x {order.Key.Name}");
-                                finalOrderTotal += order.Key.Price * order.Value;
+                                editingOrder = false;
                             }
-                            Console.WriteLine($"Total: €{finalOrderTotal:F2}");
-                        }
-
-                        Console.WriteLine("\nWould you like to:");
-                        Console.WriteLine("[1]Confirm your order");
-                        Console.WriteLine("[2]Edit your order");
-                        string finalChoice = Console.ReadLine();
-
-                        if (finalChoice == "1")
-                        {
-                            editingOrder = false;
-                        }
-                        else if (finalChoice == "2")
-                        {
-                            continue;
+                            else if (finalChoice == "2")
+                            {
+                                continue;
+                            }
                         }
                     }
                 }
-
-            }
-            else
-            {
-                Console.WriteLine("Invalid choice. Please choose [1] to confirm or [2] to edit.");
-            }
+                else
+                {
+                    Console.WriteLine("Invalid choice. Please choose [1] to confirm or [2] to edit.");
+                }
+            } while (editChoice != 1 && editChoice != 2);
         }
-
         return orderDict;
     }
-
-
-
 
     public static void DeleteMenuItem(UserModel acc)
     {
