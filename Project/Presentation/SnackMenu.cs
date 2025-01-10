@@ -75,10 +75,14 @@ public class SnackMenu
     public static void CreateMenu(UserModel acc)
     {
         Console.Clear();
-        Console.WriteLine("===== Create Menu Item =====\n");
+        Console.WriteLine("===== Create Menu Item =====");
 
-        Console.WriteLine("Enter the name of the menu item:");
-        string name = Console.ReadLine();
+        string name;
+        do
+        {
+            Console.WriteLine("\nEnter the name of the menu item:");
+            name = Console.ReadLine();
+        } while (!OnlyLetters(name));
 
         var existingItems = MenuItemLogic.GetAllMenuItems();//get all menu items to check if item to add is already on the menu
 
@@ -91,7 +95,7 @@ public class SnackMenu
                 return;
             }
         }
-        Console.WriteLine("Enter the price of the menu item:");
+        Console.WriteLine("\nEnter the price of the menu item:");
         decimal price;
         while (!decimal.TryParse(Console.ReadLine(), out price)) //will parse user string to user ceimal if its succesfull it will save to price
         {
@@ -268,7 +272,7 @@ public class SnackMenu
             Console.WriteLine("\nNo drink items available.");
         }
 
-        Console.WriteLine($"[{itemNumber}] Done ordering");
+        Console.WriteLine($"[{itemNumber}]Done ordering");
     }
 
     // public static Dictionary<MenuItem, int> SelectSnacks()
@@ -839,6 +843,19 @@ public class SnackMenu
         }
     }
 
+    //method that loops over whatever input you give it and checks if every char is a letter, used for name validation
+    private static bool OnlyLetters(string input)
+    {
+        string removeSpaces = input.Replace(" ", "");
 
-
+        foreach (char i in removeSpaces)
+        {
+            if (!char.IsLetter(i))
+            {
+                Console.WriteLine("Invalid input. You can only use letters.");
+                return false;
+            }
+        }
+        return true;
+    }
 }

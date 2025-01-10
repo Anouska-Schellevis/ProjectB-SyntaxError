@@ -516,7 +516,7 @@ class Movie
         Console.WriteLine("Enter a new title for this movie.");
         string newTitle = Console.ReadLine();
 
-        Console.WriteLine("Enter a new description for this movie.");
+        Console.WriteLine("\nEnter a new description for this movie.");
         string newDescription = Console.ReadLine();
 
         bool isNum = false;
@@ -536,14 +536,14 @@ class Movie
             }
         } while (!isNum || newTimeInMinutes <= 0);
 
-        Console.WriteLine("Enter a new genre for this movie.");
+        Console.WriteLine("\nEnter a new genre for this movie.");
         string newGenre = Console.ReadLine();
 
-        Console.WriteLine("Enter a new director for this movie.");
+        Console.WriteLine("\nEnter a new director for this movie.");
         string newDirector = Console.ReadLine();
         do
         {
-            Console.WriteLine("Enter a new release_date for this movie. 'YYYY-MM-DD' format. (Example: 2024-12-11, 2025-01-01)");
+            Console.WriteLine("\nEnter a new release_date for this movie. 'YYYY-MM-DD' format. (Example: 2024-12-11, 2025-01-01)");
             newReleaseDate = Console.ReadLine();
             Console.Clear();
             if (DateTime.TryParse(newReleaseDate, out _) == false)
