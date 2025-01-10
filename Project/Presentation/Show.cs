@@ -616,7 +616,7 @@ class Show
         do
         {
             Console.WriteLine("Enter the theater number for this movie.");
-            Console.WriteLine("Theatres you can choose: 1, 2, 3");
+            Console.WriteLine("Theatres you can choose: 1, 2, 3")
             newTheaterId = Convert.ToInt32(Console.ReadLine());
             Console.Clear();
             if (newTheaterId != 1 && newTheaterId != 2 && newTheaterId != 3)
