@@ -24,9 +24,11 @@ class Show
         switch (choice)
         {
             case 1:
+                Console.Clear();
                 ShowPrint();
                 break;
             case 2:
+                Console.Clear();
                 ShowAdd();
                 Console.WriteLine("Show is added");
                 break;
@@ -614,6 +616,7 @@ class Show
         do
         {
             Console.WriteLine("Enter the theater number for this movie.");
+            Console.WriteLine("Theatres you can choose: 1, 2, 3");
             newTheaterId = Convert.ToInt32(Console.ReadLine());
             Console.Clear();
             if (newTheaterId != 1 && newTheaterId != 2 && newTheaterId != 3)
@@ -683,10 +686,17 @@ class Show
             {
                 Console.WriteLine("Enter date for this show in 'YYYY-MM-DD' format. (Example: 2024-12-11, 2025-01-01)");
                 Date = Console.ReadLine();
-                Console.Clear();
-                if (DateTime.TryParse(Date, out _) == false)
+                if (!DateTime.TryParseExact(Date, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out DateTime parsedDate))
                 {
                     Console.WriteLine("Not a valid date time format. Try again.");
+                    Console.WriteLine("Enter date for this show in 'YYYY-MM-DD' format. (Example: 2024-12-11, 2025-01-01)");
+                    Date = Console.ReadLine();
+                }
+                else if (parsedDate < DateTime.Now.Date)
+                {
+                    Console.WriteLine("This date is in the past. Try again.");
+                    Console.WriteLine("Enter date for this show in 'YYYY-MM-DD' format. (Example: 2024-12-11, 2025-01-01)");
+                    Date = Console.ReadLine();
                 }
             } while (DateTime.TryParse(Date, out _) != true);
 
@@ -697,7 +707,6 @@ class Show
                 PrintShowsInTheaterThisDay(Date, newTheaterId);
                 Console.WriteLine("What time would you like to choose('HH:MM' format)?");
                 time = Console.ReadLine();
-                Console.Clear();
                 int timeinminutes = Convert.ToInt32(MoviesLogic.GetById(newMovieId).TimeInMinutes);
                 if (TimeSpan.TryParse(time, out _) == true)
                 {
