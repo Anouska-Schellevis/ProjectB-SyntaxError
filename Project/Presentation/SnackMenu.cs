@@ -10,7 +10,7 @@ public class SnackMenu
             Console.WriteLine("[2] Add menu item");
             Console.WriteLine("[3] Delete menu item");
             Console.WriteLine("[4] Edit menu item");
-            Console.WriteLine("[5] Go back to Admin page");
+            Console.WriteLine("[5] Go back");
 
             string choice = Console.ReadLine();
             if (choice == "1")
