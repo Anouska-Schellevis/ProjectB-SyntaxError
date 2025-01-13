@@ -89,15 +89,22 @@ public class UserNewAccountLogic
 
     private static bool IsValidEmail(string email)
     {
-        //check if the email has s @ and ends with the valid domains
-        if (email.Contains("@") &&
-            (email.EndsWith(".com") || email.EndsWith(".nl") || email.EndsWith(".net")))
+        //check if email contains @ and that it contains a "." that . also has to come after the @ "email@gmail.com"
+        if (email.Contains("@"))
         {
-            return true;
+            for(int i = email.IndexOf('@'); i < email.Length; i++)
+            {
+                if (email[i] == '.')
+                {
+                    return true;
+                }
+            }
+            Console.WriteLine("Invalid email. Please enter a valid email address (e.g., email@gmail.com).");
+            return false;
         }
         else
         {
-            Console.WriteLine("Invalid email. try another format");
+            Console.WriteLine("Invalid email. Please enter a valid email address (e.g., email@gmail.com).");
             return false;
         }
     }

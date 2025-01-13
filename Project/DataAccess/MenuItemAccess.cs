@@ -20,7 +20,7 @@ public static class MenuItemAccess
 
     public static void Update(MenuItem item)
     {
-        string sql = $"UPDATE {Table} SET name = @Name, price = @Price, type = @Type WHERE name = @OldName";
+        string sql = $"UPDATE {Table} SET name = @Name, price = @Price, type = @Type WHERE name = @Name";
         _connection.Execute(sql, item);
     }
 
