@@ -2,19 +2,23 @@ using Microsoft.VisualBasic;
 
 class Movie
 {
+
+    // static public void Main()
+    // {
+    //     Start(acc);
+    // }
     static public void Start(UserModel acc)
     {
-        while (true)
+        while(true)
         {
             Console.Clear();
-            Console.WriteLine("===== Movie menu =====\n");
             Console.WriteLine("[1]Overview of all movies");
             Console.WriteLine("[2]Add movie");
             Console.WriteLine("[3]Edit movie");
             Console.WriteLine("[4]Delete movie");
             Console.WriteLine("[5]Search movie by title");
             Console.WriteLine("[6]See most populair movie genre");
-            Console.WriteLine("[7]Go back to the menu");
+            Console.WriteLine("[7]Go back");
             Console.WriteLine("What would you like to do?");
             bool isNum = int.TryParse(Console.ReadLine(), out int choice);
             if (!isNum)
@@ -127,11 +131,11 @@ class Movie
                 case 4:
                     Console.Clear();
                     string titleToDelete;
-
                     Console.WriteLine("Enter the title of the movie you want to search for(not uppercase sensitive)");
                     MoviesModel moviefordelete;
                     do
                     {
+
                         titleToDelete = Console.ReadLine();
                         Console.Clear();
                         if (titleToDelete.Contains(" "))
@@ -157,9 +161,24 @@ class Movie
                             Console.WriteLine("Invalid movie. Try again.");
                         }
                     } while (moviefordelete == null);
-                    MovieDelete(Convert.ToInt32(moviefordelete.Id));
-                    Console.WriteLine("Movie is deleted");
-                    Thread.Sleep(2000);
+                    Console.WriteLine($"Are you sure you want to delete {moviefordelete}");
+                    Console.WriteLine("[1]Yes\n[2]No");
+                    string question = Console.ReadLine();
+                    Console.Clear();
+                    while (question != "1" && question != "2")
+                    {
+                        Console.WriteLine("Invalid input. Try again");
+                        Console.WriteLine($"Are you sure you want to delete {moviefordelete}?");
+                        Console.WriteLine("1. yes\n2. no");
+                        question = Console.ReadLine();
+                        Console.Clear();
+                    }
+                    if (question == "1")
+                    {
+                        MovieDelete(Convert.ToInt32(moviefordelete.Id));
+                        Console.WriteLine("Movie is deleted");
+                        Thread.Sleep(2000);
+                    }
                     break;
                 case 5:
                     Console.Clear();
@@ -232,7 +251,7 @@ class Movie
                 case 6:
                     Console.Clear();
                     TrackPopularity(acc);
-
+                    
                     Console.WriteLine("\n[1]Go back to movie menu");
                     Console.WriteLine("[2]Exit to admin menu");
 
@@ -282,6 +301,7 @@ class Movie
 
     static public MoviesModel MovieEdit(MoviesModel movie)
     {
+        string stringnewTimeInMinutes = "";
         int newTimeInMinutes = 0;
         string newGenre = "";
         string newDescription = "";
@@ -289,8 +309,35 @@ class Movie
         string newDirector = "";
         string newReleaseDate = "";
 
+
+        Console.Clear();
+
+        int question4;
+        do 
+        {
+            Console.WriteLine("Would you like to change the title?");
+            Console.WriteLine("[1]Yes\n[2]No");
+            bool isNum = int.TryParse(Console.ReadLine(), out question4);
+            Console.Clear();
+            if (!isNum)
+            {
+                Console.WriteLine("Invalid input. Must be a number.");
+            }
+            else if (question4 != 1 && question4 != 2)
+            {
+                Console.WriteLine("Invalid option. Please enter 1 or 2.");
+            }
+        }
+        while (question4 != 1 && question4 != 2);
+        
+        if (question4 == 1)
+        {
+            Console.WriteLine("Enter a new title for this movie.");
+            newTitle = Console.ReadLine();
+        }
+      
         int question1;
-        do
+        do 
         {
             Console.WriteLine("Would you like to change the duration in minutes?");
             Console.WriteLine("[1]Yes\n[2]No");
@@ -325,9 +372,6 @@ class Movie
                 }
             } while (!isNum || newTimeInMinutes <= 0);
         }
-
-        Console.Clear();
-
         int question2;
         do
         {
@@ -350,12 +394,29 @@ class Movie
         {
             Console.WriteLine("Enter a new genre for this movie.");
             newGenre = Console.ReadLine();
+            if (newGenre.Contains(" "))
+            {
+                string[] words = newGenre.Split(" ");
+                newGenre = "";
+                foreach (string word in words)
+                {
+                    string newword = char.ToUpper(word[0]) + word.Substring(1);
+                    newGenre += newword;
+                    newGenre += " ";
+                }
+                newGenre = newGenre.Trim();
+            }
+            else
+            {
+                newGenre = char.ToUpper(newGenre[0]) + newGenre.Substring(1);
+                newGenre.Trim();
+            }
         }
 
         Console.Clear();
 
         int question3;
-        do
+        do 
         {
             Console.WriteLine("Would you like to change the description?");
             Console.WriteLine("[1]Yes\n[2]No");
@@ -377,39 +438,14 @@ class Movie
             Console.WriteLine("Enter a new description for this movie.");
             newDescription = Console.ReadLine();
         }
-
-        Console.Clear();
-
-        int question4;
-        do
-        {
-            Console.WriteLine("Would you like to change the title?");
-            Console.WriteLine("[1]Yes\n[2]No");
-            bool isNum = int.TryParse(Console.ReadLine(), out question4);
-            Console.Clear();
-            if (!isNum)
-            {
-                Console.WriteLine("Invalid input. Must be a number.");
-            }
-            else if (question4 != 1 && question4 != 2)
-            {
-                Console.WriteLine("Invalid option. Please enter 1 or 2.");
-            }
-        }
-        while (question4 != 1 && question4 != 2);
-
-        if (question4 == 1)
-        {
-            Console.WriteLine("Enter a new title for this movie.");
-            newTitle = Console.ReadLine();
-        }
-
+        
         Console.Clear();
 
         int question5;
-        do
+        do 
         {
             Console.WriteLine("Would you like to change the director?");
+
             Console.WriteLine("[1]Yes\n[2]No");
             bool isNum = int.TryParse(Console.ReadLine(), out question5);
             Console.Clear();
@@ -423,7 +459,7 @@ class Movie
             }
         }
         while (question5 != 1 && question5 != 2);
-
+        
         if (question5 == 1)
         {
             Console.WriteLine("Enter new director for this movie.");
@@ -433,7 +469,7 @@ class Movie
         Console.Clear();
 
         int question6;
-        do
+        do 
         {
             Console.WriteLine("Would you like to change the release date?");
             Console.WriteLine("[1]Yes\n[2]No");
@@ -449,7 +485,7 @@ class Movie
             }
         }
         while (question6 != 1 && question6 != 2);
-
+        
         if (question6 == 1)
         {
             do
@@ -462,11 +498,12 @@ class Movie
                     Console.WriteLine("Not a valid date time format. Try again.");
                 }
             } while (DateTime.TryParse(newReleaseDate, out _) != true);
+            newReleaseDate = DateTime.Parse(newReleaseDate).ToString("yyyy-MM-dd");
         }
 
         if (question1 == 1)
         {
-            movie.TimeInMinutes = newTimeInMinutes;
+            movie.TimeInMinutes = Convert.ToInt32(newTimeInMinutes);
         }
         if (question2 == 1)
         {
@@ -501,12 +538,30 @@ class Movie
     {
         string newReleaseDate = "";
 
-        Console.WriteLine("Enter a new title for this movie.");
-        string newTitle = Console.ReadLine();
 
+        Console.WriteLine("Enter new title for this movie.");
+        string newTitle = Console.ReadLine();
+        if (newTitle.Contains(" "))
+        {
+            string[] words = newTitle.Split(" ");
+            newTitle = "";
+            foreach (string word in words)
+            {
+                string newword = char.ToUpper(word[0]) + word.Substring(1);
+                newTitle += newword;
+                newTitle += " ";
+            }
+            newTitle = newTitle.Trim();
+        }
+        else
+        {
+            newTitle = char.ToUpper(newTitle[0]) + newTitle.Substring(1);
+            newTitle.Trim();
+        }
+      
         Console.WriteLine("\nEnter a new description for this movie.");
         string newDescription = Console.ReadLine();
-
+      
         bool isNum = false;
         int newTimeInMinutes;
         do
@@ -523,12 +578,30 @@ class Movie
                 Console.WriteLine("Please try again. A movie must be longer than 0 minutes");
             }
         } while (!isNum || newTimeInMinutes <= 0);
-
-        Console.WriteLine("\nEnter a new genre for this movie.");
+      
+        Console.WriteLine("Enter new genre for this movie.");
         string newGenre = Console.ReadLine();
-
+        if (newGenre.Contains(" "))
+        {
+            string[] words = newGenre.Split(" ");
+            newGenre = "";
+            foreach (string word in words)
+            {
+                string newword = char.ToUpper(word[0]) + word.Substring(1);
+                newGenre += newword;
+                newGenre += " ";
+            }
+            newGenre = newGenre.Trim();
+        }
+        else
+        {
+            newGenre = char.ToUpper(newGenre[0]) + newGenre.Substring(1);
+            newGenre.Trim();
+        }
+        
         Console.WriteLine("\nEnter a new director for this movie.");
         string newDirector = Console.ReadLine();
+      
         do
         {
             Console.WriteLine("\nEnter a new release_date for this movie. 'YYYY-MM-DD' format. (Example: 2024-12-11, 2025-01-01)");
@@ -539,7 +612,9 @@ class Movie
                 Console.WriteLine("Not a valid date time format. Try again.");
             }
         } while (DateTime.TryParse(newReleaseDate, out _) != true);
-        MoviesModel new_movie = new MoviesModel(1, newTimeInMinutes, newGenre, newDescription, newTitle, newDirector, newReleaseDate);
+        newReleaseDate = DateTime.Parse(newReleaseDate).ToString("yyyy-MM-dd");
+        int TimeInMinutes = Convert.ToInt32(newTimeInMinutes);
+        MoviesModel new_movie = new MoviesModel(1, TimeInMinutes, newGenre, newDescription, newTitle, newDirector, newReleaseDate);
         MoviesLogic.WriteMovie(new_movie);
 
     }
