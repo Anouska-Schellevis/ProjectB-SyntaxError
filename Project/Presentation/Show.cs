@@ -613,14 +613,18 @@ class Show
                 {
                     Console.WriteLine("Enter date for this show in 'YYYY-MM-DD' format. (Example: 2024-12-11, 2025-01-01)");
                     Date = Console.ReadLine();
+
                     Console.Clear();
-                    if (DateOnly.TryParse(Date, out _) == false || DateTime.TryParse(Date, out _) == false)
+                    if (!DateTime.TryParseExact(Date, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out DateTime parsedDate))
                     {
                         Console.WriteLine("Not a valid date time format. Try again.");
                     }
-                } while (DateOnly.TryParse(Date, out _) != true || DateTime.TryParse(Date, out _) != true);
-                Date = DateTime.Parse(Date).ToString("yyyy-MM-dd");
-
+                    else if (parsedDate < DateTime.Now.Date)
+                    {
+                        Console.WriteLine("This date is in the past. Try again.");
+                    }
+                } while (!DateTime.TryParseExact(Date, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out DateTime _));
+                
                 do
                 {
                     if (question1 == 1)
@@ -876,17 +880,12 @@ class Show
                 if (!DateTime.TryParseExact(Date, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out DateTime parsedDate))
                 {
                     Console.WriteLine("Not a valid date time format. Try again.");
-                    Console.WriteLine("Enter date for this show in 'YYYY-MM-DD' format. (Example: 2024-12-11, 2025-01-01)");
-                    Date = Console.ReadLine();
                 }
                 else if (parsedDate < DateTime.Now.Date)
                 {
                     Console.WriteLine("This date is in the past. Try again.");
-                    Console.WriteLine("Enter date for this show in 'YYYY-MM-DD' format. (Example: 2024-12-11, 2025-01-01)");
-                    Date = Console.ReadLine();
                 }
-            } while (DateOnly.TryParse(Date, out _) != true || DateTime.TryParse(Date, out _) != true);
-            Date = DateTime.Parse(Date).ToString("yyyy-MM-dd");
+            } while (!DateTime.TryParseExact(Date, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out DateTime _));
 
             do
             {

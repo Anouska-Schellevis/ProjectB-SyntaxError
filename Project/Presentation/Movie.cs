@@ -462,7 +462,7 @@ class Movie
         
         if (question5 == 1)
         {
-            Console.WriteLine("Enter new director for this movie.");
+            Console.WriteLine("Enter a new director for this movie.");
             newDirector = Console.ReadLine();
         }
 
@@ -490,15 +490,14 @@ class Movie
         {
             do
             {
-                Console.WriteLine("Enter new release_date for this movie. 'YYYY-MM-DD' format. (Example: 2024-12-11, 2025-01-01)");
+                Console.WriteLine("Enter a new release date for this movie. 'YYYY-MM-DD' format. (Example: 2024-12-11, 2025-01-01)");
                 newReleaseDate = Console.ReadLine();
                 Console.Clear();
-                if (DateTime.TryParse(newReleaseDate, out _) == false)
+                if (!DateTime.TryParseExact(newReleaseDate, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out DateTime parsedDate))
                 {
                     Console.WriteLine("Not a valid date time format. Try again.");
                 }
-            } while (DateTime.TryParse(newReleaseDate, out _) != true);
-            newReleaseDate = DateTime.Parse(newReleaseDate).ToString("yyyy-MM-dd");
+            } while (!DateTime.TryParseExact(newReleaseDate, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out DateTime _));
         }
 
         if (question1 == 1)
@@ -604,15 +603,15 @@ class Movie
       
         do
         {
-            Console.WriteLine("\nEnter a new release_date for this movie. 'YYYY-MM-DD' format. (Example: 2024-12-11, 2025-01-01)");
+            Console.WriteLine("Enter new release_date for this movie. 'YYYY-MM-DD' format. (Example: 2024-12-11, 2025-01-01)");
             newReleaseDate = Console.ReadLine();
             Console.Clear();
-            if (DateTime.TryParse(newReleaseDate, out _) == false)
+            if (!DateTime.TryParseExact(newReleaseDate, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out DateTime parsedDate))
             {
                 Console.WriteLine("Not a valid date time format. Try again.");
             }
-        } while (DateTime.TryParse(newReleaseDate, out _) != true);
-        newReleaseDate = DateTime.Parse(newReleaseDate).ToString("yyyy-MM-dd");
+        } while (!DateTime.TryParseExact(newReleaseDate, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out DateTime _));
+
         int TimeInMinutes = Convert.ToInt32(newTimeInMinutes);
         MoviesModel new_movie = new MoviesModel(1, TimeInMinutes, newGenre, newDescription, newTitle, newDirector, newReleaseDate);
         MoviesLogic.WriteMovie(new_movie);
