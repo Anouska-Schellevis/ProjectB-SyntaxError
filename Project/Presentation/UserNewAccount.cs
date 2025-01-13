@@ -8,15 +8,15 @@ public class UserNewAccountLogic
         {
             Console.WriteLine("Please enter your email address:");
             email = Console.ReadLine();
+            Console.Clear();
         } while (!IsValidEmail(email));
-
-
 
         string password;
         do
         {
             Console.WriteLine("Create password:");
             password = Console.ReadLine();
+            Console.Clear();
         } while (!IsValidPassword(password));
 
         string firstName;
@@ -24,6 +24,7 @@ public class UserNewAccountLogic
         {
             Console.WriteLine("Please enter your first name:");
             firstName = Console.ReadLine();
+            Console.Clear();
         } while (!OnlyLetters(firstName));
 
 
@@ -32,6 +33,7 @@ public class UserNewAccountLogic
         {
             Console.WriteLine("Please enter your last name:");
             lastName = Console.ReadLine();
+            Console.Clear();
         } while (!OnlyLetters(lastName));
 
         string phoneInput; //to loop over to check length
@@ -41,7 +43,7 @@ public class UserNewAccountLogic
         {   //for now it takes 10 digets aka 0612345678
             Console.WriteLine("Please enter your phone number (10 digits):");
             phoneInput = Console.ReadLine();
-
+            Console.Clear();
 
             if (phoneInput.Length == 10 && OnlyNumbers(phoneInput))
             {
@@ -87,19 +89,15 @@ public class UserNewAccountLogic
 
     private static bool IsValidEmail(string email)
     {
-        //check if email contains @ and that it contains a "." that . also has to come after the @ "email@gmail.com"
-        if (email.Contains("@") && email.IndexOf('.') > email.IndexOf('@'))
+        //check if the email has s @ and ends with the valid domains
+        if (email.Contains("@") &&
+            (email.EndsWith(".com") || email.EndsWith(".nl") || email.EndsWith(".net")))
         {
             return true;
         }
-        else if (email.IndexOf('.') < email.IndexOf('@'))
-        {
-            Console.WriteLine("Invalid email. The \".\" has to come after the \"@\".");
-            return false;
-        }
         else
         {
-            Console.WriteLine("Invalid email. Please enter a valid email address (e.g., email@gmail.com).");
+            Console.WriteLine("Invalid email. try another format");
             return false;
         }
     }
