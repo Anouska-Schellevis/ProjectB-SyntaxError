@@ -12,7 +12,7 @@ public class SnackMenu
             Console.WriteLine("[4]Edit menu item");
             Console.WriteLine("[5]Go back to Admin page");
 
-            bool isNum = int.TryParse(Console.ReadLine()!, out int choice);
+            bool isNum = int.TryParse(Console.ReadLine(), out int choice);
             if (!isNum)
             {
                 Console.WriteLine("Invalid input. Must be a number");
@@ -27,7 +27,7 @@ public class SnackMenu
                     ShowSnackMenu();
 
                     Console.WriteLine("\n[1]Go back to admin snack menu");
-                    string returnChoice = Console.ReadLine()!;
+                    string returnChoice = Console.ReadLine();
 
                     if (returnChoice == "1")
                     {
@@ -82,7 +82,7 @@ public class SnackMenu
         do
         {
             Console.WriteLine("\nEnter the name of the menu item:");
-            name = Console.ReadLine()!;
+            name = Console.ReadLine();
         } while (!OnlyLetters(name));
 
         var existingItems = MenuItemLogic.GetAllMenuItems();//get all menu items to check if item to add is already on the menu
@@ -98,7 +98,7 @@ public class SnackMenu
         }
         Console.WriteLine("\nEnter the price of the menu item:");
         decimal price;
-        while (!decimal.TryParse(Console.ReadLine()!, out price)) //will parse user string to user ceimal if its succesfull it will save to price
+        while (!decimal.TryParse(Console.ReadLine(), out price)) //will parse user string to user ceimal if its succesfull it will save to price
         {
             Console.Clear();
             Console.WriteLine("Invalid price. Please enter a valid number:");
@@ -111,7 +111,7 @@ public class SnackMenu
         bool type;
         while (true)
         {
-            string typeChoice = Console.ReadLine()!;
+            string typeChoice = Console.ReadLine();
             if (typeChoice == "1")
             {
                 type = true;
@@ -140,7 +140,7 @@ public class SnackMenu
         Console.WriteLine("[2]See current menu");
         Console.WriteLine("[3]Go back to snack menu");
 
-        string choice = Console.ReadLine()!;
+        string choice = Console.ReadLine();
         if (choice == "1")
         {
             Console.Clear();
@@ -155,7 +155,7 @@ public class SnackMenu
                 ShowSnackMenu();
 
                 Console.WriteLine("\n[1]Go back to admin menu");
-                string returnChoice = Console.ReadLine()!;
+                string returnChoice = Console.ReadLine();
 
                 if (returnChoice == "1")
                 {
@@ -303,7 +303,7 @@ public class SnackMenu
             }
 
             Console.Write($"\nWhat would you like to order? Input any number from the menu above or type {snacks.Count + 1} to stop ordering: ");
-            string answer = Console.ReadLine()!;
+            string answer = Console.ReadLine();
 
             bool isNumber = int.TryParse(answer, out int choice);
 
@@ -317,7 +317,7 @@ public class SnackMenu
                 {
                     MenuItem chosenSnack = snacks[choice - 1];
                     Console.Write($"\nHow many of {chosenSnack.Name} would you like to order? ");
-                    string AmountSnacks = Console.ReadLine()!;
+                    string AmountSnacks = Console.ReadLine();
 
                     bool validAmount = int.TryParse(AmountSnacks, out int quantity) && quantity > 0;
                     if (validAmount)
@@ -378,7 +378,7 @@ public class SnackMenu
                 Console.WriteLine("\nWould you like to:");
                 Console.WriteLine("[1]Confirm your order");
                 Console.WriteLine("[2]Edit your order");
-                bool isNum = int.TryParse(Console.ReadLine()!, out editChoice);
+                bool isNum = int.TryParse(Console.ReadLine(), out editChoice);
 
                 if (!isNum)
                 {
@@ -405,7 +405,7 @@ public class SnackMenu
                         }
                         Console.WriteLine($"[{itemNumber}]Go back to final order.");
 
-                        string order_edit_choice = Console.ReadLine()!;
+                        string order_edit_choice = Console.ReadLine();
 
                         if (order_edit_choice == (itemNumber.ToString()))
                         {
@@ -424,13 +424,13 @@ public class SnackMenu
                             Console.WriteLine("[2]Remove this item");
                             Console.WriteLine("[3]Go back to final order");
 
-                            string user_edit_order_choice = Console.ReadLine()!;
+                            string user_edit_order_choice = Console.ReadLine();
 
                             if (user_edit_order_choice == "1")
                             {
 
                                 Console.WriteLine("Enter the new amount you want of this item:");
-                                string newQuantityInput = Console.ReadLine()!;
+                                string newQuantityInput = Console.ReadLine();
                                 if (int.TryParse(newQuantityInput, out int newQuantity) && newQuantity > 0)
                                 {
                                     orderDict[selectedOrderItem.Key] = newQuantity;
@@ -467,7 +467,7 @@ public class SnackMenu
                             Console.WriteLine("\nWould you like to:");
                             Console.WriteLine("[1]Confirm your order");
                             Console.WriteLine("[2]Edit your order");
-                            string finalChoice = Console.ReadLine()!;
+                            string finalChoice = Console.ReadLine();
 
                             if (finalChoice == "1")
                             {
@@ -508,7 +508,7 @@ public class SnackMenu
             Console.WriteLine($"[{snacks.Count + 1}]Go back to Snack Menu"); //use same +1 menu as in selecting snacks in user
 
             Console.WriteLine($"\nPlease select a snack to delete by entering its number or type {snacks.Count + 1} to go back to the snack menu.");
-            string input = Console.ReadLine()!;
+            string input = Console.ReadLine();
 
             if (!int.TryParse(input, out int choice))
             {
@@ -526,7 +526,7 @@ public class SnackMenu
                 Console.WriteLine("[1]Yes");
                 Console.WriteLine("[2]No");
 
-                bool isNum = int.TryParse(Console.ReadLine()!, out int confirm);
+                bool isNum = int.TryParse(Console.ReadLine(), out int confirm);
 
                 if (!isNum)
                 {
@@ -590,7 +590,7 @@ public class SnackMenu
             Console.WriteLine($"[{snacks.Count + 1}]Go back to Snack Menu");
 
             Console.WriteLine($"\nPlease select a snack to edit by entering its number or type [{snacks.Count + 1}] to go back.");
-            string input = Console.ReadLine()!;
+            string input = Console.ReadLine();
 
             if (!int.TryParse(input, out int choice))
             {
@@ -611,7 +611,7 @@ public class SnackMenu
                     Console.WriteLine("\nWould you like to edit the name?");
                     Console.WriteLine("[1]Yes");
                     Console.WriteLine("[2]No");
-                    bool isNum = int.TryParse(Console.ReadLine()!, out nameChoice);
+                    bool isNum = int.TryParse(Console.ReadLine(), out nameChoice);
                     Console.Clear();
                     if (!isNum)
                     {
@@ -626,7 +626,7 @@ public class SnackMenu
                 {
                     Console.WriteLine("Enter the new name:");
                     selectedSnack.OldName = selectedSnack.Name; // keep the old name for search in the db
-                    selectedSnack.Name = Console.ReadLine()!;
+                    selectedSnack.Name = Console.ReadLine();
                 }
 
                 Console.Clear();
@@ -637,7 +637,7 @@ public class SnackMenu
                     Console.WriteLine("\nWould you like to edit the price?");
                     Console.WriteLine("[1]Yes");
                     Console.WriteLine("[2]No");
-                    bool isNum = int.TryParse(Console.ReadLine()!, out priceChoice);
+                    bool isNum = int.TryParse(Console.ReadLine(), out priceChoice);
                     Console.Clear();
                     if (!isNum)
                     {
@@ -652,7 +652,7 @@ public class SnackMenu
                 {
                     Console.WriteLine("Enter the new price:");
                     decimal newPrice;
-                    while (!decimal.TryParse(Console.ReadLine()!, out newPrice) || newPrice <= 0)
+                    while (!decimal.TryParse(Console.ReadLine(), out newPrice) || newPrice <= 0)
                     {
                         Console.Clear();
                         Console.WriteLine("Invalid price. Please enter a number greater than 0:");
@@ -668,7 +668,7 @@ public class SnackMenu
                     Console.WriteLine("\nWould you like to edit the type (drink/food)?");
                     Console.WriteLine("[1]Yes");
                     Console.WriteLine("[2]No");
-                    bool isNum = int.TryParse(Console.ReadLine()!, out typeChoice);
+                    bool isNum = int.TryParse(Console.ReadLine(), out typeChoice);
                     Console.Clear();
                     if (!isNum)
                     {
@@ -688,7 +688,7 @@ public class SnackMenu
                         Console.WriteLine("[1]Drink");
                         Console.WriteLine("[2]Food");
 
-                        string typeSelection = Console.ReadLine()!;
+                        string typeSelection = Console.ReadLine();
                         if (typeSelection == "1")
                         {
                             type = true;
@@ -720,7 +720,7 @@ public class SnackMenu
                     Console.WriteLine("[1]Yes");
                     Console.WriteLine("[2]Go back to Snack Menu");
 
-                    string againChoice = Console.ReadLine()!;
+                    string againChoice = Console.ReadLine();
                     if (againChoice == "1")
                     {
                         continueEditing = false;

@@ -16,6 +16,8 @@
 
     public int Money_Earned { get; set; }
 
+    public UserModel() { }
+
     public UserModel(Int64 id, string email, string password, string firstName, string lastName, int phoneNumber, int type, int moneyEarned)
     {
         Id = id;

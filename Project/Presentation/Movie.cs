@@ -16,7 +16,7 @@ class Movie
             Console.WriteLine("[6]See most populair movie genre");
             Console.WriteLine("[7]Go back to the menu");
             Console.WriteLine("What would you like to do?");
-            bool isNum = int.TryParse(Console.ReadLine()!, out int choice);
+            bool isNum = int.TryParse(Console.ReadLine(), out int choice);
             if (!isNum)
             {
                 Console.WriteLine("Invalid input. Must be a number");
@@ -35,7 +35,7 @@ class Movie
 
                     while (true)
                     {
-                        string menuChoice = Console.ReadLine()!;
+                        string menuChoice = Console.ReadLine();
                         if (menuChoice == "1")
                         {
                             Console.Clear();
@@ -84,7 +84,7 @@ class Movie
                     MoviesModel movieforedit;
                     do
                     {
-                        Title_to_edit = Console.ReadLine()!;
+                        Title_to_edit = Console.ReadLine();
                         Console.Clear();
                         if (Title_to_edit.Contains(" "))
                         {
@@ -132,7 +132,7 @@ class Movie
                     MoviesModel moviefordelete;
                     do
                     {
-                        titleToDelete = Console.ReadLine()!;
+                        titleToDelete = Console.ReadLine();
                         Console.Clear();
                         if (titleToDelete.Contains(" "))
                         {
@@ -168,7 +168,7 @@ class Movie
                     MoviesModel movieforsearch;
                     do
                     {
-                        Title_to_search = Console.ReadLine()!;
+                        Title_to_search = Console.ReadLine();
                         Console.Clear();
                         if (Title_to_search.Contains(" "))
                         {
@@ -200,7 +200,7 @@ class Movie
 
                     while (true)
                     {
-                        string menuChoice = Console.ReadLine()!;
+                        string menuChoice = Console.ReadLine();
                         if (menuChoice == "1")
                         {
                             Console.Clear();
@@ -238,7 +238,7 @@ class Movie
 
                     while (true)
                     {
-                        string menuChoice = Console.ReadLine()!;
+                        string menuChoice = Console.ReadLine();
                         if (menuChoice == "1")
                         {
                             Console.Clear();
@@ -294,7 +294,7 @@ class Movie
         {
             Console.WriteLine("Would you like to change the duration in minutes?");
             Console.WriteLine("[1]Yes\n[2]No");
-            bool isNum = int.TryParse(Console.ReadLine()!, out question1);
+            bool isNum = int.TryParse(Console.ReadLine(), out question1);
             Console.Clear();
             if (!isNum)
             {
@@ -313,7 +313,7 @@ class Movie
             do
             {
                 Console.WriteLine("Enter a new duration in minutes for this movie.");
-                isNum = int.TryParse(Console.ReadLine()!, out newTimeInMinutes);
+                isNum = int.TryParse(Console.ReadLine(), out newTimeInMinutes);
                 Console.Clear();
                 if (!isNum)
                 {
@@ -333,7 +333,7 @@ class Movie
         {
             Console.WriteLine("Would you like to change the genre?");
             Console.WriteLine("[1]Yes\n[2]No");
-            bool isNum = int.TryParse(Console.ReadLine()!, out question2);
+            bool isNum = int.TryParse(Console.ReadLine(), out question2);
             Console.Clear();
             if (!isNum)
             {
@@ -349,7 +349,7 @@ class Movie
         if (question2 == 1)
         {
             Console.WriteLine("Enter a new genre for this movie.");
-            newGenre = Console.ReadLine()!;
+            newGenre = Console.ReadLine();
         }
 
         Console.Clear();
@@ -359,7 +359,7 @@ class Movie
         {
             Console.WriteLine("Would you like to change the description?");
             Console.WriteLine("[1]Yes\n[2]No");
-            bool isNum = int.TryParse(Console.ReadLine()!, out question3);
+            bool isNum = int.TryParse(Console.ReadLine(), out question3);
             Console.Clear();
             if (!isNum)
             {
@@ -375,7 +375,7 @@ class Movie
         if (question3 == 1)
         {
             Console.WriteLine("Enter a new description for this movie.");
-            newDescription = Console.ReadLine()!;
+            newDescription = Console.ReadLine();
         }
 
         Console.Clear();
@@ -385,7 +385,7 @@ class Movie
         {
             Console.WriteLine("Would you like to change the title?");
             Console.WriteLine("[1]Yes\n[2]No");
-            bool isNum = int.TryParse(Console.ReadLine()!, out question4);
+            bool isNum = int.TryParse(Console.ReadLine(), out question4);
             Console.Clear();
             if (!isNum)
             {
@@ -401,7 +401,7 @@ class Movie
         if (question4 == 1)
         {
             Console.WriteLine("Enter a new title for this movie.");
-            newTitle = Console.ReadLine()!;
+            newTitle = Console.ReadLine();
         }
 
         Console.Clear();
@@ -411,7 +411,7 @@ class Movie
         {
             Console.WriteLine("Would you like to change the director?");
             Console.WriteLine("[1]Yes\n[2]No");
-            bool isNum = int.TryParse(Console.ReadLine()!, out question5);
+            bool isNum = int.TryParse(Console.ReadLine(), out question5);
             Console.Clear();
             if (!isNum)
             {
@@ -427,7 +427,7 @@ class Movie
         if (question5 == 1)
         {
             Console.WriteLine("Enter new director for this movie.");
-            newDirector = Console.ReadLine()!;
+            newDirector = Console.ReadLine();
         }
 
         Console.Clear();
@@ -437,7 +437,7 @@ class Movie
         {
             Console.WriteLine("Would you like to change the release date?");
             Console.WriteLine("[1]Yes\n[2]No");
-            bool isNum = int.TryParse(Console.ReadLine()!, out question6);
+            bool isNum = int.TryParse(Console.ReadLine(), out question6);
             Console.Clear();
             if (!isNum)
             {
@@ -455,7 +455,7 @@ class Movie
             do
             {
                 Console.WriteLine("Enter new release_date for this movie. 'YYYY-MM-DD' format. (Example: 2024-12-11, 2025-01-01)");
-                newReleaseDate = Console.ReadLine()!;
+                newReleaseDate = Console.ReadLine();
                 Console.Clear();
                 if (DateTime.TryParse(newReleaseDate, out _) == false)
                 {
@@ -502,17 +502,17 @@ class Movie
         string newReleaseDate = "";
 
         Console.WriteLine("Enter a new title for this movie.");
-        string newTitle = Console.ReadLine()!;
+        string newTitle = Console.ReadLine();
 
         Console.WriteLine("\nEnter a new description for this movie.");
-        string newDescription = Console.ReadLine()!;
+        string newDescription = Console.ReadLine();
 
         bool isNum = false;
         int newTimeInMinutes;
         do
         {
             Console.WriteLine("Enter a new duration in minutes for this movie.");
-            isNum = int.TryParse(Console.ReadLine()!, out newTimeInMinutes);
+            isNum = int.TryParse(Console.ReadLine(), out newTimeInMinutes);
             Console.Clear();
             if (!isNum)
             {
@@ -525,14 +525,14 @@ class Movie
         } while (!isNum || newTimeInMinutes <= 0);
 
         Console.WriteLine("\nEnter a new genre for this movie.");
-        string newGenre = Console.ReadLine()!;
+        string newGenre = Console.ReadLine();
 
         Console.WriteLine("\nEnter a new director for this movie.");
-        string newDirector = Console.ReadLine()!;
+        string newDirector = Console.ReadLine();
         do
         {
             Console.WriteLine("\nEnter a new release_date for this movie. 'YYYY-MM-DD' format. (Example: 2024-12-11, 2025-01-01)");
-            newReleaseDate = Console.ReadLine()!;
+            newReleaseDate = Console.ReadLine();
             Console.Clear();
             if (DateTime.TryParse(newReleaseDate, out _) == false)
             {

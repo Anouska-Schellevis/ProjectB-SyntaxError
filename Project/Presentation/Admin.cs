@@ -90,7 +90,7 @@ class Admin
         foreach (var group in lastWeekReservations)
         {
             List<int> lastWeekShows = [];
-            // string dateFormat = "yyyy-MM-dd HH:mm";
+            string dateFormat = "yyyy-MM-dd HH:mm";
 
             ShowModel show = ShowAccess.GetByID(group.Key);
 

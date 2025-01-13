@@ -25,13 +25,13 @@ public static class VoucherAccess
     public static VoucherModel GetById(int id)
     {
         string sql = $"SELECT * FROM {Table} WHERE id = @Id";
-        return _connection.QueryFirstOrDefault<VoucherModel>(sql, new { Id = id })!;
+        return _connection.QueryFirstOrDefault<VoucherModel>(sql, new { Id = id });
     }
 
     public static VoucherModel GetByType(string type)
     {
         string sql = $"SELECT * FROM {Table} WHERE type = @Type";
-        return _connection.QueryFirstOrDefault<VoucherModel>(sql, new { Type = type })!;
+        return _connection.QueryFirstOrDefault<VoucherModel>(sql, new { Type = type });
     }
 
     public static List<VoucherModel> GetAllVouchers()
