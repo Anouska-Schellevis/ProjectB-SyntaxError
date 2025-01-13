@@ -6,14 +6,11 @@ using Dapper;
 public static class UserAccess
 {
     private static SqliteConnection _connection = new SqliteConnection($"Data Source=DataSources/project.db");
-    //private static SqliteConnection _connection = new SqliteConnection(@"Data Source=C:\Users\anouk\Desktop\projectb\ProjectB-SyntaxError\Project\DataSources\project.db");
-
 
     private static string Table = "user";
 
     public static void Write(UserModel account)
     {
-        //Console.WriteLine($"Writing to database: {account.Email}, {account.Password}, {account.FirstName}, {account.LastName}, {account.Phone_Number}, {account.Type}");
         string sql = $"INSERT INTO {Table} (email, password, firstname, lastname, phone_number, type) VALUES (@Email, @Password, @FirstName, @LastName, @Phone_Number, @Type)";
         _connection.Execute(sql, account);
     }
@@ -25,11 +22,6 @@ public static class UserAccess
         return _connection.QueryFirstOrDefault<UserModel>(sql, new { Id = id });
     }
 
-    //public static UserModel GetByEmail(string email)
-    //{
-    //  string sql = $"SELECT * FROM {Table} WHERE email = @Email";
-    // return _connection.QueryFirstOrDefault<UserModel>(sql, new { Email = email });
-    // }
     public static UserModel GetByEmail(string email)
     {
         try

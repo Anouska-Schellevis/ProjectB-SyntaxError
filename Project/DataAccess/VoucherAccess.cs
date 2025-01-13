@@ -46,18 +46,6 @@ public static class VoucherAccess
         return _connection.Query<VoucherModel>(sql, user).ToList();
     }
 
-
-    // public static void Update(ShowModel show)
-    // {
-    //     string sql = $"UPDATE {Table} SET theatre_id = @TheatreId, movie_id = @MovieId, date = @Date WHERE id = @Id";
-    //     _connection.Execute(sql, show);
-    // }
-
-    // public static void Delete(int id)
-    // {
-    //     string sql = $"DELETE FROM {Table} WHERE id = @Id";
-    //     _connection.Execute(sql, new { Id = id });
-    // }
     public static void ClearAllVouchers()
     {
         string deleteSql = $"DELETE FROM {Table};";

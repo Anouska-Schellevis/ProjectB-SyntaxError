@@ -1,19 +1,12 @@
 class Show
 {
-    // static public void Main()
-    // {
-    //     // bool admin = false;
-    //     // if (admin)
-    //     // { AdminStart(); }
-    //     // else
-    //     // { UserStart(); }
-    // }
     public static string dateofshow;
     static public void AdminStart(UserModel acc)
     {
-        while(true)
+        while (true)
         {
             Console.Clear();
+            Console.WriteLine("===== Show menu =====\n");
             Console.WriteLine("[1]Overview of all show");
             Console.WriteLine("[2]Add show");
             Console.WriteLine("[3]Edit show");
@@ -78,7 +71,7 @@ class Show
                     break;
                 case 3:
                     int ID_to_edit;
-                    while(true)
+                    while (true)
                     {
                         Console.Clear();
                         Console.WriteLine("Enter the id to edit");
@@ -480,7 +473,7 @@ class Show
         int newTheatreId = 0;
 
         int question1;
-        do 
+        do
         {
             Console.WriteLine("Would you like to change the theater number?");
             Console.WriteLine("[1]Yes\n[2]No");
@@ -513,9 +506,9 @@ class Show
                 }
             } while (newTheatreId != 1 && newTheatreId != 2 && newTheatreId != 3);
         }
-        
+
         int question2;
-        do 
+        do
         {
             Console.WriteLine("Would you like to change the movie title?");
             Console.WriteLine("[1]Yes\n[2]No");
@@ -567,7 +560,7 @@ class Show
         }
 
         int question;
-        do 
+        do
         {
             Console.WriteLine("Would you like to change the date/time?");
             Console.WriteLine("[1]Yes\n[2]No");
@@ -778,15 +771,7 @@ class Show
                 Console.WriteLine("Theater number does not exist. Try again.");
             }
         } while (newTheaterId != 1 && newTheaterId != 2 && newTheaterId != 3);
-        // do
-        // {
-        //     Console.WriteLine("Enter movie ID for this movie.");
-        //     newMovieId = Convert.ToInt32(Console.ReadLine());
-        //     if (MoviesAccess.GetById(newMovieId) == null)
-        //     {
-        //         Console.WriteLine("Movie ID does not exist. Try again.");
-        //     }
-        // } while (MoviesAccess.GetById(newMovieId) == null);
+
         string title = "";
         MoviesModel movie;
         List<MoviesModel> movies = MoviesLogic.GetAllMovies();
@@ -824,15 +809,7 @@ class Show
             }
         } while (movie == null);
         newMovieId = Convert.ToInt32(movie.Id);
-        // do
-        // {
-        //     Console.WriteLine("Enter date for this show in '%Y-%m-%d %H:%M' format.");
-        //     newDate_time = Console.ReadLine();
-        //     if (newDate_time.Contains("-") != true && newDate_time.Contains(":") != true)
-        //     {
-        //         Console.WriteLine("Not a valid date time format. Try again.");
-        //     }
-        // } while (newDate_time.Contains("-") != true && newDate_time.Contains(":") != true);
+
         bool backtodate = true;
         while (backtodate == true)
         {
@@ -884,10 +861,10 @@ class Show
                                 break;
                             }
                             else
-                            {  
+                            {
                                 int yesno;
                                 bool isNumYesNo;
-                                do 
+                                do
                                 {
                                     Console.WriteLine("Would you like to pick one of the suggested times for this day?");
                                     Console.WriteLine("[1]Yes\n[2]No");
@@ -1131,38 +1108,6 @@ class Show
         }
         return ShowTime;
     }
-
-    // public static void PrintMovie()
-    // {
-    //     ShowModel movie = Movie.
-    //     List<ShowModel> shows = ShowLogic.GetAllShows();
-    //     foreach (var movie in movies)
-    //     {
-    //         MoviesModel MovieInfo = MoviesLogic.GetById(movie.Key);
-    //         bool moviePrinted = false;
-    //         string days = "";
-    //         foreach (var show in shows)
-    //         {
-    //             if (movie.Key == show.MovieId)
-    //             {
-    //                 if (moviePrinted == false)
-    //                 {
-    //                     Console.WriteLine($"Movie: {movie.Value}");
-    //                     Console.WriteLine($"Genre: {MovieInfo.Genre}");
-    //                     Console.WriteLine($"Time in minutes: {MovieInfo.TimeInMinutes}");
-    //                     Console.WriteLine($"Release Date: {MovieInfo.ReleaseDate}");
-    //                     Console.WriteLine($"Director: {MovieInfo.Director}");
-    //                     Console.WriteLine($"Descrition: {MovieInfo.Description}");
-    //                     moviePrinted = true;
-    //                 }
-    //                 DayOfWeek showDate = DateTime.Parse(show.Date).DayOfWeek;
-    //                 string StringshowDate = Convert.ToString(showDate);
-    //                 days = days + " " + StringshowDate;
-    //             }
-    //         }
-    //         Console.WriteLine($"Plays on:{days}");
-    //     }
-    // }
 
     public static void WeekOverviewMovies()
     {

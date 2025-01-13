@@ -7,6 +7,7 @@ class Location
         while (true)
         {
             Console.Clear();
+            Console.WriteLine("===== Location menu =====\n");
             Console.WriteLine("[1]Overview of all locations");
             Console.WriteLine("[2]Add Location");
             Console.WriteLine("[3]Go back to the menu");
@@ -22,7 +23,7 @@ class Location
             {
                 Console.Clear();
                 PrintAllLocations();
-            
+
                 Console.WriteLine("\n[1]Go back to location menu");
                 Console.WriteLine("[2]Exit to admin menu");
 
@@ -75,32 +76,6 @@ class Location
                 Thread.Sleep(2000);
                 Console.Clear();
             }
-
-
-            // bool isCorrectFormat = int.TryParse(Console.ReadLine(), out int choice);
-            // if (!isCorrectFormat)
-            // {
-            //     Console.WriteLine("Invalid format. Make sure to enter a number.");
-            //     Start();
-            // }
-
-            // switch (choice)
-            // {
-            //     case 1:
-            //         PrintAllLocations();
-            //         Start();
-            //         break;
-            //     case 2:
-            //         AddLocation();
-            //         Start();
-            //         break;
-            //     case 3:
-            //         break;
-            //     default:
-            //         Console.WriteLine("No valid option selected. Please try again.");
-            //         Start();
-            //         break;
-            // }
         }
     }
 
