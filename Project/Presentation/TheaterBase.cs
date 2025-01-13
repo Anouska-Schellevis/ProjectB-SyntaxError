@@ -154,7 +154,7 @@ public abstract class TheaterBase
             Console.SetCursorPosition(0, Console.CursorTop - 1);
             Console.SetCursorPosition(0, Console.CursorTop + 1);
         } while (!isNum || how_many_people <= 0);
-        
+
         List<SeatsModel> selected_seats = new List<SeatsModel>();
 
         /*
@@ -385,7 +385,7 @@ public abstract class TheaterBase
                             Console.Write(new string(' ', Console.WindowWidth));
                             Console.SetCursorPosition(0, Console.CursorTop - 1);
                             Console.Write(new string(' ', Console.WindowWidth));
-                            Console.SetCursorPosition(0, Console.CursorTop - 1);                            
+                            Console.SetCursorPosition(0, Console.CursorTop - 1);
                             continue;
                         }
                     }
@@ -496,90 +496,6 @@ public abstract class TheaterBase
         }
     }
 
-
-    // private void MakeReservation(List<SeatsModel> selectedSeats, UserModel acc, long showId)
-    // {   
-    //     List<VoucherModel> userVouchers = VoucherLogic.GetVouchersByUserId(acc);
-    //     if (userVouchers.Count > 0) // Check if the user has a voucher, otherwise this option doesn't show up
-    //     {
-    //         Console.WriteLine("You have active vouchers");
-    //         Console.WriteLine("Would you like to use a voucher? (yes/no)");
-    //         bool useVoucher = Console.ReadLine().ToLower() == "yes";
-    //         if (useVoucher)
-    //         {
-    //             do
-    //             {
-    //                 Voucher.PrintAllUserVouchers(acc);
-    //                 Console.WriteLine("Enter the ID of the voucher you wish to use");
-
-    //                 bool isValidFormat = int.TryParse(Console.ReadLine(), out int inputId);
-    //                 if(!isValidFormat)
-    //                 {
-    //                     Console.WriteLine("Invalid format. Make sure to enter a number.");
-    //                     continue;
-    //                 }
-
-    //                 VoucherModel voucher = userVouchers.FirstOrDefault(v => v.Id == inputId); // Looks up if the input ID is from an existing voucher obj
-    //                 if (voucher is null)
-    //                 {
-    //                     Console.WriteLine("This ID doesn't exist. Try again");
-    //                     continue;
-    //                 }
-
-    //                 decimal oldAmount = voucher.Amount;
-
-    //                 for(int i = 0; i < selectedSeats.Count; i++)
-    //                 {
-    //                     voucher.Amount = oldAmount; // To ensure that all seats are discounted before the cost is finally deducted from the voucher.
-    //                     selectedSeats[i].Price = VoucherLogic.CalculateDiscountedPrice(ref voucher, selectedSeats[i].Price); // ref is used to make a reference to voucher outside this function.
-    //                 }
-
-    //                 VoucherLogic.UpdateVoucher(voucher); // Changes to the voucher are written to the database
-
-    //                 Console.WriteLine("Your voucher is succesfully applied!");
-    //                 break;
-    //             } while(true);
-    //         }
-    //     }
-
-    //     long userId = acc.Id;
-    //     Console.WriteLine("Do you want bar service? (yes/no):");
-    //     bool barService = Console.ReadLine().ToLower() == "yes" && IsBarAvailable(selectedSeats.Count, showId);
-
-    //     Console.WriteLine("Would you like to order snacks?");
-    //     Console.WriteLine("[1] Yes");
-    //     Console.WriteLine("[2] No");
-
-    //     string snacks = "";
-    //     if (Console.ReadLine() == "1")
-    //     {
-    //         List<MenuItem> selectedSnacks = SnackMenu.SelectSnacks();
-    //         List<string> snackNames = new List<string>();
-    //         foreach (MenuItem snack in selectedSnacks)
-    //         {
-    //             snackNames.Add(snack.Name);
-    //         }
-    //         snacks = string.Join(",", snackNames);
-    //     }
-
-    //     foreach (var seat in selectedSeats)
-    //     {
-    //         var reservation = new ReservationModel
-    //         {
-    //             Id = 0,
-    //             Bar = barService,
-    //             SeatsId = (int)seat.Id,
-    //             UserId = Convert.ToInt32(userId),
-    //             ShowId = (int)showId,
-    //             Snacks = snacks
-    //         };
-
-    //         ReservationLogic.WriteReservation(reservation);
-    //     }
-
-    //     Console.WriteLine($"Successfully reserved seats and snacks for {acc.FirstName} {acc.LastName}.");
-    //     User.Start(acc);
-    // }
     private void MakeReservation(List<SeatsModel> selectedSeats, UserModel acc, long showId)
     {
         List<VoucherModel> userVouchers = VoucherLogic.GetVouchersByUserId(acc);
@@ -685,7 +601,7 @@ public abstract class TheaterBase
             {
                 Console.WriteLine("Invalid option. Please enter 1 or 2");
             }
-        } while(barChoice != 1 && barChoice != 2);
+        } while (barChoice != 1 && barChoice != 2);
 
         bool barService = barChoice == 1 && IsBarAvailable(selectedSeats.Count, showId);
         Thread.Sleep(2000);
@@ -704,7 +620,7 @@ public abstract class TheaterBase
             {
                 Console.WriteLine("Invalid option. Please enter 1 or 2");
             }
-        } while(snackChoice != 1 && snackChoice != 2);
+        } while (snackChoice != 1 && snackChoice != 2);
         string snacks = "";
         if (snackChoice == 1)
         {

@@ -7,9 +7,10 @@ class Bar
     }
     static public void Start(UserModel acc)
     {
-        while(true)
+        while (true)
         {
             Console.Clear();
+            Console.WriteLine("===== Bar menu =====\n");
             Console.WriteLine("[1]Overview of all reservations");
             Console.WriteLine("[2]Status");
             Console.WriteLine("[3]Overview of all users");
@@ -29,7 +30,7 @@ class Bar
                 case 1:
                     Console.Clear();
                     AllReservationsPrint();
-                
+
                     Console.WriteLine("\n[1]Go back to bar menu");
                     Console.WriteLine("[2]Exit to admin menu");
 
@@ -67,7 +68,7 @@ class Bar
                 case 2:
                     Console.Clear();
                     StatusPrint();
-                                
+
                     Console.WriteLine("\n[1]Go back to bar menu");
                     Console.WriteLine("[2]Exit to admin menu");
 
@@ -105,7 +106,7 @@ class Bar
                 case 3:
                     Console.Clear();
                     AllUsersPrint();
-                
+
                     Console.WriteLine("\n[1]Go back to bar menu");
                     Console.WriteLine("[2]Exit to admin menu");
 

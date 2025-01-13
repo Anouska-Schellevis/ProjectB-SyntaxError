@@ -39,21 +39,12 @@ public static class ReservationAccess
     public static List<long> GetReservedSeatsByShowId(long showId)
     {
         string sql = $"SELECT seats_id FROM {Table} WHERE show_id = {showId}";
-        // Console.WriteLine("Executing query: " + sql);
         return _connection.Query<long>(sql).AsList();
     }
-
-    // public static List<ReservationModel> GetReservationsByUserId(long userId)
-    // {
-    //     string sql = $"SELECT * FROM {Table} WHERE user_id = {userId}";
-    //     // Console.WriteLine("Executing query: " + sql);
-    //     return _connection.Query<ReservationModel>(sql).AsList();
-    // }
 
     public static List<ReservationModel> GetReservationsByUserId(long userId)
     {
         string sql = $"SELECT id, bar, seats_id AS SeatsID, user_id AS UserID, show_id AS ShowId, snacks AS Snacks FROM {Table} WHERE user_id = {userId}";
-        // Console.WriteLine("Executing query: " + sql);
         return _connection.Query<ReservationModel>(sql).AsList();
     }
 

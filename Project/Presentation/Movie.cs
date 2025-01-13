@@ -2,16 +2,12 @@ using Microsoft.VisualBasic;
 
 class Movie
 {
-
-    // static public void Main()
-    // {
-    //     Start(acc);
-    // }
     static public void Start(UserModel acc)
     {
-        while(true)
+        while (true)
         {
             Console.Clear();
+            Console.WriteLine("===== Movie menu =====\n");
             Console.WriteLine("[1]Overview of all movies");
             Console.WriteLine("[2]Add movie");
             Console.WriteLine("[3]Edit movie");
@@ -131,15 +127,7 @@ class Movie
                 case 4:
                     Console.Clear();
                     string titleToDelete;
-                    // do
-                    // {
-                    //     Console.WriteLine("Enter the id of the movie you want to delete");
-                    //     idToDelete = Convert.ToInt32(Console.ReadLine());
-                    //     if (MoviesAccess.GetById(idToDelete) == null)
-                    //     {
-                    //         Console.WriteLine("This ID does not exist. Try again");
-                    //     }
-                    // } while (MoviesAccess.GetById(idToDelete) == null);
+
                     Console.WriteLine("Enter the title of the movie you want to search for(not uppercase sensitive)");
                     MoviesModel moviefordelete;
                     do
@@ -244,7 +232,7 @@ class Movie
                 case 6:
                     Console.Clear();
                     TrackPopularity(acc);
-                    
+
                     Console.WriteLine("\n[1]Go back to movie menu");
                     Console.WriteLine("[2]Exit to admin menu");
 
@@ -302,7 +290,7 @@ class Movie
         string newReleaseDate = "";
 
         int question1;
-        do 
+        do
         {
             Console.WriteLine("Would you like to change the duration in minutes?");
             Console.WriteLine("[1]Yes\n[2]No");
@@ -341,7 +329,7 @@ class Movie
         Console.Clear();
 
         int question2;
-        do 
+        do
         {
             Console.WriteLine("Would you like to change the genre?");
             Console.WriteLine("[1]Yes\n[2]No");
@@ -367,7 +355,7 @@ class Movie
         Console.Clear();
 
         int question3;
-        do 
+        do
         {
             Console.WriteLine("Would you like to change the description?");
             Console.WriteLine("[1]Yes\n[2]No");
@@ -393,7 +381,7 @@ class Movie
         Console.Clear();
 
         int question4;
-        do 
+        do
         {
             Console.WriteLine("Would you like to change the title?");
             Console.WriteLine("[1]Yes\n[2]No");
@@ -409,7 +397,7 @@ class Movie
             }
         }
         while (question4 != 1 && question4 != 2);
-        
+
         if (question4 == 1)
         {
             Console.WriteLine("Enter a new title for this movie.");
@@ -419,7 +407,7 @@ class Movie
         Console.Clear();
 
         int question5;
-        do 
+        do
         {
             Console.WriteLine("Would you like to change the director?");
             Console.WriteLine("[1]Yes\n[2]No");
@@ -435,7 +423,7 @@ class Movie
             }
         }
         while (question5 != 1 && question5 != 2);
-        
+
         if (question5 == 1)
         {
             Console.WriteLine("Enter new director for this movie.");
@@ -445,7 +433,7 @@ class Movie
         Console.Clear();
 
         int question6;
-        do 
+        do
         {
             Console.WriteLine("Would you like to change the release date?");
             Console.WriteLine("[1]Yes\n[2]No");
@@ -461,7 +449,7 @@ class Movie
             }
         }
         while (question6 != 1 && question6 != 2);
-        
+
         if (question6 == 1)
         {
             do
