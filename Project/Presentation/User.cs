@@ -37,63 +37,53 @@ class User
                 Console.WriteLine("Your bar reservation time is up. We kindly ask you to leave the bar");
             }
         }
-        bool exitMenu = false;
-        do
+
+        Console.WriteLine("Welcome " + acc.FirstName + " " + acc.LastName);
+
+        while (true)
         {
             //Console.Clear();
             //Console.WriteLine("User page\n");
-            Console.WriteLine("Welcome " + acc.FirstName + " " + acc.LastName);
-            Console.WriteLine("[1] See week overview of available movies");
-            Console.WriteLine("[2] Account info");
-            Console.WriteLine("[3] Logout");
+            Console.WriteLine("[1]See week overview of available movies");
+            Console.WriteLine("[2]Account info");
+            Console.WriteLine("[3]Logout");
             string user_answer = Console.ReadLine().ToLower();
 
             if (user_answer == "1")
             {
+                Console.Clear();
                 Show.UserStart(acc);
-                exitMenu = true;
             }
             else if (user_answer == "2")
             {
+                Console.Clear();
                 AccountInfo(acc);
-                exitMenu = true;
             }
             else if (user_answer == "3")
             {
                 Console.WriteLine("Logging out");
-                return;
+                Menu.Start();
+                break;
             }
             else
             {
                 Console.WriteLine("Invalid option, please try again.");
+                Thread.Sleep(2000);
+                Console.Clear();
             }
-        } while (!exitMenu);
-
-        // Console.WriteLine("Would you like to see the overview of available movies Y/N");
-        // string answer = Console.ReadLine().ToLower();
-
-        // if (answer == "y")
-        // {
-        //     //Console.WriteLine($"voordat hij naar show user start gaat {acc.FirstName}");
-        //     Show.UserStart(acc);
-        // }
-        // else
-        // {
-        //     Console.WriteLine("back to the menu...");
-        //     Menu.Start();
-        // }
+        }
     }
 
     public static void AccountInfo(UserModel acc)
     {
         Console.Clear();
-        bool exitMenu = false;
-        do
+
+        while (true)
         {
             Console.WriteLine("===== Account Info =====\n");
-            Console.WriteLine("[1] See your reservations");
-            Console.WriteLine("[2] See your vouchers");
-            Console.WriteLine("[3] Go back to user menu");
+            Console.WriteLine("[1]See your reservations");
+            Console.WriteLine("[2]See your vouchers");
+            Console.WriteLine("[3]Go back to user menu");
 
             string user_answer = Console.ReadLine().ToLower();
 
@@ -101,24 +91,24 @@ class User
             {
                 Console.Clear();
                 Reservation.SeeReservation(acc);
-                exitMenu = true;
             }
             else if (user_answer == "2")
             {
                 Console.Clear();
                 Voucher.UserStart(acc);
-                exitMenu = true;
             }
             else if (user_answer == "3")
             {
-                exitMenu = true;
+                Console.Clear();
+                break;
             }
             else
             {
                 Console.WriteLine("Invalid option, please try again.");
+                Thread.Sleep(2000);
+                Console.Clear();
             }
-        } while (!exitMenu);
-
-
+        }
+        Start(acc);
     }
 }

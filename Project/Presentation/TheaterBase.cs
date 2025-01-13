@@ -19,11 +19,12 @@ public abstract class TheaterBase
         {
             for (int j = 0; j < seats.GetLength(1); j++)
             {
-                seats[i, j] = pricingCategories[i, j] == 0 ? ' ' : 'A';
+                seats[i, j] = pricingCategories[i, j] == 0 ? 'X' : 'A';
             }
         }
     }
-    public void DisplaySeats(long showId)
+
+    public void DisplaySeats(long showId, int selectedRow = 0, int selectedCol = 0)
     {
         Console.Clear();
         List<long> reservedSeats = ReservationAccess.GetReservedSeatsByShowId(showId);
@@ -57,7 +58,7 @@ public abstract class TheaterBase
 
             for (int j = 0; j < columns; j++)
             {
-                if (seats[i, j] == ' ')
+                if (seats[i, j] == 'X')
                 {
                     Console.Write("    ");
                 }
@@ -72,18 +73,26 @@ public abstract class TheaterBase
                         switch (pricingCategories[i, j])
                         {
                             case 1:
-                                Console.ForegroundColor = ConsoleColor.Blue;
+                                Console.ForegroundColor = ConsoleColor.Red;
                                 break;
                             case 2:
                                 Console.ForegroundColor = ConsoleColor.Yellow;
                                 break;
                             case 3:
-                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.ForegroundColor = ConsoleColor.Blue;
+                                break;
+                            case 0:
+                                Console.ForegroundColor = ConsoleColor.Black;
                                 break;
                             default:
                                 Console.ForegroundColor = ConsoleColor.Gray;
                                 break;
                         }
+                    }
+
+                    if (i == selectedRow && j == selectedCol)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
                     }
 
                     if (seats[i, j] == 'A')
@@ -92,13 +101,19 @@ public abstract class TheaterBase
                     }
                     else if (seats[i, j] == 'C')
                     {
-                        Console.ForegroundColor = ConsoleColor.DarkGreen;
+                        Console.ForegroundColor = ConsoleColor.DarkGray;
+                        Console.Write("■   ");
+                    }
+                    else if (seats[i, j] == 'X')
+                    {
+                        Console.ForegroundColor = ConsoleColor.Black;
                         Console.Write("■   ");
                     }
                     else if (seats[i, j] == 'R')
                     {
                         Console.Write("■   ");
                     }
+                    Console.ResetColor();
                 }
             }
             Console.WriteLine();
@@ -121,309 +136,196 @@ public abstract class TheaterBase
 
     public void SelectSeats(long showId, UserModel acc)
     {
-        List<long> reserved_seats = ReservationAccess.GetReservedSeatsByShowId(showId);
-        DisplaySeats(showId);
+        List<long> reservedSeats = ReservationAccess.GetReservedSeatsByShowId(showId);
+        int selectedRow = 0;
+        int selectedCol = 0;
+        DisplaySeats(showId, selectedRow, selectedCol);
 
-        Console.WriteLine("How many seats do you want to book?");
-        int how_many_people = Convert.ToInt32(Console.ReadLine());
+        Console.WriteLine("Use arrow keys to navigate and Enter to select a seat. Press Esc to finish selection.");
 
-        List<SeatsModel> selected_seats = new List<SeatsModel>();
+        List<SeatsModel> selectedSeats = new List<SeatsModel>();
 
-        /*
-        This loop looks for consecutive empty seats in per row
-        The count wil be inserted in the empty seats
-        */
-        int[,] countAvailableSeats = new int[seats.GetLength(0), seats.GetLength(1)];
-        for (int i = 0; i < seats.GetLength(0); i++)
+        int seatscount = 1;
+        int countSeatPlusLeftSpace = 0;
+        int countEmptyLeftSpace = 0;
+
+        
+        // Count the total number of seats and empty array chars on the left side in the row
+        for (int j = 0; j < seats.GetLength(1); j++)
         {
-            int rowCountAvailableSeats = 0;
-
-            for (int j = 0; j < seats.GetLength(1); j++)
+            if (j < seats.GetLength(1)) // Cut the array length in half, so that the right side is not included, as it is not needed.
             {
-                if (seats[i, j] == 'A')
-                {
-                    rowCountAvailableSeats++;
-                    countAvailableSeats[i, j] = rowCountAvailableSeats;
-                }
-                else
-                {
-                    rowCountAvailableSeats = 0;
-                    countAvailableSeats[i, j] = 0;
-                }
+                countSeatPlusLeftSpace++;
             }
-
-            for (int jBack = seats.GetLength(1) - 1; jBack > 0; jBack--)
+            else
             {
-                if (seats[i, jBack] == 'A')
-                {
-                    if (seats[i, jBack - 1] == 'A')
-                    {
-                        countAvailableSeats[i, jBack - 1] = countAvailableSeats[i, jBack];
-                    }
-                }
+                if (seats[selectedRow, j] == 'X')
+                    countEmptyLeftSpace++;
                 else
-                {
-                    countAvailableSeats[i, jBack] = 0;
-                }
+                    countSeatPlusLeftSpace++;
             }
         }
-
-        for (int i = 0; i < how_many_people; i++)
+        
+ 
+        while (true)
         {
-            do
+            DisplaySeats(showId, selectedRow, selectedCol);
+
+            ConsoleKeyInfo key = Console.ReadKey(true);
+            if (key.Key == ConsoleKey.UpArrow && selectedRow > 0) 
             {
-                Console.WriteLine($"Booking seat {i + 1}");
-                Console.WriteLine("Enter the row and column of the seat (e.g., 5 6):");
-                string input = Console.ReadLine();
-
-                string[] parts = input.Split(' ');
-
-                if (parts.Length != 2 || !int.TryParse(parts[0], out int row) || !int.TryParse(parts[1], out int col))
+                selectedRow--; // Move up
+            }
+            else if (key.Key == ConsoleKey.DownArrow && selectedRow < seats.GetLength(0) - 1)
+            {
+                selectedRow++; // Move down
+            }
+            else if (key.Key == ConsoleKey.LeftArrow && selectedCol > 0)
+            {
+                selectedCol--; // Move left
+            }
+            else if (key.Key == ConsoleKey.RightArrow && selectedCol < seats.GetLength(1) - 1)
+            {
+                selectedCol++; // Move right
+            }
+            else if (key.Key == ConsoleKey.Enter)
+            {
+                // Check if the selected seat is available
+                if (seats[selectedRow, selectedCol] == 'A')
                 {
-                    Console.WriteLine("Invalid input format.");
-                    continue;
-                }
+                    // Check if the seat is valid
+                    bool isSingleSeatValid = IsValidSingleSeat(selectedRow, selectedCol, 1, 1); // Assuming 1 person for single seat check
+                    bool isGroupSeatValid = true;
 
-                row = seats.GetLength(0) - row;
-                col -= 1;
-
-                if (row < 0 || row >= seats.GetLength(0) || col < 0 || col >= seats.GetLength(1))
-                {
-                    Console.WriteLine("Invalid seat selection.");
-                    continue;
-                }
-
-                if (seats[row, col] == 'A')
-                {
-                    /*
-                    If the row contains enough consecutive empty seats, 
-                    but there will always be an empty seat somewhere in between
-                    */
-                    if (countAvailableSeats[row, col] == how_many_people + 1)
+                    if (seatscount >= 2)
                     {
-                        Console.WriteLine("Please choose another row. Make sure no empty seat is left unoccupied.");
-                        continue;
+                        isGroupSeatValid = IsValidGroupSeat(selectedRow, selectedCol); // Check if it's part of a valid group
                     }
-                    else if (i == 0 && countAvailableSeats[row, col] < how_many_people) // Not enough consecutive empty seats
+
+                    if (isSingleSeatValid && isGroupSeatValid)
                     {
-                        Console.WriteLine("There aren't enough seats here for everyone.");
-                        continue;
-                    }
-                    else if (how_many_people > 1) // For groups
-                    {
-                        /*
-                        Use countAvailableSeats to determine the amount of available seats next to each other
-                        If the first person wants to sit in the middle, 
-                        but if you seat everyone, 
-                        there will always be an empty seat left on one of the edges.
-                        */
-                        if (i == 0 && countAvailableSeats[row, col] == how_many_people + 3)
+                        seats[selectedRow, selectedCol] = 'C';
+
+                        decimal price = GetSeatPrice(selectedRow, selectedCol);
+                        var selectedSeat = new SeatsModel
                         {
-                            int countAvailableSeatsLeft = 0, countAvailableSeatsRight = 0;
-                            int rowWidth = seats.GetLength(1);
+                            RowNumber = seats.GetLength(0) - selectedRow,
+                            ColumnNumber = selectedCol + 1,
+                            Price = price
+                        };
 
-                            for (int j = 0; j < rowWidth; j++)
-                            {
-                                if (seats[row, j] == 'A' && j < col) countAvailableSeatsLeft++;
-                                if (seats[row, rowWidth - 1 - j] == 'A' && rowWidth - 1 - j > col) countAvailableSeatsRight++;
-                            }
-
-                            if (countAvailableSeatsLeft > 0 && countAvailableSeatsRight > 0) // So the first person should sit on the left or right edge
-                            {
-                                Console.WriteLine("Sorry, you can't take this seat");
-                                Console.WriteLine("Your seat may only be located on the left or right edge of the row");
-                                continue;
-                            }
-                        }
-                        else if (i > 0 && !IsValidGroupSeat(row, col)) // Does not apply to the first person to sit down
+                        long seatId = SeatsAccess.InsertSeatAndGetId(selectedSeat);
+                        selectedSeats.Add(new SeatsModel
                         {
-                            Console.WriteLine("Sorry, you can't take this seat.");
-                            Console.WriteLine("Make sure all selected seats are next to each other.");
-                            continue;
-                        }
-                        /*
-                        Only validate individual seat selection if seats stay empty
-                        Else the group can just seat all the available seats and this logic doesn't apply
-                        */
-                        if (countAvailableSeats[row, col] != how_many_people)
-                        {
-                            int peopleLeftToSeat = how_many_people - i;
-                            if (!IsValidSingleSeat(row, col, peopleLeftToSeat, how_many_people))
-                            {
-                                Console.WriteLine("Sorry, you can't take this seat.");
-                                Console.WriteLine("Make sure there is no empty seat between you and anyone else.");
-                                continue;
-                            }
-                        }
-                    }
-                    else // For individuals
-                    {
-                        if (!IsValidSingleSeat(row, col, 1, 1))
-                        {
-                            Console.WriteLine("Sorry, you can't take this seat.");
-                            Console.WriteLine("Make sure there is no empty seat between you and anyone else.");
-                            continue;
-                        }
-                    }
-
-                    seats[row, col] = 'C';
-                    // Console.WriteLine($"You have selected seat ({seats.GetLength(0) - row}, {col + 1}).");
-
-                    int chairType = pricingCategories[row, col];
-                    decimal price;
-                    //THIS HAS TO BE CHANGED TO DOUBLES IN THE CODE AND NUMERIC IN DATABASE
-                    //SO THAT WE CAN DO 12.5O RIGHT NOW THIS WORKS WITH ONLY WHOLE NUMMERS BUT
-                    //SHOULD EASILY WORK WITH DATABASE CHANGES
-                    //CHECK IF IT WORKS WITH ANOUSKA ADMIN MONEY SYSTEM.
-
-                    if (chairType == 1)
-                    {
-                        price = 10.00m;
-                    }
-                    else if (chairType == 2)
-                    {
-                        price = 12.50m;
-                    }
-                    else if (chairType == 3)
-                    {
-                        price = 15.00m;
+                            Id = seatId,
+                            RowNumber = selectedSeat.RowNumber,
+                            ColumnNumber = selectedSeat.ColumnNumber,
+                            Price = selectedSeat.Price
+                        });
+                        seatscount++;
                     }
                     else
                     {
-                        Console.WriteLine("Invalid chair type. Please select a valid seat.");
-                        continue;
+                        Console.WriteLine("This seat is not valid for selection.");
                     }
-
-                    var selectedSeat = new SeatsModel
-                    {
-                        RowNumber = seats.GetLength(0) - row,
-                        ColumnNumber = col + 1,
-                        Price = price
-                    };
-
-                    long seatId = SeatsAccess.InsertSeatAndGetId(selectedSeat);
-
-                    selected_seats.Add(new SeatsModel
-                    {
-                        Id = seatId,
-                        RowNumber = selectedSeat.RowNumber,
-                        ColumnNumber = selectedSeat.ColumnNumber,
-                        Price = selectedSeat.Price
-                    });
-
-                    DisplaySeats(showId);
-                    break;
-                }
-                else if (seats[row, col] == 'C')
-                {
-                    Console.WriteLine("Sorry, that seat is already taken.");
                 }
                 else
                 {
-                    Console.WriteLine("Sorry, that seat is not available.");
+                    Console.WriteLine("This seat is already taken or invalid.");
                 }
-            } while (true);
+            }
+            else if (key.Key == ConsoleKey.Backspace)
+            {
+                if (seats[selectedRow, selectedCol] == 'C')
+                {
+                    int seatIdToDelete = (int)(selectedSeats.FirstOrDefault(s => s.RowNumber == (seats.GetLength(0) - selectedRow) && s.ColumnNumber == (selectedCol + 1))?.Id ?? 0);
+
+                    bool canDelete = true;
+                    System.Console.WriteLine($"left edge: {countEmptyLeftSpace}");
+                    System.Console.WriteLine($"right edge: {countSeatPlusLeftSpace}");
+                    if (countEmptyLeftSpace == selectedCol)
+                    {
+                        if (seats[selectedRow, selectedCol + 1] == 'C')
+                        {
+                            canDelete = false;
+                        }
+                    }
+                    else if (countSeatPlusLeftSpace - 1 == selectedCol)
+                    {
+                        if (seats[selectedRow, selectedCol - 1] == 'C')
+                        {
+                            canDelete = false;
+                        }
+                    }
+                    else
+                    {
+                        if (seats[selectedRow, selectedCol + 1] == 'C' && seats[selectedRow, selectedCol - 1] == 'C')
+                        {
+                            canDelete = false;
+                        }
+                    }
+
+                    if (seatIdToDelete > 0 && canDelete)
+                    {
+                        SeatsAccess.Delete(seatIdToDelete);
+                        seats[selectedRow, selectedCol] = 'A';
+                        Console.WriteLine($"You have deleted the seat.");
+                        seatscount--;
+                    }
+                    else
+                    {
+                        Console.WriteLine($"This seat can't be deleted.");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine($"This seat is not selected.");
+                }
+            }
+            else if (key.Key == ConsoleKey.Escape)
+            {
+                break; // Exit the loop when Escape is pressed
+            }
         }
 
-        if (acc != null)
+        if (selectedSeats.Count > 0)
         {
-            Console.WriteLine("Making reservation...");
-            MakeReservation(selected_seats, acc, showId);
+            if (acc != null)
+            {
+                Console.WriteLine("Making reservation...");
+                MakeReservation(selectedSeats, acc, showId);
+            }
+            else
+            {
+                Console.WriteLine("No user logged in, cannot make a reservation.");
+            }
         }
         else
         {
-            Console.WriteLine("No user logged in, cannot make a reservation.");
+            Console.WriteLine("No seats selected.");
         }
     }
 
+    private decimal GetSeatPrice(int row, int col)
+    {
+        int chairType = pricingCategories[row, col];
+        switch (chairType)
+        {
+            case 1:
+                return 10.00m;
+            case 2:
+                return 12.50m;
+            case 3:
+                return 15.00m;
+            default:
+                return 0.00m;
+        }
+    }
 
-    // private void MakeReservation(List<SeatsModel> selectedSeats, UserModel acc, long showId)
-    // {   
-    //     List<VoucherModel> userVouchers = VoucherLogic.GetVouchersByUserId(acc);
-    //     if (userVouchers.Count > 0) // Check if the user has a voucher, otherwise this option doesn't show up
-    //     {
-    //         Console.WriteLine("You have active vouchers");
-    //         Console.WriteLine("Would you like to use a voucher? (yes/no)");
-    //         bool useVoucher = Console.ReadLine().ToLower() == "yes";
-    //         if (useVoucher)
-    //         {
-    //             do
-    //             {
-    //                 Voucher.PrintAllUserVouchers(acc);
-    //                 Console.WriteLine("Enter the ID of the voucher you wish to use");
-
-    //                 bool isValidFormat = int.TryParse(Console.ReadLine(), out int inputId);
-    //                 if(!isValidFormat)
-    //                 {
-    //                     Console.WriteLine("Invalid format. Make sure to enter a number.");
-    //                     continue;
-    //                 }
-
-    //                 VoucherModel voucher = userVouchers.FirstOrDefault(v => v.Id == inputId); // Looks up if the input ID is from an existing voucher obj
-    //                 if (voucher is null)
-    //                 {
-    //                     Console.WriteLine("This ID doesn't exist. Try again");
-    //                     continue;
-    //                 }
-
-    //                 decimal oldAmount = voucher.Amount;
-
-    //                 for(int i = 0; i < selectedSeats.Count; i++)
-    //                 {
-    //                     voucher.Amount = oldAmount; // To ensure that all seats are discounted before the cost is finally deducted from the voucher.
-    //                     selectedSeats[i].Price = VoucherLogic.CalculateDiscountedPrice(ref voucher, selectedSeats[i].Price); // ref is used to make a reference to voucher outside this function.
-    //                 }
-
-    //                 VoucherLogic.UpdateVoucher(voucher); // Changes to the voucher are written to the database
-
-    //                 Console.WriteLine("Your voucher is succesfully applied!");
-    //                 break;
-    //             } while(true);
-    //         }
-    //     }
-
-    //     long userId = acc.Id;
-    //     Console.WriteLine("Do you want bar service? (yes/no):");
-    //     bool barService = Console.ReadLine().ToLower() == "yes" && IsBarAvailable(selectedSeats.Count, showId);
-
-    //     Console.WriteLine("Would you like to order snacks?");
-    //     Console.WriteLine("[1] Yes");
-    //     Console.WriteLine("[2] No");
-
-    //     string snacks = "";
-    //     if (Console.ReadLine() == "1")
-    //     {
-    //         List<MenuItem> selectedSnacks = SnackMenu.SelectSnacks();
-    //         List<string> snackNames = new List<string>();
-    //         foreach (MenuItem snack in selectedSnacks)
-    //         {
-    //             snackNames.Add(snack.Name);
-    //         }
-    //         snacks = string.Join(",", snackNames);
-    //     }
-
-    //     foreach (var seat in selectedSeats)
-    //     {
-    //         var reservation = new ReservationModel
-    //         {
-    //             Id = 0,
-    //             Bar = barService,
-    //             SeatsId = (int)seat.Id,
-    //             UserId = Convert.ToInt32(userId),
-    //             ShowId = (int)showId,
-    //             Snacks = snacks
-    //         };
-
-    //         ReservationLogic.WriteReservation(reservation);
-    //     }
-
-    //     Console.WriteLine($"Successfully reserved seats and snacks for {acc.FirstName} {acc.LastName}.");
-    //     User.Start(acc);
-    // }
-    private void MakeReservation(List<SeatsModel> selectedSeats, UserModel acc, long showId)
+    protected void MakeReservation(List<SeatsModel> selectedSeats, UserModel acc, long showId)
     {
         List<VoucherModel> userVouchers = VoucherLogic.GetVouchersByUserId(acc);
-        if (userVouchers.Count > 0) // Check if the user has a voucher, otherwise this option doesn't show up
+        if (userVouchers.Count > 0)
         {
             Console.WriteLine("You have active vouchers");
             Console.WriteLine("Would you like to use a voucher?");
@@ -511,8 +413,6 @@ public abstract class TheaterBase
                     snacks += snack.Key.Name;
                 }
             }
-
-
         }
 
         foreach (var seat in selectedSeats)
@@ -552,7 +452,7 @@ public abstract class TheaterBase
             }
             else
             {
-                if (seats[row, j] == ' ')
+                if (seats[row, j] == 'X')
                     countEmptyLeftSpace++;
                 else
                     countSeatPlusLeftSpace++;
@@ -652,7 +552,7 @@ public abstract class TheaterBase
         /*
         Group seats must be next to each other
         */
-        if ((col > 0 && seats[row, col - 1] == 'C') || (col + 1 < seats.GetLength(0) && seats[row, col + 1] == 'C'))
+        if ((col > 0 && seats[row, col - 1] == 'C') || (col + 1 < seats.GetLength(1) && seats[row, col + 1] == 'C'))
         {
             return true;
         }
@@ -693,7 +593,7 @@ public abstract class TheaterBase
         }
         else
         {
-            Console.WriteLine("We’re unable to take any more bar reservations. It is fully booked");
+            Console.WriteLine("We're unable to take any more bar reservations. It is fully booked");
             return false;
         }
     }
