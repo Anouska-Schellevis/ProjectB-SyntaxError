@@ -6,7 +6,7 @@ class Location
     {
         while (true)
         {
-            Console.Clear();
+            Console.WriteLine("===== Location menu =====\n");
             Console.WriteLine("[1]Overview of all locations");
             Console.WriteLine("[2]Add Location");
             Console.WriteLine("[3]Go back to the menu");
@@ -22,7 +22,7 @@ class Location
             {
                 Console.Clear();
                 PrintAllLocations();
-            
+
                 Console.WriteLine("\n[1]Go back to location menu");
                 Console.WriteLine("[2]Exit to admin menu");
 
