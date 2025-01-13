@@ -70,6 +70,7 @@ public class SnackMenu
                 Thread.Sleep(2000);
             }
         }
+        Admin.Start(acc);
     }
 
     public static void CreateMenu(UserModel acc)
@@ -427,20 +428,24 @@ public class SnackMenu
                             orderDict[chosenSnack] = quantity;
                         }
                         Console.WriteLine($"\nAdded {quantity} x {chosenSnack.Name} to your order.");
+                        Thread.Sleep(2000);
                     }
                     else
                     {
                         Console.WriteLine("\nPlease enter a valid quantity.");
+                        Thread.Sleep(2000);
                     }
                 }
                 else
                 {
                     Console.WriteLine("\nPlease pick a number from the menu.");
+                    Thread.Sleep(2000);
                 }
             }
             else
             {
                 Console.WriteLine("\nPlease enter a number.");
+                Thread.Sleep(2000);
             }
         }
 
@@ -475,6 +480,7 @@ public class SnackMenu
                 if (!isNum)
                 {
                     Console.WriteLine("Invalid input. Must be a number");
+                    Thread.Sleep(2000);
                 }
                 else if (editChoice == 1)
                 {
@@ -574,6 +580,7 @@ public class SnackMenu
                 else
                 {
                     Console.WriteLine("Invalid choice. Please choose [1] to confirm or [2] to edit.");
+                    Thread.Sleep(2000);
                 }
             } while (editChoice != 1 && editChoice != 2);
         }
@@ -690,6 +697,7 @@ public class SnackMenu
             }
             else if (int.TryParse(input, out choice) && choice > 0 && choice <= snacks.Count)
             {
+                Console.Clear();
                 MenuItem selectedSnack = snacks[choice - 1];
 
                 Console.WriteLine($"You are editing: {selectedSnack.Name} (€{selectedSnack.Price:F2})");
@@ -702,7 +710,7 @@ public class SnackMenu
                     Console.WriteLine("[2]No");
                     bool isNum = int.TryParse(Console.ReadLine(), out nameChoice);
                     Console.Clear();
-                    if (isNum)
+                    if (!isNum)
                     {
                         Console.WriteLine("Invalid input. Must be a number.");
                     }
@@ -714,6 +722,7 @@ public class SnackMenu
                 if (nameChoice == 1)
                 {
                     Console.WriteLine("Enter the new name:");
+                    selectedSnack.OldName = selectedSnack.Name; // keep the old name for search in the db
                     selectedSnack.Name = Console.ReadLine();
                 }
 
@@ -727,7 +736,7 @@ public class SnackMenu
                     Console.WriteLine("[2]No");
                     bool isNum = int.TryParse(Console.ReadLine(), out priceChoice);
                     Console.Clear();
-                    if (isNum)
+                    if (!isNum)
                     {
                         Console.WriteLine("Invalid input. Must be a number.");
                     }
@@ -753,12 +762,12 @@ public class SnackMenu
                 int typeChoice = 0;
                 do
                 {
-                    Console.WriteLine("\nWould you like to edit the price?");
+                    Console.WriteLine("\nWould you like to edit the type (drink/food)?");
                     Console.WriteLine("[1]Yes");
                     Console.WriteLine("[2]No");
                     bool isNum = int.TryParse(Console.ReadLine(), out typeChoice);
                     Console.Clear();
-                    if (isNum)
+                    if (!isNum)
                     {
                         Console.WriteLine("Invalid input. Must be a number.");
                     }
@@ -769,13 +778,13 @@ public class SnackMenu
                 } while (typeChoice != 1 && typeChoice != 2);
                 if (typeChoice == 1)
                 {
-                    Console.WriteLine("\nWhat type is this menu item?");
-                    Console.WriteLine("[1]Drink");
-                    Console.WriteLine("[2]Food");
-
                     bool type;
                     while (true)
                     {
+                        Console.WriteLine("\nWhat type is this menu item?");
+                        Console.WriteLine("[1]Drink");
+                        Console.WriteLine("[2]Food");
+
                         string typeSelection = Console.ReadLine();
                         if (typeSelection == "1")
                         {
@@ -789,6 +798,7 @@ public class SnackMenu
                         }
                         else
                         {
+                            Console.Clear();
                             Console.WriteLine("Invalid choice. Please enter 1 for drink or 2 for food:");
                         }
                     }
