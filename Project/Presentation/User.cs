@@ -47,7 +47,7 @@ class User
             Console.WriteLine("[1]See week overview of available movies");
             Console.WriteLine("[2]Account info");
             Console.WriteLine("[3]Logout");
-            string user_answer = Console.ReadLine().ToLower();
+            string user_answer = Console.ReadLine()!.ToLower();
 
             if (user_answer == "1")
             {
@@ -85,7 +85,7 @@ class User
             Console.WriteLine("[2]See your vouchers");
             Console.WriteLine("[3]Go back to user menu");
 
-            string user_answer = Console.ReadLine().ToLower();
+            string user_answer = Console.ReadLine()!.ToLower();
 
             if (user_answer == "1")
             {

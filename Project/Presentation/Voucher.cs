@@ -9,7 +9,7 @@ class Voucher
             Console.WriteLine("[1]Add a new voucher");
             Console.WriteLine("[2]Show all the vouchers");
             Console.WriteLine("[3]Go back to the menu");
-            bool isNum = int.TryParse(Console.ReadLine(), out int input);
+            bool isNum = int.TryParse(Console.ReadLine()!, out int input);
             if (!isNum)
             {
                 Console.WriteLine("Invalid input. Must be a number");
@@ -29,7 +29,7 @@ class Voucher
                 {
                     // Ask the admin what kind of voucher he would like to make
                     Console.WriteLine("What kind of voucher would you like to add?\n[1]Percentage\n[2]Amount of money");
-                    bool isNumType = int.TryParse(Console.ReadLine(), out typeAnswer);
+                    bool isNumType = int.TryParse(Console.ReadLine()!, out typeAnswer);
                     Console.Clear();
                     if (isNumType)
                     {
@@ -57,7 +57,7 @@ class Voucher
                 {
                     // Ask the admin what the amount of the voucher will be
                     Console.WriteLine("What is the amount?");
-                    bool isDecimal = decimal.TryParse(Console.ReadLine(), out amount);
+                    bool isDecimal = decimal.TryParse(Console.ReadLine()!, out amount);
                     Console.Clear();
                     if (!isDecimal)
                     {
@@ -95,7 +95,7 @@ class Voucher
                 {
                     // Ask the admin if the voucher needs a description
                     Console.WriteLine("Would you like to add a description?\n[1]Yes\n[2]No");
-                    bool isNumAnswer = int.TryParse(Console.ReadLine(), out answer);
+                    bool isNumAnswer = int.TryParse(Console.ReadLine()!, out answer);
                     Console.Clear();
                     if (!isNumAnswer)
                     {
@@ -109,7 +109,7 @@ class Voucher
                 if (answer == 1)
                 {
                     Console.WriteLine("Type your description");
-                    description = Console.ReadLine();
+                    description = Console.ReadLine()!;
                 }
 
                 Console.Clear();
@@ -117,7 +117,7 @@ class Voucher
                 do
                 {
                     Console.WriteLine("Enter the expiration date?(YYYY-MM-DD)");
-                    enterDate = Console.ReadLine();
+                    enterDate = Console.ReadLine()!;
                     Console.Clear();
 
                     bool isValidDateTime = DateTime.TryParse(enterDate, out dateTime);
@@ -202,7 +202,7 @@ class Voucher
 
                 while (true)
                 {
-                    string menuChoice = Console.ReadLine();
+                    string menuChoice = Console.ReadLine()!;
                     if (menuChoice == "1")
                     {
                         Console.Clear();
@@ -253,7 +253,7 @@ class Voucher
             Console.Clear();
             PrintAllUserVouchers(acc);
             Console.WriteLine("Would you like to go back to the user menu?\n[1]Yes\n[2]No");
-            bool isCorrectFormat = int.TryParse(Console.ReadLine(), out int choice);
+            bool isCorrectFormat = int.TryParse(Console.ReadLine()!, out int choice);
             if (!isCorrectFormat)
             {
                 Console.WriteLine("Invalid format. Make sure to enter a number.");

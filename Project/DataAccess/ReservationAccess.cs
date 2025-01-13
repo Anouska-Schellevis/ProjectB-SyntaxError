@@ -15,7 +15,7 @@ public static class ReservationAccess
     public static ReservationModel GetById(int id)
     {
         string sql = $"SELECT * FROM {Table} WHERE id = @Id";
-        return _connection.QueryFirstOrDefault<ReservationModel>(sql, new { Id = id });
+        return _connection.QueryFirstOrDefault<ReservationModel>(sql, new { Id = id })!;
     }
 
     public static List<ReservationModel> GetBarReservations()

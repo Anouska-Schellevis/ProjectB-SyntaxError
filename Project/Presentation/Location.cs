@@ -13,7 +13,7 @@ class Location
             Console.WriteLine("[3]Go back to the menu");
             Console.WriteLine("What would you like to do?");
 
-            bool isNum = int.TryParse(Console.ReadLine(), out int input);
+            bool isNum = int.TryParse(Console.ReadLine()!, out int input);
             if (!isNum)
             {
                 Console.WriteLine("Invalid input. Must be a number");
@@ -29,7 +29,7 @@ class Location
 
                 while (true)
                 {
-                    string menuChoice = Console.ReadLine();
+                    string menuChoice = Console.ReadLine()!;
                     if (menuChoice == "1")
                     {
                         Console.Clear();
@@ -100,7 +100,7 @@ class Location
         do
         {
             Console.WriteLine("Enter the city name: ");
-            inputCity = Console.ReadLine();
+            inputCity = Console.ReadLine()!;
             Console.Clear();
         } while (inputCity.Length == 0 || !OnlyLetters(inputCity));
 
@@ -108,7 +108,7 @@ class Location
         do
         {
             Console.WriteLine("Enter the address like this 'Street 1': ");
-            inputAddress = Console.ReadLine();
+            inputAddress = Console.ReadLine()!;
             Console.Clear();
         } while (!CheckAddress(inputAddress));
 
@@ -116,7 +116,7 @@ class Location
         do
         {
             Console.WriteLine("Enter the postal code like this '1111 AA': ");
-            inputPostalCode = Console.ReadLine();
+            inputPostalCode = Console.ReadLine()!;
             Console.Clear();
         } while (!CheckPostalCode(inputPostalCode));
 
