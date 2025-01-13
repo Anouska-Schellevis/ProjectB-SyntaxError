@@ -7,6 +7,7 @@ class Location
         Console.Clear();
         while (true)
         {
+            Console.WriteLine("===== Location menu =====\n");
             Console.WriteLine("[1]Overview of all locations");
             Console.WriteLine("[2]Add Location");
             Console.WriteLine("[3]Go back to the menu");

@@ -9,6 +9,7 @@ class Movie
     // }
     static public void Start(UserModel acc)
     {
+        Console.WriteLine("===== Movie menu =====\n");
         Console.WriteLine("[1]Overview of all movies");
         Console.WriteLine("[2]Add movie");
         Console.WriteLine("[3]Edit movie");

@@ -7,6 +7,7 @@ class Bar
     }
     static public void Start()
     {
+        Console.WriteLine("===== Bar menu =====\n");
         Console.WriteLine("[1]Overview of all reservations");
         Console.WriteLine("[2]Status");
         Console.WriteLine("[3]Overview of all users");

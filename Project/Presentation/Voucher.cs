@@ -4,6 +4,7 @@ class Voucher
     {
         while (true)
         {
+            Console.WriteLine("===== Voucher menu =====\n");
             Console.WriteLine("[1]Add a new voucher");
             Console.WriteLine("[2]Show all the vouchers");
             Console.WriteLine("[3]Go back to the menu");
