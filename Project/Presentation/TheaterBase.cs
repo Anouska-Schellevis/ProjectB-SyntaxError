@@ -149,10 +149,11 @@ public abstract class TheaterBase
         int countSeatPlusLeftSpace = 0;
         int countEmptyLeftSpace = 0;
 
+        
         // Count the total number of seats and empty array chars on the left side in the row
         for (int j = 0; j < seats.GetLength(1); j++)
         {
-            if (j < seats.GetLength(1)/ 2) // Cut the array length in half, so that the right side is not included, as it is not needed.
+            if (j < seats.GetLength(1)) // Cut the array length in half, so that the right side is not included, as it is not needed.
             {
                 countSeatPlusLeftSpace++;
             }
@@ -164,6 +165,7 @@ public abstract class TheaterBase
                     countSeatPlusLeftSpace++;
             }
         }
+        
  
         while (true)
         {
@@ -550,7 +552,7 @@ public abstract class TheaterBase
         /*
         Group seats must be next to each other
         */
-        if ((col > 0 && seats[row, col - 1] == 'C') || (col + 1 < seats.GetLength(0) && seats[row, col + 1] == 'C'))
+        if ((col > 0 && seats[row, col - 1] == 'C') || (col + 1 < seats.GetLength(1) && seats[row, col + 1] == 'C'))
         {
             return true;
         }
