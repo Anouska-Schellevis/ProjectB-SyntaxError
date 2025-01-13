@@ -15,7 +15,7 @@ public static class MenuItemAccess
     public static MenuItem GetByName(string name)
     {
         string sql = $"SELECT * FROM {Table} WHERE name = @Name";
-        return _connection.QueryFirstOrDefault<MenuItem>(sql, new { Name = name })!;
+        return _connection.QueryFirstOrDefault<MenuItem>(sql, new { Name = name });
     }
 
     public static void Update(MenuItem item)
@@ -35,7 +35,7 @@ public static class MenuItemAccess
     public static MenuItem GetById(int id)
     {
         string sql = $"SELECT * FROM {Table} WHERE id = @Id";
-        return _connection.QueryFirstOrDefault<MenuItem>(sql, new { Id = id })!;
+        return _connection.QueryFirstOrDefault<MenuItem>(sql, new { Id = id });
     }
 
     public static List<MenuItem> GetAllMenuItems()

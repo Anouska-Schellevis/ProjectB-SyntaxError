@@ -5,6 +5,7 @@ public class LocationModel
     public string Address { get; set; }
     public string PostalCode { get; set; }
 
+    public LocationModel() { }
     public LocationModel(Int64 id, string city, string address, string postalCode)
     {
         Id = id;

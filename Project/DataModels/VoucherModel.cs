@@ -8,6 +8,8 @@ public class VoucherModel
     public string ExpirationDate { get; set; }
     public int? UserId { get; set; }
 
+    public VoucherModel() { }
+
     public VoucherModel(Int64 id, string code, string description, decimal amount, string type, string expirationDate, int? userId = null)
     {
         Id = id;

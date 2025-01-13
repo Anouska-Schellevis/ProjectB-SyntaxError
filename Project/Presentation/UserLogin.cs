@@ -12,9 +12,9 @@ static class UserLogin
             Console.Clear();
             Console.WriteLine("Welcome to the login page");
             Console.WriteLine("Please enter your email address");
-            string email = Console.ReadLine()!;
+            string email = Console.ReadLine();
             Console.WriteLine("Please enter your password");
-            string password = Console.ReadLine()!;
+            string password = Console.ReadLine();
 
             UserModel acc = userlogin.CheckLogin(email, password);
             if (acc != null)

@@ -7,7 +7,7 @@ public class UserNewAccountLogic
         do
         {
             Console.WriteLine("Please enter your email address:");
-            email = Console.ReadLine()!;
+            email = Console.ReadLine();
             Console.Clear();
         } while (!IsValidEmail(email));
 
@@ -15,7 +15,7 @@ public class UserNewAccountLogic
         do
         {
             Console.WriteLine("Create password:");
-            password = Console.ReadLine()!;
+            password = Console.ReadLine();
             Console.Clear();
         } while (!IsValidPassword(password));
 
@@ -23,7 +23,7 @@ public class UserNewAccountLogic
         do
         {
             Console.WriteLine("Please enter your first name:");
-            firstName = Console.ReadLine()!;
+            firstName = Console.ReadLine();
             Console.Clear();
         } while (!OnlyLetters(firstName));
 
@@ -32,7 +32,7 @@ public class UserNewAccountLogic
         do
         {
             Console.WriteLine("Please enter your last name:");
-            lastName = Console.ReadLine()!;
+            lastName = Console.ReadLine();
             Console.Clear();
         } while (!OnlyLetters(lastName));
 
@@ -42,7 +42,7 @@ public class UserNewAccountLogic
         do
         {   //for now it takes 10 digets aka 0612345678
             Console.WriteLine("Please enter your phone number (10 digits):");
-            phoneInput = Console.ReadLine()!;
+            phoneInput = Console.ReadLine();
             Console.Clear();
 
             if (phoneInput.Length == 10 && OnlyNumbers(phoneInput))

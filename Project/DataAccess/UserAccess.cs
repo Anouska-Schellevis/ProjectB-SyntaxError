@@ -19,7 +19,7 @@ public static class UserAccess
     public static UserModel GetById(int id)
     {
         string sql = $"SELECT * FROM {Table} WHERE id = @Id";
-        return _connection.QueryFirstOrDefault<UserModel>(sql, new { Id = id })!;
+        return _connection.QueryFirstOrDefault<UserModel>(sql, new { Id = id });
     }
 
     public static UserModel GetByEmail(string email)
@@ -28,12 +28,12 @@ public static class UserAccess
         {
             _connection.Open(); // Try to open the connection
             string sql = $"SELECT * FROM {Table} WHERE email = @Email";
-            return _connection.QueryFirstOrDefault<UserModel>(sql, new { Email = email })!;
+            return _connection.QueryFirstOrDefault<UserModel>(sql, new { Email = email });
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Error opening database: {ex.Message}");
-            return null!; // Return null in case of an error
+            return null; // Return null in case of an error
         }
         finally
         {
@@ -44,7 +44,7 @@ public static class UserAccess
     public static UserModel GetByType(string email)
     {
         string sql = $"SELECT * FROM {Table} WHERE email = @Email AND type = 1";
-        return _connection.QueryFirstOrDefault<UserModel>(sql, new { Email = email })!;
+        return _connection.QueryFirstOrDefault<UserModel>(sql, new { Email = email });
     }
 
     public static void Delete(int id)

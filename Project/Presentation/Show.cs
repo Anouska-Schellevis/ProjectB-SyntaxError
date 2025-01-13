@@ -13,7 +13,7 @@ class Show
             Console.WriteLine("[4]Delete show");
             Console.WriteLine("[5]Go back to the menu");
             Console.WriteLine("What would you like to do?");
-            bool isNum = int.TryParse(Console.ReadLine()!, out int choice);
+            bool isNum = int.TryParse(Console.ReadLine(), out int choice);
             if (!isNum)
             {
                 Console.WriteLine("Invalid input. Must be a number");
@@ -34,7 +34,7 @@ class Show
 
                     while (true)
                     {
-                        string menuChoice = Console.ReadLine()!;
+                        string menuChoice = Console.ReadLine();
                         if (menuChoice == "1")
                         {
                             Console.Clear();
@@ -75,7 +75,7 @@ class Show
                     {
                         Console.Clear();
                         Console.WriteLine("Enter the id to edit");
-                        bool idIsNum = int.TryParse(Console.ReadLine()!, out ID_to_edit);
+                        bool idIsNum = int.TryParse(Console.ReadLine(), out ID_to_edit);
                         if (!idIsNum)
                         {
                             Console.WriteLine("Invalid input. Must be a number");
@@ -105,7 +105,7 @@ class Show
                     {
                         Console.Clear();
                         Console.WriteLine("Enter the id of the show you want to delete");
-                        bool idIsNum = int.TryParse(Console.ReadLine()!, out idToDelete);
+                        bool idIsNum = int.TryParse(Console.ReadLine(), out idToDelete);
                         if (!idIsNum)
                         {
                             Console.WriteLine("Invalid input. Must be a number");
@@ -161,7 +161,7 @@ class Show
                         Console.WriteLine($"{movie_count.Key}. {movie_name}");
                     }
 
-                    bool isNum = int.TryParse(Console.ReadLine()!, out chosennumber);
+                    bool isNum = int.TryParse(Console.ReadLine(), out chosennumber);
                     if (!isNum)
                     {
                         Console.WriteLine("Invalid input. Must be a number");
@@ -202,7 +202,7 @@ class Show
                     Console.WriteLine("[4]Go back to day overview");
                     Console.WriteLine("[5]Go back to the menu");
 
-                    bool isNum = int.TryParse(Console.ReadLine()!, out choice);
+                    bool isNum = int.TryParse(Console.ReadLine(), out choice);
                     if (!isNum)
                     {
                         Console.WriteLine("Invalid input. Must be a number");
@@ -252,7 +252,7 @@ class Show
                     Console.WriteLine("\nWhat would you like to do?");
                     Console.WriteLine("[1]Choose time");
                     Console.WriteLine("[2]Go back to week overview");
-                    bool isNum = int.TryParse(Console.ReadLine()!, out secondchoice);
+                    bool isNum = int.TryParse(Console.ReadLine(), out secondchoice);
                     if (!isNum)
                     {
                         Console.WriteLine("Invalid input. Must be a number");
@@ -282,7 +282,7 @@ class Show
                                     string time = datetime.Value.Date.Split(' ')[1];
                                     Console.WriteLine($"{datetime.Key}. {time}");
                                 }
-                                bool isNum = int.TryParse(Console.ReadLine()!, out chosentime);
+                                bool isNum = int.TryParse(Console.ReadLine(), out chosentime);
                                 Console.Clear();
                                 if (!isNum)
                                 {
@@ -374,7 +374,7 @@ class Show
                             string time = datetime.Value.Date.Split(' ')[1];
                             Console.WriteLine($"{datetime.Key}. {time}");
                         }
-                        bool isNum = int.TryParse(Console.ReadLine()!, out chosentime);
+                        bool isNum = int.TryParse(Console.ReadLine(), out chosentime);
                         Console.Clear();
                         if (!isNum)
                         {
@@ -468,6 +468,7 @@ class Show
         int newMovieId = 0;
         string newDate_time;
         string Date = "";
+        bool timecheck = false;
         string time = "";
         int newTheatreId = 0;
 
@@ -476,7 +477,7 @@ class Show
         {
             Console.WriteLine("Would you like to change the theater number?");
             Console.WriteLine("[1]Yes\n[2]No");
-            bool isNum = int.TryParse(Console.ReadLine()!, out question1);
+            bool isNum = int.TryParse(Console.ReadLine(), out question1);
             Console.Clear();
             if (!isNum)
             {
@@ -493,7 +494,7 @@ class Show
             do
             {
                 Console.WriteLine("Enter new theater number for this movie.");
-                bool isNum = int.TryParse(Console.ReadLine()!, out newTheatreId);
+                bool isNum = int.TryParse(Console.ReadLine(), out newTheatreId);
                 Console.Clear();
                 if (!isNum)
                 {
@@ -511,7 +512,7 @@ class Show
         {
             Console.WriteLine("Would you like to change the movie title?");
             Console.WriteLine("[1]Yes\n[2]No");
-            bool isNum = int.TryParse(Console.ReadLine()!, out question2);
+            bool isNum = int.TryParse(Console.ReadLine(), out question2);
             Console.Clear();
             if (!isNum)
             {
@@ -530,7 +531,7 @@ class Show
             MoviesModel movie;
             do
             {
-                title = Console.ReadLine()!;
+                title = Console.ReadLine();
                 Console.Clear();
                 if (title.Contains(" "))
                 {
@@ -563,7 +564,7 @@ class Show
         {
             Console.WriteLine("Would you like to change the date/time?");
             Console.WriteLine("[1]Yes\n[2]No");
-            bool isNum = int.TryParse(Console.ReadLine()!, out question);
+            bool isNum = int.TryParse(Console.ReadLine(), out question);
             Console.Clear();
             if (!isNum)
             {
@@ -583,7 +584,7 @@ class Show
                 do
                 {
                     Console.WriteLine("Enter date for this show in 'YYYY-MM-DD' format. (Example: 2024-12-11, 2025-01-01)");
-                    Date = Console.ReadLine()!;
+                    Date = Console.ReadLine();
                     Console.Clear();
                     if (DateOnly.TryParse(Date, out _) == false || DateTime.TryParse(Date, out _) == false)
                     {
@@ -604,7 +605,7 @@ class Show
                         PrintShowsInTheaterThisDay(Date, Convert.ToInt32(show.TheatreId));
                     }
                     Console.WriteLine("What time would you like to choose('HH:MM' format)?");
-                    time = Console.ReadLine()!;
+                    time = Console.ReadLine();
                     Console.Clear();
                     int timeinminutes = 0;
                     if (question2 == 1)
@@ -640,7 +641,7 @@ class Show
                                     {
                                         Console.WriteLine("Would you like to pick one of the suggested times for this day?");
                                         Console.WriteLine("[1]Yes\n [2]No");
-                                        int yesno = Convert.ToInt32(Console.ReadLine()!);
+                                        int yesno = Convert.ToInt32(Console.ReadLine());
                                         Console.Clear();
                                         if (yesno == 1)
                                         {
@@ -651,7 +652,7 @@ class Show
                                                 count++;
                                                 Console.WriteLine($"{count}. {availabletime}");
                                             }
-                                            int timechoice = Convert.ToInt32(Console.ReadLine()!);
+                                            int timechoice = Convert.ToInt32(Console.ReadLine());
                                             Console.Clear();
                                             time = Convert.ToString(avalabletimes[timechoice - 1]);
                                             backtodate = false;
@@ -685,7 +686,7 @@ class Show
                                     {
                                         Console.WriteLine("Would you like to pick one of the suggested times for this day?");
                                         Console.WriteLine("[1]Yes\n [2]No");
-                                        int yesno = Convert.ToInt32(Console.ReadLine()!);
+                                        int yesno = Convert.ToInt32(Console.ReadLine());
                                         if (yesno == 1)
                                         {
                                             Console.WriteLine("You can choose one of the following times");
@@ -695,7 +696,7 @@ class Show
                                                 count++;
                                                 Console.WriteLine($"{count}. {availabletime}");
                                             }
-                                            int timechoice = Convert.ToInt32(Console.ReadLine()!);
+                                            int timechoice = Convert.ToInt32(Console.ReadLine());
                                             Console.Clear();
                                             time = Convert.ToString(avalabletimes[timechoice - 1]);
                                             backtodate = false;
@@ -750,6 +751,7 @@ class Show
         int newMovieId;
         string newDate_time;
         string Date = "";
+        bool timecheck = false;
         string time = "";
         bool isNum = false;
         do
@@ -757,7 +759,7 @@ class Show
             Console.WriteLine("Enter the theater number for this movie.");
             Console.WriteLine("Theatres you can choose: 1, 2, 3");
 
-            isNum = int.TryParse(Console.ReadLine()!, out newTheaterId);
+            isNum = int.TryParse(Console.ReadLine(), out newTheaterId);
             Console.Clear();
             if (!isNum)
             {
@@ -781,7 +783,7 @@ class Show
         Console.WriteLine("\nEnter movie name(not uppercase sensitive)");
         do
         {
-            title = Console.ReadLine()!;
+            title = Console.ReadLine();
             Console.Clear();
             if (title.Contains(" "))
             {
@@ -814,20 +816,20 @@ class Show
             do
             {
                 Console.WriteLine("Enter date for this show in 'YYYY-MM-DD' format. (Example: 2024-12-11, 2025-01-01)");
-                Date = Console.ReadLine()!;
+                Date = Console.ReadLine();
 
                 Console.Clear();
                 if (!DateTime.TryParseExact(Date, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out DateTime parsedDate))
                 {
                     Console.WriteLine("Not a valid date time format. Try again.");
                     Console.WriteLine("Enter date for this show in 'YYYY-MM-DD' format. (Example: 2024-12-11, 2025-01-01)");
-                    Date = Console.ReadLine()!;
+                    Date = Console.ReadLine();
                 }
                 else if (parsedDate < DateTime.Now.Date)
                 {
                     Console.WriteLine("This date is in the past. Try again.");
                     Console.WriteLine("Enter date for this show in 'YYYY-MM-DD' format. (Example: 2024-12-11, 2025-01-01)");
-                    Date = Console.ReadLine()!;
+                    Date = Console.ReadLine();
                 }
             } while (DateOnly.TryParse(Date, out _) != true || DateTime.TryParse(Date, out _) != true);
 
@@ -837,7 +839,7 @@ class Show
                 Console.WriteLine("(The times include cleaning time)");
                 PrintShowsInTheaterThisDay(Date, newTheaterId);
                 Console.WriteLine("What time would you like to choose('HH:MM' format)?");
-                time = Console.ReadLine()!;
+                time = Console.ReadLine();
                 int timeinminutes = Convert.ToInt32(MoviesLogic.GetById(newMovieId).TimeInMinutes);
                 if (TimeOnly.TryParse(time, out _) == true && TimeSpan.TryParse(time, out _) == true)
                 {
@@ -866,7 +868,7 @@ class Show
                                 {
                                     Console.WriteLine("Would you like to pick one of the suggested times for this day?");
                                     Console.WriteLine("[1]Yes\n[2]No");
-                                    isNumYesNo = int.TryParse(Console.ReadLine()!, out yesno);
+                                    isNumYesNo = int.TryParse(Console.ReadLine(), out yesno);
                                     Console.Clear();
                                     if (!isNumYesNo)
                                     {
@@ -888,7 +890,7 @@ class Show
                                         count++;
                                         Console.WriteLine($"{count}. {availabletime}");
                                     }
-                                    int timechoice = Convert.ToInt32(Console.ReadLine()!);
+                                    int timechoice = Convert.ToInt32(Console.ReadLine());
                                     Console.Clear();
                                     time = Convert.ToString(avalabletimes[timechoice - 1]);
                                     backtodate = false;
@@ -921,7 +923,7 @@ class Show
         {
             Console.WriteLine("Would you also like to plan this show at the same time for the next 6 days?");
             Console.WriteLine("[1]Yes\n[2]No");
-            bool isNumYesNo = int.TryParse(Console.ReadLine()!, out answer);
+            bool isNumYesNo = int.TryParse(Console.ReadLine(), out answer);
             Console.Clear();
             if (!isNumYesNo)
             {
@@ -983,7 +985,7 @@ class Show
         int Day;
         do
         {
-            bool isNum = int.TryParse(Console.ReadLine()!, out Day);
+            bool isNum = int.TryParse(Console.ReadLine(), out Day);
             if (!isNum)
             {
                 Console.WriteLine("Invalid input. Must be a number");

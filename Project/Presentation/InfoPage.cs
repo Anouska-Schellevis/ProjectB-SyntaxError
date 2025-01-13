@@ -21,7 +21,7 @@ class InfoPage
             }
             Console.WriteLine("[B]Go back");
 
-            string input = Console.ReadLine()!.ToLower();
+            string input = Console.ReadLine().ToLower();
 
             if (input == "b")
             {
@@ -35,7 +35,7 @@ class InfoPage
                 Start();
             }
 
-
+            
         }
     }
 }

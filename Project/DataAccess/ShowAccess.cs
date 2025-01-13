@@ -19,7 +19,7 @@ public static class ShowAccess
     public static ShowModel GetByID(int id)
     {
         string sql = $"SELECT * FROM {Table} WHERE id = @Id";
-        return _connection.QueryFirstOrDefault<ShowModel>(sql, new { Id = id })!;
+        return _connection.QueryFirstOrDefault<ShowModel>(sql, new { Id = id });
     }
 
     public static void Update(ShowModel show)
