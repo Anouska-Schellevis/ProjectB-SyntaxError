@@ -6,6 +6,7 @@ public class SnackMenu
         while (true)
         {
             Console.Clear();
+            Console.WriteLine("===== Snack menu =====\n");
             Console.WriteLine("[1]See current snack menu");
             Console.WriteLine("[2]Add menu item");
             Console.WriteLine("[3]Delete menu item");
@@ -273,7 +274,7 @@ public class SnackMenu
             Console.WriteLine("\nNo drink items available.");
         }
 
-        Console.WriteLine($"[{itemNumber}]Done ordering");
+        Console.WriteLine($"[{itemNumber}]Stop ordering");
     }
 
     public static Dictionary<MenuItem, int> SelectSnacks()
