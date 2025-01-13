@@ -2,32 +2,78 @@ using System.Text.RegularExpressions;
 
 class Location
 {
-    public static void Start()
+    public static void Start(UserModel acc)
     {
-        Console.Clear();
         while (true)
         {
+            Console.Clear();
             Console.WriteLine("[1]Overview of all locations");
             Console.WriteLine("[2]Add Location");
             Console.WriteLine("[3]Go back to the menu");
             Console.WriteLine("What would you like to do?");
 
-            int input = Convert.ToInt16(Console.ReadLine());
-
-            if (input == 1)
+            bool isNum = int.TryParse(Console.ReadLine(), out int input);
+            if (!isNum)
+            {
+                Console.WriteLine("Invalid input. Must be a number");
+                Thread.Sleep(2000);
+            }
+            else if (input == 1)
             {
                 Console.Clear();
                 PrintAllLocations();
+            
+                Console.WriteLine("\n[1]Go back to location menu");
+                Console.WriteLine("[2]Exit to admin menu");
+
+                while (true)
+                {
+                    string menuChoice = Console.ReadLine();
+                    if (menuChoice == "1")
+                    {
+                        Console.Clear();
+                        Start(acc);
+                        return;
+                    }
+                    else if (menuChoice == "2")
+                    {
+                        Console.Clear();
+                        Admin.Start(acc);
+                        return;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid option. Please enter 1 or 2.");
+                        Thread.Sleep(2000);
+
+                        /*
+                        The cursor goes back to the position of the error message, which is replaced after 2 seconds with an empty string.
+                        */
+                        Console.SetCursorPosition(0, Console.CursorTop - 1);
+                        Console.Write(new string(' ', Console.WindowWidth));
+                        Console.SetCursorPosition(0, Console.CursorTop - 1);
+                        Console.Write(new string(' ', Console.WindowWidth));
+                        Console.SetCursorPosition(0, Console.CursorTop - 1);
+                        Console.SetCursorPosition(0, Console.CursorTop + 1);
+                    }
+                }
             }
             else if (input == 2)
             {
                 Console.Clear();
                 AddLocation();
+                Thread.Sleep(2000);
             }
             else if (input == 3)
             {
                 Console.Clear();
                 break;
+            }
+            else
+            {
+                Console.WriteLine("Invalid input. This option doesn't exist");
+                Thread.Sleep(2000);
+                Console.Clear();
             }
 
 
@@ -80,13 +126,15 @@ class Location
         {
             Console.WriteLine("Enter the city name: ");
             inputCity = Console.ReadLine();
-        } while (!OnlyLetters(inputCity));
+            Console.Clear();
+        } while (inputCity.Length == 0 || !OnlyLetters(inputCity));
 
         string inputAddress;
         do
         {
             Console.WriteLine("Enter the address like this 'Street 1': ");
             inputAddress = Console.ReadLine();
+            Console.Clear();
         } while (!CheckAddress(inputAddress));
 
         string inputPostalCode;
@@ -94,6 +142,7 @@ class Location
         {
             Console.WriteLine("Enter the postal code like this '1111 AA': ");
             inputPostalCode = Console.ReadLine();
+            Console.Clear();
         } while (!CheckPostalCode(inputPostalCode));
 
         LocationModel newLocation = new LocationModel(0, inputCity, inputAddress, inputPostalCode);
@@ -166,6 +215,10 @@ class Location
         string numbers = splitSentence[0];
         string letters = splitSentence[1];
 
+        if (numbers.Length != 4 || letters.Length != 2)
+        {
+            return false;
+        }
         if (!OnlyNumbers(numbers))
         {
             return false;

@@ -17,33 +17,34 @@ class Admin
             Console.WriteLine("[6]Show the movie snack menu");
             Console.WriteLine("[7]Show the menu of the locations");
             Console.WriteLine("[8]Logout");
-            int input = Convert.ToInt16(Console.ReadLine());
-
-            if (input == 1)
+            bool isNum = int.TryParse(Console.ReadLine(), out int input);
+            if (!isNum)
             {
+                Console.WriteLine("Invalid input. Must be a number");
+                Thread.Sleep(2000);
                 Console.Clear();
+            }
+            else if (input == 1)
+            {
                 Movie.Start(currentUser);
                 //Console.Clear();
             }
             else if (input == 2)
             {
-                Console.Clear();
                 Show.AdminStart(currentUser);
                 //Console.Clear();
             }
             else if (input == 3)
             {
-                Console.Clear();
-                Bar.Start();
+                Bar.Start(currentUser);
             }
             else if (input == 4)
             {
-                Console.Clear();
                 TrackMoney();
+                Thread.Sleep(2000);
             }
             else if (input == 5)
             {
-                Console.Clear();
                 Voucher.AdminStart(currentUser);
             }
             else if (input == 6)
@@ -52,13 +53,19 @@ class Admin
             }
             else if (input == 7)
             {
-                Location.Start();
+                Location.Start(currentUser);
             }
             else if (input == 8)
             {
                 Console.Clear();
                 Menu.Start();
                 break;
+            }
+            else
+            {
+                Console.WriteLine("Invalid input. This option doesn't exist");
+                Thread.Sleep(2000);
+                Console.Clear();
             }
         }
     }

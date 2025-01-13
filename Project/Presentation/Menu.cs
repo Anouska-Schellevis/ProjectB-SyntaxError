@@ -15,28 +15,36 @@ static class Menu
             Console.WriteLine("[3]View our info page");
             Console.WriteLine("[4]Stop the program");
 
-            int input = Convert.ToInt16(Console.ReadLine());
-            if (input == 1)
-            {
-                UserLogin.Start();
-            }
-            else if (input == 2)
-            {
-                UserNewAccountLogic.Start();
-            }
-            else if (input == 3)
-            {
-                InfoPage.Start();
-            }
-            else if (input == 4)
-            {
-                break;
-            }
-            else
-            {
-                Console.WriteLine("Invalid input");
-                Start();
-            }
+        bool isNum = int.TryParse(Console.ReadLine(), out int input);
+        if (!isNum)
+        {
+            Console.WriteLine("Invalid input. Must be a number");
+            Thread.Sleep(2000);
+            Start();
+        }
+        else if (input == 1)
+        {
+            UserLogin.Start();
+        }
+        else if (input == 2)
+        {
+            UserNewAccountLogic.Start();
+        }
+        else if (input == 3)
+        {
+            InfoPage.Start();
+        }
+        else if (input == 4)
+        {
+            Console.WriteLine("Quiting...");
+            Environment.Exit(0);
+        }
+        else
+        {
+            Console.WriteLine("Invalid input. This option doesn't exist");
+            Thread.Sleep(2000);
+            Start();
+        }
         }
     }
 }

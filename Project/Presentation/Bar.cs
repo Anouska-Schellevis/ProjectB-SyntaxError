@@ -1,40 +1,156 @@
 class Bar
 {
 
-    static public void Main()
+    static public void Main(UserModel acc)
     {
-        Start();
+        Start(acc);
     }
-    static public void Start()
+    static public void Start(UserModel acc)
     {
-        Console.WriteLine("[1]Overview of all reservations");
-        Console.WriteLine("[2]Status");
-        Console.WriteLine("[3]Overview of all users");
-        Console.WriteLine("[4]Go back to the menu");
-
-        Console.WriteLine("What would you like to do?");
-        int choice = Convert.ToInt32(Console.ReadLine());
-
-        switch (choice)
+        while(true)
         {
-            case 1:
-                AllReservationsPrint();
-                break;
-            case 2:
-                StatusPrint();
-                break;
-            case 3:
-                AllUsersPrint();
-                break;
-            case 4:
-                Console.Clear();
-                break;
-            default:
-                Console.WriteLine("No valid option selected. Please try again.");
-                Start();
-                break;
-        }
+            Console.Clear();
+            Console.WriteLine("[1]Overview of all reservations");
+            Console.WriteLine("[2]Status");
+            Console.WriteLine("[3]Overview of all users");
+            Console.WriteLine("[4]Go back to the menu");
 
+            Console.WriteLine("What would you like to do?");
+
+            bool isNum = int.TryParse(Console.ReadLine(), out int choice);
+            if (!isNum)
+            {
+                Console.WriteLine("Invalid input. Must be a number");
+                Thread.Sleep(2000);
+                Start(acc);
+            }
+            switch (choice)
+            {
+                case 1:
+                    Console.Clear();
+                    AllReservationsPrint();
+                
+                    Console.WriteLine("\n[1]Go back to bar menu");
+                    Console.WriteLine("[2]Exit to admin menu");
+
+                    while (true)
+                    {
+                        string menuChoice = Console.ReadLine();
+                        if (menuChoice == "1")
+                        {
+                            Console.Clear();
+                            Start(acc);
+                            return;
+                        }
+                        else if (menuChoice == "2")
+                        {
+                            Console.Clear();
+                            Admin.Start(acc);
+                            return;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid option. Please enter 1 or 2.");
+                            Thread.Sleep(2000);
+
+                            /*
+                            The cursor goes back to the position of the error message, which is replaced after 2 seconds with an empty string.
+                            */
+                            Console.SetCursorPosition(0, Console.CursorTop - 1);
+                            Console.Write(new string(' ', Console.WindowWidth));
+                            Console.SetCursorPosition(0, Console.CursorTop - 1);
+                            Console.Write(new string(' ', Console.WindowWidth));
+                            Console.SetCursorPosition(0, Console.CursorTop - 1);
+                            Console.SetCursorPosition(0, Console.CursorTop + 1);
+                        }
+                    }
+                case 2:
+                    Console.Clear();
+                    StatusPrint();
+                                
+                    Console.WriteLine("\n[1]Go back to bar menu");
+                    Console.WriteLine("[2]Exit to admin menu");
+
+                    while (true)
+                    {
+                        string menuChoice = Console.ReadLine();
+                        if (menuChoice == "1")
+                        {
+                            Console.Clear();
+                            Start(acc);
+                            return;
+                        }
+                        else if (menuChoice == "2")
+                        {
+                            Console.Clear();
+                            Admin.Start(acc);
+                            return;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid option. Please enter 1 or 2.");
+                            Thread.Sleep(2000);
+
+                            /*
+                            The cursor goes back to the position of the error message, which is replaced after 2 seconds with an empty string.
+                            */
+                            Console.SetCursorPosition(0, Console.CursorTop - 1);
+                            Console.Write(new string(' ', Console.WindowWidth));
+                            Console.SetCursorPosition(0, Console.CursorTop - 1);
+                            Console.Write(new string(' ', Console.WindowWidth));
+                            Console.SetCursorPosition(0, Console.CursorTop - 1);
+                            Console.SetCursorPosition(0, Console.CursorTop + 1);
+                        }
+                    }
+                case 3:
+                    Console.Clear();
+                    AllUsersPrint();
+                
+                    Console.WriteLine("\n[1]Go back to bar menu");
+                    Console.WriteLine("[2]Exit to admin menu");
+
+                    while (true)
+                    {
+                        string menuChoice = Console.ReadLine();
+                        if (menuChoice == "1")
+                        {
+                            Console.Clear();
+                            Start(acc);
+                            return;
+                        }
+                        else if (menuChoice == "2")
+                        {
+                            Console.Clear();
+                            Admin.Start(acc);
+                            return;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid option. Please enter 1 or 2.");
+                            Thread.Sleep(2000);
+
+                            /*
+                            The cursor goes back to the position of the error message, which is replaced after 2 seconds with an empty string.
+                            */
+                            Console.SetCursorPosition(0, Console.CursorTop - 1);
+                            Console.Write(new string(' ', Console.WindowWidth));
+                            Console.SetCursorPosition(0, Console.CursorTop - 1);
+                            Console.Write(new string(' ', Console.WindowWidth));
+                            Console.SetCursorPosition(0, Console.CursorTop - 1);
+                            Console.SetCursorPosition(0, Console.CursorTop + 1);
+                        }
+                    }
+                case 4:
+                    Console.Clear();
+                    Admin.Start(acc);
+                    break;
+                default:
+                    Console.WriteLine("Invalid input. This option doesn't exist");
+                    Thread.Sleep(2000);
+                    Start(acc);
+                    break;
+            }
+        }
     }
 
     static public void AllReservationsPrint()
