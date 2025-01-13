@@ -36,7 +36,7 @@ class Bar
 
                     while (true)
                     {
-                        string menuChoice = Console.ReadLine();
+                        string menuChoice = Console.ReadLine()!;
                         if (menuChoice == "1")
                         {
                             Console.Clear();
@@ -74,7 +74,7 @@ class Bar
 
                     while (true)
                     {
-                        string menuChoice = Console.ReadLine();
+                        string menuChoice = Console.ReadLine()!;
                         if (menuChoice == "1")
                         {
                             Console.Clear();
@@ -112,7 +112,7 @@ class Bar
 
                     while (true)
                     {
-                        string menuChoice = Console.ReadLine();
+                        string menuChoice = Console.ReadLine()!;
                         if (menuChoice == "1")
                         {
                             Console.Clear();
