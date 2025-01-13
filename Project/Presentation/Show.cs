@@ -764,7 +764,7 @@ class Show
         do
         {
             Console.WriteLine("Enter the theater number for this movie.");
-            Console.WriteLine("Theatres you can choose: 1, 2, 3")
+            Console.WriteLine("Theatres you can choose: 1, 2, 3");
 
             isNum = int.TryParse(Console.ReadLine(), out newTheaterId);
             Console.Clear();
