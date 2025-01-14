@@ -1,4 +1,4 @@
-class Show
+public class Show
 {
     // static public void Main()
     // {
@@ -11,7 +11,7 @@ class Show
     public static string dateofshow;
     static public void AdminStart(UserModel acc)
     {
-        while(true)
+        while (true)
         {
             Console.Clear();
             Console.WriteLine("[1]Overview of all show");
@@ -78,7 +78,7 @@ class Show
                     break;
                 case 3:
                     int ID_to_edit;
-                    while(true)
+                    while (true)
                     {
                         Console.Clear();
                         Console.WriteLine("Enter the id to edit");
@@ -168,12 +168,12 @@ class Show
         Dictionary<int, string> movies;
         bool loop = true;
         bool printed = true;
-        movies = PrintOverviewMovie_Time();
+        movies = PrintOverviewMovie_Time(acc);
         while (loop)
         {
             if (printed == false)
             {
-                movies = PrintOverviewMovie_Time();
+                movies = PrintOverviewMovie_Time(acc);
             }
             if (movies.Count != 0)
             {
@@ -499,7 +499,7 @@ class Show
         int newTheatreId = 0;
 
         int question1;
-        do 
+        do
         {
             Console.WriteLine("Would you like to change the theater number?");
             Console.WriteLine("[1]Yes\n[2]No");
@@ -533,9 +533,9 @@ class Show
             } while (newTheatreId != 1 && newTheatreId != 2 && newTheatreId != 3);
             newTheatreId = Convert.ToInt32(newTheatreId);
         }
-        
+
         int question2;
-        do 
+        do
         {
             Console.WriteLine("Would you like to change the movie title?");
             Console.WriteLine("[1]Yes\n[2]No");
@@ -588,7 +588,7 @@ class Show
         }
 
         int question;
-        do 
+        do
         {
             Console.WriteLine("Would you like to change the date/time?");
             Console.WriteLine("[1]Yes\n[2]No");
@@ -673,23 +673,29 @@ class Show
                                         Console.Clear();
                                         if (yesno == "1")
                                         {
-                                            Console.WriteLine("You can choose one of the following times");
-                                            int count = 0;
-                                            foreach (var availabletime in avalabletimes)
-                                            {
-                                                count++;
-                                                Console.WriteLine($"{count}. {availabletime}");
-                                            }
-                                            string stringtimechoice = Console.ReadLine();
+                                            bool isNum = false;
+                                            int timechoice;
+                                            int count;
                                             do
                                             {
-                                                if (int.TryParse(stringtimechoice, out _) == false)
+                                                Console.WriteLine("You can choose one of the following times");
+                                                count = 0;
+                                                foreach (var availabletime in avalabletimes)
                                                 {
-                                                    Console.WriteLine("Invalid input. Try again.");
-                                                    stringtimechoice = Console.ReadLine();
+                                                    count++;
+                                                    Console.WriteLine($"{count}. {availabletime}");
                                                 }
-                                            } while (int.TryParse(stringtimechoice, out _) == false);
-                                            int timechoice = Convert.ToInt32(stringtimechoice);
+                                                isNum = int.TryParse(Console.ReadLine(), out timechoice);
+                                                Console.Clear();
+                                                if (!isNum)
+                                                {
+                                                    Console.WriteLine("Invalid input. You can only choose a number.");
+                                                }
+                                                else if (timechoice <= 0 || timechoice > count)
+                                                {
+                                                    Console.WriteLine("Please try again. The number chosen is out of range.");
+                                                }
+                                            } while (!isNum || timechoice <= 0 || timechoice > count);
                                             Console.Clear();
                                             time = Convert.ToString(avalabletimes[timechoice - 1]);
                                             backtodate = false;
@@ -726,14 +732,29 @@ class Show
                                         string yesno = Console.ReadLine();
                                         if (yesno == "1")
                                         {
-                                            Console.WriteLine("You can choose one of the following times");
-                                            int count = 0;
-                                            foreach (var availabletime in avalabletimes)
+                                            bool isNum = false;
+                                            int timechoice;
+                                            int count;
+                                            do
                                             {
-                                                count++;
-                                                Console.WriteLine($"{count}. {availabletime}");
-                                            }
-                                            int timechoice = Convert.ToInt32(Console.ReadLine());
+                                                Console.WriteLine("You can choose one of the following times");
+                                                count = 0;
+                                                foreach (var availabletime in avalabletimes)
+                                                {
+                                                    count++;
+                                                    Console.WriteLine($"{count}. {availabletime}");
+                                                }
+                                                isNum = int.TryParse(Console.ReadLine(), out timechoice);
+                                                Console.Clear();
+                                                if (!isNum)
+                                                {
+                                                    Console.WriteLine("Invalid input. You can only choose a number.");
+                                                }
+                                                else if (timechoice <= 0 || timechoice > count)
+                                                {
+                                                    Console.WriteLine("Please try again. The number chosen is out of range.");
+                                                }
+                                            } while (!isNum || timechoice <= 0 || timechoice > count);
                                             Console.Clear();
                                             time = Convert.ToString(avalabletimes[timechoice - 1]);
                                             backtodate = false;
@@ -914,10 +935,10 @@ class Show
                                 break;
                             }
                             else
-                            {  
+                            {
                                 int yesno;
                                 bool isNumYesNo;
-                                do 
+                                do
                                 {
                                     Console.WriteLine("Would you like to pick one of the suggested times for this day?");
                                     Console.WriteLine("[1]Yes\n[2]No");
@@ -936,23 +957,29 @@ class Show
 
                                 if (yesno == 1)
                                 {
-                                    Console.WriteLine("You can choose one of the following times");
-                                    int count = 0;
-                                    foreach (var availabletime in avalabletimes)
-                                    {
-                                        count++;
-                                        Console.WriteLine($"{count}. {availabletime}");
-                                    }
-                                    string stringtimechoice = Console.ReadLine();
+                                    isNum = false;
+                                    int timechoice;
+                                    int count;
                                     do
                                     {
-                                        if (int.TryParse(stringtimechoice, out _) == false)
+                                        Console.WriteLine("You can choose one of the following times");
+                                        count = 0;
+                                        foreach (var availabletime in avalabletimes)
                                         {
-                                            Console.WriteLine("Invalid input. Try again.");
-                                            stringtimechoice = Console.ReadLine();
+                                            count++;
+                                            Console.WriteLine($"{count}. {availabletime}");
                                         }
-                                    } while (int.TryParse(stringtimechoice, out _) == false);
-                                    int timechoice = Convert.ToInt32(stringtimechoice);
+                                        isNum = int.TryParse(Console.ReadLine(), out timechoice);
+                                        Console.Clear();
+                                        if (!isNum)
+                                        {
+                                            Console.WriteLine("Invalid input. You can only choose a number.");
+                                        }
+                                        else if (timechoice <= 0 || timechoice > count)
+                                        {
+                                            Console.WriteLine("Please try again. The number chosen is out of range.");
+                                        }
+                                    } while (!isNum || timechoice <= 0 || timechoice > count);
                                     Console.Clear();
                                     time = Convert.ToString(avalabletimes[timechoice - 1]);
                                     backtodate = false;
@@ -1014,7 +1041,7 @@ class Show
             Console.WriteLine("-----------------------------------------------");
         }
     }
-    public static Dictionary<int, string> PrintOverviewMovie_Time()
+    public static Dictionary<int, string> PrintOverviewMovie_Time(UserModel acc)
     {
         Console.WriteLine("On what day would you like to watch a movie?");
         // Console.WriteLine("1. Monday\n2. Tuesday\n3. Wednesday\n4. Thursday");
@@ -1023,6 +1050,8 @@ class Show
         int currentDay = (int)Currentday;
         int thursDay = (int)DayOfWeek.Thursday;
         int daysTilNextThursday = (thursDay - currentDay + 7) % 7;
+        int count = 0;
+        int minus = 0;
 
         if (daysTilNextThursday == 0)
         {
@@ -1036,14 +1065,34 @@ class Show
         {
             daysTilNextThursday += 6;
         }
-
+        int numbernottoprint = 0;
+        int lastnumber = 0;
         for (int i = 0; i <= daysTilNextThursday; i++)
         {
             DayOfWeek printedday = DateTime.Now.AddDays(i).DayOfWeek;
             string printeddate = DateTime.Now.AddDays(i).Date.ToString("yyyy-MM-dd");
-            Console.WriteLine($"{i + 1}. {printedday} {printeddate}");
+            List<ShowModel> listshowdate = ShowLogic.AllOrderedByDate(printeddate);
+            foreach (var item in listshowdate)
+            {
+                TimeSpan timeofday = DateTime.Now.TimeOfDay;
+                TimeSpan timeofshow = TimeSpan.Parse(item.Date.Split(" ")[1]);
+                if (timeofday > timeofshow)
+                {
+                    numbernottoprint++;
+                }
+            }
+            if (listshowdate.Count == 0 || numbernottoprint == listshowdate.Count)
+            {
+                minus++;
+            }
+            else
+            {
+                Console.WriteLine($"[{i + 1 - minus}]{printedday} {printeddate}");
+                count++;
+            }
+            lastnumber = i + 1 - minus;
         }
-
+        Console.WriteLine($"[{lastnumber + 1}]Go back to the menu");
         int Day;
         string stringDay;
         do
@@ -1054,7 +1103,7 @@ class Show
                 Console.WriteLine("Invalid input. Must be a number");
                 Thread.Sleep(2000);
             }
-            else if (Day <= 0 || Day >= (daysTilNextThursday + 1))
+            else if (Day <= 0 || Day > (daysTilNextThursday + 2 - minus))
             {
                 Console.WriteLine("Invalid Input. Try again.");
                 Thread.Sleep(2000);
@@ -1068,7 +1117,11 @@ class Show
             Console.Write(new string(' ', Console.WindowWidth));
             Console.SetCursorPosition(0, Console.CursorTop - 1);
             Console.SetCursorPosition(0, Console.CursorTop + 1);
-        } while (Day <= 0 || Day > (daysTilNextThursday + 1));
+        } while (Day <= 0 || Day > (daysTilNextThursday + 2 - minus));
+        if (Day == lastnumber + 1)
+        {
+            User.Start(acc);
+        }
         Console.Clear();
         string DayToPrint = Convert.ToString(DateTime.Now.AddDays(Day - 1).DayOfWeek);
         string date = DateTime.Now.AddDays(Day - 1).Date.ToString("yyyy-MM-dd");
