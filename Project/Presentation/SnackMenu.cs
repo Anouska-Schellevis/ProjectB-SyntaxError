@@ -6,7 +6,7 @@ public class SnackMenu
         while (true)
         {
             Console.Clear();
-            Console.WriteLine("===== Snack menu =====")
+            Console.WriteLine("===== Snack menu =====");
             Console.WriteLine("[1]See current snack menu");
             Console.WriteLine("[2]Add menu item");
             Console.WriteLine("[3]Delete menu item");
