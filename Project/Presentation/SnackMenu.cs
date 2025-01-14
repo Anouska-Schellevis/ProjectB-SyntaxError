@@ -822,6 +822,7 @@ public class SnackMenu
 
         while (true)
         {
+            Console.Clear();
             Console.WriteLine("\nSnack Popularity Menu:");
             Console.WriteLine("[1] See snacks per reservation");
             Console.WriteLine("[2] See snacks per show");
@@ -859,6 +860,7 @@ public class SnackMenu
             else
             {
                 Console.WriteLine("Invalid option. Please enter 1, 2, 3, or 4.");
+                Thread.Sleep(2000);
             }
         }
     }
@@ -941,11 +943,10 @@ public class SnackMenu
             }
         }
 
-        Console.WriteLine("\n[1] Back to Snack Menu");
-        Console.WriteLine("[2] Log out");
-
         while (true)
         {
+            Console.WriteLine("\n[1] Back to Snack Menu");
+            Console.WriteLine("[2] Log out");
             string choice = Console.ReadLine();
             if (choice == "1")
             {
@@ -960,6 +961,22 @@ public class SnackMenu
             else
             {
                 Console.WriteLine("Invalid option. Please enter 1 or 2.");
+                Thread.Sleep(2000);
+                /*
+                The cursor goes back to the position of the error message, which is replaced after 2 seconds with an empty string.
+                */
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                Console.Write(new string(' ', Console.WindowWidth));
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                Console.Write(new string(' ', Console.WindowWidth));
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                Console.Write(new string(' ', Console.WindowWidth));
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                Console.Write(new string(' ', Console.WindowWidth));
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                Console.Write(new string(' ', Console.WindowWidth));
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                Console.SetCursorPosition(0, Console.CursorTop + 1);
             }
         }
     }
@@ -1031,11 +1048,10 @@ public class SnackMenu
             }
         }
 
-        Console.WriteLine("\n[1] Back to Snack Menu");
-        Console.WriteLine("[2] Log out");
-
         while (true)
         {
+            Console.WriteLine("\n[1] Back to Snack Menu");
+            Console.WriteLine("[2] Log out");
             string choice = Console.ReadLine();
             if (choice == "1")
             {
@@ -1050,6 +1066,22 @@ public class SnackMenu
             else
             {
                 Console.WriteLine("Invalid option. Please enter 1 or 2.");
+                Thread.Sleep(2000);
+                /*
+                The cursor goes back to the position of the error message, which is replaced after 2 seconds with an empty string.
+                */
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                Console.Write(new string(' ', Console.WindowWidth));
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                Console.Write(new string(' ', Console.WindowWidth));
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                Console.Write(new string(' ', Console.WindowWidth));
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                Console.Write(new string(' ', Console.WindowWidth));
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                Console.Write(new string(' ', Console.WindowWidth));
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                Console.SetCursorPosition(0, Console.CursorTop + 1);
             }
         }
     }
@@ -1119,11 +1151,10 @@ public class SnackMenu
             Console.WriteLine($"    Total Cost for {showDate.ToShortDateString()}: €{totalCost:F2}\n");
         }
 
-        Console.WriteLine("\n[1] Back to Snack Menu");
-        Console.WriteLine("[2] Log out");
-
         while (true)
         {
+            Console.WriteLine("\n[1] Back to Snack Menu");
+            Console.WriteLine("[2] Log out");
             string choice = Console.ReadLine();
             if (choice == "1")
             {
@@ -1138,6 +1169,23 @@ public class SnackMenu
             else
             {
                 Console.WriteLine("Invalid option. Please enter 1 or 2.");
+                Thread.Sleep(2000);
+                /*
+                The cursor goes back to the position of the error message, which is replaced after 2 seconds with an empty string.
+                */
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                Console.Write(new string(' ', Console.WindowWidth));
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                Console.Write(new string(' ', Console.WindowWidth));
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                Console.Write(new string(' ', Console.WindowWidth));
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                Console.Write(new string(' ', Console.WindowWidth));
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                Console.Write(new string(' ', Console.WindowWidth));
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                Console.SetCursorPosition(0, Console.CursorTop + 1);
             }
         }
     }
+}
