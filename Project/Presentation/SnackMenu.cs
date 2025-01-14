@@ -6,7 +6,7 @@ public class SnackMenu
         while (true)
         {
             Console.Clear();
-            Console.WriteLine("===== Snack menu =====")
+            Console.WriteLine("===== Snack menu =====");
             Console.WriteLine("[1]See current snack menu");
             Console.WriteLine("[2]Add menu item");
             Console.WriteLine("[3]Delete menu item");
@@ -654,8 +654,8 @@ public class SnackMenu
                 do
                 {
                     Console.WriteLine("\nWould you like to edit the price?");
-                    Console.WriteLine("[1]Yes");
-                    Console.WriteLine("[2]No");
+                    Console.WriteLine("[1] Yes");
+                    Console.WriteLine("[2] No");
                     bool isNum = int.TryParse(Console.ReadLine(), out priceChoice);
                     Console.Clear();
                     if (!isNum)
@@ -664,20 +664,39 @@ public class SnackMenu
                     }
                     else if (priceChoice != 1 && priceChoice != 2)
                     {
-                        Console.WriteLine("Invalid input try again.");
+                        Console.WriteLine("Invalid input. Try again.");
                     }
                 } while (priceChoice != 1 && priceChoice != 2);
+
                 if (priceChoice == 1)
                 {
-                    Console.WriteLine("Enter the new price:");
+                    Console.WriteLine("Enter the new price (use a comma (,) for decimals, example, 5,50):");
                     decimal newPrice;
-                    while (!decimal.TryParse(Console.ReadLine(), out newPrice) || newPrice <= 0)
+
+                    while (true)
                     {
+                        string userinput = Console.ReadLine();
+
+                        //check if the input contains a dot (.) because we don't want that
+                        if (userinput.Contains("."))
+                        {
+                            Console.Clear();
+                            Console.WriteLine("Invalid price. Use a comma (,) for decimals, example, 5,50:");
+                            continue;
+                        }
+
+                        if (decimal.TryParse(userinput, out newPrice) && newPrice > 0)
+                        {
+                            break;
+                        }
+
                         Console.Clear();
-                        Console.WriteLine("Invalid price. Please enter a number greater than 0:");
+                        Console.WriteLine("Invalid price. Please enter a valid number greater than 0 using a comma (,) for decimals, example, 5,50:");
                     }
+
                     selectedSnack.Price = newPrice;
                 }
+
 
                 Console.Clear();
 
