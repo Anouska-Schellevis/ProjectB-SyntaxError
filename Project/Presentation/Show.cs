@@ -14,6 +14,7 @@ public class Show
         while (true)
         {
             Console.Clear();
+            Console.WriteLine("===== Show menu =====");
             Console.WriteLine("[1]Overview of all show");
             Console.WriteLine("[2]Add show");
             Console.WriteLine("[3]Edit show");
@@ -624,7 +625,7 @@ public class Show
                         Console.WriteLine("This date is in the past. Try again.");
                     }
                 } while (!DateTime.TryParseExact(Date, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out DateTime _));
-                
+
                 do
                 {
                     if (question1 == 1)
