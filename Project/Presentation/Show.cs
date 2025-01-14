@@ -612,7 +612,7 @@ public class Show
             {
                 do
                 {
-                    Console.WriteLine("Enter date for this show in 'YYYY-MM-DD' format. (Example: 2024-12-11, 2025-01-01)");
+                    Console.WriteLine("Enter date for this show in 'YYYY-MM-DD' format. (Example: 2024-12-11, 2025-01-24)");
                     Date = Console.ReadLine();
 
                     Console.Clear();
@@ -878,6 +878,11 @@ public class Show
             if (MoviesLogic.GetByTitle(title) == null)
             {
                 Console.WriteLine("Invalid movie. Try again.");
+                Console.WriteLine("Movies you can choose from: ");
+                foreach (var item in movies)
+                {
+                    Console.WriteLine($"- {item.Title}");
+                }
             }
         } while (movie == null);
         newMovieId = Convert.ToInt32(movie.Id);
@@ -895,7 +900,7 @@ public class Show
         {
             do
             {
-                Console.WriteLine("Enter date for this show in 'YYYY-MM-DD' format. (Example: 2024-12-11, 2025-01-01)");
+                Console.WriteLine("Enter date for this show in 'YYYY-MM-DD' format. (Example: 2024-12-11, 2025-01-24)");
                 Date = Console.ReadLine();
 
                 Console.Clear();
