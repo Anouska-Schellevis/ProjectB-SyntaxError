@@ -128,6 +128,8 @@ public abstract class TheaterBase
         Console.Write("■ Basic: [€10.00] ");
         Console.ForegroundColor = ConsoleColor.Magenta;
         Console.WriteLine("■ Reserved chairs");
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine("Use arrow keys to navigate and Enter to select a seat. Use backspace to delete your selected seat. Press Esc to finish selection.");
         Console.ResetColor();
         Console.WriteLine();
 
@@ -140,8 +142,6 @@ public abstract class TheaterBase
         int selectedRow = 0;
         int selectedCol = 0;
         DisplaySeats(showId, selectedRow, selectedCol);
-
-        Console.WriteLine("Use arrow keys to navigate and Enter to select a seat. Press Esc to finish selection.");
 
         List<SeatsModel> selectedSeats = new List<SeatsModel>();
 
@@ -284,7 +284,23 @@ public abstract class TheaterBase
             }
             else if (key.Key == ConsoleKey.Escape)
             {
-                break; // Exit the loop when Escape is pressed
+                Console.WriteLine("Are you done choosing seats and do you want to leave the choosing area.\n[1] Yes\n[2] No");
+                string esc_anwser = Console.ReadLine();
+                if (esc_anwser == "1")
+                {
+                    break;
+                }
+                else if (esc_anwser == "2")
+                {
+                    Console.WriteLine("You are continue to choose seats.");
+                    continue;
+                }
+                else
+                {
+                    Console.WriteLine("Wrong input!");
+                    continue;
+                }
+
             }
         }
 
@@ -329,8 +345,8 @@ public abstract class TheaterBase
         {
             Console.WriteLine("You have active vouchers");
             Console.WriteLine("Would you like to use a voucher?");
-            Console.WriteLine("[1] yes");
-            Console.WriteLine("[2] no");
+            Console.WriteLine("[1] Yes");
+            Console.WriteLine("[2] No");
             bool useVoucher = Console.ReadLine() == "1";
             if (useVoucher)
             {

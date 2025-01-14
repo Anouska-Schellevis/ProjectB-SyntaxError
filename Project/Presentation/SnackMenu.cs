@@ -6,12 +6,13 @@ public class SnackMenu
         while (true)
         {
             Console.Clear();
-            Console.WriteLine("===== Snack menu =====\n");
+            Console.WriteLine("===== Snack menu =====")
             Console.WriteLine("[1]See current snack menu");
             Console.WriteLine("[2]Add menu item");
             Console.WriteLine("[3]Delete menu item");
             Console.WriteLine("[4]Edit menu item");
-            Console.WriteLine("[5]Go back to Admin page");
+            Console.WriteLine("[5]Go back");
+
 
             bool isNum = int.TryParse(Console.ReadLine(), out int choice);
             if (!isNum)
@@ -97,13 +98,29 @@ public class SnackMenu
                 return;
             }
         }
-        Console.WriteLine("\nEnter the price of the menu item:");
+        Console.WriteLine("\nEnter the price of the menu item (use a comma (,) for decimals, example, 5,50):");
         decimal price;
-        while (!decimal.TryParse(Console.ReadLine(), out price)) //will parse user string to user ceimal if its succesfull it will save to price
+        while (true)
         {
+            string input = Console.ReadLine();
+
+            //check if the input contains a dot (.) because we dont want that
+            if (input.Contains("."))
+            {
+                Console.Clear();
+                Console.WriteLine("Invalid price. Use a comma (,) for decimals, example, 5,50:");
+                continue;
+            }
+
+            if (decimal.TryParse(input, out price))//try to make it a decimal
+            {
+                break;
+            }
+
             Console.Clear();
-            Console.WriteLine("Invalid price. Please enter a valid number:");
+            Console.WriteLine("Invalid price. Please enter a valid number using a comma (,) for decimals, example, 5,50:");
         }
+
 
         Console.WriteLine("\nWhat type is this menu item?");
         Console.WriteLine("[1]Drink");
@@ -274,8 +291,9 @@ public class SnackMenu
             Console.WriteLine("\nNo drink items available.");
         }
 
-        Console.WriteLine($"[{itemNumber}]Stop ordering");
+        Console.WriteLine($"[{itemNumber}]Done ordering");
     }
+
 
     public static Dictionary<MenuItem, int> SelectSnacks()
     {
