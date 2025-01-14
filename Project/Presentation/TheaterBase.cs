@@ -297,7 +297,7 @@ public abstract class TheaterBase
                 }
                 else
                 {
-                    Console.WriteLine("Wrong input!")
+                    Console.WriteLine("Wrong input!");
                     continue;
                 }
 

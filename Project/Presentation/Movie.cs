@@ -334,6 +334,23 @@ class Movie
         {
             Console.WriteLine("Enter a new title for this movie.");
             newTitle = Console.ReadLine();
+            if (newTitle.Contains(" "))
+            {
+                string[] words = newTitle.Split(" ");
+                newTitle = "";
+                foreach (string word in words)
+                {
+                    string newword = char.ToUpper(word[0]) + word.Substring(1);
+                    newTitle += newword;
+                    newTitle += " ";
+                }
+                newTitle = newTitle.Trim();
+            }
+            else
+            {
+                newTitle = char.ToUpper(newTitle[0]) + newTitle.Substring(1);
+                newTitle.Trim();
+            }
         }
       
         int question1;
@@ -464,6 +481,23 @@ class Movie
         {
             Console.WriteLine("Enter a new director for this movie.");
             newDirector = Console.ReadLine();
+            if (newDirector.Contains(" "))
+            {
+                string[] words = newDirector.Split(" ");
+                newDirector = "";
+                foreach (string word in words)
+                {
+                    string newword = char.ToUpper(word[0]) + word.Substring(1);
+                    newDirector += newword;
+                    newDirector += " ";
+                }
+                newDirector = newDirector.Trim();
+            }
+            else
+            {
+                newDirector = char.ToUpper(newDirector[0]) + newDirector.Substring(1);
+                newDirector.Trim();
+            }
         }
 
         Console.Clear();
@@ -600,6 +634,23 @@ class Movie
         
         Console.WriteLine("\nEnter a new director for this movie.");
         string newDirector = Console.ReadLine();
+        if (newDirector.Contains(" "))
+        {
+            string[] words = newDirector.Split(" ");
+            newDirector = "";
+            foreach (string word in words)
+            {
+                string newword = char.ToUpper(word[0]) + word.Substring(1);
+                newDirector += newword;
+                newDirector += " ";
+            }
+            newDirector = newDirector.Trim();
+        }
+        else
+        {
+            newDirector = char.ToUpper(newDirector[0]) + newDirector.Substring(1);
+            newDirector.Trim();
+        }
       
         do
         {
