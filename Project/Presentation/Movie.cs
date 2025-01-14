@@ -409,7 +409,7 @@ class Movie
 
         if (question2 == 1)
         {
-            Console.WriteLine("Enter a new genre for this movie.");
+            Console.WriteLine("Enter a new genre for this movie(1 genre = 'Actie', 2 of meer genre's = 'Actie, Komedie').");
             newGenre = Console.ReadLine();
             if (newGenre.Contains(" "))
             {
@@ -524,7 +524,7 @@ class Movie
         {
             do
             {
-                Console.WriteLine("Enter new release_date for this movie. 'YYYY-MM-DD' format. (Example: 2024-12-11, 2025-01-01)");
+                Console.WriteLine("Enter new release_date for this movie. 'YYYY-MM-DD' format. (Example: 2024-12-11, 2025-01-24)");
                 newReleaseDate = Console.ReadLine();
                 Console.Clear();
                 if (DateTime.TryParse(newReleaseDate, out _) == false)
@@ -592,10 +592,10 @@ class Movie
             newTitle = char.ToUpper(newTitle[0]) + newTitle.Substring(1);
             newTitle.Trim();
         }
-      
+        Console.Clear();
         Console.WriteLine("\nEnter a new description for this movie.");
         string newDescription = Console.ReadLine();
-      
+        Console.Clear();
         bool isNum = false;
         int newTimeInMinutes;
         do
@@ -612,8 +612,9 @@ class Movie
                 Console.WriteLine("Please try again. A movie must be longer than 0 minutes");
             }
         } while (!isNum || newTimeInMinutes <= 0);
-      
-        Console.WriteLine("Enter new genre for this movie.");
+
+        Console.Clear();
+        Console.WriteLine("Enter new genre for this movie(1 genre = 'Actie', 2 of meer genre's = 'Actie, Komedie').");
         string newGenre = Console.ReadLine();
         if (newGenre.Contains(" "))
         {
@@ -633,6 +634,7 @@ class Movie
             newGenre.Trim();
         }
         
+        Console.Clear();
         Console.WriteLine("\nEnter a new director for this movie.");
         string newDirector = Console.ReadLine();
         if (newDirector.Contains(" "))
@@ -652,10 +654,10 @@ class Movie
             newDirector = char.ToUpper(newDirector[0]) + newDirector.Substring(1);
             newDirector.Trim();
         }
-      
+        Console.Clear();
         do
         {
-            Console.WriteLine("\nEnter a new release_date for this movie. 'YYYY-MM-DD' format. (Example: 2024-12-11, 2025-01-01)");
+            Console.WriteLine("\nEnter a new release_date for this movie. 'YYYY-MM-DD' format. (Example: 2024-12-11, 2025-01-24)");
             newReleaseDate = Console.ReadLine();
             Console.Clear();
             if (DateTime.TryParse(newReleaseDate, out _) == false)

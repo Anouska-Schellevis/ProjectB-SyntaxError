@@ -611,7 +611,7 @@ public class Show
             {
                 do
                 {
-                    Console.WriteLine("Enter date for this show in 'YYYY-MM-DD' format. (Example: 2024-12-11, 2025-01-01)");
+                    Console.WriteLine("Enter date for this show in 'YYYY-MM-DD' format. (Example: 2024-12-11, 2025-01-24)");
                     Date = Console.ReadLine();
                     Console.Clear();
                     if (DateOnly.TryParse(Date, out _) == false || DateTime.TryParse(Date, out _) == false)
@@ -873,6 +873,11 @@ public class Show
             if (MoviesLogic.GetByTitle(title) == null)
             {
                 Console.WriteLine("Invalid movie. Try again.");
+                Console.WriteLine("Movies you can choose from: ");
+                foreach (var item in movies)
+                {
+                    Console.WriteLine($"- {item.Title}");
+                }
             }
         } while (movie == null);
         newMovieId = Convert.ToInt32(movie.Id);
@@ -890,20 +895,20 @@ public class Show
         {
             do
             {
-                Console.WriteLine("Enter date for this show in 'YYYY-MM-DD' format. (Example: 2024-12-11, 2025-01-01)");
+                Console.WriteLine("Enter date for this show in 'YYYY-MM-DD' format. (Example: 2024-12-11, 2025-01-24)");
                 Date = Console.ReadLine();
 
                 Console.Clear();
                 if (!DateTime.TryParseExact(Date, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out DateTime parsedDate))
                 {
                     Console.WriteLine("Not a valid date time format. Try again.");
-                    Console.WriteLine("Enter date for this show in 'YYYY-MM-DD' format. (Example: 2024-12-11, 2025-01-01)");
+                    Console.WriteLine("Enter date for this show in 'YYYY-MM-DD' format. (Example: 2024-12-11, 2025-01-24)");
                     Date = Console.ReadLine();
                 }
                 else if (parsedDate < DateTime.Now.Date)
                 {
                     Console.WriteLine("This date is in the past. Try again.");
-                    Console.WriteLine("Enter date for this show in 'YYYY-MM-DD' format. (Example: 2024-12-11, 2025-01-01)");
+                    Console.WriteLine("Enter date for this show in 'YYYY-MM-DD' format. (Example: 2024-12-11, 2025-01-24)");
                     Date = Console.ReadLine();
                 }
             } while (DateOnly.TryParse(Date, out _) != true || DateTime.TryParse(Date, out _) != true);
