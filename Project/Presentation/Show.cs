@@ -583,7 +583,7 @@ class Show
             {
                 do
                 {
-                    Console.WriteLine("Enter date for this show in 'YYYY-MM-DD' format. (Example: 2024-12-11, 2025-01-01)");
+                    Console.WriteLine("Enter date for this show in 'YYYY-MM-DD' format. (Example: 2025-01-24, 2025-02-01)");
                     Date = Console.ReadLine();
                     Console.Clear();
                     if (DateOnly.TryParse(Date, out _) == false || DateTime.TryParse(Date, out _) == false)
@@ -757,7 +757,7 @@ class Show
         do
         {
             Console.WriteLine("Enter the theater number for this movie.");
-            Console.WriteLine("Theatres you can choose: 1, 2, 3");
+            Console.WriteLine("Theatres you can choose: \n1 [Imax, 150 seats]\n2 [2D, 300 seats]\n3 [2D, 500 seats]");
 
             isNum = int.TryParse(Console.ReadLine(), out newTheaterId);
             Console.Clear();
@@ -815,20 +815,20 @@ class Show
         {
             do
             {
-                Console.WriteLine("Enter date for this show in 'YYYY-MM-DD' format. (Example: 2024-12-11, 2025-01-01)");
+                Console.WriteLine("Enter date for this show in 'YYYY-MM-DD' format. (Example: 2025-01-24, 2025-02-01)");
                 Date = Console.ReadLine();
 
                 Console.Clear();
                 if (!DateTime.TryParseExact(Date, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out DateTime parsedDate))
                 {
                     Console.WriteLine("Not a valid date time format. Try again.");
-                    Console.WriteLine("Enter date for this show in 'YYYY-MM-DD' format. (Example: 2024-12-11, 2025-01-01)");
+                    Console.WriteLine("Enter date for this show in 'YYYY-MM-DD' format. (Example: 2025-01-24, 2025-02-01)");
                     Date = Console.ReadLine();
                 }
                 else if (parsedDate < DateTime.Now.Date)
                 {
                     Console.WriteLine("This date is in the past. Try again.");
-                    Console.WriteLine("Enter date for this show in 'YYYY-MM-DD' format. (Example: 2024-12-11, 2025-01-01)");
+                    Console.WriteLine("Enter date for this show in 'YYYY-MM-DD' format. (Example: 2025-01-24, 2025-02-01)");
                     Date = Console.ReadLine();
                 }
             } while (DateOnly.TryParse(Date, out _) != true || DateTime.TryParse(Date, out _) != true);
@@ -838,7 +838,7 @@ class Show
                 Console.WriteLine("On this date, in this theater the following movies play:");
                 Console.WriteLine("(The times include cleaning time)");
                 PrintShowsInTheaterThisDay(Date, newTheaterId);
-                Console.WriteLine("What time would you like to choose('HH:MM' format)?");
+                Console.WriteLine("What time would you like to choose ('HH:MM' format)?");
                 time = Console.ReadLine();
                 int timeinminutes = Convert.ToInt32(MoviesLogic.GetById(newMovieId).TimeInMinutes);
                 if (TimeOnly.TryParse(time, out _) == true && TimeSpan.TryParse(time, out _) == true)
@@ -1317,11 +1317,6 @@ class Show
             {
                 ShowModel new_show = new ShowModel(1, showtostartwith.TheatreId, showtostartwith.MovieId, newstringshowdate);
                 ShowLogic.WriteShow(new_show);
-                Console.WriteLine("This show is added");
-            }
-            else
-            {
-                Console.WriteLine("This show is not added");
             }
         }
     }

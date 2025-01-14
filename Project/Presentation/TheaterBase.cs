@@ -34,13 +34,12 @@ public abstract class TheaterBase
             SeatsModel seat = SeatsLogic.GetById((int)seatId);
             int row = seats.GetLength(0) - seat.RowNumber;
             int col = seat.ColumnNumber - 1;
-
             if (row >= 0 && row < seats.GetLength(0) && col >= 0 && col < seats.GetLength(1))
             {
-                seats[row, col] = 'R';
+                seats[row, col] = 'R'; // Mark reserved seats
             }
         }
-
+        
         int rows = seats.GetLength(0);
         int columns = seats.GetLength(1);
 
@@ -58,13 +57,14 @@ public abstract class TheaterBase
 
             for (int j = 0; j < columns; j++)
             {
-                if (seats[i, j] == 'X')
+                if (seats[i, j] == 'X') // Check for unavailable seats
                 {
-                    Console.Write("    ");
+                    Console.ForegroundColor = ConsoleColor.Black; // Set color to black
+                    Console.Write("■   "); // Display the black block
                 }
                 else
                 {
-                    if (seats[i, j] == 'R')
+                    if (seats[i, j] == 'R') // Reserved seat
                     {
                         Console.ForegroundColor = ConsoleColor.Magenta;
                     }
@@ -81,9 +81,6 @@ public abstract class TheaterBase
                             case 3:
                                 Console.ForegroundColor = ConsoleColor.Blue;
                                 break;
-                            case 0:
-                                Console.ForegroundColor = ConsoleColor.Black;
-                                break;
                             default:
                                 Console.ForegroundColor = ConsoleColor.Gray;
                                 break;
@@ -92,24 +89,19 @@ public abstract class TheaterBase
 
                     if (i == selectedRow && j == selectedCol)
                     {
-                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.ForegroundColor = ConsoleColor.Green; // Highlight selected seat
                     }
 
-                    if (seats[i, j] == 'A')
+                    if (seats[i, j] == 'A') // Available seat
                     {
                         Console.Write("■   ");
                     }
-                    else if (seats[i, j] == 'C')
+                    else if (seats[i, j] == 'C') // Selected seat
                     {
-                        Console.ForegroundColor = ConsoleColor.DarkGray;
+                        Console.ForegroundColor = ConsoleColor.Cyan;
                         Console.Write("■   ");
                     }
-                    else if (seats[i, j] == 'X')
-                    {
-                        Console.ForegroundColor = ConsoleColor.Black;
-                        Console.Write("■   ");
-                    }
-                    else if (seats[i, j] == 'R')
+                    else if (seats[i, j] == 'R') // Reserved seat
                     {
                         Console.Write("■   ");
                     }
@@ -118,6 +110,13 @@ public abstract class TheaterBase
             }
             Console.WriteLine();
         }
+
+        string screenLine = new string('=', columns * 4); // Each seat takes 3 spaces
+        Console.WriteLine(new string(' ', 3) + screenLine); // Adjust spacing based on columns
+        Console.WriteLine(new string(' ', 3) + "SCREEN".PadLeft((screenLine.Length + "SCREEN".Length) / 2)); // Center the screen text
+        Console.WriteLine(new string(' ', 3) + screenLine); // Repeat the screen line
+
+
         Console.ResetColor();
         Console.WriteLine("\nChair Prices:");
         Console.ForegroundColor = ConsoleColor.Red;
@@ -132,8 +131,6 @@ public abstract class TheaterBase
         Console.WriteLine("Use arrow keys to navigate and Enter to select a seat. Use backspace to delete your selected seat. Press Esc to finish selection.");
         Console.ResetColor();
         Console.WriteLine();
-
-        Console.ResetColor();
     }
 
     public void SelectSeats(long showId, UserModel acc)
@@ -241,8 +238,6 @@ public abstract class TheaterBase
                     int seatIdToDelete = (int)(selectedSeats.FirstOrDefault(s => s.RowNumber == (seats.GetLength(0) - selectedRow) && s.ColumnNumber == (selectedCol + 1))?.Id ?? 0);
 
                     bool canDelete = true;
-                    System.Console.WriteLine($"left edge: {countEmptyLeftSpace}");
-                    System.Console.WriteLine($"right edge: {countSeatPlusLeftSpace}");
                     if (countEmptyLeftSpace == selectedCol)
                     {
                         if (seats[selectedRow, selectedCol + 1] == 'C')
@@ -297,7 +292,7 @@ public abstract class TheaterBase
                 }
                 else
                 {
-                    Console.WriteLine("Wrong input!")
+                    Console.WriteLine("Wrong input!");
                     continue;
                 }
 

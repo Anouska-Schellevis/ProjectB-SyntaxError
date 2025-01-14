@@ -9,13 +9,13 @@ class Admin
         Console.WriteLine($"Welcome {currentUser.FirstName} {currentUser.LastName}\n");
         while (true)
         {
-            Console.WriteLine("[1]Show the menu of the movies");
-            Console.WriteLine("[2]Show the menu of the shows");
-            Console.WriteLine("[3]Show the menu of the bar");
+            Console.WriteLine("[1]Movie menu");
+            Console.WriteLine("[2]Show menu");
+            Console.WriteLine("[3]Bar menu");
             Console.WriteLine("[4]Show the current balance");
-            Console.WriteLine("[5]Show the menu of the vouchers");
-            Console.WriteLine("[6]Show the movie snack menu");
-            Console.WriteLine("[7]Show the menu of the locations");
+            Console.WriteLine("[5]Voucher menu");
+            Console.WriteLine("[6]Snack menu");
+            Console.WriteLine("[7]Location menu");
             Console.WriteLine("[8]Logout");
             bool isNum = int.TryParse(Console.ReadLine(), out int input);
             if (!isNum)
