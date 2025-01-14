@@ -1,25 +1,17 @@
-public class Show
+class Show
 {
-    // static public void Main()
-    // {
-    //     // bool admin = false;
-    //     // if (admin)
-    //     // { AdminStart(); }
-    //     // else
-    //     // { UserStart(); }
-    // }
     public static string dateofshow;
     static public void AdminStart(UserModel acc)
     {
         while (true)
         {
             Console.Clear();
-            Console.WriteLine("===== Show menu =====");
+            Console.WriteLine("===== Show menu =====\n");
             Console.WriteLine("[1]Overview of all show");
             Console.WriteLine("[2]Add show");
             Console.WriteLine("[3]Edit show");
             Console.WriteLine("[4]Delete show");
-            Console.WriteLine("[5]Go back");
+            Console.WriteLine("[5]Go back to the menu");
             Console.WriteLine("What would you like to do?");
             bool isNum = int.TryParse(Console.ReadLine(), out int choice);
             if (!isNum)
@@ -125,26 +117,8 @@ public class Show
                             Thread.Sleep(2000);
                         }
                     } while (ShowAccess.GetByID(idToDelete) == null);
-                    int question = 0;
-                    do
-                    {
-                        Console.Clear();
-                        Console.WriteLine($"Are you sure you want to delete this show?");
-                        Console.WriteLine("[1]Yes\n[2]No");
-                        bool idIsNum = int.TryParse(Console.ReadLine(), out question);
-                        Console.Clear();
-                        if (!idIsNum)
-                        {
-                            Console.WriteLine("Invalid input. Must be a number");
-                            Thread.Sleep(2000);
-                        }
-                    }
-                    while (question != 1 && question != 2);
-                    if (question == 1)
-                    {
-                        ShowDelete(idToDelete);
-                        Console.WriteLine("Show is deleted");
-                    }
+                    ShowDelete(idToDelete);
+                    Console.WriteLine("Show is deleted");
                     Thread.Sleep(2000);
                     break;
                 case 5:
@@ -169,12 +143,12 @@ public class Show
         Dictionary<int, string> movies;
         bool loop = true;
         bool printed = true;
-        movies = PrintOverviewMovie_Time(acc);
+        movies = PrintOverviewMovie_Time();
         while (loop)
         {
             if (printed == false)
             {
-                movies = PrintOverviewMovie_Time(acc);
+                movies = PrintOverviewMovie_Time();
             }
             if (movies.Count != 0)
             {
@@ -271,7 +245,6 @@ public class Show
         {
             case 1:
 
-
                 int secondchoice;
                 do
                 {
@@ -299,8 +272,8 @@ public class Show
                     case 1:
                         if (movie != null)
                         {
-                            int chosentime;
                             Dictionary<int, ShowModel> showtime = TimeOptions(movies[chosennumber], dateofshow);
+                            int chosentime;
                             do
                             {
                                 Console.WriteLine("And at what time?");
@@ -520,7 +493,7 @@ public class Show
         {
             do
             {
-                Console.WriteLine("Enter new theater number for this movie. Keep in mind there are only 3 theatre's in this cinema.");
+                Console.WriteLine("Enter new theater number for this movie.");
                 bool isNum = int.TryParse(Console.ReadLine(), out newTheatreId);
                 Console.Clear();
                 if (!isNum)
@@ -532,7 +505,6 @@ public class Show
                     Console.WriteLine("Theater number does not exist. Try again.");
                 }
             } while (newTheatreId != 1 && newTheatreId != 2 && newTheatreId != 3);
-            newTheatreId = Convert.ToInt32(newTheatreId);
         }
 
         int question2;
@@ -551,7 +523,6 @@ public class Show
                 Console.WriteLine("Invalid option. Please enter 1 or 2.");
             }
         }
-
         while (question2 != 1 && question2 != 2);
         if (question2 == 1)
         {
@@ -612,22 +583,19 @@ public class Show
             {
                 do
                 {
-                    Console.WriteLine("Enter date for this show in 'YYYY-MM-DD' format. (Example: 2024-12-11, 2025-01-24)");
+                    Console.WriteLine("Enter date for this show in 'YYYY-MM-DD' format. (Example: 2025-01-24, 2025-02-01)");
                     Date = Console.ReadLine();
-
                     Console.Clear();
-                    if (!DateTime.TryParseExact(Date, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out DateTime parsedDate))
+                    if (DateOnly.TryParse(Date, out _) == false || DateTime.TryParse(Date, out _) == false)
                     {
                         Console.WriteLine("Not a valid date time format. Try again.");
                     }
-                    else if (parsedDate < DateTime.Now.Date)
-                    {
-                        Console.WriteLine("This date is in the past. Try again.");
-                    }
-                } while (!DateTime.TryParseExact(Date, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out DateTime _));
+                } while (DateOnly.TryParse(Date, out _) != true || DateTime.TryParse(Date, out _) != true);
 
                 do
                 {
+                    Console.WriteLine("On this date, in this theater the following movies play:");
+                    Console.WriteLine("(The times include cleaning time)");
                     if (question1 == 1)
                     {
                         PrintShowsInTheaterThisDay(Date, newTheatreId);
@@ -648,7 +616,7 @@ public class Show
                     {
                         timeinminutes = Convert.ToInt32(MoviesLogic.GetById(Convert.ToInt32(show.MovieId)).TimeInMinutes);
                     }
-                    if (time.Contains(":") && TimeSpan.TryParse(time, out _))
+                    if (TimeSpan.TryParse(time, out _) == true)
                     {
                         if (WithinOpeningHours(time, timeinminutes) == true)
                         {
@@ -662,7 +630,7 @@ public class Show
                                 }
                                 else
                                 {
-                                    List<string> avalabletimes = AnotherSpotToday(timeinminutes, Date, newTheatreId);
+                                    List<string> avalabletimes = AnotherSpotToday(timeinminutes, Date);
                                     Console.WriteLine("There is already a movie playing at this time.");
                                     if (avalabletimes.Count == 0)
                                     {
@@ -673,40 +641,24 @@ public class Show
                                     {
                                         Console.WriteLine("Would you like to pick one of the suggested times for this day?");
                                         Console.WriteLine("[1]Yes\n [2]No");
-                                        string yesno = Console.ReadLine();
-
+                                        int yesno = Convert.ToInt32(Console.ReadLine());
                                         Console.Clear();
-                                        if (yesno == "1")
+                                        if (yesno == 1)
                                         {
-                                            bool isNum = false;
-                                            int timechoice;
-                                            int count;
-                                            do
+                                            Console.WriteLine("You can choose one of the following times");
+                                            int count = 0;
+                                            foreach (var availabletime in avalabletimes)
                                             {
-                                                Console.WriteLine("You can choose one of the following times");
-                                                count = 0;
-                                                foreach (var availabletime in avalabletimes)
-                                                {
-                                                    count++;
-                                                    Console.WriteLine($"{count}. {availabletime}");
-                                                }
-                                                isNum = int.TryParse(Console.ReadLine(), out timechoice);
-                                                Console.Clear();
-                                                if (!isNum)
-                                                {
-                                                    Console.WriteLine("Invalid input. You can only choose a number.");
-                                                }
-                                                else if (timechoice <= 0 || timechoice > count)
-                                                {
-                                                    Console.WriteLine("Please try again. The number chosen is out of range.");
-                                                }
-                                            } while (!isNum || timechoice <= 0 || timechoice > count);
+                                                count++;
+                                                Console.WriteLine($"{count}. {availabletime}");
+                                            }
+                                            int timechoice = Convert.ToInt32(Console.ReadLine());
                                             Console.Clear();
                                             time = Convert.ToString(avalabletimes[timechoice - 1]);
                                             backtodate = false;
                                             break;
                                         }
-                                        if (yesno == "2")
+                                        if (yesno == 2)
                                         {
                                             Console.WriteLine("You can choose another day then");
                                             break;
@@ -723,7 +675,7 @@ public class Show
                                 }
                                 else
                                 {
-                                    List<string> avalabletimes = AnotherSpotToday(timeinminutes, Date, newTheatreId);
+                                    List<string> avalabletimes = AnotherSpotToday(timeinminutes, Date);
                                     Console.WriteLine("There is already a movie playing at this time.");
                                     if (avalabletimes.Count == 0)
                                     {
@@ -734,38 +686,23 @@ public class Show
                                     {
                                         Console.WriteLine("Would you like to pick one of the suggested times for this day?");
                                         Console.WriteLine("[1]Yes\n [2]No");
-                                        string yesno = Console.ReadLine();
-                                        if (yesno == "1")
+                                        int yesno = Convert.ToInt32(Console.ReadLine());
+                                        if (yesno == 1)
                                         {
-                                            bool isNum = false;
-                                            int timechoice;
-                                            int count;
-                                            do
+                                            Console.WriteLine("You can choose one of the following times");
+                                            int count = 0;
+                                            foreach (var availabletime in avalabletimes)
                                             {
-                                                Console.WriteLine("You can choose one of the following times");
-                                                count = 0;
-                                                foreach (var availabletime in avalabletimes)
-                                                {
-                                                    count++;
-                                                    Console.WriteLine($"{count}. {availabletime}");
-                                                }
-                                                isNum = int.TryParse(Console.ReadLine(), out timechoice);
-                                                Console.Clear();
-                                                if (!isNum)
-                                                {
-                                                    Console.WriteLine("Invalid input. You can only choose a number.");
-                                                }
-                                                else if (timechoice <= 0 || timechoice > count)
-                                                {
-                                                    Console.WriteLine("Please try again. The number chosen is out of range.");
-                                                }
-                                            } while (!isNum || timechoice <= 0 || timechoice > count);
+                                                count++;
+                                                Console.WriteLine($"{count}. {availabletime}");
+                                            }
+                                            int timechoice = Convert.ToInt32(Console.ReadLine());
                                             Console.Clear();
                                             time = Convert.ToString(avalabletimes[timechoice - 1]);
                                             backtodate = false;
                                             break;
                                         }
-                                        if (yesno == "2")
+                                        if (yesno == 2)
                                         {
                                             Console.WriteLine("You can choose another day then");
                                             break;
@@ -820,7 +757,7 @@ public class Show
         do
         {
             Console.WriteLine("Enter the theater number for this movie.");
-            Console.WriteLine("Theatres you can choose: 1, 2, 3");
+            Console.WriteLine("Theatres you can choose: \n1 [Imax, 150 seats]\n2 [2D, 300 seats]\n3 [2D, 500 seats]");
 
             isNum = int.TryParse(Console.ReadLine(), out newTheaterId);
             Console.Clear();
@@ -834,16 +771,7 @@ public class Show
                 Console.WriteLine("Theater number does not exist. Try again.");
             }
         } while (newTheaterId != 1 && newTheaterId != 2 && newTheaterId != 3);
-        newTheaterId = Convert.ToInt32(newTheaterId);
-        // do
-        // {
-        //     Console.WriteLine("Enter movie ID for this movie.");
-        //     newMovieId = Convert.ToInt32(Console.ReadLine());
-        //     if (MoviesAccess.GetById(newMovieId) == null)
-        //     {
-        //         Console.WriteLine("Movie ID does not exist. Try again.");
-        //     }
-        // } while (MoviesAccess.GetById(newMovieId) == null);
+
         string title = "";
         MoviesModel movie;
         List<MoviesModel> movies = MoviesLogic.GetAllMovies();
@@ -878,46 +806,39 @@ public class Show
             if (MoviesLogic.GetByTitle(title) == null)
             {
                 Console.WriteLine("Invalid movie. Try again.");
-                Console.WriteLine("Movies you can choose from: ");
-                foreach (var item in movies)
-                {
-                    Console.WriteLine($"- {item.Title}");
-                }
             }
         } while (movie == null);
         newMovieId = Convert.ToInt32(movie.Id);
-        // do
-        // {
-        //     Console.WriteLine("Enter date for this show in '%Y-%m-%d %H:%M' format.");
-        //     newDate_time = Console.ReadLine();
-        //     if (newDate_time.Contains("-") != true && newDate_time.Contains(":") != true)
-        //     {
-        //         Console.WriteLine("Not a valid date time format. Try again.");
-        //     }
-        // } while (newDate_time.Contains("-") != true && newDate_time.Contains(":") != true);
+
         bool backtodate = true;
         while (backtodate == true)
         {
             do
             {
-                Console.WriteLine("Enter date for this show in 'YYYY-MM-DD' format. (Example: 2024-12-11, 2025-01-24)");
+                Console.WriteLine("Enter date for this show in 'YYYY-MM-DD' format. (Example: 2025-01-24, 2025-02-01)");
                 Date = Console.ReadLine();
 
                 Console.Clear();
                 if (!DateTime.TryParseExact(Date, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out DateTime parsedDate))
                 {
                     Console.WriteLine("Not a valid date time format. Try again.");
+                    Console.WriteLine("Enter date for this show in 'YYYY-MM-DD' format. (Example: 2025-01-24, 2025-02-01)");
+                    Date = Console.ReadLine();
                 }
                 else if (parsedDate < DateTime.Now.Date)
                 {
                     Console.WriteLine("This date is in the past. Try again.");
+                    Console.WriteLine("Enter date for this show in 'YYYY-MM-DD' format. (Example: 2025-01-24, 2025-02-01)");
+                    Date = Console.ReadLine();
                 }
-            } while (!DateTime.TryParseExact(Date, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out DateTime _));
+            } while (DateOnly.TryParse(Date, out _) != true || DateTime.TryParse(Date, out _) != true);
 
             do
             {
+                Console.WriteLine("On this date, in this theater the following movies play:");
+                Console.WriteLine("(The times include cleaning time)");
                 PrintShowsInTheaterThisDay(Date, newTheaterId);
-                Console.WriteLine("What time would you like to choose('HH:MM' format)?");
+                Console.WriteLine("What time would you like to choose ('HH:MM' format)?");
                 time = Console.ReadLine();
                 int timeinminutes = Convert.ToInt32(MoviesLogic.GetById(newMovieId).TimeInMinutes);
                 if (TimeOnly.TryParse(time, out _) == true && TimeSpan.TryParse(time, out _) == true)
@@ -932,7 +853,7 @@ public class Show
                         }
                         else
                         {
-                            List<string> avalabletimes = AnotherSpotToday(timeinminutes, Date, newTheaterId);
+                            List<string> avalabletimes = AnotherSpotToday(timeinminutes, Date);
                             Console.WriteLine("There is already a movie playing at this time.");
                             if (avalabletimes.Count == 0)
                             {
@@ -962,29 +883,14 @@ public class Show
 
                                 if (yesno == 1)
                                 {
-                                    isNum = false;
-                                    int timechoice;
-                                    int count;
-                                    do
+                                    Console.WriteLine("You can choose one of the following times");
+                                    int count = 0;
+                                    foreach (var availabletime in avalabletimes)
                                     {
-                                        Console.WriteLine("You can choose one of the following times");
-                                        count = 0;
-                                        foreach (var availabletime in avalabletimes)
-                                        {
-                                            count++;
-                                            Console.WriteLine($"{count}. {availabletime}");
-                                        }
-                                        isNum = int.TryParse(Console.ReadLine(), out timechoice);
-                                        Console.Clear();
-                                        if (!isNum)
-                                        {
-                                            Console.WriteLine("Invalid input. You can only choose a number.");
-                                        }
-                                        else if (timechoice <= 0 || timechoice > count)
-                                        {
-                                            Console.WriteLine("Please try again. The number chosen is out of range.");
-                                        }
-                                    } while (!isNum || timechoice <= 0 || timechoice > count);
+                                        count++;
+                                        Console.WriteLine($"{count}. {availabletime}");
+                                    }
+                                    int timechoice = Convert.ToInt32(Console.ReadLine());
                                     Console.Clear();
                                     time = Convert.ToString(avalabletimes[timechoice - 1]);
                                     backtodate = false;
@@ -1012,7 +918,7 @@ public class Show
         newDate_time = $"{Date} {time}";
         ShowModel new_show = new ShowModel(1, newTheaterId, newMovieId, newDate_time);
         ShowLogic.WriteShow(new_show);
-        int answer;
+        int answer = 0;
         do
         {
             Console.WriteLine("Would you also like to plan this show at the same time for the next 6 days?");
@@ -1039,14 +945,14 @@ public class Show
         List<ShowModel> shows = ShowLogic.GetAllShows();
         foreach (ShowModel show in shows)
         {
-            Console.WriteLine($"Theatre: {show.TheatreId}");
+            Console.WriteLine($"Theater: {show.TheatreId}");
             string movietitle = MoviesLogic.GetById(Convert.ToInt32(show.MovieId)).Title;
             Console.WriteLine($"Movie title: {movietitle}");
             Console.WriteLine($"Date: {show.Date}");
             Console.WriteLine("-----------------------------------------------");
         }
     }
-    public static Dictionary<int, string> PrintOverviewMovie_Time(UserModel acc)
+    public static Dictionary<int, string> PrintOverviewMovie_Time()
     {
         Console.WriteLine("On what day would you like to watch a movie?");
         // Console.WriteLine("1. Monday\n2. Tuesday\n3. Wednesday\n4. Thursday");
@@ -1055,8 +961,6 @@ public class Show
         int currentDay = (int)Currentday;
         int thursDay = (int)DayOfWeek.Thursday;
         int daysTilNextThursday = (thursDay - currentDay + 7) % 7;
-        int count = 0;
-        int minus = 0;
 
         if (daysTilNextThursday == 0)
         {
@@ -1070,36 +974,15 @@ public class Show
         {
             daysTilNextThursday += 6;
         }
-        int numbernottoprint = 0;
-        int lastnumber = 0;
+
         for (int i = 0; i <= daysTilNextThursday; i++)
         {
             DayOfWeek printedday = DateTime.Now.AddDays(i).DayOfWeek;
             string printeddate = DateTime.Now.AddDays(i).Date.ToString("yyyy-MM-dd");
-            List<ShowModel> listshowdate = ShowLogic.AllOrderedByDate(printeddate);
-            foreach (var item in listshowdate)
-            {
-                TimeSpan timeofday = DateTime.Now.TimeOfDay;
-                TimeSpan timeofshow = TimeSpan.Parse(item.Date.Split(" ")[1]);
-                if (timeofday > timeofshow)
-                {
-                    numbernottoprint++;
-                }
-            }
-            if (listshowdate.Count == 0 || numbernottoprint == listshowdate.Count)
-            {
-                minus++;
-            }
-            else
-            {
-                Console.WriteLine($"[{i + 1 - minus}]{printedday} {printeddate}");
-                count++;
-            }
-            lastnumber = i + 1 - minus;
+            Console.WriteLine($"{i + 1}. {printedday} {printeddate}");
         }
-        Console.WriteLine($"[{lastnumber + 1}]Go back to the menu");
+
         int Day;
-        string stringDay;
         do
         {
             bool isNum = int.TryParse(Console.ReadLine(), out Day);
@@ -1108,7 +991,7 @@ public class Show
                 Console.WriteLine("Invalid input. Must be a number");
                 Thread.Sleep(2000);
             }
-            else if (Day <= 0 || Day > (daysTilNextThursday + 2 - minus))
+            else if (Day <= 0 || Day >= (daysTilNextThursday + 1))
             {
                 Console.WriteLine("Invalid Input. Try again.");
                 Thread.Sleep(2000);
@@ -1122,11 +1005,7 @@ public class Show
             Console.Write(new string(' ', Console.WindowWidth));
             Console.SetCursorPosition(0, Console.CursorTop - 1);
             Console.SetCursorPosition(0, Console.CursorTop + 1);
-        } while (Day <= 0 || Day > (daysTilNextThursday + 2 - minus));
-        if (Day == lastnumber + 1)
-        {
-            User.Start(acc);
-        }
+        } while (Day <= 0 || Day > (daysTilNextThursday + 1));
         Console.Clear();
         string DayToPrint = Convert.ToString(DateTime.Now.AddDays(Day - 1).DayOfWeek);
         string date = DateTime.Now.AddDays(Day - 1).Date.ToString("yyyy-MM-dd");
@@ -1230,38 +1109,6 @@ public class Show
         return ShowTime;
     }
 
-    // public static void PrintMovie()
-    // {
-    //     ShowModel movie = Movie.
-    //     List<ShowModel> shows = ShowLogic.GetAllShows();
-    //     foreach (var movie in movies)
-    //     {
-    //         MoviesModel MovieInfo = MoviesLogic.GetById(movie.Key);
-    //         bool moviePrinted = false;
-    //         string days = "";
-    //         foreach (var show in shows)
-    //         {
-    //             if (movie.Key == show.MovieId)
-    //             {
-    //                 if (moviePrinted == false)
-    //                 {
-    //                     Console.WriteLine($"Movie: {movie.Value}");
-    //                     Console.WriteLine($"Genre: {MovieInfo.Genre}");
-    //                     Console.WriteLine($"Time in minutes: {MovieInfo.TimeInMinutes}");
-    //                     Console.WriteLine($"Release Date: {MovieInfo.ReleaseDate}");
-    //                     Console.WriteLine($"Director: {MovieInfo.Director}");
-    //                     Console.WriteLine($"Descrition: {MovieInfo.Description}");
-    //                     moviePrinted = true;
-    //                 }
-    //                 DayOfWeek showDate = DateTime.Parse(show.Date).DayOfWeek;
-    //                 string StringshowDate = Convert.ToString(showDate);
-    //                 days = days + " " + StringshowDate;
-    //             }
-    //         }
-    //         Console.WriteLine($"Plays on:{days}");
-    //     }
-    // }
-
     public static void WeekOverviewMovies()
     {
         Dictionary<int, string> movies = Movie.MakeMovieDict();
@@ -1356,7 +1203,6 @@ public class Show
 
     public static void PrintShowsInTheaterThisDay(string date, int theater)
     {
-        bool printed = false;
         List<ShowModel> shows = ShowLogic.GetAllShows();
         foreach (var show in shows)
         {
@@ -1365,12 +1211,6 @@ public class Show
             {
                 if (show.TheatreId == theater)
                 {
-                    if (printed == false)
-                    {
-                        Console.WriteLine("On this date, in this theatre the following movies play:");
-                        Console.WriteLine("(The times include cleaning time)");
-                        printed = true;
-                    }
                     MoviesModel movie = MoviesLogic.GetById(Convert.ToInt32(show.MovieId));
                     string time = show.Date.Split(" ")[1];
                     int minutes = Convert.ToInt32(movie.TimeInMinutes);
@@ -1414,11 +1254,7 @@ public class Show
             TimeSpan EndTime = TimeSpan.Parse(endtime);
             if (theaterid == show.TheatreId)
             {
-                // if ((StartTime <= NewStartTime && NewStartTime < EndTime) || (StartTime < NewEndTime && EndTime >= NewEndTime))
-                // {
-                //     doublebooked = true;
-                // }
-                if (StartTime < NewEndTime && EndTime > NewStartTime)
+                if ((StartTime <= NewStartTime && NewStartTime < EndTime) || (StartTime < NewEndTime && EndTime >= NewEndTime))
                 {
                     doublebooked = true;
                 }
@@ -1427,7 +1263,7 @@ public class Show
         return doublebooked;
     }
 
-    public static List<string> AnotherSpotToday(int minutesNewShow, string date, int theater)
+    public static List<string> AnotherSpotToday(int minutesNewShow, string date)
     {
         // TimeSpan NewStartTime = TimeSpan.Parse(newstarttime);
         // TimeSpan NewEndTime = TimeSpan.Parse(newendtime);
@@ -1436,51 +1272,35 @@ public class Show
         TimeSpan StartOpenSpot = new(10, 0, 0); // opening time
         TimeSpan ClosingTime = new(23, 59, 59); // closing time
         List<string> AvailableStartTimes = new List<string>();
-        TimeSpan EndTime;
-        TimeSpan StartTime;
-        TimeSpan TimeAvailable;
-        TimeSpan PotentialEndtime;
-        int MinutesAvailable;
         foreach (var show in shows)
         {
             MoviesModel movie = MoviesLogic.GetById(Convert.ToInt32(show.MovieId));
 
             string starttime = show.Date.Split(" ")[1];
-            StartTime = TimeSpan.Parse(starttime); // start time planned show
+            TimeSpan StartTime = TimeSpan.Parse(starttime); // start time planned show
 
             int minutes = Convert.ToInt32(movie.TimeInMinutes); // playtime movie
 
             string endtime = GetEndTime(starttime, minutes);
-            EndTime = TimeSpan.Parse(endtime); // endtime planned show
+            TimeSpan EndTime = TimeSpan.Parse(endtime); // endtime planned show
 
-            int totalMinutes = (int)Math.Ceiling(EndTime.TotalMinutes / 5.0) * 5; // rounds the endtime up so the next available starttime is a round number
+            int totalMinutes = (int)Math.Ceiling(EndTime.TotalMinutes / 5.0) * 5; // rounds the endtime up so the next available starttime is a round nuumber
             EndTime = TimeSpan.FromMinutes(totalMinutes);
 
-            TimeAvailable = StartTime.Subtract(StartOpenSpot);
-            MinutesAvailable = Convert.ToInt32(TimeAvailable.TotalMinutes);
+            TimeSpan TimeAvailable = StartTime.Subtract(StartOpenSpot);
+            int MinutesAvailable = Convert.ToInt32(TimeAvailable.TotalMinutes);
 
-            PotentialEndtime = StartOpenSpot.Add(TimeSpan.FromMinutes(minutesNewShow + 20));
-            if (Convert.ToInt32(show.TheatreId) == theater)
+            TimeSpan PotentialEndtime = StartOpenSpot.Add(TimeSpan.FromMinutes(minutesNewShow + 20));
+
+            if (StartOpenSpot < StartTime && MinutesAvailable >= minutesNewShow && PotentialEndtime < ClosingTime && StartOpenSpot >= openingtime)
             {
-                if (StartOpenSpot < StartTime && MinutesAvailable >= minutesNewShow && PotentialEndtime < ClosingTime && StartOpenSpot >= openingtime)
-                {
-                    string add = StartOpenSpot.ToString(@"hh\:mm");
-                    AvailableStartTimes.Add(add);
-                }
+                string add = StartOpenSpot.ToString(@"hh\:mm");
+                AvailableStartTimes.Add(add);
             }
+
 
             StartOpenSpot = EndTime;
         }
-        StartTime = ClosingTime;
-        TimeAvailable = StartTime.Subtract(StartOpenSpot);
-        MinutesAvailable = Convert.ToInt32(TimeAvailable.TotalMinutes);
-        PotentialEndtime = TimeSpan.Parse(GetEndTime(StartOpenSpot.ToString(@"hh\:mm"), minutesNewShow));
-        if (StartOpenSpot < StartTime && MinutesAvailable >= minutesNewShow && PotentialEndtime < ClosingTime && PotentialEndtime > openingtime)
-        {
-            string add = StartOpenSpot.ToString(@"hh\:mm");
-            AvailableStartTimes.Add(add);
-        }
-
         return AvailableStartTimes;
     }
 
