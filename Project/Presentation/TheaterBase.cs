@@ -117,6 +117,8 @@ public abstract class TheaterBase
         Console.WriteLine(new string(' ', 3) + screenLine); // Repeat the screen line
 
 
+// test
+
         Console.ResetColor();
         Console.WriteLine("\nChair Prices:");
         Console.ForegroundColor = ConsoleColor.Red;
