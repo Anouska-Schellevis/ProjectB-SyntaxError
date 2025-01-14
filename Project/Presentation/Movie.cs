@@ -161,7 +161,7 @@ class Movie
                             Console.WriteLine("Invalid movie. Try again.");
                         }
                     } while (moviefordelete == null);
-                    Console.WriteLine($"Are you sure you want to delete {moviefordelete}");
+                    Console.WriteLine($"Are you sure you want to delete {moviefordelete.Title}");
                     Console.WriteLine("[1]Yes\n[2]No");
                     string question = Console.ReadLine();
                     Console.Clear();
