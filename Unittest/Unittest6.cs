@@ -3,8 +3,8 @@ public class MovieTest
 {
     [DataTestMethod]
     [DataRow(13, 99, "Actie", "In a world...", "Some Weird Action Movie", "Lil 'ol me", "2025-01-26 18:00")]
-    [DataRow(14, 100, "Drama", "Hakuna Matata","The Lion King", "Bayoncee", "2025-01-27 19:00")]
-    [DataRow(15, 101, "Komedie","Damn....", "Friday", "Ice Cube", "2025-01-28 20:00")]
+    [DataRow(14, 100, "Drama", "Hakuna Matata", "The Lion King", "Bayoncee", "2025-01-27 19:00")]
+    [DataRow(15, 101, "Komedie", "Damn....", "Friday", "Ice Cube", "2025-01-28 20:00")]
     [DataRow(16, 102, "Familiefilm", "...sitting in a tree K-I-S-S-I-N-G", "Forgot The Title", " Forgot His Face", "2025-01-29 21:00")]
     public void WriteMovie(long Id, long Time_in_minutes, string Genre, string Description, string Title, string Director, string Release_date)
     {
@@ -41,11 +41,15 @@ public class ShowTest
         Assert.AreEqual(Date, madefortest.Date);
     }
 
-    // [DataTestMethod]
-    // [DataRow(68, 2, 4, "2025-01-30 22:00")]
-    // public static void Check20Min(long Id, long Theatre_id, long Movie_id, string Date)
-    // {
-    //     // DateTime starttime = DateTime.Parse(Date);
-    //     // DateTime endtime = ;
-    // }
+    [DataTestMethod]
+    [DataRow(68, 2, 4, "2025-01-30 22:00")]
+    public static void Check20Min(long Id, long Theatre_id, long Movie_id, string Date)
+    {
+        int TimeInMinutes = 120;
+        string time = Date.Split(" ")[1];
+        DateTime starttime = DateTime.Parse(Date);
+        TimeSpan endtime = TimeSpan.Parse(Show.GetEndTime(time, TimeInMinutes));
+        TimeSpan timeItShouldBe = new TimeSpan(0, 20, 0);
+        Assert.AreEqual(timeItShouldBe, endtime);
+    }
 }
