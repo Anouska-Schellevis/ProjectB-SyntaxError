@@ -25,6 +25,8 @@ class Voucher
                 DateTime dateTime;
                 DateTime currentDate = DateTime.Now;
 
+                Console.Clear();
+
                 do
                 {
                     // Ask the admin what kind of voucher he would like to make
