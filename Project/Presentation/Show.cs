@@ -1,4 +1,4 @@
-class Show
+public class Show
 {
     public static string dateofshow;
     static public void AdminStart(UserModel acc)
@@ -976,6 +976,8 @@ class Show
         }
         int numbernottoprint = 0;
         int lastnumber = 0;
+        int minus = 0;
+        int count = 0;
         List<string> dateThatDoesWork = new List<string>();
 
         for (int i = 0; i <= daysTilNextThursday; i++)
@@ -1033,8 +1035,7 @@ class Show
         // string DayToPrint = Convert.ToString(DateTime.Now.AddDays(Day - 1).DayOfWeek);
         string DayToPrint = Convert.ToString(DateTime.Parse(dateThatDoesWork[Day - 1]).DayOfWeek);
         // string date = DateTime.Now.AddDays(Day - 1).Date.ToString("yyyy-MM-dd");
-        string date = "";
-        date = dateThatDoesWork[Day - 1];
+        string date = dateThatDoesWork[Day - 1];
 
         // string DayToPrint = Convert.ToString((DayOfWeek)((Day) % 7));
 
