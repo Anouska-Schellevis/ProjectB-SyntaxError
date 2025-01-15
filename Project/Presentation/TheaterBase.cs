@@ -57,39 +57,44 @@ public abstract class TheaterBase
 
             for (int j = 0; j < columns; j++)
             {
+                // Check if the current seat is the selected seat
+                bool isSelectedSeat = (i == selectedRow && j == selectedCol);
+
                 if (seats[i, j] == 'X') // Check for unavailable seats
                 {
-                    Console.ForegroundColor = ConsoleColor.Black; // Set color to black
-                    Console.Write("■   "); // Display the black block
+                    Console.ForegroundColor = isSelectedSeat ? ConsoleColor.Green : ConsoleColor.Black;
+                    Console.Write("■   "); // Display as a black block or green if selected
+                }
+                else if (seats[i, j] == 'R') // Reserved seat
+                {
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    Console.Write("■   ");
                 }
                 else
                 {
-                    if (seats[i, j] == 'R') // Reserved seat
+                    switch (pricingCategories[i, j])
                     {
-                        Console.ForegroundColor = ConsoleColor.Magenta;
-                    }
-                    else
-                    {
-                        switch (pricingCategories[i, j])
-                        {
-                            case 1:
-                                Console.ForegroundColor = ConsoleColor.Red;
-                                break;
-                            case 2:
-                                Console.ForegroundColor = ConsoleColor.Yellow;
-                                break;
-                            case 3:
-                                Console.ForegroundColor = ConsoleColor.Blue;
-                                break;
-                            default:
-                                Console.ForegroundColor = ConsoleColor.Gray;
-                                break;
-                        }
+                        case 1:
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            break;
+                        case 2:
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            break;
+                        case 3:
+                            Console.ForegroundColor = ConsoleColor.Blue;
+                            break;
+                        case 0:
+                            Console.ForegroundColor = isSelectedSeat ? ConsoleColor.Green : ConsoleColor.Black; // Green if selected
+                            Console.Write("■   "); // Display as a black block or green if selected
+                            continue; // Skip the rest of the loop for this seat
+                        default:
+                            Console.ForegroundColor = ConsoleColor.Gray;
+                            break;
                     }
 
-                    if (i == selectedRow && j == selectedCol)
+                    if (isSelectedSeat) // Highlight selected seat
                     {
-                        Console.ForegroundColor = ConsoleColor.Green; // Highlight selected seat
+                        Console.ForegroundColor = ConsoleColor.Green;
                     }
 
                     if (seats[i, j] == 'A') // Available seat
@@ -98,11 +103,7 @@ public abstract class TheaterBase
                     }
                     else if (seats[i, j] == 'C') // Selected seat
                     {
-                        Console.ForegroundColor = ConsoleColor.Cyan;
-                        Console.Write("■   ");
-                    }
-                    else if (seats[i, j] == 'R') // Reserved seat
-                    {
+                        Console.ForegroundColor = ConsoleColor.White;
                         Console.Write("■   ");
                     }
                     Console.ResetColor();
