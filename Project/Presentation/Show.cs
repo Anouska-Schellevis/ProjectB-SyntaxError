@@ -14,6 +14,7 @@ public class Show
         while (true)
         {
             Console.Clear();
+            Console.WriteLine("===== Show menu =====");
             Console.WriteLine("[1]Overview of all show");
             Console.WriteLine("[2]Add show");
             Console.WriteLine("[3]Edit show");
@@ -613,13 +614,17 @@ public class Show
                 {
                     Console.WriteLine("Enter date for this show in 'YYYY-MM-DD' format. (Example: 2024-12-11, 2025-01-24)");
                     Date = Console.ReadLine();
+
                     Console.Clear();
-                    if (DateOnly.TryParse(Date, out _) == false || DateTime.TryParse(Date, out _) == false)
+                    if (!DateTime.TryParseExact(Date, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out DateTime parsedDate))
                     {
                         Console.WriteLine("Not a valid date time format. Try again.");
                     }
-                } while (DateOnly.TryParse(Date, out _) != true || DateTime.TryParse(Date, out _) != true);
-                Date = DateTime.Parse(Date).ToString("yyyy-MM-dd");
+                    else if (parsedDate < DateTime.Now.Date)
+                    {
+                        Console.WriteLine("This date is in the past. Try again.");
+                    }
+                } while (!DateTime.TryParseExact(Date, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out DateTime _));
 
                 do
                 {
@@ -902,17 +907,12 @@ public class Show
                 if (!DateTime.TryParseExact(Date, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out DateTime parsedDate))
                 {
                     Console.WriteLine("Not a valid date time format. Try again.");
-                    Console.WriteLine("Enter date for this show in 'YYYY-MM-DD' format. (Example: 2024-12-11, 2025-01-24)");
-                    Date = Console.ReadLine();
                 }
                 else if (parsedDate < DateTime.Now.Date)
                 {
                     Console.WriteLine("This date is in the past. Try again.");
-                    Console.WriteLine("Enter date for this show in 'YYYY-MM-DD' format. (Example: 2024-12-11, 2025-01-24)");
-                    Date = Console.ReadLine();
                 }
-            } while (DateOnly.TryParse(Date, out _) != true || DateTime.TryParse(Date, out _) != true);
-            Date = DateTime.Parse(Date).ToString("yyyy-MM-dd");
+            } while (!DateTime.TryParseExact(Date, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out DateTime _));
 
             do
             {
@@ -1072,6 +1072,7 @@ public class Show
         }
         int numbernottoprint = 0;
         int lastnumber = 0;
+        List<string> dateThatDoesWork = new List<string>();
         for (int i = 0; i <= daysTilNextThursday; i++)
         {
             DayOfWeek printedday = DateTime.Now.AddDays(i).DayOfWeek;
@@ -1094,6 +1095,7 @@ public class Show
             {
                 Console.WriteLine($"[{i + 1 - minus}]{printedday} {printeddate}");
                 count++;
+                dateThatDoesWork.Add(printeddate);
             }
             lastnumber = i + 1 - minus;
         }
@@ -1128,8 +1130,11 @@ public class Show
             User.Start(acc);
         }
         Console.Clear();
-        string DayToPrint = Convert.ToString(DateTime.Now.AddDays(Day - 1).DayOfWeek);
-        string date = DateTime.Now.AddDays(Day - 1).Date.ToString("yyyy-MM-dd");
+        // string DayToPrint = Convert.ToString(DateTime.Now.AddDays(Day - 1).DayOfWeek);
+        string DayToPrint = Convert.ToString(DateTime.Parse(dateThatDoesWork[Day - 1]).DayOfWeek);
+        // string date = DateTime.Now.AddDays(Day - 1).Date.ToString("yyyy-MM-dd");
+        string date = "";
+        date = dateThatDoesWork[Day - 1];
 
         // string DayToPrint = Convert.ToString((DayOfWeek)((Day) % 7));
 

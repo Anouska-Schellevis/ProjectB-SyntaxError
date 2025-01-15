@@ -6,11 +6,13 @@ public class SnackMenu
         while (true)
         {
             Console.Clear();
+            Console.WriteLine("===== Snack menu =====");
             Console.WriteLine("[1]See current snack menu");
             Console.WriteLine("[2]Add menu item");
             Console.WriteLine("[3]Delete menu item");
             Console.WriteLine("[4]Edit menu item");
-            Console.WriteLine("[5]Go back");
+            Console.WriteLine("[5]See snack overview");
+            Console.WriteLine("[6]Go back");
 
 
             bool isNum = int.TryParse(Console.ReadLine(), out int choice);
@@ -63,6 +65,11 @@ public class SnackMenu
             else if (choice == 5)
             {
                 Console.Clear();
+                SnackAdminOverview(acc);
+            }
+            else if (choice == 6)
+            {
+                Console.Clear();
                 break;
             }
             else
@@ -97,13 +104,29 @@ public class SnackMenu
                 return;
             }
         }
-        Console.WriteLine("\nEnter the price of the menu item:");
+        Console.WriteLine("\nEnter the price of the menu item (use a comma (,) for decimals, example, 5,50):");
         decimal price;
-        while (!decimal.TryParse(Console.ReadLine(), out price)) //will parse user string to user ceimal if its succesfull it will save to price
+        while (true)
         {
+            string input = Console.ReadLine();
+
+            //check if the input contains a dot (.) because we dont want that
+            if (input.Contains("."))
+            {
+                Console.Clear();
+                Console.WriteLine("Invalid price. Use a comma (,) for decimals, example, 5,50:");
+                continue;
+            }
+
+            if (decimal.TryParse(input, out price))//try to make it a decimal
+            {
+                break;
+            }
+
             Console.Clear();
-            Console.WriteLine("Invalid price. Please enter a valid number:");
+            Console.WriteLine("Invalid price. Please enter a valid number using a comma (,) for decimals, example, 5,50:");
         }
+
 
         Console.WriteLine("\nWhat type is this menu item?");
         Console.WriteLine("[1]Drink");
@@ -277,102 +300,6 @@ public class SnackMenu
         Console.WriteLine($"[{itemNumber}]Done ordering");
     }
 
-    // public static Dictionary<MenuItem, int> SelectSnacks()
-    // {
-    //     List<MenuItem> snacks = MenuItemLogic.GetAllMenuItems();
-    //     Dictionary<MenuItem, int> orderDict = new Dictionary<MenuItem, int>();
-    //     bool stillOrdering = true;
-
-    //     while (stillOrdering) //a while loop that will run while the user is stillOrdering
-    //     {
-    //         ShowSnackMenu();
-
-    //         Console.WriteLine("\nYour order:");
-    //         if (orderDict.Count == 0)
-    //         {
-    //             Console.WriteLine("Your order is empty");
-    //         }
-    //         else
-    //         {
-    //             decimal orderTotal = 0; //keep track of orderTotal money
-    //                                     //this here prints everytime user picks new item because of while loop
-    //                                     //so it looks like live updating, it prints the item name and price with 2 decimal
-    //                                     // adds that price to toal price, and then prints the total order money so that user
-    //                                     // can keep track of how much they are spending
-    //             foreach (var order in orderDict)
-    //             {
-    //                 Console.WriteLine($"- {order.Value} x {order.Key.Name}");
-    //                 orderTotal += order.Key.Price * order.Value;
-    //             }
-    //             Console.WriteLine($"Total: €{orderTotal:F2}");
-    //         }
-
-    //         Console.Write($"\nWhat would you like to order? input any number from the menu above or type {snacks.Count + 1} to stop ordering ");
-    //         string answer = Console.ReadLine();
-
-    //         bool isNumber = int.TryParse(answer, out int choice); //change user string input into int
-
-    //         if (isNumber)
-    //         {
-    //             if (choice == snacks.Count + 1)
-    //             {
-    //                 stillOrdering = false; //this will always refere to the done ordering and will stop the loop
-    //             }
-    //             else if (choice > 0 && choice <= snacks.Count) //if choice is bigger then 0 and smaller then max length of list
-    //             {
-    //                 MenuItem chosenSnack = snacks[choice - 1]; //have to do -1 because of 0 based index, (if user picks number 7 they have actually picked number six)
-    //                 Console.Write($"\nHow many of {chosenSnack.Name} would you like to order? ");
-    //                 string AmountSnacks = Console.ReadLine();
-
-    //                 bool validAmount = int.TryParse(AmountSnacks, out int quantity) && quantity > 0;//as long as its a int and bigger then 0
-    //                 if (validAmount)
-    //                 {
-    //                     if (orderDict.ContainsKey(chosenSnack))
-    //                     {
-    //                         orderDict[chosenSnack] += quantity;
-    //                     }
-    //                     else
-    //                     {
-    //                         orderDict[chosenSnack] = quantity;
-    //                     }
-    //                     Console.WriteLine($"\nAdded {quantity} x {chosenSnack.Name} to your order.");
-    //                 }
-    //                 else
-    //                 {
-    //                     Console.WriteLine("\nPlease enter a valid quantity.");
-    //                 }
-    //             }
-    //             else
-    //             {
-    //                 Console.WriteLine("\nPlease pick a number from the menu.");
-    //             }
-    //         }
-    //         else
-    //         {
-    //             Console.WriteLine("\nPlease enter a number.");
-    //         }
-    //     }
-
-    //     Console.Clear();
-    //     Console.WriteLine("===== Your Final Order =====");
-
-    //     if (orderDict.Count == 0)
-    //     {
-    //         Console.WriteLine("No snacks ordered.");
-    //     }
-    //     else
-    //     {
-    //         decimal finalTotal = 0;
-    //         foreach (var order in orderDict)
-    //         {
-    //             Console.WriteLine($"- {order.Value} x {order.Key.Name}");
-    //             finalTotal += order.Key.Price * order.Value;
-    //         }
-    //         Console.WriteLine($"Total: €{finalTotal:F2}");
-    //     }
-
-    //     return orderDict; //this will just show the user their final order works the same as earlier
-    // }
 
     public static Dictionary<MenuItem, int> SelectSnacks()
     {
@@ -702,7 +629,7 @@ public class SnackMenu
                 MenuItem selectedSnack = snacks[choice - 1];
 
                 Console.WriteLine($"You are editing: {selectedSnack.Name} (€{selectedSnack.Price:F2})");
-                
+
                 int nameChoice = 0;
                 do
                 {
@@ -717,7 +644,7 @@ public class SnackMenu
                     }
                     else if (nameChoice != 1 && nameChoice != 2)
                     {
-                        Console.WriteLine("Invalid input try again.");   
+                        Console.WriteLine("Invalid input try again.");
                     }
                 } while (nameChoice != 1 && nameChoice != 2);
                 if (nameChoice == 1)
@@ -733,8 +660,8 @@ public class SnackMenu
                 do
                 {
                     Console.WriteLine("\nWould you like to edit the price?");
-                    Console.WriteLine("[1]Yes");
-                    Console.WriteLine("[2]No");
+                    Console.WriteLine("[1] Yes");
+                    Console.WriteLine("[2] No");
                     bool isNum = int.TryParse(Console.ReadLine(), out priceChoice);
                     Console.Clear();
                     if (!isNum)
@@ -743,20 +670,39 @@ public class SnackMenu
                     }
                     else if (priceChoice != 1 && priceChoice != 2)
                     {
-                        Console.WriteLine("Invalid input try again.");   
+                        Console.WriteLine("Invalid input. Try again.");
                     }
                 } while (priceChoice != 1 && priceChoice != 2);
+
                 if (priceChoice == 1)
                 {
-                    Console.WriteLine("Enter the new price:");
+                    Console.WriteLine("Enter the new price (use a comma (,) for decimals, example, 5,50):");
                     decimal newPrice;
-                    while (!decimal.TryParse(Console.ReadLine(), out newPrice) || newPrice <= 0)
+
+                    while (true)
                     {
+                        string userinput = Console.ReadLine();
+
+                        //check if the input contains a dot (.) because we don't want that
+                        if (userinput.Contains("."))
+                        {
+                            Console.Clear();
+                            Console.WriteLine("Invalid price. Use a comma (,) for decimals, example, 5,50:");
+                            continue;
+                        }
+
+                        if (decimal.TryParse(userinput, out newPrice) && newPrice > 0)
+                        {
+                            break;
+                        }
+
                         Console.Clear();
-                        Console.WriteLine("Invalid price. Please enter a number greater than 0:");
+                        Console.WriteLine("Invalid price. Please enter a valid number greater than 0 using a comma (,) for decimals, example, 5,50:");
                     }
+
                     selectedSnack.Price = newPrice;
                 }
+
 
                 Console.Clear();
 
@@ -774,7 +720,7 @@ public class SnackMenu
                     }
                     else if (typeChoice != 1 && typeChoice != 2)
                     {
-                        Console.WriteLine("Invalid input try again.");   
+                        Console.WriteLine("Invalid input try again.");
                     }
                 } while (typeChoice != 1 && typeChoice != 2);
                 if (typeChoice == 1)
@@ -838,7 +784,7 @@ public class SnackMenu
                         Console.WriteLine("Invalid input. Try again");
                     }
                 }
-                
+
             }
             else if (choice == snacks.Count + 1)
             {
@@ -868,5 +814,378 @@ public class SnackMenu
             }
         }
         return true;
+    }
+
+    public static void SnackAdminOverview(UserModel acc)
+    {
+        List<ReservationModel> allReservations = ReservationAccess.GetAllReservations();
+
+        while (true)
+        {
+            Console.Clear();
+            Console.WriteLine("\nSnack Popularity Menu:");
+            Console.WriteLine("[1] See snacks per reservation");
+            Console.WriteLine("[2] See snacks per show");
+            Console.WriteLine("[3] See snacks per day");
+            Console.WriteLine("[4] Go back to admin menu");
+            Console.WriteLine("[5] Log out");
+            string choice = Console.ReadLine();
+
+            if (choice == "1")
+            {
+                Console.Clear();
+                DisplaySnacksPerReservation(allReservations);
+            }
+            else if (choice == "2")
+            {
+                Console.Clear();
+                DisplaySnacksPerShow(allReservations);
+            }
+            else if (choice == "3")
+            {
+                Console.Clear();
+                DisplaySnacksPerDay(allReservations);
+            }
+            else if (choice == "4")
+            {
+                Console.Clear();
+                Admin.Start(acc);
+                return;
+            }
+            else if (choice == "5")
+            {
+                Console.Clear();
+                Menu.Start();
+            }
+            else
+            {
+                Console.WriteLine("Invalid option. Please enter 1, 2, 3, or 4.");
+                Thread.Sleep(2000);
+            }
+        }
+    }
+
+    public static void DisplaySnacksPerReservation(List<ReservationModel> allReservations)
+    {
+        Console.Clear();
+        Console.WriteLine("===== Snacks per Reservation =====\n");
+
+        List<MenuItem> menuItems = MenuItemLogic.GetAllMenuItems();
+
+        foreach (var reservation in allReservations)
+        {
+            int userId = reservation.UserId;
+            UserLogic userLogic = new UserLogic();
+            UserModel currentUser = userLogic.GetById(userId);
+
+            if (currentUser == null)
+            {
+                Console.WriteLine($"  No user found for User ID: {userId}");
+                continue;
+            }
+
+            string snacks = reservation.Snacks;
+            if (string.IsNullOrEmpty(snacks))
+            {
+                continue;
+            }
+
+            Console.WriteLine($"Reservation ID: {reservation.Id}");
+            Console.WriteLine($"  User: {currentUser.FirstName} {currentUser.LastName}");
+
+            string[] snackList = snacks.Split(',');
+            Dictionary<string, int> snackCounts = new Dictionary<string, int>();
+            decimal totalCost = 0;
+
+            foreach (string snack in snackList.Select(s => s.Trim()))
+            {
+                if (snackCounts.ContainsKey(snack))
+                {
+                    snackCounts[snack]++;
+                }
+                else
+                {
+                    snackCounts[snack] = 1;
+                }
+            }
+
+            bool hasOrderedSnacks = false;
+            foreach (var snack in snackCounts)
+            {
+                MenuItem menuItem = null;
+
+                foreach (var item in menuItems)
+                {
+                    if (item.Name == snack.Key)
+                    {
+                        menuItem = item;
+                        break;
+                    }
+                }
+
+                if (menuItem != null)
+                {
+                    hasOrderedSnacks = true;
+                    decimal cost = menuItem.Price * snack.Value;
+                    totalCost += cost;
+
+                    Console.WriteLine($"     {snack.Value} x {menuItem.Name} - €{cost:F2}");
+                }
+                else
+                {
+                    Console.WriteLine($"     {snack.Value} x {snack.Key} (Price not found)");
+                }
+            }
+
+            if (hasOrderedSnacks)
+            {
+                Console.WriteLine($"     Total Cost: €{totalCost:F2}\n");
+            }
+        }
+
+        while (true)
+        {
+            Console.WriteLine("\n[1] Back to Snack Menu");
+            Console.WriteLine("[2] Log out");
+            string choice = Console.ReadLine();
+            if (choice == "1")
+            {
+                Console.Clear();
+                return;
+            }
+            else if (choice == "2")
+            {
+                Console.Clear();
+                Menu.Start();
+            }
+            else
+            {
+                Console.WriteLine("Invalid option. Please enter 1 or 2.");
+                Thread.Sleep(2000);
+                /*
+                The cursor goes back to the position of the error message, which is replaced after 2 seconds with an empty string.
+                */
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                Console.Write(new string(' ', Console.WindowWidth));
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                Console.Write(new string(' ', Console.WindowWidth));
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                Console.Write(new string(' ', Console.WindowWidth));
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                Console.Write(new string(' ', Console.WindowWidth));
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                Console.Write(new string(' ', Console.WindowWidth));
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                Console.SetCursorPosition(0, Console.CursorTop + 1);
+            }
+        }
+    }
+
+    public static void DisplaySnacksPerShow(List<ReservationModel> allReservations)
+    {
+        Console.Clear();
+        Console.WriteLine("===== Snacks per Show =====\n");
+
+        var groupedByShow = allReservations
+            .GroupBy(reservation => reservation.ShowId)
+            .ToList();
+
+        List<MenuItem> menuItems = MenuItemLogic.GetAllMenuItems();
+
+        foreach (var group in groupedByShow)
+        {
+            int showId = group.Key;
+
+            ShowModel show = ShowLogic.GetByID(showId);
+            MoviesModel movie = MoviesLogic.GetById((int)show.MovieId);
+
+            if (show != null && movie != null)
+            {
+                Dictionary<string, int> snackCountsForShow = new Dictionary<string, int>();
+
+                foreach (var reservation in group)
+                {
+                    string snacks = reservation.Snacks;
+                    if (!string.IsNullOrEmpty(snacks))
+                    {
+                        string[] snackList = snacks.Split(',');
+                        foreach (string snack in snackList.Select(s => s.Trim()))
+                        {
+                            if (snackCountsForShow.ContainsKey(snack))
+                            {
+                                snackCountsForShow[snack]++;
+                            }
+                            else
+                            {
+                                snackCountsForShow[snack] = 1;
+                            }
+                        }
+                    }
+                }
+
+                Console.WriteLine($"Show Date: {show.Date}");
+                Console.WriteLine($"Movie Title: {movie.Title}");
+                Console.WriteLine($"Theatre Room: {show.TheatreId}");
+
+                decimal totalCost = 0;
+                foreach (var snack in snackCountsForShow)
+                {
+                    MenuItem menuItem = menuItems.FirstOrDefault(item => item.Name == snack.Key);
+
+                    if (menuItem != null)
+                    {
+                        decimal cost = menuItem.Price * snack.Value;
+                        totalCost += cost;
+                        Console.WriteLine($"     {snack.Value} x {menuItem.Name} - €{cost:F2}");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"     {snack.Value} x {snack.Key} (Price not found)");
+                    }
+                }
+
+                Console.WriteLine($"    Total Cost: €{totalCost:F2}\n");
+            }
+        }
+
+        while (true)
+        {
+            Console.WriteLine("\n[1] Back to Snack Menu");
+            Console.WriteLine("[2] Log out");
+            string choice = Console.ReadLine();
+            if (choice == "1")
+            {
+                Console.Clear();
+                return;
+            }
+            else if (choice == "2")
+            {
+                Console.Clear();
+                Menu.Start();
+            }
+            else
+            {
+                Console.WriteLine("Invalid option. Please enter 1 or 2.");
+                Thread.Sleep(2000);
+                /*
+                The cursor goes back to the position of the error message, which is replaced after 2 seconds with an empty string.
+                */
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                Console.Write(new string(' ', Console.WindowWidth));
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                Console.Write(new string(' ', Console.WindowWidth));
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                Console.Write(new string(' ', Console.WindowWidth));
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                Console.Write(new string(' ', Console.WindowWidth));
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                Console.Write(new string(' ', Console.WindowWidth));
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                Console.SetCursorPosition(0, Console.CursorTop + 1);
+            }
+        }
+    }
+
+    public static void DisplaySnacksPerDay(List<ReservationModel> allReservations)
+    {
+        Console.Clear();
+        Console.WriteLine("===== Snacks per Day =====\n");
+
+        List<MenuItem> menuItems = MenuItemLogic.GetAllMenuItems();
+
+
+        var groupedByShow = allReservations
+            .GroupBy(reservation => reservation.ShowId)
+            .ToList();
+
+        foreach (var group in groupedByShow)
+        {
+            int showId = group.Key;
+
+
+            ShowModel show = ShowLogic.GetByID(showId);
+            if (show == null) continue;
+
+            DateTime showDate = DateTime.Parse(show.Date);
+            Console.WriteLine($"Date: {showDate.ToShortDateString()}");
+
+            Dictionary<string, int> snackCountsForDay = new Dictionary<string, int>();
+            decimal totalCost = 0;
+
+            foreach (var reservation in group)
+            {
+                string snacks = reservation.Snacks;
+                if (!string.IsNullOrEmpty(snacks))
+                {
+                    string[] snackList = snacks.Split(',');
+                    foreach (string snack in snackList.Select(s => s.Trim()))
+                    {
+                        if (snackCountsForDay.ContainsKey(snack))
+                        {
+                            snackCountsForDay[snack]++;
+                        }
+                        else
+                        {
+                            snackCountsForDay[snack] = 1;
+                        }
+                    }
+                }
+            }
+
+            foreach (var snack in snackCountsForDay)
+            {
+                MenuItem menuItem = menuItems.FirstOrDefault(item => item.Name == snack.Key);
+
+                if (menuItem != null)
+                {
+                    decimal cost = menuItem.Price * snack.Value;
+                    totalCost += cost;
+                    Console.WriteLine($"     {snack.Value} x {menuItem.Name} - €{cost:F2}");
+                }
+                else
+                {
+                    Console.WriteLine($"     {snack.Value} x {snack.Key} (Price not found)");
+                }
+            }
+
+            Console.WriteLine($"    Total Cost for {showDate.ToShortDateString()}: €{totalCost:F2}\n");
+        }
+
+        while (true)
+        {
+            Console.WriteLine("\n[1] Back to Snack Menu");
+            Console.WriteLine("[2] Log out");
+            string choice = Console.ReadLine();
+            if (choice == "1")
+            {
+                Console.Clear();
+                return;
+            }
+            else if (choice == "2")
+            {
+                Console.Clear();
+                Menu.Start();
+            }
+            else
+            {
+                Console.WriteLine("Invalid option. Please enter 1 or 2.");
+                Thread.Sleep(2000);
+                /*
+                The cursor goes back to the position of the error message, which is replaced after 2 seconds with an empty string.
+                */
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                Console.Write(new string(' ', Console.WindowWidth));
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                Console.Write(new string(' ', Console.WindowWidth));
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                Console.Write(new string(' ', Console.WindowWidth));
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                Console.Write(new string(' ', Console.WindowWidth));
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                Console.Write(new string(' ', Console.WindowWidth));
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                Console.SetCursorPosition(0, Console.CursorTop + 1);
+            }
+        }
     }
 }
