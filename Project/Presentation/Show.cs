@@ -974,12 +974,35 @@ class Show
         {
             daysTilNextThursday += 6;
         }
+        int numbernottoprint = 0;
+        int lastnumber = 0;
+        List<string> dateThatDoesWork = new List<string>();
 
         for (int i = 0; i <= daysTilNextThursday; i++)
         {
             DayOfWeek printedday = DateTime.Now.AddDays(i).DayOfWeek;
             string printeddate = DateTime.Now.AddDays(i).Date.ToString("yyyy-MM-dd");
-            Console.WriteLine($"{i + 1}. {printedday} {printeddate}");
+            List<ShowModel> listshowdate = ShowLogic.AllOrderedByDate(printeddate);
+            foreach (var item in listshowdate)
+            {
+                TimeSpan timeofday = DateTime.Now.TimeOfDay;
+                TimeSpan timeofshow = TimeSpan.Parse(item.Date.Split(" ")[1]);
+                if (timeofday > timeofshow)
+                {
+                    numbernottoprint++;
+                }
+            }
+            if (listshowdate.Count == 0 || numbernottoprint == listshowdate.Count)
+            {
+                minus++;
+            }
+            else
+            {
+                Console.WriteLine($"[{i + 1 - minus}]{printedday} {printeddate}");
+                count++;
+                dateThatDoesWork.Add(printeddate);
+            }
+            lastnumber = i + 1 - minus;
         }
 
         int Day;
@@ -1007,8 +1030,11 @@ class Show
             Console.SetCursorPosition(0, Console.CursorTop + 1);
         } while (Day <= 0 || Day > (daysTilNextThursday + 1));
         Console.Clear();
-        string DayToPrint = Convert.ToString(DateTime.Now.AddDays(Day - 1).DayOfWeek);
-        string date = DateTime.Now.AddDays(Day - 1).Date.ToString("yyyy-MM-dd");
+        // string DayToPrint = Convert.ToString(DateTime.Now.AddDays(Day - 1).DayOfWeek);
+        string DayToPrint = Convert.ToString(DateTime.Parse(dateThatDoesWork[Day - 1]).DayOfWeek);
+        // string date = DateTime.Now.AddDays(Day - 1).Date.ToString("yyyy-MM-dd");
+        string date = "";
+        date = dateThatDoesWork[Day - 1];
 
         // string DayToPrint = Convert.ToString((DayOfWeek)((Day) % 7));
 
