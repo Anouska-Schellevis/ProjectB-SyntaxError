@@ -29,7 +29,7 @@ static public class SeatsLogic
 
     static public long InsertSeatAndGetId(SeatsModel seat)
     {
-        SeatsAccess.InsertSeatAndGetId(seat);
+        return SeatsAccess.InsertSeatAndGetId(seat);
     }
 }
 

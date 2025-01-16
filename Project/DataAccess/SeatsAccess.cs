@@ -69,7 +69,4 @@ public static class SeatsAccess
 
         return seatId;
     }
-
-
-
 }
