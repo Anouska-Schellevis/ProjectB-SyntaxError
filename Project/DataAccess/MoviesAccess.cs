@@ -47,4 +47,15 @@ public static class MoviesAccess
         string sql = $"SELECT * FROM {Table} WHERE id = @Id";
         return _connection.QueryFirstOrDefault<MoviesModel>(sql, new { Id = id });
     }
+
+    public static void ClearAllMovies()
+    {
+        string deleteSql = $"DELETE FROM {Table};";
+        _connection.Execute(deleteSql);
+
+        string resetSql = $"UPDATE sqlite_sequence SET seq = 0 WHERE name = @TableName;";
+        _connection.Execute(resetSql, new { TableName = Table });
+
+        Console.WriteLine("All movies have been deleted and auto-increment has been reset.");
+    }
 }
