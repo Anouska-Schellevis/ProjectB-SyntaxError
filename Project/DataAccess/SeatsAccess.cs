@@ -42,7 +42,7 @@ public static class SeatsAccess
         string resetSql = $"UPDATE sqlite_sequence SET seq = 0 WHERE name = @TableName;";
         _connection.Execute(resetSql, new { TableName = Table });
 
-        Console.WriteLine("All movies have been deleted and auto-increment has been reset.");
+        Console.WriteLine("All seats have been deleted and auto-increment has been reset.");
     }
 
     public static List<SeatsModel> GetAllSeats()
