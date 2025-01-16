@@ -3,15 +3,17 @@ using System.Runtime.CompilerServices;
 
 public abstract class TheaterBase
 {
-    public char[,] seats;
+    public char[,] seats; // The seat grid of the theater
     protected int[,] pricingCategories;
 
+    // Constructor to initialize pricing categories and seats
     public TheaterBase(int rows, int columns, int[,] pricingCategories)
     {
         this.pricingCategories = pricingCategories;
-        InitializeSeats();
+        InitializeSeats(); // Initialize the seat grid based on the pricing categories
     }
 
+    // Initializes the seat grid based on the pricing categories
     protected void InitializeSeats()
     {
         seats = new char[pricingCategories.GetLength(0), pricingCategories.GetLength(1)];
@@ -19,16 +21,20 @@ public abstract class TheaterBase
         {
             for (int j = 0; j < seats.GetLength(1); j++)
             {
+                // Mark unavailable seats with 'X' and available seats with 'A'
                 seats[i, j] = pricingCategories[i, j] == 0 ? 'X' : 'A';
             }
         }
     }
 
+    // Displays the seating arrangement in the console, marking reserved and available seats
     public void DisplaySeats(long showId, int selectedRow = 0, int selectedCol = 0)
     {
         Console.Clear();
-        List<long> reservedSeats = ReservationAccess.GetReservedSeatsByShowId(showId);
+        // Retrieve list of reserved seats for the given showId
+        List<long> reservedSeats = ReservationLogic.GetReservedSeatsByShowId(showId);
 
+        // Mark the reserved seats on the seat grid
         foreach (long seatId in reservedSeats)
         {
             SeatsModel seat = SeatsLogic.GetById((int)seatId);
@@ -36,13 +42,14 @@ public abstract class TheaterBase
             int col = seat.ColumnNumber - 1;
             if (row >= 0 && row < seats.GetLength(0) && col >= 0 && col < seats.GetLength(1))
             {
-                seats[row, col] = 'R'; // Mark reserved seats
+                seats[row, col] = 'R'; // Mark reserved seats as 'R'
             }
         }
         
         int rows = seats.GetLength(0);
         int columns = seats.GetLength(1);
 
+        // Display seat numbers on the top row
         Console.Write("   ");
         for (int j = 1; j <= columns; j++)
         {
@@ -50,10 +57,11 @@ public abstract class TheaterBase
         }
         Console.WriteLine();
 
+        // Display each row of seats
         for (int i = 0; i < rows; i++)
         {
             Console.ForegroundColor = ConsoleColor.Gray;
-            Console.Write($"{rows - i,2}  ");
+            Console.Write($"{rows - i,2}  "); // Display row number
 
             for (int j = 0; j < columns; j++)
             {
@@ -63,25 +71,26 @@ public abstract class TheaterBase
                 if (seats[i, j] == 'X') // Check for unavailable seats
                 {
                     Console.ForegroundColor = isSelectedSeat ? ConsoleColor.Green : ConsoleColor.Black;
-                    Console.Write("■   "); // Display as a black block or green if selected
+                    Console.Write("■   "); // Display as a black block or green if selected when navigating through the seatoverview
                 }
-                else if (seats[i, j] == 'R') // Reserved seat
+                else if (seats[i, j] == 'R') // Makes reserved seats purple
                 {
                     Console.ForegroundColor = ConsoleColor.Magenta;
                     Console.Write("■   ");
                 }
                 else
                 {
+                    // Display available seats based on their pricing category
                     switch (pricingCategories[i, j])
                     {
                         case 1:
-                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.ForegroundColor = ConsoleColor.Red; // Premium seats are red
                             break;
                         case 2:
-                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.ForegroundColor = ConsoleColor.Yellow; // Standard seats are yellow
                             break;
                         case 3:
-                            Console.ForegroundColor = ConsoleColor.Blue;
+                            Console.ForegroundColor = ConsoleColor.Blue; // Basic seats are blue
                             break;
                         case 0:
                             Console.ForegroundColor = isSelectedSeat ? ConsoleColor.Green : ConsoleColor.Black; // Green if selected
@@ -101,7 +110,7 @@ public abstract class TheaterBase
                     {
                         Console.Write("■   ");
                     }
-                    else if (seats[i, j] == 'C') // Selected seat
+                    else if (seats[i, j] == 'C') // Currently chosen seat(s)
                     {
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.Write("■   ");
@@ -112,11 +121,13 @@ public abstract class TheaterBase
             Console.WriteLine();
         }
 
-        string screenLine = new string('=', columns * 4); // Each seat takes 3 spaces
-        Console.WriteLine(new string(' ', 3) + screenLine); // Adjust spacing based on columns
-        Console.WriteLine(new string(' ', 3) + "SCREEN".PadLeft((screenLine.Length + "SCREEN".Length) / 2)); // Center the screen text
-        Console.WriteLine(new string(' ', 3) + screenLine); // Repeat the screen line
+        // Display screen separator and the word "SCREEN"
+        string screenLine = new string('=', columns * 4);
+        Console.WriteLine(new string(' ', 3) + screenLine);
+        Console.WriteLine(new string(' ', 3) + "SCREEN".PadLeft((screenLine.Length + "SCREEN".Length) / 2));
+        Console.WriteLine(new string(' ', 3) + screenLine);
 
+        // Display price legend for different seat types
         Console.ResetColor();
         Console.WriteLine("\nChair Prices:");
         Console.ForegroundColor = ConsoleColor.Red;
@@ -128,29 +139,29 @@ public abstract class TheaterBase
         Console.ForegroundColor = ConsoleColor.Magenta;
         Console.WriteLine("■ Reserved chairs");
         Console.ForegroundColor = ConsoleColor.Green;
-        Console.WriteLine("Use arrow keys to navigate and Enter to select a seat. Use backspace to delete your selected seat. Press Esc to finish selection.");
+        Console.WriteLine("Use arrow keys to navigate and Enter to select one or more seat(s). Use backspace to delete your selected seat. Press Esc to finish selection.");
         Console.ResetColor();
         Console.WriteLine();
     }
 
+    // Allows the user to select seats for a show
     public void SelectSeats(long showId, UserModel acc)
     {
-        List<long> reservedSeats = ReservationAccess.GetReservedSeatsByShowId(showId);
+        List<long> reservedSeats = ReservationLogic.GetReservedSeatsByShowId(showId);
         int selectedRow = 0;
         int selectedCol = 0;
         DisplaySeats(showId, selectedRow, selectedCol);
 
         List<SeatsModel> selectedSeats = new List<SeatsModel>();
 
-        int seatscount = 1;
+        int seatscount = 1; // To track the number of selected/chosen seats
         int countSeatPlusLeftSpace = 0;
         int countEmptyLeftSpace = 0;
 
-        
         // Count the total number of seats and empty array chars on the left side in the row
         for (int j = 0; j < seats.GetLength(1); j++)
         {
-            if (j < seats.GetLength(1)) // Cut the array length in half, so that the right side is not included, as it is not needed.
+            if (j < seats.GetLength(1))
             {
                 countSeatPlusLeftSpace++;
             }
@@ -162,14 +173,14 @@ public abstract class TheaterBase
                     countSeatPlusLeftSpace++;
             }
         }
-        
- 
+
+        // Begin the selection process
         while (true)
         {
             DisplaySeats(showId, selectedRow, selectedCol);
 
-            ConsoleKeyInfo key = Console.ReadKey(true);
-            if (key.Key == ConsoleKey.UpArrow && selectedRow > 0) 
+            ConsoleKeyInfo key = Console.ReadKey(true); // Read user input for navigation
+            if (key.Key == ConsoleKey.UpArrow && selectedRow > 0)
             {
                 selectedRow--; // Move up
             }
@@ -185,12 +196,11 @@ public abstract class TheaterBase
             {
                 selectedCol++; // Move right
             }
-            else if (key.Key == ConsoleKey.Enter)
+            else if (key.Key == ConsoleKey.Enter) // Enter to choose the seat
             {
                 // Check if the selected seat is available
                 if (seats[selectedRow, selectedCol] == 'A')
                 {
-                    // Check if the seat is valid
                     bool isSingleSeatValid = IsValidSingleSeat(selectedRow, selectedCol, 1, 1); // Assuming 1 person for single seat check
                     bool isGroupSeatValid = true;
 
@@ -201,9 +211,9 @@ public abstract class TheaterBase
 
                     if (isSingleSeatValid && isGroupSeatValid)
                     {
-                        seats[selectedRow, selectedCol] = 'C';
+                        seats[selectedRow, selectedCol] = 'C'; // Mark selected seat
 
-                        decimal price = GetSeatPrice(selectedRow, selectedCol);
+                        decimal price = GetSeatPrice(selectedRow, selectedCol); // Get price based on seat category
                         var selectedSeat = new SeatsModel
                         {
                             RowNumber = seats.GetLength(0) - selectedRow,
@@ -211,7 +221,7 @@ public abstract class TheaterBase
                             Price = price
                         };
 
-                        long seatId = SeatsAccess.InsertSeatAndGetId(selectedSeat);
+                        long seatId = SeatsLogic.InsertSeatAndGetId(selectedSeat); // Insert the seat in the database and get the seat ID
                         selectedSeats.Add(new SeatsModel
                         {
                             Id = seatId,
@@ -219,7 +229,7 @@ public abstract class TheaterBase
                             ColumnNumber = selectedSeat.ColumnNumber,
                             Price = selectedSeat.Price
                         });
-                        seatscount++;
+                        seatscount++; // Increase the count of selected seats
                     }
                     else
                     {
@@ -233,6 +243,7 @@ public abstract class TheaterBase
             }
             else if (key.Key == ConsoleKey.Backspace)
             {
+                // Logic to delete a selected seat
                 if (seats[selectedRow, selectedCol] == 'C')
                 {
                     int seatIdToDelete = (int)(selectedSeats.FirstOrDefault(s => s.RowNumber == (seats.GetLength(0) - selectedRow) && s.ColumnNumber == (selectedCol + 1))?.Id ?? 0);
@@ -262,10 +273,10 @@ public abstract class TheaterBase
 
                     if (seatIdToDelete > 0 && canDelete)
                     {
-                        SeatsAccess.Delete(seatIdToDelete);
-                        seats[selectedRow, selectedCol] = 'A';
+                        SeatsLogic.DeleteSeat(seatIdToDelete); // Delete the seat from the database
+                        seats[selectedRow, selectedCol] = 'A'; // Mark the seat as available
                         Console.WriteLine($"You have deleted the seat.");
-                        seatscount--;
+                        seatscount--; // Decrease the count of selected seats
                     }
                     else
                     {
@@ -279,6 +290,7 @@ public abstract class TheaterBase
             }
             else if (key.Key == ConsoleKey.Escape)
             {
+                // Logic to exit the seat selection process
                 Console.WriteLine("Are you done choosing seats and do you want to leave the choosing area.\n[1] Yes\n[2] No");
                 string esc_anwser = Console.ReadLine();
                 if (esc_anwser == "1")
@@ -295,16 +307,16 @@ public abstract class TheaterBase
                     Console.WriteLine("Wrong input!");
                     continue;
                 }
-
             }
         }
 
+        // After seat selection, make the reservation if the user is logged in
         if (selectedSeats.Count > 0)
         {
             if (acc != null)
             {
                 Console.WriteLine("Making reservation...");
-                MakeReservation(selectedSeats, acc, showId);
+                MakeReservation(selectedSeats, acc, showId); // Make reservation for selected seats
             }
             else
             {
@@ -317,19 +329,20 @@ public abstract class TheaterBase
         }
     }
 
+    // Get the price of a seat based on its category
     private decimal GetSeatPrice(int row, int col)
     {
         int chairType = pricingCategories[row, col];
         switch (chairType)
         {
             case 1:
-                return 10.00m;
+                return 10.00m; // Premium price
             case 2:
-                return 12.50m;
+                return 12.50m; // Standard price
             case 3:
-                return 15.00m;
+                return 15.00m; // Basic price
             default:
-                return 0.00m;
+                return 0.00m; // No price for unavailable seats
         }
     }
 

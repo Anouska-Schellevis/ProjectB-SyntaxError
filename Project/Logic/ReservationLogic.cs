@@ -31,6 +31,11 @@ static public class ReservationLogic
     {
         return ReservationAccess.GetReservationsByUserId(userId);
     }
+
+    static public List<long> GetReservedSeatsByShowId(long showId)
+    {
+        return ReservationAccess.GetReservedSeatsByShowId(showId);
+    }
 }
 
 
