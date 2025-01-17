@@ -44,6 +44,35 @@ public class Reservation
                         Console.WriteLine("    Seat information not available.");
                     }
                 }
+                //check if there are any snacks to show
+                string snacks = group.First().Snacks;
+                if (!string.IsNullOrEmpty(snacks)) // Check if snacks is not null or empty
+                {
+                    Console.WriteLine("    Ordered Snacks:");
+
+                    //split the snacks string into a list
+                    string[] snackList = snacks.Split(',');
+
+                    //create a dictionary to count how many times a snack is in the string
+                    Dictionary<string, int> snackCounts = new Dictionary<string, int>();
+                    foreach (string snack in snackList.Select(s => s.Trim())) //lambda do trim extra white space because of spaces in item names
+                    {
+                        if (snackCounts.ContainsKey(snack))
+                        {
+                            snackCounts[snack]++;
+                        }
+                        else
+                        {
+                            snackCounts[snack] = 1;
+                        }
+                    }
+
+
+                    foreach (var snack in snackCounts)
+                    {
+                        Console.WriteLine($"        - {snack.Value} x {snack.Key}");
+                    }
+                }
 
                 reservationNumber++;
             }
