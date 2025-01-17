@@ -26,6 +26,11 @@ static public class SeatsLogic
     {
         SeatsAccess.Write(seat);
     }
+
+    static public long InsertSeatAndGetId(SeatsModel seat)
+    {
+        return SeatsAccess.InsertSeatAndGetId(seat);
+    }
 }
 
 

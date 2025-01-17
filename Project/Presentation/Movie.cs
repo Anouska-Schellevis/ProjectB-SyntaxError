@@ -112,6 +112,11 @@ class Movie
                         if (MoviesLogic.GetByTitle(Title_to_edit) == null)
                         {
                             Console.WriteLine("Invalid movie. Try again.");
+                            Console.WriteLine("Movies you can choose from: ");
+                            foreach (var item in movies)
+                            {
+                                Console.WriteLine($"- {item.Title}");
+                            }
                         }
                     } while (movieforedit == null);
 
@@ -132,11 +137,16 @@ class Movie
                 case 4:
                     Console.Clear();
                     string titleToDelete;
+                    movies = MoviesLogic.GetAllMovies();
+                    Console.WriteLine("Movies you can choose from: ");
+                    foreach (var item in movies)
+                    {
+                        Console.WriteLine($"- {item.Title}");
+                    }
                     Console.WriteLine("Enter the title of the movie you want to delete(not uppercase sensitive)");
                     MoviesModel moviefordelete;
                     do
                     {
-
                         titleToDelete = Console.ReadLine();
                         Console.Clear();
                         if (titleToDelete.Contains(" "))
@@ -160,9 +170,15 @@ class Movie
                         if (MoviesLogic.GetByTitle(titleToDelete) == null)
                         {
                             Console.WriteLine("Invalid movie. Try again.");
+                            movies = MoviesLogic.GetAllMovies();
+                            Console.WriteLine("Movies you can choose from: ");
+                            foreach (var item in movies)
+                            {
+                                Console.WriteLine($"- {item.Title}");
+                            }
                         }
                     } while (moviefordelete == null);
-                    Console.WriteLine($"Are you sure you want to delete {moviefordelete}");
+                    Console.WriteLine($"Are you sure you want to delete {moviefordelete.Title}");
                     Console.WriteLine("[1]Yes\n[2]No");
                     string question = Console.ReadLine();
                     Console.Clear();
@@ -183,6 +199,12 @@ class Movie
                     break;
                 case 5:
                     Console.Clear();
+                    movies = MoviesLogic.GetAllMovies();
+                    Console.WriteLine("Movies you can choose from: ");
+                    foreach (var item in movies)
+                    {
+                        Console.WriteLine($"- {item.Title}");
+                    }
                     Console.WriteLine("Enter the title of the movie you want to search for(not uppercase sensitive)");
                     string Title_to_search;
                     MoviesModel movieforsearch;
@@ -211,6 +233,11 @@ class Movie
                         if (MoviesLogic.GetByTitle(Title_to_search) == null)
                         {
                             Console.WriteLine("Invalid movie. Try again.");
+                            Console.WriteLine("Movies you can choose from: ");
+                            foreach (var item in movies)
+                            {
+                                Console.WriteLine($"- {item.Title}");
+                            }
                         }
                     } while (movieforsearch == null);
                     Console.WriteLine(MovieSearch(Title_to_search));
