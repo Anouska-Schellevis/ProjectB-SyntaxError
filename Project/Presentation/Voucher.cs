@@ -118,7 +118,7 @@ class Voucher
 
                 do
                 {
-                    Console.WriteLine("Enter the expiration date?(YYYY-MM-DD):");
+                    Console.WriteLine("Enter the expiration date (YYYY-MM-DD)");
                     enterDate = Console.ReadLine();
                     Console.Clear();
 
