@@ -72,7 +72,7 @@ class Movie
                 case 2:
                     Console.Clear();
                     MovieAdd();
-                    Console.WriteLine("Movie is added");
+                    Console.WriteLine("Movie is added!");
                     Thread.Sleep(2000);
                     break;
                 case 3:
@@ -184,7 +184,7 @@ class Movie
                     Console.Clear();
                     while (question != "1" && question != "2")
                     {
-                        Console.WriteLine("Invalid input. Try again");
+                        Console.WriteLine("Invalid input. Try again.");
                         Console.WriteLine($"Are you sure you want to delete {moviefordelete}?");
                         Console.WriteLine("[1]Yes\n[2]No");
                         question = Console.ReadLine();
@@ -193,7 +193,7 @@ class Movie
                     if (question == "1")
                     {
                         MovieDelete(Convert.ToInt32(moviefordelete.Id));
-                        Console.WriteLine("Movie is deleted");
+                        Console.WriteLine("Movie is deleted!");
                         Thread.Sleep(2000);
                     }
                     break;
@@ -360,7 +360,7 @@ class Movie
 
         if (question4 == 1)
         {
-            Console.WriteLine("Enter a new title for this movie.");
+            Console.WriteLine("Enter a new title for this movie");
             newTitle = Console.ReadLine();
             if (newTitle.Contains(" "))
             {
@@ -381,6 +381,7 @@ class Movie
             }
         }
 
+        Console.Clear();
         int question1;
         do
         {
@@ -404,7 +405,7 @@ class Movie
             bool isNum;
             do
             {
-                Console.WriteLine("Enter a new duration in minutes for this movie.");
+                Console.WriteLine("Enter a new duration in minutes for this movie");
                 isNum = int.TryParse(Console.ReadLine(), out newTimeInMinutes);
                 Console.Clear();
                 if (!isNum)
@@ -437,7 +438,7 @@ class Movie
 
         if (question2 == 1)
         {
-            Console.WriteLine("Enter a new genre for this movie(1 genre = 'Actie', 2 of meer genre's = 'Actie, Komedie').");
+            Console.WriteLine("Enter a new genre for this movie(1 genre = 'Actie', 2 or more genres = 'Actie, Komedie')");
             newGenre = Console.ReadLine();
             if (newGenre.Contains(" "))
             {
@@ -480,7 +481,7 @@ class Movie
 
         if (question3 == 1)
         {
-            Console.WriteLine("Enter a new description for this movie.");
+            Console.WriteLine("Enter a new description for this movie");
             newDescription = Console.ReadLine();
         }
 
@@ -507,7 +508,7 @@ class Movie
 
         if (question5 == 1)
         {
-            Console.WriteLine("Enter a new director for this movie.");
+            Console.WriteLine("Enter a new director for this movie");
             newDirector = Console.ReadLine();
             if (newDirector.Contains(" "))
             {
@@ -600,7 +601,7 @@ class Movie
     {
         string newReleaseDate = "";
 
-        Console.WriteLine("Enter new title for this movie.");
+        Console.WriteLine("Enter new title for this movie");
         string newTitle = Console.ReadLine();
 
         if (newTitle.Contains(" "))
@@ -621,14 +622,14 @@ class Movie
             newTitle.Trim();
         }
         Console.Clear();
-        Console.WriteLine("\nEnter a new description for this movie.");
+        Console.WriteLine("\nEnter a new description for this movie");
         string newDescription = Console.ReadLine();
         Console.Clear();
         bool isNum = false;
         int newTimeInMinutes;
         do
         {
-            Console.WriteLine("\nEnter a new duration in minutes for this movie.");
+            Console.WriteLine("\nEnter a new duration in minutes for this movie");
             isNum = int.TryParse(Console.ReadLine(), out newTimeInMinutes);
 
             if (!isNum)
@@ -637,12 +638,12 @@ class Movie
             }
             else if (newTimeInMinutes <= 0)
             {
-                Console.WriteLine("Please try again. A movie must be longer than 0 minutes");
+                Console.WriteLine("Please try again. A movie must be longer than 0 minutes.");
             }
         } while (!isNum || newTimeInMinutes <= 0);
 
         Console.Clear();
-        Console.WriteLine("Enter new genre for this movie(1 genre = 'Actie', 2 of meer genre's = 'Actie, Komedie').");
+        Console.WriteLine("Enter new genre for this movie(1 genre = 'Actie', 2 or more genres = 'Actie, Komedie')");
         string newGenre = Console.ReadLine();
 
         if (newGenre.Contains(" "))
@@ -662,10 +663,10 @@ class Movie
             newGenre = char.ToUpper(newGenre[0]) + newGenre.Substring(1);
             newGenre.Trim();
         }
-        
+
         Console.Clear();
 
-        Console.WriteLine("\nEnter a new director for this movie.");
+        Console.WriteLine("\nEnter a new director for this movie");
         string newDirector = Console.ReadLine();
 
         if (newDirector.Contains(" "))
@@ -824,7 +825,7 @@ Description: {movie.Description}
                 spaces += " ";  //add space one by one
             }
 
-            string seatsBooked = $"{genre.Value} seats booked";
+            string seatsBooked = $"{genre.Value} seats booked!";
             Console.WriteLine($"{genreName}{spaces}{seatsBooked}");
             genreNumber++;
         }

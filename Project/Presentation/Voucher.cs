@@ -12,7 +12,7 @@ class Voucher
             bool isNum = int.TryParse(Console.ReadLine(), out int input);
             if (!isNum)
             {
-                Console.WriteLine("Invalid input. Must be a number");
+                Console.WriteLine("Invalid input. Must be a number.");
                 Thread.Sleep(2000);
             }
             else if (input == 1)
@@ -35,11 +35,11 @@ class Voucher
                     Console.Clear();
                     if (isNumType)
                     {
-                        Console.WriteLine("Invalid input. Must be a number");
+                        Console.WriteLine("Invalid input. Must be a number.");
                     }
                     else if (typeAnswer != 1 && typeAnswer != 2)
                     {
-                        Console.WriteLine("Invalid input. Enter 1 or 2");
+                        Console.WriteLine("Invalid input. Enter 1 or 2.");
                     }
                 } while (typeAnswer != 1 && typeAnswer != 2);
 
@@ -63,27 +63,27 @@ class Voucher
                     Console.Clear();
                     if (!isDecimal)
                     {
-                        Console.WriteLine("Invalid input. Must be a number");
+                        Console.WriteLine("Invalid input. Must be a number.");
                     }
                     else if (typeAnswer == 1 && amount < 0)
                     {
-                        Console.WriteLine("Please try again. A percentage amount cannot be a negative number");
+                        Console.WriteLine("Please try again. A percentage amount cannot be a negative number.");
                     }
                     else if (typeAnswer == 1 && amount > 100)
                     {
-                        Console.WriteLine("Please try again. A percentage amount cannot be higher than 100");
+                        Console.WriteLine("Please try again. A percentage amount cannot be higher than 100.");
                     }
                     else if (typeAnswer == 2 && amount < 0)
                     {
-                        Console.WriteLine("Please try again. A euro amount cannot be a negative number");
+                        Console.WriteLine("Please try again. A euro amount cannot be a negative number.");
                     }
                     else if (typeAnswer == 1 && amount == 0)
                     {
-                        Console.WriteLine("Please try again. A percentage amount must be higher than 0%");
+                        Console.WriteLine("Please try again. A percentage amount must be higher than 0%.");
                     }
                     else if (typeAnswer == 2 && amount == 0)
                     {
-                        Console.WriteLine("Please try again. A euro amount must be higher than €0");
+                        Console.WriteLine("Please try again. A euro amount must be higher than €0.");
                     }
                     else
                     {
@@ -101,16 +101,16 @@ class Voucher
                     Console.Clear();
                     if (!isNumAnswer)
                     {
-                        Console.WriteLine("Invalid input. Must be a number");
+                        Console.WriteLine("Invalid input. Must be a number.");
                     }
                     else if (answer != 1 && answer != 2)
                     {
-                        Console.WriteLine("Invalid input. Enter 1 or 2");
+                        Console.WriteLine("Invalid input. Enter 1 or 2.");
                     }
                 } while (answer != 1 && answer != 2);
                 if (answer == 1)
                 {
-                    Console.WriteLine("Type your description");
+                    Console.WriteLine("Type your description:");
                     description = Console.ReadLine();
                 }
 
@@ -118,7 +118,7 @@ class Voucher
 
                 do
                 {
-                    Console.WriteLine("Enter the expiration date?(YYYY-MM-DD)");
+                    Console.WriteLine("Enter the expiration date?(YYYY-MM-DD):");
                     enterDate = Console.ReadLine();
                     Console.Clear();
 
@@ -129,7 +129,7 @@ class Voucher
                     }
                     else if (dateTime < currentDate)
                     {
-                        Console.WriteLine("The date must not have passed yet");
+                        Console.WriteLine("The date must not have passed yet.");
                     }
 
                 } while (dateTime < currentDate);
@@ -240,7 +240,7 @@ class Voucher
             }
             else
             {
-                Console.WriteLine("Invalid input. This option doesn't exist");
+                Console.WriteLine("Invalid input. This option doesn't exist.");
                 Thread.Sleep(2000);
             }
         }
