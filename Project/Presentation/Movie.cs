@@ -2,11 +2,6 @@ using Microsoft.VisualBasic;
 
 class Movie
 {
-
-    // static public void Main()
-    // {
-    //     Start(acc);
-    // }
     static public void Start(UserModel acc)
     {
         while (true)
