@@ -201,9 +201,8 @@ public class Show
                     Console.SetCursorPosition(0, Console.CursorTop - 1);
                     Console.Write(new string(' ', Console.WindowWidth));
                     Console.SetCursorPosition(0, Console.CursorTop - 1);
-                    Console.Write(new string(' ', Console.WindowWidth));
-                    Console.SetCursorPosition(0, Console.CursorTop - 1);
                     Console.SetCursorPosition(0, Console.CursorTop + 1);
+                    
                 } while (true);
                 Console.Clear();
                 string chosenmovie = movies[chosennumber];
