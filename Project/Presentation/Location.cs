@@ -107,7 +107,7 @@ class Location
         string inputAddress;
         do
         {
-            Console.WriteLine("Enter the address like this 'Street 1': ");
+            Console.WriteLine("Enter the address (straat 1): ");
             inputAddress = Console.ReadLine();
             Console.Clear();
         } while (!CheckAddress(inputAddress));
@@ -115,7 +115,7 @@ class Location
         string inputPostalCode;
         do
         {
-            Console.WriteLine("Enter the postal code like this '1111 AA': ");
+            Console.WriteLine("Enter the postal code (1111 AA): ");
             inputPostalCode = Console.ReadLine();
             Console.Clear();
         } while (!CheckPostalCode(inputPostalCode));
@@ -185,24 +185,52 @@ class Location
 
     private static bool CheckPostalCode(string input)
     {
-        string[] splitSentence = input.Split(" ");
-
-        string numbers = splitSentence[0];
-        string letters = splitSentence[1];
-
-        if (numbers.Length != 4 || letters.Length != 2)
+        try
         {
-            return false;
-        }
-        if (!OnlyNumbers(numbers))
-        {
-            return false;
-        }
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                Console.WriteLine("Invalid input. Postal code cannot be empty.");
+                return false;
+            }
 
-        if (!OnlyLetters(letters))
-        {
-            return false;
+            string[] splitSentence = input.Split(" ");
+
+            // Ensure the input has the correct number of components
+            if (splitSentence.Length != 2)
+            {
+                Console.WriteLine("Invalid postal code format.");
+                return false;
+            }
+
+            string numbers = splitSentence[0];
+            string letters = splitSentence[1];
+
+            if (numbers.Length != 4 || letters.Length != 2)
+            {
+                Console.WriteLine("Invalid postal code format.");
+                return false;
+            }
+
+            if (!OnlyNumbers(numbers))
+            {
+                Console.WriteLine("Invalid postal code. Numbers part should be 4 digits.");
+                return false;
+            }
+
+            if (!OnlyLetters(letters))
+            {
+                Console.WriteLine("Invalid postal code. Letters part should be 2 characters.");
+                return false;
+            }
+
+            return true;
         }
-        return true;
+        catch (IndexOutOfRangeException ex)
+        {
+            Console.WriteLine("An unexpected error occurred while processing the postal code.");
+            Console.WriteLine($"Error details: {ex.Message}");
+            return false; // Return false to indicate failure and let the loop continue
+        }
     }
+
 }
