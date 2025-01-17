@@ -660,8 +660,8 @@ public class SnackMenu
                 do
                 {
                     Console.WriteLine("\nWould you like to edit the price?");
-                    Console.WriteLine("[1] Yes");
-                    Console.WriteLine("[2] No");
+                    Console.WriteLine("[1]Yes");
+                    Console.WriteLine("[2]No");
                     bool isNum = int.TryParse(Console.ReadLine(), out priceChoice);
                     Console.Clear();
                     if (!isNum)
@@ -824,11 +824,11 @@ public class SnackMenu
         {
             Console.Clear();
             Console.WriteLine("\nSnack Popularity Menu:");
-            Console.WriteLine("[1] See snacks per reservation");
-            Console.WriteLine("[2] See snacks per show");
-            Console.WriteLine("[3] See snacks per day");
-            Console.WriteLine("[4] Go back to admin menu");
-            Console.WriteLine("[5] Log out");
+            Console.WriteLine("[1]See snacks per reservation");
+            Console.WriteLine("[2]See snacks per show");
+            Console.WriteLine("[3]See snacks per day");
+            Console.WriteLine("[4]Go back to admin menu");
+            Console.WriteLine("[5]Log out");
             string choice = Console.ReadLine();
 
             if (choice == "1")
@@ -945,8 +945,8 @@ public class SnackMenu
 
         while (true)
         {
-            Console.WriteLine("\n[1] Back to Snack Menu");
-            Console.WriteLine("[2] Log out");
+            Console.WriteLine("\n[1]Back to Snack Menu");
+            Console.WriteLine("[2]Log out");
             string choice = Console.ReadLine();
             if (choice == "1")
             {
@@ -1050,8 +1050,8 @@ public class SnackMenu
 
         while (true)
         {
-            Console.WriteLine("\n[1] Back to Snack Menu");
-            Console.WriteLine("[2] Log out");
+            Console.WriteLine("\n[1]Back to Snack Menu");
+            Console.WriteLine("[2]Log out");
             string choice = Console.ReadLine();
             if (choice == "1")
             {
@@ -1153,8 +1153,8 @@ public class SnackMenu
 
         while (true)
         {
-            Console.WriteLine("\n[1] Back to Snack Menu");
-            Console.WriteLine("[2] Log out");
+            Console.WriteLine("\n[1]Back to Snack Menu");
+            Console.WriteLine("[2]Log out");
             string choice = Console.ReadLine();
             if (choice == "1")
             {
