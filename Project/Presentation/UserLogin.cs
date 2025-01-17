@@ -10,10 +10,10 @@ static class UserLogin
         while (!loginSuccessful)
         {
             Console.Clear();
-            Console.WriteLine("Welcome to the login page");
-            Console.WriteLine("Please enter your email address");
+            Console.WriteLine("===== Login page =====");
+            Console.WriteLine("\nPlease enter your email address");
             string email = Console.ReadLine();
-            Console.WriteLine("Please enter your password");
+            Console.WriteLine("\nPlease enter your password");
             string password = Console.ReadLine();
 
             UserModel acc = userlogin.CheckLogin(email, password);

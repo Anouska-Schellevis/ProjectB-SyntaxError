@@ -45,7 +45,7 @@ public abstract class TheaterBase
                 seats[row, col] = 'R'; // Mark reserved seats as 'R'
             }
         }
-        
+
         int rows = seats.GetLength(0);
         int columns = seats.GetLength(1);
 
@@ -315,7 +315,7 @@ public abstract class TheaterBase
         {
             if (acc != null)
             {
-                Console.WriteLine("Making reservation...");
+                Console.WriteLine("\nMaking reservation...");
                 MakeReservation(selectedSeats, acc, showId); // Make reservation for selected seats
             }
             else
@@ -351,7 +351,7 @@ public abstract class TheaterBase
         List<VoucherModel> userVouchers = VoucherLogic.GetVouchersByUserId(acc);
         if (userVouchers.Count > 0)
         {
-            Console.WriteLine("You have active vouchers");
+            Console.WriteLine("\nYou have active vouchers");
             Console.WriteLine("Would you like to use a voucher?");
             Console.WriteLine("[1] Yes");
             Console.WriteLine("[2] No");
@@ -415,10 +415,10 @@ public abstract class TheaterBase
         }
 
         long userId = acc.Id;
-        Console.WriteLine("Do you want bar service? \n[1] Yes \n[2] No");
+        Console.WriteLine("\nDo you want bar service? \n[1] Yes \n[2] No");
         bool barService = Console.ReadLine() == "1" && IsBarAvailable(selectedSeats.Count, showId);
 
-        Console.WriteLine("Would you like to order snacks? \n[1] Yes \n[2] No");
+        Console.WriteLine("\nWould you like to order snacks? \n[1] Yes \n[2] No");
         string snacks = "";
 
         if (Console.ReadLine() == "1")
